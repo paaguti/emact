@@ -1,0 +1,279 @@
+#
+#	@(#) Makefile.in for 'Emacs' (c) C. Jullien 	2009/04/30
+#
+# Options:
+#
+#	-D_DIRECTORY	File completion
+#	-D_MLISP	User macros
+#	-D_POSIX_SOURCE	ISO/IEC 9945-1:1990 (POSIX 1003.1)
+#	-D_XOPEN_SOURCE	X/Open XPG.n
+
+# General flags
+
+INSTALL	= @prefix@
+DISTRIB	= $(INSTALL)/share/emact
+LIBPATH	= $(DISTRIB)
+
+# DISTRIB	= $(INSTALL)/emact
+# LIBPATH	= $(DISTRIB)/lib
+
+ARFLAGS	= -q
+CC	= @CC@
+AR	= @AR@
+CHARSET	= @CHARSET@
+LISPLIB	= libem.a
+SYSTEM	= @MACHINE_TYPE@-@SYSTEM_TYPE@
+XCFLAGS	= @X_CFLAGS@
+XLDFLAGS= @X_LIBS@
+XLIBS	= @X_EXTRA_LIBS@ @X_PRE_LIBS@ @X11LIB@
+NAME	= -DSYSTEMNAME=ECSTR\(\"$(SYSTEM)\"\)
+EMPATH	= -DPATH=ECSTR\(\"$(LIBPATH)\"\)
+OPTIONS	= -D_DIRECTORY -D_MLISP -D$(CHARSET) -D_UNIX $(EMPATH) $(NAME) @DEFS@ @LOCAL_DEFS@
+MACHINE	= @LOCAL_CFLAGS@ 
+WFLAGS	= -W                       \
+	  -Wall			   \
+	  -Waggregate-return       \
+	  -Wcast-align	   	   \
+	  -Wchar-subscripts        \
+	  -Wcomment                \
+	  -Wextra                  \
+	  -Wformat-extra-args	   \
+	  -Wimplicit               \
+	  -Wmissing-braces	   \
+	  -Wmissing-declarations   \
+	  -Wmissing-noreturn	   \
+	  -Wmissing-prototypes     \
+	  -Wnested-externs	   \
+	  -Wold-style-definition   \
+	  -Wparentheses            \
+	  -Wpointer-arith	   \
+	  -Wredundant-decls	   \
+	  -Wsequence-point	   \
+	  -Wshadow                 \
+	  -Wsign-compare	   \
+	  -Wstrict-aliasing	   \
+	  -Wstrict-prototypes	   \
+	  -Wuninitialized          \
+	  -Wunused                 \
+	  -Wwrite-strings          \
+	  -Wunused-macros          \
+#	  -Wconversion             \
+
+CFLAGS	= $(MACHINE) $(XCFLAGS) @CFLAGS@ @OPTIMS@ @WARNINGS@ $(OPTIONS)
+LIBS	= @LOCAL_LIBS@ $(XLIBS) @LIBS@
+LDFLAGS	= @LDFLAGS@ $(XLDFLAGS)
+EXE	= @EXEEXT@
+O	= @OBJEXT@
+
+OBJECTS	= basic.$(O)    \
+	  buffer.$(O)   \
+	  charutil.$(O) \
+	  display.$(O)  \
+	  curses.$(O)   \
+	  emacs.$(O)    \
+	  file.$(O)     \
+	  filecomp.$(O) \
+	  fileio.$(O)   \
+	  indent.$(O)   \
+	  line.$(O)     \
+	  main.$(O)     \
+	  minibuf.$(O)  \
+	  mlisp.$(O)    \
+	  mouse.$(O)    \
+	  nexterr.$(O)  \
+	  openlisp.$(O) \
+	  options.$(O)  \
+	  random.$(O)   \
+	  rawmode.$(O)  \
+	  region.$(O)   \
+	  search.$(O)   \
+	  spawn.$(O)    \
+	  tcap.$(O)     \
+	  termio.$(O)   \
+	  tinfo.$(O)    \
+	  unicode.$(O)	\
+	  version.$(O)  \
+	  window.$(O)   \
+	  word.$(O)     \
+	  x11.$(O)
+
+all:	options emact$(EXE)
+
+options:
+	@echo ";; ----------------------------------------"
+	@echo ";; Compile $(NAME) on" $(SYSTEM)
+	@echo ";; Options used: $(CC) -c" $(CFLAGS)
+	@echo ";; ----------------------------------------"
+
+emact$(EXE): $(OBJECTS)
+	@echo	ld emact ...
+	@$(CC)	$(CFLAGS) -o emact $(OBJECTS) $(LDFLAGS) $(LIBS)
+	@cp emact$(EXE) ..
+
+#	Compile files
+
+basic.$(O):	basic.c config.h Makefile
+	@echo basic.c
+	@$(CC) -c $(CFLAGS) basic.c
+
+buffer.$(O): 	buffer.c config.h Makefile
+	@echo buffer.c
+	@$(CC) -c $(CFLAGS) buffer.c
+
+charutil.$(O): 	charutil.c config.h Makefile
+	@echo charutil.c
+	@$(CC) -c $(CFLAGS) charutil.c
+
+display.$(O): 	display.c config.h Makefile
+	@echo display.c
+	@$(CC) -c $(CFLAGS) display.c
+
+curses.$(O): 	curses.c config.h Makefile
+	@echo curses.c
+	@$(CC) -c $(CFLAGS) curses.c
+
+emacs.$(O): 	emacs.c config.h Makefile
+	@echo emacs.c
+	@$(CC) -c $(CFLAGS) emacs.c
+
+file.$(O): 	file.c config.h Makefile
+	@echo file.c
+	@$(CC) -c $(CFLAGS) file.c
+
+filecomp.$(O): 	filecomp.c config.h Makefile
+	@echo filecomp.c
+	@$(CC) -c $(CFLAGS) filecomp.c
+
+fileio.$(O): 	fileio.c config.h Makefile
+	@echo fileio.c
+	@$(CC) -c $(CFLAGS) fileio.c
+
+indent.$(O): 	indent.c config.h Makefile
+	@echo indent.c
+	@$(CC) -c $(CFLAGS) indent.c
+
+line.$(O): 	line.c config.h Makefile
+	@echo line.c
+	@$(CC) -c $(CFLAGS) line.c
+
+main.$(O): 	main.c config.h Makefile
+	@echo main.c
+	@$(CC) -c $(CFLAGS) main.c
+
+minibuf.$(O): 	minibuf.c config.h Makefile
+	@echo minibuf.c
+	@$(CC) -c $(CFLAGS) minibuf.c
+
+mlisp.$(O): 	mlisp.c config.h Makefile
+	@echo mlisp.c
+	@$(CC) -c $(CFLAGS) mlisp.c
+
+mouse.$(O):	mouse.c config.h Makefile
+	@echo mouse.c
+	@$(CC) -c $(CFLAGS) mouse.c
+
+nexterr.$(O):	nexterr.c config.h Makefile
+	@echo nexterr.c
+	@$(CC) -c $(CFLAGS) nexterr.c
+
+openlisp.$(O):	openlisp.c config.h Makefile
+	@echo openlisp.c
+	@$(CC) -c $(CFLAGS) openlisp.c
+
+options.$(O):	options.c config.h Makefile
+	@echo options.c
+	@$(CC) -c $(CFLAGS) options.c
+
+random.$(O):	random.c config.h Makefile
+	@echo random.c
+	@$(CC) -c $(CFLAGS) random.c
+
+rawmode.$(O):	rawmode.c config.h Makefile
+	@echo rawmode.c
+	@$(CC) -c $(CFLAGS) rawmode.c
+
+region.$(O):	region.c config.h Makefile
+	@echo region.c
+	@$(CC) -c $(CFLAGS) region.c
+
+search.$(O):	search.c config.h Makefile
+	@echo search.c
+	@$(CC) -c $(CFLAGS) search.c
+
+spawn.$(O):	spawn.c config.h Makefile
+	@echo spawn.c
+	@$(CC) -c $(CFLAGS) spawn.c
+
+tcap.$(O):	tcap.c config.h Makefile
+	@echo tcap.c
+	@$(CC) -c $(CFLAGS) tcap.c
+
+termio.$(O):	termio.c config.h Makefile
+	@echo termio.c
+	@$(CC) -c $(CFLAGS) termio.c
+
+tinfo.$(O):	tinfo.c config.h Makefile
+	@echo tinfo.c
+	@$(CC) -c $(CFLAGS) tinfo.c
+
+unicode.$(O):	unicode.c config.h Makefile
+	@echo unicode.c
+	@$(CC) -c $(CFLAGS) unicode.c
+
+version.$(O):	version.c config.h Makefile
+	@echo version.c
+	@$(CC) -c $(CFLAGS) version.c
+
+window.$(O):	window.c config.h Makefile
+	@echo window.c
+	@$(CC) -c $(CFLAGS) window.c
+
+word.$(O):	word.c config.h Makefile
+	@echo word.c
+	@$(CC) -c $(CFLAGS) word.c
+
+x11.$(O):	x11.c config.h Makefile
+	@echo x11.c
+	@$(CC) -c $(CFLAGS) x11.c
+
+#	OpenLisp library
+
+$(LISPLIB): $(OBJECTS)
+	-@if test -f $(LISPLIB); then rm $(LISPLIB); fi
+	@$(AR) $(ARFLAGS) $(LISPLIB) $(OBJECTS)
+
+lprof:
+	@./uxlisp bench/gabriel.lsp
+	@lprof -I src -c uxlisp.cnt
+
+prof:
+	@./uxlisp bench/gabriel.lsp
+	@prof uxlisp
+
+lint:
+	@lint -p -D_POSIX_SOURCE -D_ISO $(SOURCES)
+
+install:
+	@echo installing binaries and libs in $(DISTRIB)
+	-@if [ ! -d $(DISTRIB) ];     then mkdir -p $(DISTRIB); fi
+	-@if [ ! -d $(LIBPATH) ];     then mkdir -p $(LIBPATH); fi
+	-@if [ ! -d $(INSTALL)/bin ]; then mkdir -p $(INSTALL)/bin; fi
+	-@cp lib/*    $(LIBPATH)
+	-@cp emact    $(INSTALL)/bin/emact
+	-@chmod a+x+r $(DISTRIB)
+	-@chmod a+x+r $(LIBPATH)
+	-@chmod a+r   $(LIBPATH)/*
+	-@chmod a+x+r $(INSTALL)/bin/emact
+	-@if [ -f $(LIBPATH)/emact.lsp ]; then rm $(LIBPATH)/emact.lsp; fi
+	-@ln -s emacs.lsp $(LIBPATH)/emact.lsp
+	@echo Done.
+
+uninstall:
+	@echo installing binaries and libs from $(DISTRIB)
+	-@rm -r -f $(DISTRIB)
+	-@rm    -f $(INSTALL)/bin/emact
+
+clean:
+	-@rm src/*.$(O)
+	-@rm emact
+	-@rm config.cache config.log

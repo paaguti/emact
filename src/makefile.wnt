@@ -1,0 +1,63 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/10
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_WIN32	to use with Windows NT / WIN32.
+
+CC	= cl
+HC	= hcrtf -xn
+SED	= emsed
+MFLAGS	= -D_WIN32 -D_WINGUI -D_MLISP -D_DIRECTORY
+CFLAGS	= $(MFLAGS) -c -nologo -Gs -Os -Zi -W3 -I.
+LDFLAGS	= -link -subsystem:windows
+LIBS	= gdi32.lib    comctl32.lib shell32.lib  \
+	  libc.lib     user32.lib   kernel32.lib \
+	  comdlg32.lib
+
+OBJECTS	= basic.obj	\
+	  buffer.obj	\
+	  charutil.obj	\
+	  dirent.obj	\
+	  display.obj	\
+	  emacs.obj	\
+	  file.obj	\
+	  filecomp.obj	\
+	  fileio.obj	\
+	  indent.obj	\
+	  line.obj	\
+	  llemacs.obj	\
+	  main.obj	\
+	  minibuf.obj	\
+	  mlisp.obj	\
+	  mouse.obj	\
+	  nexterr.obj	\
+	  openlisp.obj	\
+	  options.obj	\
+	  random.obj	\
+	  region.obj	\
+	  search.obj	\
+	  spawn.obj	\
+	  version.obj	\
+	  unicode.obj	\
+	  window.obj	\
+	  winterm.obj	\
+	  word.obj
+
+all:	ed.exe emacs.hlp
+
+ed.exe:	$(OBJECTS) winterm.res
+	@$(CC) -nologo -o ed.exe $(OBJECTS) winterm.res $(LIBS) $(LDFLAGS)
+
+winterm.res: winterm.rc winterm.h winterm0.ico
+	@rc -r $(MFLAGS) winterm.rc
+
+emacs.hlp: emacs.rtf emacs.hpj
+#	@$(SED) -e "s:[\\][\*][\\]panose [a-f0-9]*}::g" emacs.rtf > emacshlp.rtf
+	@$(HC) emacs
+#	@del emacshlp.rtf > nul
+
+.c.obj:
+	@$(CC) $(CFLAGS) -c $<

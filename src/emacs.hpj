@@ -1,0 +1,30 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+;;
+;;	Help project for EmACT online Help (c) C. Jullien 1999/02/17
+;;
+
+[OPTIONS]
+;; BMROOT=C:\USR\JULLIEN\EMACS\SRC
+;; ROOT=C:\USR\JULLIEN\EMACS\SRC
+;FTS=1
+COMPRESS=12 Hall Zeck
+ERRORLOG=EMACS.ERR
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+FTS=1
+CONTENTS=MainIndex
+TITLE=EmACT Text Editor
+CNT=emacs.cnt
+COPYRIGHT=Copyright (c) 1985 - 2004 by C. Jullien
+ICON=winterm0.ico
+HLP=emacs.hlp
+
+[FILES]
+emacs.rtf
+
+[WINDOWS]
+main="EmACT Text Editor",,60672,,,1
+
+[CONFIG]
+BrowseButtons()

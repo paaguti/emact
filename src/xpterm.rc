@@ -1,0 +1,158 @@
+/*
+ * static char rcsid[] = "$Id: xpterm.rc,v 1.13 2009/05/02 12:25:44 jullien Exp $";
+ */
+
+/*
+ * This  program  is  free  software;  you can redistribute it and/or
+ * modify  it  under  the  terms of the GNU General Public License as
+ * published  by  the  Free  Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ * 
+ * This  program  is  distributed in the hope that it will be useful,
+ * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
+ * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You  should have received a copy of the GNU General Public License
+ * along  with  this  program;  if  not,  write  to the Free Software
+ * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
+ * 02111-1307, USA.
+ */
+
+#define APSTUDIO_READONLY_SYMBOLS
+
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "xpterm.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#include "version.h"
+
+/*
+ * Menubar
+ */
+
+EMACTMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open",                       IDM_LOAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Print",                      IDM_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       IDM_QUIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl-W",                IDM_CUT  // ,   GRAYED
+        MENUITEM "&Copy\tEsc-W",                IDM_COPY // ,  GRAYED
+        MENUITEM "&Paste\tCtrl-Y",              IDM_PASTE //, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Find\tCtrl-S",               IDM_FIND
+        MENUITEM "&Replace\tEsc-%",             IDM_REPLACE
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Standard font",              IDM_STANDARDFONT
+        MENUITEM "&Alternate font",             IDM_ALTERNATEFONT
+        MENUITEM SEPARATOR
+        MENUITEM "UTF-&8 encoding",             IDM_UTF8ENCODING
+        MENUITEM "UTF-&16 encoding",            IDM_UTF16ENCODING
+        MENUITEM "&Default encoding",           IDM_DEFAULTENCODING
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Using EmACT",                IDM_HELPEMACS
+        MENUITEM SEPARATOR
+        MENUITEM "&About",                      IDM_ABOUT
+    END
+END
+
+/*
+ * Icon with lowest ID value placed first to ensure application icon
+ */
+
+EMACTICON               ICON    DISCARDABLE     "winterm0.ico"
+
+/*
+ * Accelerator
+ */
+
+EMACTACCELERATOR ACCELERATORS MOVEABLE PURE 
+BEGIN
+    VK_PAUSE,       IDM_BREAK,                  VIRTKEY 
+    VK_INSERT,      IDM_PASTE,                  VIRTKEY, SHIFT
+END
+
+/*
+ * Dialog
+ */
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 144, 110
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About EmACT"
+FONT 8, "Tahoma"
+BEGIN
+    ICON            EMACTICON,                          -1, 7, 6, 20,20
+    CTEXT           "EmACT by C. Jullien",              -1,35, 6,102,8
+    CTEXT           EMACS_FULLVERSION,                  -1,35,18,102,8
+    CTEXT           EMACS_COPYRIGHT,                    -1,35,30,102,8
+    CTEXT           "An emacs clone for Windows",       -1,35,42,102,8
+#if defined( _WIDECHARS )
+#if defined( _WIN64 )
+    CTEXT           "UNICODE 64bit version",            -1,35,54,102,8
+#else
+    CTEXT           "UNICODE 32bit version",            -1,35,54,102,8
+#endif
+#else
+#if defined( _WIN64 )
+    CTEXT           "ANSI 64bit version",               -1,35,54,102,8
+#else
+    CTEXT           "ANSI 32bit version",               -1,35,54,102,8
+#endif
+#endif
+    CTEXT           "http://www.eligis.com/emacs",      -1,35,66,102,8
+    CTEXT           "mailto:jullien@eligis.com",        -1,35,78,102,8
+    DEFPUSHBUTTON   "&OK" IDOK, 100, 90,  32, 14, WS_GROUP
+END
+
+/*
+ * File version
+ */
+
+#include "winresrc.h"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION	EMVERSIONINFO
+ PRODUCTVERSION EMVERSIONINFO
+ FILEFLAGSMASK	0x3fL
+#ifdef _DEBUG
+ FILEFLAGS	0x1L
+#else
+ FILEFLAGS	0x0L
+#endif
+ FILEOS		VOS__WINDOWS32
+ FILETYPE	VFT_APP
+ FILESUBTYPE	VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "Commment",         "EmACT is an emacs clone.\0"
+            VALUE "CompanyName",      "Christian Jullien\0"
+            VALUE "FileDescription",  "Emacs Text Editor\0"
+            VALUE "FileVersion",      EMFILEVERSION
+            VALUE "InternalName",     "Emact\0"
+            VALUE "LegalCopyright",   EMCOPYRIGHT
+            VALUE "OriginalFilename", "emacs.exe\0"
+            VALUE "ProductName",      "EmACT\0"
+            VALUE "ProductVersion",   EMPRODUCTVERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

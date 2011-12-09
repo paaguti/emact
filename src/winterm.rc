@@ -1,0 +1,261 @@
+/*
+static	char *sccsid = "@(#)winterm.rc	(c) C. Jullien 2009/05/02";
+*/
+
+/*
+ * This  program  is  free  software;  you can redistribute it and/or
+ * modify  it  under  the  terms of the GNU General Public License as
+ * published  by  the  Free  Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ * 
+ * This  program  is  distributed in the hope that it will be useful,
+ * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
+ * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You  should have received a copy of the GNU General Public License
+ * along  with  this  program;  if  not,  write  to the Free Software
+ * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
+ * 02111-1307, USA.
+ */
+
+#include <windows.h>
+#include "winterm.h"
+
+#if	!defined( ECSTR )
+#define	ECSTR( x )	x
+#endif
+
+#include "version.h"
+
+#if	defined( _CTRL3D_STATIC )
+#include "ctl3d.h"
+#endif
+
+EmacsMenu MENU
+BEGIN
+	POPUP	"&File"
+	BEGIN
+		MENUITEM "&Open...",		IDM_OPEN
+		MENUITEM "&Save",		IDM_SAVE
+		MENUITEM "Save &As...",		IDM_SAVEAS
+		MENUITEM SEPARATOR
+		MENUITEM "&Quit",		IDM_QUIT
+		MENUITEM SEPARATOR
+		MENUITEM "&Print",		IDM_PRINT
+		MENUITEM "Print Set&up ..",	IDM_PRINTSETUP
+		MENUITEM SEPARATOR
+		MENUITEM "A&bout EmACT...",	IDM_ABOUT
+	END
+
+	POPUP	"&Edit"
+	BEGIN
+		MENUITEM "Cu&t\tShift+Del"	IDM_CUT,	GRAYED
+		MENUITEM "&Copy\tCtrl+Ins"	IDM_COPY,	GRAYED
+		MENUITEM "&Paste\tShift+Ins"	IDM_PASTE,	GRAYED
+		MENUITEM SEPARATOR
+		MENUITEM "&Search...",		IDM_SEARCH
+		MENUITEM SEPARATOR
+#if	defined( _WIN31 ) || defined( _WIN32 )
+		MENUITEM "&Query Replace...",	IDM_QREPLACE
+#else
+		MENUITEM "&Global Replace...",	IDM_GREPLACE
+		MENUITEM "&Query Replace...",	IDM_QREPLACE
+#endif
+	END
+
+	POPUP	"&Buffers"
+	BEGIN
+		MENUITEM "Empty buffer",	IDM_BUFFER
+	END
+
+	POPUP	"&Options"
+	BEGIN
+		MENUITEM "Change &Fonts...",	IDM_CFONTS
+		MENUITEM "Change &Colors...",	IDM_CCOLORS
+		POPUP	 "Character &Sets"
+		  BEGIN
+		    MENUITEM "&ANSI",		IDM_ANSI, CHECKED
+		    MENUITEM "&OEM",		IDM_OEM
+		  END
+		POPUP	 "Edit &Mode"
+		  BEGIN
+		    MENUITEM "&Assembler",	IDM_ASSEMBLER
+		    MENUITEM "&C",		IDM_C
+		    MENUITEM "C&++",		IDM_CPP
+		    MENUITEM "&Java",		IDM_JAVA
+		    MENUITEM "&Lisp",		IDM_LISP
+		    MENUITEM "&Normal",		IDM_NORMAL
+		    MENUITEM "&Prolog",		IDM_PROLOG
+		  END
+		MENUITEM "Default &Params..."	IDM_PARAMS
+		MENUITEM "&Button Bar"		IDM_BUTTONBAR, CHECKED
+	END
+
+	POPUP	"\a&Help",			HELP
+	BEGIN
+		MENUITEM "&Contents",		IDM_HELP_CMD
+		MENUITEM "&Key bindings",	IDM_HELP
+	END
+END
+
+EMACSICON	ICON	winterm0.ico
+ALTERNATEICON	ICON	winterm1.ico
+
+#if	defined( _CTRL3D_STATIC )
+CTL3D_3DCHECKED	BITMAP	"3dcheck.bmp"
+#endif
+
+EmacsAccelerator	ACCELERATORS
+BEGIN
+	VK_DELETE, IDM_CUT,      VIRTKEY, SHIFT
+	VK_INSERT, IDM_COPY,     VIRTKEY, CONTROL
+	VK_INSERT, IDM_PASTE,    VIRTKEY, SHIFT
+/*
+	"o",	   IDM_OPEN,     ALT
+	"s",	   IDM_SAVE,     ALT
+	"q",	   IDM_QUIT,     ALT
+	"f",	   IDM_RSEARCH,  ALT
+	"r",	   IDM_GREPLACE, ALT
+*/
+END
+
+Open	DIALOG 10, 10, 148, 112
+STYLE	DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "File Selection"
+BEGIN
+        LTEXT "File&Name:",  IDC_FILENAME, 4,  4,  60, 10
+        EDITTEXT             IDC_EDIT,     4, 16, 100, 12, ES_AUTOHSCROLL
+        LTEXT "&Files in",   IDC_FILES,    4, 40,  32, 10
+        LISTBOX,             IDC_LISTBOX,  4, 52,  70, 56, LBS_STANDARD|WS_TABSTOP
+        LTEXT "",            IDC_PATH,    40, 40, 100, 10
+        DEFPUSHBUTTON "&OK", IDOK,        87, 60,  50, 14
+        PUSHBUTTON "&Cancel",IDCANCEL,    87, 80,  50, 14
+END
+
+GetText	DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 30, 200, 38
+STYLE	DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "Text Selection"
+BEGIN
+	DEFPUSHBUTTON "&Ok",	   IDOK,       108, 22,  40, 12
+	PUSHBUTTON    "&Cancel",   IDG_CANCEL, 152, 22,  40, 12
+	CONTROL "",   IDG_EDIT,    "EmacsEdit",
+		      WS_DLGFRAME|ES_AUTOHSCROLL,
+						 8,  4, 184, 14
+END
+
+Warning	DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 30, 200, 38
+STYLE	DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION VERSION
+BEGIN
+	DEFPUSHBUTTON    "&No",	   IDNO,       108, 22,  40, 12
+	PUSHBUTTON       "&Yes",   IDOK,       152, 22,  40, 12
+	CTEXT         "",          ID_WARNING,   8,  8, 184, 14
+	ICON EMACSICON,		   -1,	         2, 18,  16, 21
+END
+
+Confirm DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 30, 200, 38
+STYLE	DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION VERSION
+BEGIN
+	DEFPUSHBUTTON "&Yes",	   IDOK,        64, 22,  40, 12
+	PUSHBUTTON    "&No",	   IDNO,       108, 22,  40, 12
+	PUSHBUTTON    "&Quit",     ID_QUIT,    152, 22,  40, 12
+	CTEXT         "",          ID_WARNING,   8,  8, 184, 14
+	ICON EMACSICON,		   -1,	         2, 18,  16, 21
+END
+
+Replace	DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 30, 200, 80
+STYLE	DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "Change Selection"
+BEGIN
+	LTEXT "Ol&d string :",	   IDR_OLD,      8,  4, 140,  9
+	CONTROL "",   IDR_OPAT,    "EmacsEdit",
+		      WS_BORDER|WS_TABSTOP|ES_AUTOHSCROLL,
+						 8, 16, 184, 12
+	LTEXT "&New string :",	   IDR_NEW,      8, 32, 140,  9
+	CONTROL "",   IDR_NPAT,    "EmacsEdit",
+		      WS_BORDER|WS_TABSTOP|ES_AUTOHSCROLL,
+						 8, 44, 184, 12
+	DEFPUSHBUTTON "&Ok",	   IDOK,        99, 62,  40, 12
+	PUSHBUTTON    "&Cancel",   IDCANCEL,   152, 62,  40, 12
+END
+
+AbortDlg DIALOG DISCARDABLE  20, 20, 90, 64
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "PrintFile"
+BEGIN
+	DEFPUSHBUTTON   "Cancel",  IDCANCEL,    29, 44,  32, 14, WS_GROUP
+	CTEXT           "Sending", -1,		 0,  8,  90,  8
+	CTEXT           "text",    IDC_FILENAME, 0, 18,  90,  8
+	CTEXT           "to print spooler.", -1, 0, 28,  90,  8
+END
+
+AboutBox DIALOG 22, 17, 144, 100
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About EmACT"
+BEGIN
+	CTEXT VERSION                                     -1,  0,  8, 144,  8
+	CTEXT "(c) 1986-2001 by C. Jullien"               -1,  0, 20, 144,  8
+	CTEXT "All rights reserved"                       -1,  0, 32, 144,  8
+	CTEXT "4, villa des Reinettes - 95390 Saint-Prix" -1,  0, 44, 144,  8
+	CTEXT "date"			             ID_DATE,  0, 56, 144,  8
+	CTEXT "licence"		                  ID_LICENCE,  0, 68, 144,  8
+	DEFPUSHBUTTON "&OK"                             IDOK, 56, 84,  32, 14, WS_GROUP
+	ICON  EMACSICON,	                          -1, 12, 20,  16, 21
+END
+
+ParamsDlgBox DIALOG 46, 37, 200, 230
+STYLE DS_MODALFRAME | DS_SYSMODAL | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Parameters"
+FONT 8, "MS Sans Serif"
+BEGIN
+	CONTROL		"&Backup before writing", ID_BACKUP_BEFORE_WRITING, 
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8,  22,  96,  10
+	CONTROL		"Case &Fold Search",      ID_CASE_FOLD_SEARCH,
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8,  38,  96,  10
+	CONTROL		"Set &Show Graphic",      ID_SET_SHOW_GRAPHIC,
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8,  54,  96,  10
+	CONTROL		"Start &Maximized",       ID_MAXIMIZED,
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8,  70,  96,  10
+	CONTROL		"&Gnu Compatible Mode",   ID_GNUMODE,
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8,  86,  96,  10
+	CONTROL		"Binar&y Mode",		  ID_BINMODE,
+			"Button", BS_AUTOCHECKBOX | WS_TABSTOP,
+						     8, 102,  96,  10
+	GROUPBOX	"Edit Options", ID_GROUPBOX, 4,   8, 124, 108
+	GROUPBOX	"", ID_FRAMEBOX, 	     4, 118, 190, 106
+	LTEXT		"Tabulation &Display", -1,   8, 126,  81,   8
+	LTEXT		"&Tabulation Size",    -1,   8, 142,  74,   8
+	LTEXT		"Make &Name",          -1,   8, 158,  55,   8
+	LTEXT		"Make &Arguments",     -1,   8, 174,  65,   8
+	LTEXT		"Help File&1 (F11)",   -1,   8, 190,  65,   8
+	LTEXT		"Help File&2 (F12)",   -1,   8, 206,  65,   8
+	EDITTEXT	ID_TAB_DISPLAY,		    96, 126,  10,  12, ES_AUTOHSCROLL 
+	EDITTEXT	ID_TAB_SIZE,		    96, 142,  10,  12, ES_AUTOHSCROLL
+	EDITTEXT	ID_MAKE_NAME,		    96, 158,  60,  12, ES_AUTOHSCROLL
+	EDITTEXT	ID_MAKE_ARGS,		    96, 174,  90,  12, ES_AUTOHSCROLL
+	EDITTEXT	ID_HELP_FILE1,		    96, 190,  90,  12, ES_AUTOHSCROLL
+	PUSHBUTTON	"...", ID_HELP_SEARCH1,     76, 190,  16,  13
+	EDITTEXT	ID_HELP_FILE2,		    96, 206,  90,  12, ES_AUTOHSCROLL
+	PUSHBUTTON	"...", ID_HELP_SEARCH2,     76, 206,  16,  13
+	DEFPUSHBUTTON	"&Ok",     ID_PARAM_SAVE,  150,  26,  40,  14
+	PUSHBUTTON	"&Cancel",ID_PARAM_CANCEL, 150,  42,  40,  14
+END
+
+SignOnDlg DIALOG DISCARDABLE LOADONCALL PURE MOVEABLE 22, 17, 144, 86
+STYLE WS_POPUP | WS_BORDER
+BEGIN
+	CTEXT VERSION                                     -1,  0,  8, 144,  8
+	CTEXT "(c) 1986-2006 by C. Jullien"               -1,  0, 20, 144,  8
+	CTEXT "All rights reserved"                       -1,  0, 32, 144,  8
+	CTEXT "4, villa des Reinettes - 95390 Saint-Prix" -1,  0, 44, 144,  8
+	CTEXT "date"			             ID_DATE,  0, 56, 144,  8
+	CTEXT "licence"		                  ID_LICENCE,  0, 68, 144,  8
+	ICON  EMACSICON,                                  -1, 12, 16,  16, 21
+END

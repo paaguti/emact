@@ -1,0 +1,648 @@
+RELEASE NOTES:
+--------------
+
+2010/06/25: Tag 2.55 final.
+2010/06/25: Fix M-Escape not recognized.
+2009/06/20: Change to version 2.55 BETA.
+2009/05/09: Tag 2.54 final.
+2009/05/02: Add encoding menus in xpterm.
+2009/05/02: Add auto-encoding-mode variable, default to T.
+2009/05/02: Add more GPL notices on source files.
+2009/05/02: Add ut8-encoding, utf16-encoding and system-encoding commands.
+2009/05/01: Remove very old port makefiles.
+2009/05/01: Fix splitwin to preserve wide mode.
+2009/05/01: Fix linux compilation warning.
+2009/04/30: Add first UTF-8 support on Windows.
+2009/04/30: Fix directory reading on non-Microsoft Windows compiler ports.
+2008/06/20: Fix UNICODE/ANSI mode in Windows Help.
+2008/06/20: Change to version 2.54 BETA.
+2008/06/20: Compile (and fix) with all possible gcc 4.3.0 warnings.
+2008/06/18: fclose was missing in testbinmode.
+2008/05/28: Change getctl() test order.
+2008/04/18: Every emacsxp* build has its own .pdb file.
+2008/04/17: Add undocumented enter-debug function (random.c) to force debugger.
+2008/04/13: Port UNICODE function to Pocket PC.
+2008/04/12: Change *printf formats from %s to %ls on UNICODE.
+2008/04/11: Fix handle closed twice in UNICODE mode.
+2008/04/10: Add unicode.c to ease UNICODE support.
+2008/04/06: Add hook on Windows to test UNICODE (bound to F12).
+2008/04/06: Remove makefile.i64 (merged with makefile.xp).
+2008/04/06: Compile for IA64.
+2008/04/05: More UNICODE cleanup.
+2008/04/02: Uses 'function' in .BAT files.
+2008/04/01: Change to version 2.53 BETA.
+2008/03/31: Uses winresrc.h instead of winres.h and winver.h.
+2008/03/31: Rename MAXINT EMMAXINT.
+2008/03/30: Compile using -W4 on Windows.
+2008/03/30: Fix command line parsing in UNICODE mode.
+2008/03/24: Fix binmode detection in UNICODE mode.
+2008/03/17: Change to version 2.52.
+2008/03/16: Add insert-unicode function (to ease tests).
+2008/03/14: Add Find and FindReplace standard dialbox for XP 'terminal'.
+2008/03/14: Fix system() returned code on XP.
+2008/03/11: Fix NTfullname on UNICODE.
+2008/03/11: Fix many bugs related to UNICODE.
+2008/03/08: Change to version 2.51 with better UNICODE support on Windows.
+2007/09/17: Qualified port on Darwin 8.10 (MacOS X PowerPC).
+2007/04/21: Make Pocket 2003 port.
+2006/11/09: Add Shell mode.
+2006/07/09: Add missing CBSF block in openlisp.c.
+2006/06/11: Change to version 2.50.
+2005/05/24: Fix wrong call in ntterm.c for Windows 64.
+2005/05/24: Change library name convention to em$(MODEL)$(CHARSET).lib.
+2005/05/20: Port Windows XP 64 bits (AMD64).
+2005/04/30: Port on Solaris sparc with -m64 (64 bits) flags.
+2005/04/08: Use only ctype macros for char conversions.
+2004/11/05: Qualified port on Darwin 7.5 (MacOS X).
+2004/10/16: Change \n to \\n in edit mode files (*.lsp).
+2004/10/16: Include \" around filename in emacs.reg.
+2004/09/14: Qualified port on Linux RH AS 3.0 (Opteron x86_64) with gcc 3.4.1.
+2004/09/15: Better detect an already opened file on XP.
+2004/09/08: Killing emacs on XP with [X] button raise a confirmation MessageBox.
+2004/04/16: Fix buffer overflow in NTfullname XP.
+2004/04/02: Initialise some missing WINSCR fields in edinit(thanks to valgrind).
+2004/04/02: Fix .BAK computation that was wrong on some situations.
+2004/03/05: Change the fullpath computation on WIN32.
+2003/12/20: Add IN-PACKAGE in mlisp for OpenLisp compatibility.
+2003/12/20: Reorganise events on xpterm.c.
+2003/12/02: Check WM_QUERYENDSESSION for unsaved buffers on XP.
+2003/10/28: Lot of cleanup and code factorization (less #if/#endif).
+2003/10/01: Fix color in B&W mode on XP terminal.
+2003/09/30: Change to version 2.40.
+2003/09/30: Add visual effect on XP when terminal is active / inactive.
+2003/09/28: Add -noshare|-ns flag to force multiple instance on XP terminal.
+2003/09/28: Prevent for multiple instance on XP terminal.
+2003/09/24: Fix bug when XP terminal was iconified.
+2003/09/16: Fix evaluation error with OpenLisp when evalbp is NULL.
+2003/09/15: Compile using -W4 on MSVC .NET 2003.
+2003/09/15: Port on Windows .NET 2003 Itanium II (64 bits) with MSVC .NET 2003.
+2003/09/13: Add show-menu parameter to show (default) or hide menu on XP.
+2003/09/12: Add system-colors parameter top force system colors on Windows.
+2003/09/10: Start a new port on Windows using minimal GUI features (xpterm).
+2003/08/31: Check EMACSCP (for codepage) environment variable on NT console.
+2003/07/31: Fix subst function code with string having tabs.
+2003/07/28: Fix code for new olcatchonstack OpenLisp macro.
+2003/06/29: Add C# mode.
+2003/06/29: Add 'java-indent' parameter. Default value = 2.
+2003/06/05: Move main window at the right of desktop icons (Windows).
+2003/04/01: Validate port on Linux IBM s390.
+2002/10/22: Validate port on Windows XP IA64 with VC++.
+2002/08/21: Qualified port on Linux using gcc 3.2 (checked with -std=c99)
+2002/07/26: Start a new console on NT/2000/XP...
+2002/07/20: CX-CV ask for revert buffer if file has changed.
+2002/02/16: Change _str* to _pstr* in dirent module. Avoid conflict with lcc.
+2002/01/22: Change emacs.reg for better Windows integration.
+2001/12/31: Fix customization file for Pocket PC.
+2001/12/30: First workable? Pocket PC port (alpha version).
+2001/12/27: Added installer for Pocket PC 2002.
+2001/12/18: First Pocket PC snapshoot.
+2001/12/18: Add emacs.vcw for Pocket PC port (work in progress).
+2001/12/15: Add more UNICODE wrappers.
+2001/07/26: Fix wrong display in parentheses match.
+2001/07/12: Add .emacs as Lisp file.
+2001/06/20: Autoconf sets PATH=<prefix>/emact/lib to search libraries.
+2001/06/20: Add /usr/local/emact/lib to search path.
+2001/06/20: Qualified port on Linux RH 7.1 using gcc 3.00.
+2001/06/18: Add RPM generation from Makefile.
+2001/05/07: Change ICON when lauching EmACT form console (WIN32).
+2001/04/17: English translation of the doc by Nigel Brown. Thank you Nigel.
+2001/04/13: Starting form v2.30, EmACT code is GPL'ed.
+2001/04/13: Fix non-ASCII character display in filename.
+2001/04/01: Add a GPL'ed notice to *.c and *.h source files.
+2001/03/03: Fix curses/ncurses detection.
+2001/03/02: QNX is new system supported (using gcc 2.95.2 and configure).
+2001/01/19: Add option to change between ANSI and OEM in Windows port.
+2001/01/19: Fix button display bug introduced with IA64 changes.
+2000/11/13: Validate port on Windows 2000 IA64 with VC++.
+2000/11/11: Add build version.
+2000/11/10: Compile using tcap.c when none of curses and X11 are available.
+2000/11/09: Add autoconf tool chain.
+2000/10/18: On WIN32, compute the actual screen size (not the buffer one).
+2000/10/17: Fix a bug in auto-fill-mode.
+2000/09/29: Add UNICODE support (not yet working).
+2000/09/23: Add an new SML mode (SGML).
+2000/09/16: Code is IA64 ready.
+2000/08/06: Use space to indent wml code.
+2000/08/06: Add wml.lsp macro file (bound to C-CW).
+2000/06/21: Add WMLScript mode (same as C).
+2000/06/21: Change indent code for XML/WML/HTML modes.
+2000/06/17: Add WML and XML mode (alias to HTML).
+2000/06/02: Add support for cygwin-x11 with cygwin tool chain.
+2000/05/30: Add port for HP-UX X11.
+2000/05/26: Change curses.c includes order to fix a bug on AIX.
+2000/04/26: Change to bold font using F10 on W9X/NT/W2K.
+2000/04/05: Add LCC port.
+2000/04/05: Remove some linkage warnings.
+2000/03/31: Remove some lint warnings.
+2000/03/31: Prevents 'compile' to override OpenLisp symbol.
+2000/03/30: Port to FreeBSD v4.0. Remove -Wtraditionnal.
+2000/03/29: Source cleanup to reflect new ISO requirements.
+2000/03/29: Starting form v2.20, EmACT code is strict ANSI C and 'clean C'.
+2000/01/29: Change version to 2.20.
+2000/03/29: Freeze EmACT v2.10a.
+2000/03/29: Prepare to _WIN64 port.
+2000/03/29: Add .idl suffix to C++ indent mode.
+2000/03/29: Fix some warning in ./etc tools. Add makefile.gnt.
+2000/03/28: GPL'ed version.
+2000/03/22: Change VMIN in curses to 1 (unix only).
+2000/02/08: Fix inverse video in monochrome xterm text mode.
+2000/02/06: Change ntterm to support W2K telnet session.
+2000/02/04: Switch reference system form NT to W2K.
+1999/12/27: Fix an initial redisplay bug on NT.
+1999/12/22: Add support for .chm help files.
+1999/11/29: Don't force monochrome with curses on X11.
+1999/11/18: Change color related code on curses.c.
+1999/11/17: Rewrite color allocation scheme on X11.
+1999/10/25: Port to FreeBSD v3.3.
+1999/10/15: Limit size to the height of screen in X11 port.
+1999/09/21: Rename .LAP files from automatch complete.
+1999/08/22: Rename compile command to compile-buffer.
+1999/05/15: Finally change the indent behavior of lambda.
+1999/05/14: Fix a very old Lisp indent bug when using ';' inside strings.
+1999/03/26: Add a catch to olreenter for OpenLisp.
+1999/03/06: Port using BCC 5.4 (C++ Buidler 4).
+1999/01/21: Help file can be build again.
+1999/01/21: Change version to 2.10.
+1999/02/17: Change internal char type to EMCHAR (prepare for UNICODE).
+1999/01/21: Change version to 2.00j.
+1999/01/21: Fix a bug of kill region on read-only buffers.
+1998/12/28: Fix the number of bytes written in binary-mode.
+1998/12/18: Add support for cygwin X11.
+1998/12/14: Disallow resize on Windows 95/98.
+1998/11/07: Change version to 2.00i.
+1998/11/07: Fix a bug in NT clipboard.
+1998/10/02: Add automatic binary sense mode (NT and DOS* systems).
+1998/09/23: Add support for mouse wheel in NT character mode (NT 5.0).
+1998/08/29: Perl mode added.
+1998/08/25: Port on Windows NT with MSVC 6.0.
+1998/07/06: Change 'perl' behavior to support default -w -i.BAK options.
+1998/07/06: Add 'perl' as external command (not bound). To be tested.
+1998/07/04: Add -R (recursive) option to emgrep.
+1998/06/28: Add mac-to-ansi.
+1998/06/24: Add oem-to-ansi and ansi-to-oem on Windows NT/95.
+1998/04/16: Add help message to save-buffers-kill-emacs.
+1998/03/19: Ported with gcc on NT.
+1998/03/18: Add Fortran mode (mostly prolog).
+1998/03/17: Fix wrong error block in OpenLisp evaluation function.
+1998/03/03: Add # as mark for block justification.
+1998/01/18: Add -debug option for x11 port.
+1998/01/17: Add a default color map in x11.c (to be used by emacs.lsp).
+1998/01/09: Port with Sun Pro C on Solaris 4.6 PC (with fixes in x11.c).
+1997/12/29: Port with egcs 1.0 on Linux (change code to supress braces warnings).
+1997/12/29: Replace tab with blank when deleting a tabulation.
+1997/12/28: Add better support of LISP Mode when deleting a tabulation.
+1997/12/28: Restore broken indent after C-M in the middle of a line.
+1997/12/18: Add dummy undo.
+1997/11/18: Display error message if help-file* can't be found.
+1997/11/13: Fix a bug in lisp evaluator.
+1997/11/13: Remove terminal.c form kernel files.
+1997/11/12: Small change int indent for "switch" statments.
+1997/11/02: Add print-buffer (unbound) command to print current buffer (WIN23).
+1997/11/02: Add LPTprint() macro to virtualize printing.
+1997/10/28: Change version to v2.00g.
+1997/10/24: Add NTsystem() to support a kind of fork() on WIN32 console.
+1997/10/23: Add Alt-F4 as an alternative save-buffers-kill-emacs commandon NT.
+1997/10/23: Fix a severe bug (i.e. core dump) in indent.c(nexttab).
+1997/10/22: The kill buffer works with the clipboard on NT/95.
+1997/10/21: Add help-file1 and help-file2 variables to display custom helps.
+1997/10/21: Cut/copy/paste work with internal clipboard on NT/95.
+1997/10/10: Change default font and size on X11.
+1997/10/07: Fix a bug in lisp indentation.
+1997/09/22: Fix a bug in just-one-space when at the end of line.
+1997/07/22: Fix buffer wrong name above xxx<9>. Continue with xxx<A> .. xxx<Z>.
+1997/06/26: Fix bug in C-J and remove trailing blanks on the left part.
+1997/06/12: Major change in indent.c code (version v2.00f).
+1997/06/12: Add better support for C style indentation.
+1997/06/09: Add GNU Emacs indent mode (as much tab as possible on left).
+1997/06/07: Add missing va_end macro call in minibuf.c as required by ISO C.
+1997/05/31: Console Window can be resized on NT/95.
+1997/04/01: Change version to v2.00e.
+1997/03/27: Change tabulation-display value form 7 to 8 to help fix bugs on tabs.
+1997/03/23: Fix bug for file completion when directory is root ("/" or "C:/").
+1997/03/21: Add .BAK to the last extension. Now foo.bar.c backup as foo.bar.BAK.
+1997/03/14: Port on Windows NT with MSVC 5.0.
+1997/03/08: Change the format of sed command line when option is set.
+1997/03/07: Add 'sed' as external command (not bound).
+1997/02/17: Bind revert-buffer to M-C-R.
+1997/02/16: Add kill support (^K) for the mini-buffer.
+1997/02/14: Add yank support (^Y) for the mini-buffer.
+1997/02/03: Lot a cleanup made in dirent.c.
+1997/01/30: newline-and-indent delete trailing blanks before indenting (GNU).
+1997/01/30: Change just-one-blank to act as GNU Emacs.
+1997/01/29: Add help command that describe all EmACT commands on a window.
+1997/01/29: Browse tags file (if it exists) when trying to complete word.
+1997/01/28: Add emacs.reg to register EmACT as the editor of choice on NT.
+1997/01/23: Change complete-word to also search forward after backward.
+1997/01/16: Add counters: counter-insert, counter-set, counter-format, ..
+1996/12/11: Fix a bug in dirent.
+1996/12/03: Add undocumented message 0x20A to track mouse wheel events.
+1996/11/12: Add an icon in NT console (used with explorer).
+1996/10/18: Add more 'virual' functions in fileio.c.
+1996/10/14: Fix a bug when saving file without file name (from *scracth*).
+1996/10/14: Fix wrong title on NT console after file-alternate-file CX-CV.
+1996/10/14: On NT always use the capitalization file name found on disk.
+1996/10/12: Fix a wrong constant value in buffer edit mode (assert added).
+1996/10/12: Save the current date in universal time format YYYY/MM/DD.
+1996/10/11: Save the directory name of Dired buffer.
+1996/10/10: Add support for multiple Dired buffers. (v2.00b)
+1996/09/26: Add solaris-gcc entry in makefile.unx.
+1996/09/25: Change production system from MS-DOS to NT.
+1996/09/16: Restore the previous console color on exit (Windows NT).
+1996/09/09: Force updatemodes() function to redraw modeline.
+1996/08/28: Fix two command names to be compatible with OpenLisp.
+1996/08/26: Add print-eval-loop variable to display OpenLisp evaluations.
+1996/08/22: Add mouse-avoidance-nudge-var to tune the number of strokes.
+1996/08/21: Add support for mouse-avoidance-mode on Windows ports.
+1996/08/21: Add support for mouse-avoidance-mode on MS-DOS and X11.
+1996/08/20: Add mouse-avoidance-mode on some systems (NT & WIN95 console).
+1996/08/18: Add binary-file command to individually set binary mode.
+1996/07/30: Add an makefile.new to test with newterm.c.
+1996/07/29: Add an empty newterm.c file as a template for a new terminal.
+1996/07/15: Fix ClipBoard Cut/Copy bug.
+1996/06/26: Add support for Symantec protected mode on Windows NT 4.0.
+1996/06/22: Add bold-font variable.
+1996/06/22: Support color change on NT.
+1996/06/21: Port on Windows NT with DEC Alpha processor.
+1996/06/20: Erase modeline after a kill-buffer.
+1996/06/20: Fix curses rawmode on Sun (same as System V).
+1996/06/17: Searches wrap around current buffer (GNU compatible).
+1996/06/16: Set confirm-unused-buffers as default (GNU compatible).
+1996/06/05: Qualified port on OS/2 32 bits text mode using VIO and KBD.
+1996/06/01: Add Edit mode menu in pm20.c
+1996/05/31: Add support for both IBM C/Set, Visual Age, and Borland C/C++.
+1996/05/28: Change key decoder on OS/2 Wrap PM port.
+1996/05/17: Add HTML mode.
+1996/05/17: Add Java language. (Edit mode, Compile mode, options ..).
+1996/05/11: Predifined commands can be changed with bind-to-key.
+1996/05/09: Fix LaTex special characters.
+1996/05/02: Add optional but complete OpenLisp integration.
+1996/04/22: Add latext-mode variable (default to nil).
+1996/04/22: Add set-justification-left. Unbound (GNU compatible).
+1996/04/21: Plug on-line help ("emacs.hlp") to WIN32 console. Bound to F1.
+1996/04/20: Add mark-paragraph (M-H).
+1996/04/20: Add forward-paragraph (M-}) and backward-paragraph (M->).
+1996/04/19: Add set-justification-full. Unbound (GNU compatible).
+1996/04/19: Add fill-paragraph command. Bound to M-Q (GNU compatible).
+1996/04/19: Fix a bug in NT version information.
+1996/04/18: Add fill-region command. Not bound. (v2.00a)
+1996/04/18: Display numeric values in apropos command (was ??).
+1996/04/18: Add auto-fill-mode, set-fill-column, set-fill-prefix commands.
+1996/04/18: Add fill-column, fill-prefix variables.
+1996/04/14: External command 'grep' is now called 'emgrep'.
+1996/04/12: Add support for xmalloc routines in text mode.
+1996/04/11: Fix a bug with the new date format.
+1996/04/09: Fix an access overrun in indent code.
+1996/04/08: Save the current date as MM/DD/YYYYY (prepare for years > 2000).
+1996/04/07: Fix a bug in transpose-words.
+1996/04/07: Fix a bug in 'buffercmd' for invalid pointer.
+1996/04/07: Check for valid filename before using 'chdir'.
+1996/04/06: Virtualize 'access' in fileio.c.
+1996/04/06: Add access test in mlisp.c to prevent CodeGuard32 error.
+1996/04/05: Spawn with popen on Windows NT console (check GetVersionEx()).
+1996/04/05: Fix a bug found with CodeGuard32 in module mlisp.c.
+1996/03/23: Change the command title with spawned shell on WIN32 console.
+1996/03/22: Fix a bug when the root directory was read (remove the //).
+1996/02/26: Port on Windows NT console using Symantec C/C++.
+1996/02/25: Use SetFileApisToXXX on WIN32 console.
+1996/02/24: Virtualize 'rename' and 'remove' in fileio.c.
+1996/02/24: Add OEM to ANSI conversion on WIN32 console.
+1996/02/09: Adjust the wait time for character matching on sun.
+1996/01/31: Fix all warnings found with BCC 5.0.
+1996/01/30: Port on Windows NT console using BCC 5.0.
+1996/01/01: Ten years anniversary. Change to version 2.00.
+1995/12/29: Fix bug in onlyoneblank when used at beginning of line.
+1995/12/20: Port on Linux 1.3.x kernel (ELF 32-bit LSB executable).
+1995/12/08: Fix yet another bug added in new transpose-words.
+1995/12/14: Optimize redisplay with ConfigureNotify on X11.
+1995/12/12: Change the return values of findwind.
+1995/12/08: Fix bug added in new transpose-words (v1.98y).
+1995/11/30: Change transpose-words (GNU compatible).
+1995/11/26: Use Beep system call on WIN32 console.
+1995/10/30: Try to guest the best case name in NT/WIN32 file system.
+1995/10/27: Fix cursor match time on sun.
+1995/10/23: Add support for Alt as an alias to META on X11.
+1995/10/22: Change transpose-words (GNU compatible).
+1995/10/21: Add support for Alt as an alias to META on WIN32 console.
+1995/10/21: Small changes for BC4.5 and WIN32.
+1995/10/21: Change transpose-lines (GNU compatible).
+1995/10/14: Fix a bug with X11 server on alpha/OSF1.
+1995/10/06: Check code with Borland CodeGuard 16 bits (no errors detected).
+1995/09/23: Add isearch-toggle-case-fold variable (GNU compatible).
+1995/09/21: Dynamically load CTL3D*.DLL when appropriate (Windows ports).
+1995/09/19: Fix a bug in spawn.c for console version of WIN32 API.
+1995/09/15: Add Ctrl-arrows for console version of WIN32 API.
+1995/09/14: Fix a bug when indent is used at the end of the buffer.
+1995/09/13: Change transpose-chars (GNU compatible).
+1995/09/10: Small changes for MSVC++ 4.0.
+1995/09/10: Fix a bug with an undefined constant in new dirent (NT).
+1995/09/01: Force redisplay when text is yanked on the last line.
+1995/07/07: Change name of file dir.c to dirent.c.
+1995/07/07: Fix an allocation bug in opendir when this call fails.
+1995/07/06: Add const attribute in opendir argument (as POSIX 9945-1:1990).
+1995/06/28: Remove trailing \n in asctime function (Windows ports).
+1995/06/27: Compute the printing Font using the DeviceCap (Windows ports).
+1995/06/16: Fix a bug with the Cancel button (Windows ports).
+1995/06/16: Fix a potential bug in compare-windows function.
+1995/06/10: Yank at the end of buffer no more insert a trailing newline.
+1995/06/09: Fix bug in 'inword' function for characters > 128.
+1995/06/03: Add line number, page and date when printing (Windows ports).
+1995/06/02: Fix a bug in Print dialog box (Windows ports).
+1995/06/02: Fix a bug in nexterror for files containing numbers (ex f123.c).
+1995/05/31: Fix a bug in buffer edit mode with 'x' command.
+1995/05/28: Fix a bug in load-macro reader for MLisp.
+1995/05/28: Fix a bug in compare-windows function.
+1995/05/28: Change the behavior of insert-file (GNU compatible).
+1995/05/20: Fix a bug in options.c with gcc compiler on Linux.
+1995/05/20: Port to UnixWare 2.0. Add missing sysV*-x11 entries in Makefile.
+1995/04/14: Unification of the updateline routine.
+1995/04/14: Improve the match of the filename in next-error command.
+1995/04/08: Add glob to MS-DOS, NT and WIN32 ports (expand args * and ?).
+1995/04/07: Restore MS-DOS mode on exit.
+1995/04/01: Add indent-region function. Bound to M-C-\.
+1995/04/01: Add back-to-indent function. Bound to M-M.
+1995/03/30: Add virtual functions to support Copy/Paste with mouse (v1.98x).
+1995/03/30: Change NT console version so that it also runs on Windows95.
+1995/03/29: Add support for ClipBoard on X11.
+1995/03/29: Check for Ctrl-SPACE same as Ctrl-@ (X11).
+1995/03/29: Fix a bug with ScrollBar (Windows ports).
+1995/03/23: Add directory where emacs is found to find .ml files.
+1995/03/21: Minor changes to provide C++ compatibility.
+1995/03/14: Define also _XOPEN_SOURCE when _POSIX_SOURCE is defined.
+1995/03/13: Add redraw-screen command. Not bound.
+1995/03/08: On Windows Ctrl-HOME and Ctrl-END where inversed. Fixed.
+1995/03/03: Purify v3.x checked with SunOS. Memory leak 0 !
+1995/03/03: C-L also reposition dot in the middle of current window (GNU).
+1995/02/27: Fix buffer name if find-alternate-file is used on the same file.
+1995/02/27: Ignore internal buffer for revert-buffer command.
+1995/02/26: Ignore some extensions in file match (.o, .obj, .bak, .exe, ..).
+1995/02/24: Read complete pathname for filename in next-error command.
+1995/02/23: Fix bug. Restore search point when current line expand.
+1995/02/18: Kill-buffer always kill the buffer when there is another one.
+1995/02/17: Fix a nasty bug in complete-word (fix a segment violation!).
+1995/02/16: Support resolution for 43 or 50 lines in MS-DOS version.
+1995/02/11: Fix bug with C-G in Edit DialoBox (Windows Ports).
+1995/02/11: Port to FreeBSD v2.0. Small changes and bsd4.4 entry in makefile.
+1995/02/10: Add cursesrawmode function in curses package to deal with c_cc.
+1995/02/06: Add Ctrl-Left and Ctrl-Right (Windows Ports).
+1995/02/06: Add support for 'n', 'p', 'v' in DIRED mode.
+1995/02/04: Lot of cleanup made in source code (mainly buffer and window).
+1995/02/03: Rewrite buffer match so that it works as mutch as GNU.
+1995/02/03: Use cfree macro to check against dangling pointers.
+1995/02/02: Add waitkey function (no more busy wait when is mouse absent).
+1995/02/01: Fix a bug in diredbuffer.
+1995/01/31: Kill-buffer use current buffer as default choice.
+1995/01/29: Fix a bug with the Symantec 7.0 strncmp function.
+1995/01/28: Restore the focus on Emacs Windows after using the button bar.
+1995/01/28: Fix a bug in Directory mode when buffer was set to read/write.
+1995/01/25: Fix a bug with mouse-click on ntterm.
+1995/01/25: Add tags-loop-continue. Bound to M-,
+1995/01/24: Add version function (not bound).
+1995/01/24: Check for Ctrl-SPACE same as Ctrl-@ (NT text-mode).
+1995/01/24: Dramatically improve deletion of big regions (> 100 Ko).
+1995/01/24: Call save-some-buffer before makefile or compile commands.
+1995/01/24: Save the shell line and arguments between two compile commands.
+1995/01/13: Fix a buffer completion bug with C-G in Windows text widget.
+1995/01/11: On Windows versions, add Make button on toolbar (v1.98w).
+1995/01/09: Add mark-whole-buffer, bound to C-XH.
+1995/01/09: Only gnu-compatible mode is now supported.
+1995/01/08: Add not-modifed command. Bound to M-~.
+1995/01/07: Swap C-Z and C-Z. Now C-C is a prefix and C-Z suspend emacs.
+1995/01/06: Display current line in modeline when line-number-mode is T.
+1995/01/06: Change display-average variable name to line-number-mode.
+1994/12/22: Read all files on command line but display only the two first.
+1994/12/22: Add support for 'f', 'd', 'x' and 'tab' in BUFFER mode (v1.98v).
+1994/12/21: Force file chmod to write before deletion in DIRED mode.
+1994/12/21: Add support for 'f', 'd', 'x', 'R' and 'tab' in DIRED mode.
+1994/12/20: Removes C++ reserved identifiers.
+1994/12/20: On UNIX, merge X11 and curses in one executable (start X first).
+1994/12/12: Always use bdir buffer to display directories.
+1994/12/11: Select buffer with 'f' key or mouse click in "*buffer*" window.
+1994/12/08: Add support for Tab, Ctrl-Home & Ctrl-End (Windows Ports).
+1994/12/01: Insert spaces when tabulation-size is not set to 8.
+1994/11/30: MSVC++ 2.0 NT & Windows95 port (v1.98u).
+1994/11/30: Check for Ctrl-SPACE (Windows Ports).
+1994/11/29: Add support for emacs386 in Windows95 text mode.
+1994/11/16: Add support for popen to OS2.
+1994/11/16: Raw port to OS/2 v2.1 PM using Borland C/C++ v1.5.
+1994/11/13: Change file match to be case-insensible on MS-DOS.
+1994/11/09: Check for Ctrl-SPACE and returns 0 (same as Ctrl-@).
+1994/11/09: Add support for DEC ultrix with X11.
+1994/11/08: Add man command on UNIX ports, bound to F11 key.
+1994/11/06: Add TTYcheck macro to test action while processing command.
+1994/11/05: Use popen to dynamically capture process output on POSIX2.
+1994/11/05: Use pipes to dynamically capture process output on Windows NT.
+1994/11/04: Add context Help on word at cursor (Windows Ports).
+1994/11/03: Use CreateProcess to spawn process on Windows NT.
+1994/11/02: revert-buffer returns to the previous position.
+1994/10/27: Add diff-windows, bound to M-C-D - (version 1.98t).
+1994/10/26: Now, compare-windows check for line(s) added at the end of file.
+1994/10/21: Add compile command which launch default 'make' form editor.
+1994/10/18: BoundChecker Free on WIN32s.
+1994/10/17: Add wordatcursor function and use it for findtag command.
+1994/10/13: Ask for a file name when savefile works with an unnamed buffer.
+1994/10/12: Find tags file in the directory of the current file name.
+1994/10/11: When no completion found, beep and continue to read in minibuf.
+1994/10/09: Add find-tag command (M-.) and emtags shell command.
+1994/10/06: Fix mouse event on X11 ports.
+1994/10/03: Add 'confirm' widget for unsaved buffers.
+1994/10/02: Add confirm-unsaved-buffer variable (default to NIL).
+1994/10/01: Remove hard-coded constants and use FILENAME_MAX for filenames.
+1994/09/26: Change modeline format and add current buffer mark in *buffer*
+1994/09/23: LICENCE added.
+1994/09/23: Fix bug with unix filenames starting with dot (ex: .profile).
+1994/09/14: DIRED : fix bug when backspace was stroke after directory match.
+1994/09/10: Write-file command also change the buffer name (with version).
+1994/09/10: Change default extension to none (Windows Ports).
+1994/09/09: Protect against multiple action with tool bar (Windows Ports).
+1994/09/08: Check for file modified by an external process.
+1994/09/06: Open dialog box use the current file directory (Windows Ports).
+1994/08/10: Fix a wrong key binding on F4 (Windows, x11 & curses Ports).
+1994/08/02: Save reject history with complete-word ESC/ - (version 1.98p).
+1994/08/01: Use CTL3DV2.DLL (Windows Ports).
+1994/07/26: Fix a bug when saving options from dialog box (Windows Ports).
+1994/07/21: M-= also display the ascii code in decimal - (version 1.98o).
+1994/07/21: C-] is an alias to ESC-/.
+1994/07/11: Fix a lot of bugs in X11 Linux - add X11event - (version 1.98n).
+1994/07/08: find-alternate-file set file to current filename.
+1994/06/27: Add append-next-kill command. Bound to M-C-W.
+1994/06/27: Set the release number to 2.00 for the OpenLisp version only.
+1994/06/22: Fix bug command stroke (^J was hard coded as 0x10 not 0x0A).
+1994/06/21: Replace the pseudo-lisp MLISP by OpenLisp (pre-alpha version).
+1994/06/18: Port on LINUX (character and X-Window).
+1994/06/18: Add OpenLisp mode.
+1994/06/18: Change internal names to be gnu compatible. (version 1.98m).
+1994/06/17: Set MAXLINE to 8192 characters on linear systems.
+1994/06/17: Protected mode support for machines with more than 16 Mo.
+1994/06/14: Use T and NIL instead of TRUE and FALSE (prepare OpenLisp).
+1994/06/12: Change the default indentation for switch (C and C++ mode).
+1994/06/11: Change the algorithm for default argument in use-buffer.
+1994/06/10: Fix a bug in varmatch.
+1994/06/10: Change to the directory of the current file when running grep.
+1994/06/06: Fix a bug in complete-word.
+1994/06/06: Add unlink-file function (not bound).
+1994/06/05: Parse client parameters (-fg, -gb, -display, ..) on X11 port.
+1994/06/04: Support for M-C-E and M-C-B with C and C++ functions.
+1994/06/03: ESC-' ' insert exactly one space (v1.98k).
+1994/06/02: Unification of nexterr code (valid for DOS and UNIX compilers).
+1994/06/01: Add resize function. Used by system that can resize screen.
+1994/05/31: Try to read error messages from C compiler on UNIX ports.
+1994/05/30: Compile X11 version with respect of ISO C.
+1994/05/29: Use default argument for use-buffer.
+1994/05/28: Add complete-word (ESC/ or Alt-/)
+1994/05/28: Fix bug in nextcindent (Protected Mode 386).
+1994/05/26: C-X-ESC (or F6) is bound to command 'again'.
+1994/05/25: F7 becomes an alias for ^Z on unix CURSES ports.
+1994/05/25: Fix Yet Another Bug in kill-buffer.
+1994/05/24: HP 9000/715 port (posix).
+1994/05/23: Add main.c a wrapper to emacs entry point.
+1994/05/23: Check for multiple inclusions of EmACT headers.
+1994/05/22: Zymantec C/386 port - ANSI & PCTERM terminal - (v1.98i).
+1994/04/19: Add Alt-F4 (exit) and Shit-F12 (save) for Windows compatibily.
+1994/04/07: Add compare-windows (not bound - Alt-C on MS-DOS and Windows).
+1994/04/05: Add fileaccept matcher.
+1994/04/04: MSVC++ 2.0 Beta NT port (v1.98h).
+1994/04/03: Add 'grep' as external command (not bound), fix bug in options.
+1994/03/26: Fix 2 bugs in kill-buffer.
+1994/02/25: Change (again) the DIRED mode algorithm (v1.98g).
+1994/02/24: DIRED takes care of current edit mode in file match.
+1994/02/24: MS-DOS: add setargv.obj (to match '*' and '?' on command line).
+1994/02/15: Eval-buffer match command. 'revert-buffer' added (v1.98f).
+1994/02/07: Add date-completion variable (default to T).
+1994/02/01: Set gun-compatible as default mode.
+1994/01/29: Removes the relocation-entry fixup in Windows.
+1994/01/28: Keep the Windows dialog box 'ON' when using matching functions.
+1994/01/25: Reorganization of source files. Global Makefile added (v1.98e).
+1994/01/24: Change file-completion mode.
+1994/01/19: Change the DIRED mode algorithm (v1.98d).
+1994/01/10: Normalize pathnames in file match.
+1994/01/05: Fix a bug in kill-buffer when C-G is used.
+1994/01/02: Add "[b]" in mode line when emacs works in global binary mode.
+1994/01/01: Change copyright notices (1994) and remove obsolete makefiles.
+1993/12/24: Fix a nasty bug in file completion (v1.98c).
+1993/12/23: Set NFILEN to 256 (was previously 128).
+1993/12/22: M-X is an alias for C-X-R (gnu-compatible).
+1993/12/18: BCC 4.0 & MSVC++ 1.5 port.
+1993/12/09: Fix bug in winshow[row|col].
+1993/12/08: Check for valid filename (and directory) before file I/O.
+1993/11/06: Kill-buffer, try to kill the current buffer when RETURN is used.
+1993/11/05: Toggle-read-only command added. Bound to C-X-C-Q.
+1993/11/01: Can modify files only when write permission is set.
+1993/10/31: Buffers in use added in a new menu (Windows).
+1993/10/30: Binary-mode option added in DialogBox (Windows).
+1993/10/20: External help files added (Windows).
+1993/10/13: New mlisp macro 'insert-base-name' added.
+1993/10/11: Fix the umask bug for UN*X versions.
+1993/10/06: GNU Emacs compatible mode added (to be extended).
+1993/10/04: C++ mode and new macros added in cpp.ml lib file.
+1993/05/28: Hypertext help added in Windows/Windows NT versions.
+1993/05/27: New binary-mode variable added for UN*X compatible format.
+1993/05/26: Use Ctrl3d with Windows.
+1993/02/21: Windows NT (Console API, just for fun).
+1992/11/15: Widgets added on top of Windows 3.x (a lot of things).
+1992/05/23: BC++ 3.10 with COMMDLG on Windows.
+1992/04/06: Windows NT (WIN 32 API).
+1991/11/23: SVR4 port with __STDC__ et _POSIX_SOURCE.
+1991/08/18: Macros decompilation added. Bound to C-XU.
+1991/07/01: Windows 3.0 port.
+1991/05/31: OS/2 2.0 PM port.
+1991/01/16: Bug fixed in DIRED mode.
+1990/21/06: Sun 4 port. Conform to POSIX & XPG3 X/Open specifications.
+1990/16/06: ATARI port. Pascal mode added.
+1990/12/05: MSC 6.00 Version (Warning 3) & TC++ 1.00.
+1990/01/04: "top-window" added (bound to "C-XT"). GOTOs removed.
+1990/24/02: Dired added.
+1990/17/02: X11R3 client port. Unification of UN*X makefiles.
+1989/13/11: Functions with arguments deleted. Compile in W3 with prototypes.
+1989/10/07: HP, APOLLO & DPX2000 ports.
+1989/05/05: UNIX SYS V.3R2 compatibility.
+1989/26/02: QC2 compatibility. Automatic terminal configuration (mscterm.c).
+1989/06/01: HIGHC 386 compatibility.
+1988/10/09: TURBOC v2.0 compatibility.
+1988/07/09: 'mlerror' function added.
+1988/01/09: Mouse support added for OS/2 operating system.
+1988/05/06: Prototype added for all files.
+1988/02/06: Fix bug in indent (Protected Mode).
+1988/31/05: MCS 5.00 & OS/2 Port with VIO calls, version file added.
+1988/15/05: Port in os286 standalone mode.
+1988/13/02: Fix bug after the first refresh in _EMACSLIB mode.
+1988/30/01: OS286 compatibility added with direct memory access.
+1987/25/11: Monochrome-monitor variable added.
+1987/24/11: Fix Process window size to 4 lines. Add mouse-flag variable.
+1987/20/11: Fix a bug in C indentation.
+1987/18/11: SPCL added for a vt100 terminal. ".cpp" suffixe added (C++).
+1987/03/11: Set-show-graphic variable added.
+1987/26/10: Equivalent keys added: Alt-( = '{', Alt-) = '}', Alt-6 = '|'
+1987/22/10: F10 bound to execute-keyboard-macro (PC Compatible)
+1987/21/10: Fix bug of 8 bits chars in Xenix 2.2.
+1987/03/10: Fix bug on black-on-white redisplay.
+1987/01/10: Assemble in 'Process' window (C-XA).
+1987/25/09: Fix bug in lisp mode ('/' inside a string).
+1987/24/09: Insert quoted char in minibuffer with ^Q prefix.
+1987/10/09: Electric assembler mode added (M-C-A).
+1987/09/09: Electric Prolog mode added (M-C-P).
+1987/12/08: General C indentation added.
+1987/06/08: OS2 compatibility added. (ANSI mode).
+1987/01/08: Complete buffer added.
+1987/28/07: Make search sensible to C-S and C-R.
+1987/25/07: Find the next error in 'Process'. Bound to M-E.
+1987/16/07: Defun added in mlisp.
+1987/14/07: Fix bugs of quoted chars and strings in C mode.
+1987/04/07: Auto-indent in C mode added.
+1987/01/07: Variable 'fast-redisplay' added (PC Version).
+1987/30/06: 'make-argument' string added. Bug fixed in query-replace.
+1987/27/06: Execute command in 'Process' window. Bound to M-G.
+1987/25/06: Compile & make in 'Process' window. Compile is bound to C-XC.
+1987/11/06: Search buffer in macros added. MLisp macros can be redefined.
+1987/08/06: Fix bug in wrapword.
+1987/04/06: Try to implement a Micro Lisp to describe new macros.
+1987/02/06: C-Z prefix added. (Reserve for languages like C or Lisp).
+1987/29/05: Fix bugs in wrapword, black-on-white & case-fold-search added.
+1987/28/05: Setvar added. Bound to C-X-R.
+1987/15/05: Bugs fixed in auto-indent lisp mode.
+1987/13/05: Write region to file added. Bound to M-C-W.
+1987/23/04: Complete Lisp auto-indent.
+1987/15/03: Relative position in text file "(XX%)".
+1987/05/03: Add general apropos keyword to M-? command.
+1987/02/03: Mouse control added for basic window operations.
+1987/28/02: UniPress Emacs compatibility added.
+1987/25/02: Microsoft mouse support.
+1987/02/02: Automatic date modification added on save.
+1987/20/01: Filematch added (in mlreply commands with filename expected).
+1987/17/01: Reformat line (C & Lisp). Bound to C-XC-I.
+1987/16/01: Delete previous indentation on 'ldelnewline' in C & Lisp mode
+1987/13/01: Fix bugs of region and kill buffer size.
+1987/11/01: Insert toggle. Bound to M-I.
+1987/11/01: Create two windows when emacs is called with two filenames.
+1987/10/01: File insert  added. Bound to C-X-I.
+1987/09/01: Word twiddle added. Bound to M-C-T.
+1987/05/01: Line twiddle added. Bound to C-XC-T.
+1987/04/01: Change search functions to be case sensitive.
+1987/03/01: Find definition added (C & Lisp). Display "M-" & "C-X" prefixes.
+1987/01/01: Lint check added (lint -v).
+1986/30/12: Fix bug in global replace.
+1986/24/11: Constant wait time in match added (UNIX & MS-DOS).
+1986/20/11: Simple auto indent added for Lisp-Mode.
+1986/17/11: Rawmode added in case of standard i/o.
+1986/31/10: Automatic makefile added, bound C-XC-M.
+1986/20/09: Match over a page comes on mode-line.
+1986/18/09: Change search functions to accept Extended Ascii Set (> 128).
+1986/17/09: Query Find & replace added, bound to M-%
+1986/16/09: Support of Compact Model (MS C 4.00) - 64Ko code, large data -
+1986/13/09: Large Model added (putline modified for large model).
+1986/04/09: Modification of putline.asm to prevent snow on any compatible.
+1986/11/07: Auto-indent added depending of mode set.
+1986/10/07: Global Find & replace added, bound to M-&.
+1986/09/07: Fwopen, preserve the previous mode set.
+1986/09/07: Color support for help display.
+1986/07/07: Extended char set support and function keys added.
+1986/06/07: Auto-mode added. (Lisp-mode, Electric-C, Fundamental).
+1986/05/07: Lisp-Mode added (bound to M-C-L).
+1986/04/07: Putline added in display.c.
+1986/24/03: File ibmterm.c added (take account of color monitor on PC).
+1986/02/03: Tcap modified to take account of terminals greater than 24 * 80.
+1986/09/02: Automatic backup before uptating file.
+1986/07/02: Added reverse video mode for status line.
+1986/05/02: Goto-line-number added (bound to M-N).
+1986/01/02: Match added for '(', ')', '[', ']'.
+1986/29/01: Help file added (bound to M-?).
+1986/12/01: Initial Version - Microsoft MS C 3.00.

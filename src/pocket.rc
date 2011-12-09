@@ -1,0 +1,227 @@
+//Microsoft Developer Studio generated resource script.
+//
+
+/*
+ * This  program  is  free  software;  you can redistribute it and/or
+ * modify  it  under  the  terms of the GNU General Public License as
+ * published  by  the  Free  Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ * 
+ * This  program  is  distributed in the hope that it will be useful,
+ * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
+ * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You  should have received a copy of the GNU General Public License
+ * along  with  this  program;  if  not,  write  to the Free Software
+ * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
+ * 02111-1307, USA.
+ */
+
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "pocket.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+#include "version.h"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menubar
+//
+
+IDR_MENUBAR MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open",                       IDM_LOAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Print",                      IDM_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "&Exit",                       IDM_QUIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Cu&t\tCtrl-W",                IDM_CUT  // ,   GRAYED
+        MENUITEM "&Copy\tEsc-W",                IDM_COPY // ,  GRAYED
+        MENUITEM "&Paste\tCtrl-Y",              IDM_PASTE //, GRAYED
+        MENUITEM "&Escape",                     IDM_ESCAPE
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Background color ..",        IDM_BACKCOLOR
+        MENUITEM "&Text color ..",              IDM_TEXTCOLOR
+        MENUITEM "&Small font",                 IDM_FONT11
+        MENUITEM "&Big font",                   IDM_FONT13
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Using EmACT",                IDM_HELPEMACS
+        MENUITEM SEPARATOR
+        MENUITEM "&About",                      IDM_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+IDR_MENUBAR SHMENUBAR DISCARDABLE 
+BEGIN
+    IDR_MENUBAR, 4,
+    I_IMAGENONE, MAXPROPPAGES, TBSTATE_ENABLED, TBSTYLE_DROPDOWN, 
+    IDS_CAP_MENUITEM40002, 0, 0,
+    I_IMAGENONE, IDM_EDIT, TBSTATE_ENABLED, TBSTYLE_DROPDOWN, IDS_CAP_EDIT, 
+    0, 1,
+    I_IMAGENONE, IDM_OPTION, TBSTATE_ENABLED, TBSTYLE_DROPDOWN, 
+    IDS_CAP_OPTION, 0, 2,
+    I_IMAGENONE, IDM_HELP, TBSTATE_ENABLED, TBSTYLE_DROPDOWN, IDS_CAP_HELP, 
+    0, 3,
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAP_MENUITEM40002   "&File"
+    IDS_CAP_EDIT            "&Edit"
+    IDS_CAP_OPTION          "&Option"
+    IDS_CAP_HELP            "&Help"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CAP_MISC            "&Misc"
+END
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Data
+//
+
+IDM_MENU RCDATA DISCARDABLE 
+BEGIN
+    0x0258, 0x0001
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+EMACTICON               ICON    DISCARDABLE     "winterm0.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+EMACTACCELERATOR ACCELERATORS MOVEABLE PURE 
+BEGIN
+    VK_PAUSE,       IDM_BREAK,              VIRTKEY 
+    VK_INSERT,      IDM_PASTE,              VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 144, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About EmACT"
+FONT 8, "Tahoma"
+BEGIN
+    ICON            EMACTICON,-1,7,6,20,20
+    CTEXT           "EmACT by C. Jullien",-1,35,6,102,8
+    CTEXT           EMACS_FULLVERSION,-1,35,18,102,8
+    CTEXT           EMACS_COPYRIGHT,-1,35,30,102,8
+    CTEXT           "An emacs clone for Pocket PC",-1,35,42,102,8
+    CTEXT           "http://www.eligis.com/emacs",-1,35,54,102,8
+    CTEXT           "mailto:jullien@eligis.com",-1,35,66,102,8
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""winport.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

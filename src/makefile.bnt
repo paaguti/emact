@@ -1,0 +1,111 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/10
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_XMALLOC	to use with own allocation routines.
+
+#	Assumes that we have <install-dir>\emacs and <install-dir>\openlisp
+
+EMACSSRC=..\..\emacs\src
+OLSRC	=..\..\openlisp\src
+
+#	Product libraries
+
+EMACSLIB= embor32.lib
+LISPLIB	= olbor32.lib
+
+#	You must comment the next 3 lines if you want the standard vesion
+
+OLSRC	= ..\..\openlisp\src
+OLFLAG	= -D_OPENLISP
+OLDEP	= $(OLSRC)\openlisp.h $(OLSRC)\defs.h $(OLSRC)\proto.h $(OLSRC)\README
+
+CC	= bcc32
+AR	= tlib
+ARFLAG	= /C +
+OPTIONS	= -D_WIN32 -D_MLISP $(OLFLAG) -D_DIRECTORY -Dlint # -D_XMALLOC 
+DEBUG	= -v
+CGFLAGS	= # $(DEBUG) -vG
+CGLIB	= # cg32.lib
+CFLAGS	= $(OPTIONS) $(CGFLAGS) -O2 -k- -d -a8 -w -RT- -x- -I. -I$(OLSRC) -q
+
+OBJECTS	= basic.obj    \
+	  buffer.obj   \
+	  dirent.obj   \
+	  charutil.obj \
+	  display.obj  \
+	  emacs.obj    \
+	  file.obj     \
+	  filecomp.obj \
+	  fileio.obj   \
+	  indent.obj   \
+	  line.obj     \
+	  llemacs.obj  \
+	  main.obj     \
+	  minibuf.obj  \
+	  mlisp.obj    \
+	  mouse.obj    \
+	  nexterr.obj  \
+	  ntterm.obj   \
+	  openlisp.obj \
+	  options.obj  \
+	  random.obj   \
+	  region.obj   \
+	  search.obj   \
+	  spawn.obj    \
+	  unicode.obj  \
+	  version.obj  \
+	  window.obj   \
+	  word.obj     \
+	  xmalloc.obj
+
+ed.exe: $(OBJECTS) $(LISPLIB) $(EMACSLIB)
+	@if exist $(OLSRC)\$(EMACSLIB) copy $(EMACSLIB) $(OLSRC) > nul
+	@$(CC) $(DEBUG) -e$@ $(OBJECTS) $(LISPLIB) $(CGLIB)
+
+.c.obj:
+	@$(CC) -c $(CFLAGS) $<
+
+#	OpenLisp library if needed
+
+$(LISPLIB): $(OLDEP)
+	@echo Compiling OpenLisp library ..
+	@cd $(OLSRC)
+	@del $(OLSRC)\*.obj
+	@$(MAKE) -f makefile.bnt $(LISPLIB)
+	@cd $(EMACSSRC)
+	@copy $(OLSRC)\$(LISPLIB) . > nul
+
+#	EmACT library
+
+$(EMACSLIB):	$(OBJECTS)
+	@echo Building $(EMACSLIB) ..
+	@if exist $(EMACSLIB) del $(EMACSLIB)		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) basic.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) buffer.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) dirent.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) display.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) emacs.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) file.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) filecomp.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) fileio.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) indent.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) line.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) llemacs.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) minibuf.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) mlisp.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) mouse.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) nexterr.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) ntterm.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) openlisp.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) options.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) random.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) region.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) search.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) spawn.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) version.obj	> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) window.obj		> nul
+	@$(AR) $(EMACSLIB) $(ARFLAG) word.obj		> nul

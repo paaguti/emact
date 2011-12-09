@@ -1,0 +1,49 @@
+/*
+static	char *sccsid = "@(#)pm20.rc	(c) C. Jullien 2009/05/02";
+*/
+
+/*
+ * This  program  is  free  software;  you can redistribute it and/or
+ * modify  it  under  the  terms of the GNU General Public License as
+ * published  by  the  Free  Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ * 
+ * This  program  is  distributed in the hope that it will be useful,
+ * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
+ * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ * 
+ * You  should have received a copy of the GNU General Public License
+ * along  with  this  program;  if  not,  write  to the Free Software
+ * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
+ * 02111-1307, USA.
+ */
+
+#include	<os2.h>
+#include	"pm20.h"
+
+ICON	IDR_MAIN	pm20.ico
+
+MENU	IDR_MAIN
+{
+	SUBMENU     "~File", IDM_FILE, MIS_TEXT
+	{
+		MENUITEM    "~New",             IDM_FILENEW,        MIS_TEXT
+		MENUITEM    "~Open...",         IDM_FILEOPEN,       MIS_TEXT
+		MENUITEM    SEPARATOR
+		MENUITEM    "~Save",            IDM_FILESAVE,       MIS_TEXT
+		MENUITEM    "Save ~as...",      IDM_FILESAVEAS,     MIS_TEXT
+		MENUITEM    SEPARATOR
+		MENUITEM    "E~xit",            IDM_FILEEXIT,       MIS_TEXT
+	}
+	SUBMENU     "~Edit mode", IDM_EDIT_MODE, MIS_TEXT
+	{
+		MENUITEM "~Assembler",		IDM_ASSEMBLER,	    MIS_TEXT
+		MENUITEM "~C",			IDM_C,	    	    MIS_TEXT
+		MENUITEM "C~++",		IDM_CPP,	    MIS_TEXT
+		MENUITEM "~Java",		IDM_JAVA,	    MIS_TEXT
+		MENUITEM "~Lisp",		IDM_LISP,	    MIS_TEXT
+		MENUITEM "~Normal",		IDM_NORMAL,	    MIS_TEXT
+		MENUITEM "~Prolog",		IDM_PROLOG,	    MIS_TEXT
+	}
+}

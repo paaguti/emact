@@ -1,0 +1,42 @@
+#
+#	Makefile for 'EmACT tools' (c) C. Jullien 	2000/03/29
+#
+
+#	-D_ISO			For ISO/IEC 9899:1990 C Compilers
+
+#	Tools:
+
+CC	= bcc32
+CDIR	= d:\bc5
+OPTIONS	= -D_ISO -Dlint
+DEBUG	= # -v
+CGFLAGS	= # $(DEBUG) -vG
+CGLIB	= # cg32.lib
+CFLAGS	= $(OPTIONS) $(CGFLAGS) -Z -O -K -d -a -y -v -w -I.
+LIBS	= $(CDIR)\lib\wildargs.obj $(CGLIB)
+
+all: emgrep.exe emtags.exe diffh.exe krconv.exe
+
+emgrep.exe:	grep.obj
+	@$(CC) $(CFLAGS) -e$@ grep.obj $(LIBS)
+
+emtags.exe:	emtags.obj
+	@$(CC) $(CFLAGS) emtags.obj $(LIBS)
+
+etags.exe:	etags.obj getopt.obj getopt1.obj
+	@$(CC) $(CFLAGS) etags.obj getopt.obj getopt1.obj $(LIBS)
+
+diffh.exe:	diffh.obj
+	@$(CC) $(CFLAGS) diffh.obj $(LIBS)
+
+krconv.exe:	krconv.obj
+	@$(CC) -c $(CFLAGS) krconv.obj $(LIBS)
+
+.c.obj:
+	@$(CC) -c $(CFLAGS) $<
+
+clean:
+	@-del *.obj
+	@-del *.bak
+	@-del *.map
+	@-del *.cgl

@@ -1,0 +1,49 @@
+/*
+static	char *sccsid = "@(#)ntterm.rc	(c) C. Jullien 2008/03/17";
+*/
+
+#define	EMACSICON	1
+
+EMACSICON	ICON	winterm0.ico
+
+#if	(defined( _WIN32 ) || defined( _WIN64 )) && defined( _MICROSOFT )
+
+#include "winresrc.h"
+#include "version.h"
+
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION	EMVERSIONINFO
+ PRODUCTVERSION EMVERSIONINFO
+ FILEFLAGSMASK	0x3fL
+#ifdef _DEBUG
+ FILEFLAGS	0x1L
+#else
+ FILEFLAGS	0x0L
+#endif
+ FILEOS		VOS__WINDOWS32
+ FILETYPE	VFT_APP
+ FILESUBTYPE	VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "Commment",         "EmACT is an emacs clone.\0"
+            VALUE "CompanyName",      "Christian Jullien\0"
+            VALUE "FileDescription",  "Emacs Text Editor\0"
+            VALUE "FileVersion",      EMFILEVERSION
+            VALUE "InternalName",     "Emact\0"
+            VALUE "LegalCopyright",   EMCOPYRIGHT
+            VALUE "OriginalFilename", "emacs.exe\0"
+            VALUE "ProductName",      "EmACT\0"
+            VALUE "ProductVersion",   EMPRODUCTVERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif

@@ -1,0 +1,57 @@
+#
+#	Makefile for 'EmACT tools' (c) C. Jullien 	2000/03/29
+#
+
+#	-D_ISO			For ISO/IEC 9899:1990 C Compilers
+
+#	Tools:
+
+CC	= gcc
+CDIR	= 
+
+#	Flags:
+
+DEFS	= -D_ISO -DWIN32 -D_DIRECTORY -D_NT
+OPTIM	= -O2 -mno-cygwin -mpentium
+CHECK	=
+WFLAGS	= -Wpointer-arith        -Wstrict-prototypes  -Waggregate-return  \
+	  -Wmissing-declarations -Wmissing-prototypes -Wnested-externs	  \
+	  -Wparentheses          -Wcast-qual	      -Wsign-compare
+CFLAGS	= $(CHECK) $(DEFS) $(OPTIM) -I. -I../src -Wall $(WFLAGS)
+ARGV	= 
+
+all: emgrep.exe emsed.exe emtags.exe diffh.exe lowerdir.exe build.exe
+
+build.exe:	build.o
+	@$(CC) $(CFLAGS) build.o
+
+diffh.exe:	diffh.o
+	@$(CC) $(CFLAGS) diffh.o
+
+emgrep.exe:	grep.o fnmatch.o dirent.o
+	@$(CC) -o emgrep.exe $(CFLAGS) grep.o fnmatch.o dirent.o $(ARGV)
+
+grep.o:	grep.c
+	@$(CC) -c $(CFLAGS) -D_RGREP grep.c
+
+emsed.exe:	sed.o
+	@$(CC) -o emsed.exe $(CFLAGS) sed.o
+
+emtags.exe:	emtags.o
+	@$(CC) $(CFLAGS) emtags.o $(ARGV)
+
+lowerdir.exe:	lowerdir.o dirent.o
+	@$(CC) -o lowerdir.exe $(CFLAGS) lowerdir.o dirent.o $(ARGV)
+
+#	for dirent ..
+
+dirent.o:	../src/dirent.c ../src/dirent.h
+	@$(CC) -o dirent.o -c $(CFLAGS) ../src/dirent.c
+
+.c.o:
+	@$(CC) -c $(CFLAGS) $<
+
+clean:
+	@-del *.o
+	@-del *.bak
+

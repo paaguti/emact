@@ -1,0 +1,60 @@
+#
+#	Makefile for 'EmACT tools' (c) C. Jullien 	2000/04/13
+#
+
+#	-D_ISO			For ISO/IEC 9899:1990 C Compilers
+
+#	Tools:
+
+CC	= lcc
+LD	= lcclnk
+
+#	Flags:
+
+DEFS	= -D_ISO -D_DIRECTORY -D_NT -D_RGREP -Dlint
+OPTIM	= -O6
+CHECK	= # -g
+CFLAGS	= $(CHECK) $(DEFS) $(OPTIM) -I. -I..\src
+ARGV	= # $(CDIR)\lib\setargv.obj
+
+all: emgrep.exe emsed.exe emtags.exe diffh.exe lowerdir.exe build.exe
+
+build.exe:	build.obj
+	@echo ld build.exe ...
+	@$(LD) -o build.exe build.obj
+
+diffh.exe:	diffh.obj
+	@echo ld diffh.exe ...
+	@$(LD) -o diffh.exe diffh.obj
+
+emgrep.exe:	grep.obj fnmatch.obj dirent.obj
+	@echo ld emgrep.exe ...
+	@$(LD) -o emgrep.exe grep.obj fnmatch.obj dirent.obj $(ARGV)
+
+emsed.exe:	sed.obj
+	@echo ld emsed.exe ...
+	@$(LD) -o emsed.exe sed.obj
+
+emtags.exe:	emtags.obj
+	@echo ld emtags.exe ...
+	@$(LD) -o emtags.exe emtags.obj $(ARGV)
+
+lowerdir.exe:	lowerdir.obj dirent.obj
+	@echo ld lowerdir.exe ...
+	@$(LD) -o lowerdir.exe lowerdir.obj dirent.obj $(ARGV)
+
+#	for dirent ..
+
+dirent.obj:	..\src\dirent.c ..\src\dirent.h
+	@echo dirent.c
+	@$(CC) $(CFLAGS) -o dirent.obj ..\src\dirent.c
+
+.c.obj:
+	@echo $<
+	@$(CC) -c $(CFLAGS) $<
+
+clean:
+	@-del *.obj
+	@-del *.bak
+	@-del *.map
+

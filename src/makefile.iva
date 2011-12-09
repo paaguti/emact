@@ -1,0 +1,70 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/10
+#
+# Optional flags :
+#
+#	-D_ANSITERM	to use with ANSI terminal
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_OPENLISP	to use with OpenLisp language.
+#	-D_MOUSE	to use with Microsoft mouse.
+
+#	For IBM Visual Age C++ on OS/2 Warp or IBM C/Set
+
+CC	= icc
+PMFLAGS	= 	 # -D_PM20
+EMACS	= ed.exe # pmed.exe
+MFLAGS	= -D_DIRECTORY -D_MLISP -D_OS2 $(PMFLAGS)
+OPTIM	= /O- /Ol # /Gl
+CFLAGS	= $(MFLAGS) $(OPTIM) /C /G4 /Q /i.
+
+OBJECTS	= ansi.obj	\
+	  basic.obj	\
+	  buffer.obj	\
+	  charutil.obj	\
+	  dirent.obj	\
+	  display.obj	\
+	  emacs.obj	\
+	  file.obj	\
+	  filecomp.obj	\
+	  fileio.obj	\
+	  ibmterm.obj	\
+	  indent.obj	\
+	  line.obj	\
+	  llemacs.obj	\
+	  main.obj	\
+	  minibuf.obj	\
+	  mlisp.obj	\
+	  mouse.obj	\
+	  mscterm.obj	\
+	  nexterr.obj	\
+	  openlisp.obj	\
+	  options.obj	\
+	  os2term.obj	\
+	  pm20.obj	\
+	  random.obj	\
+	  rawmode.obj	\
+	  region.obj	\
+	  search.obj	\
+	  spawn.obj	\
+	  termio.obj	\
+	  version.obj	\
+	  unicode.obj	\
+	  window.obj	\
+	  winterm.obj	\
+	  word.obj	\
+	  xmalloc.obj
+
+ed.exe:	$(OBJECTS)
+	@$(CC) /Fe$*.exe $(OBJECTS)
+
+pmed.exe:	$(OBJECTS) pm20.res
+	@$(CC) /Fe$*.exe $(OBJECTS) pm20.def
+	@rc pm20.res ed.exe
+
+pm20.res: pm20.rc
+	@rc -r pm20.rc
+
+.c.obj:
+	@echo $<
+	@$(CC) $(CFLAGS) -c $<

@@ -1,0 +1,38 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2000/03/30
+#
+# Optional flags :
+#
+#	-D_ANSITERM	to use with ANSI terminal
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_MOUSE	to use with Microsoft mouse.
+
+AS	= ml
+CC	= cl
+MODEL	= l
+LINK	= /B /NOL /Far /PackC /NOI /NOD /NOE /st:0x4000
+MFLAGS	= -D_DIRECTORY -D_MLISP -D_MOUSE
+CFLAGS	= -M$(MODEL) $(MFLAGS) -D_DOS -Os -Gs -nologo -Zi -W3 -I.
+AFLAGS	= -nologo -c -Zi -D$(MODEL)model -I. $(MFLAGS)
+
+OBJECTS	= ansi.obj     basic.obj    buffer.obj   dirent.obj   display.obj  \
+	  emacs.obj    file.obj     filecomp.obj fileio.obj   ibmterm.obj  \
+	  indent.obj   line.obj     llemacs.obj  main.obj     minibuf.obj  \
+	  mlisp.obj    mouse.obj    mscterm.obj  nexterr.obj  openlisp.obj \
+	  options.obj  os2term.obj  pcterm.obj   putline.obj  random.obj   \
+	  rawmode.obj  region.obj   search.obj   spawn.obj    termio.obj   \
+	  unicode.obj  version.obj  window.obj   word.obj
+
+ed.exe:	$(OBJECTS)
+	@link $(LINK) @link.dos, ed,,\msvc\lib\$(MODEL)libce \msvc\lib\oldnames;
+
+cv:	$(OBJECTS)
+	@link /CodeView $(LINK) @link.dos
+
+.c.obj:
+	@$(CC) $(CFLAGS) -c $<
+
+.asm.obj:
+	@echo $<
+	@$(AS) $(AFLAGS) $<

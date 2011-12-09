@@ -1,0 +1,2156 @@
+# Microsoft eMbedded Visual Tools Project File - Name="emacs" - Package Owner=<4>
+# Microsoft eMbedded Visual Tools Generated Build File, Format Version 6.02
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (WCE ARM) Application" 0x8501
+# TARGTYPE "Win32 (WCE x86em) Application" 0x7f01
+
+CFG=emacs - Win32 (WCE ARM) Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "emacs.vcn".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "emacs.vcn" CFG="emacs - Win32 (WCE ARM) Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "emacs - Win32 (WCE ARM) Release" (based on "Win32 (WCE ARM) Application")
+!MESSAGE "emacs - Win32 (WCE ARM) Debug" (based on "Win32 (WCE ARM) Application")
+!MESSAGE "emacs - Win32 (WCE x86em) Release" (based on "Win32 (WCE x86em) Application")
+!MESSAGE "emacs - Win32 (WCE x86em) Debug" (based on "Win32 (WCE x86em) Application")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+# PROP ATL_Project 2
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMRel"
+# PROP BASE Intermediate_Dir "ARMRel"
+# PROP BASE CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "ARMRel"
+# PROP Intermediate_Dir "ARMRel"
+# PROP CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /Yu"stdafx.h" /Oxs /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /I ".." /D "ARM" /D "_ARM_" /D "NDEBUG" /D "_DIRECTORY" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "_MLISP" /D "_EMACS" /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 commctrl.lib commdlg.lib coredll.lib winsock.lib aygshell.lib /nologo /base:"0x00010000" /version:7.0 /stack:0x80000,0x1000 /entry:"WinMainCRTStartup" /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMDbg"
+# PROP BASE Intermediate_Dir "ARMDbg"
+# PROP BASE CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "ARMDbg"
+# PROP Intermediate_Dir "ARMDbg"
+# PROP CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /Yu"stdafx.h" /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /I ".." /D "DEBUG" /D "ARM" /D "_ARM_" /D "_EMACS" /D "_DIRECTORY" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "_MLISP" /M$(CECrtMTDebug) /c
+# SUBTRACT CPP /YX /Yc /Yu
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00010000" /stack:0x10000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 commctrl.lib commdlg.lib coredll.lib winsock.lib aygshell.lib /nologo /base:"0x00010000" /version:7.0 /stack:0x80000,0x1000 /entry:"WinMainCRTStartup" /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "X86EMRel"
+# PROP BASE Intermediate_Dir "X86EMRel"
+# PROP BASE CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "X86EMRel"
+# PROP Intermediate_Dir "X86EMRel"
+# PROP CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "i486" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /Yu"stdafx.h" /Gz /Oxs /c
+# ADD CPP /nologo /W3 /I ".." /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "i486" /D "_X86_" /D "x86" /D "NDEBUG" /D "_DIRECTORY" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "_MLISP" /D "_EMACS" /Gz /Oxs /c
+# SUBTRACT CPP /YX /Yc /Yu
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /stack:0x10000,0x1000 /subsystem:windows /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+# ADD LINK32 $(CEx86Corelibc) commctrl.lib commdlg.lib coredll.lib winsock.lib aygshell.lib /nologo /version:7.0 /stack:0x80000,0x1000 /subsystem:windows /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "X86EMDbg"
+# PROP BASE Intermediate_Dir "X86EMDbg"
+# PROP BASE CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "X86EMDbg"
+# PROP Intermediate_Dir "X86EMDbg"
+# PROP CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D "i486" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /Yu"stdafx.h" /Gz /c
+# ADD CPP /nologo /W3 /Zi /Od /I ".." /D "DEBUG" /D "i486" /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "_X86_" /D "x86" /D "_DIRECTORY" /D UNDER_CE=$(CEVersion) /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "UNICODE" /D "_UNICODE" /D "_MLISP" /D "_EMACS" /Gz /c
+# SUBTRACT CPP /YX /Yc /Yu
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /stack:0x10000,0x1000 /subsystem:windows /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+# ADD LINK32 $(CEx86Corelibc) commctrl.lib commdlg.lib coredll.lib winsock.lib aygshell.lib /nologo /version:7.0 /stack:0x80000,0x1000 /subsystem:windows /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+
+!ENDIF 
+
+# Begin Target
+
+# Name "emacs - Win32 (WCE ARM) Release"
+# Name "emacs - Win32 (WCE ARM) Debug"
+# Name "emacs - Win32 (WCE x86em) Release"
+# Name "emacs - Win32 (WCE x86em) Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\basic.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BASIC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\buffer.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_BUFFE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\dirent.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_DIREN=\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\xmem.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_DIREN=\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\xmem.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_DIREN=\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\xmem.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_DIREN=\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\xmem.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\display.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_DISPL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\emacs.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\build.h"\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\build.h"\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\build.h"\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\build.h"\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_EMACS=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\file.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\filecomp.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\fileio.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_FILEI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\indent.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_INDEN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\line.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LINE_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\llemacs.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_LLEMA=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\main.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MAIN_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\minibuf.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MINIB=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\mlisp.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MLISP=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\mouse.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_MOUSE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\nexterr.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_NEXTE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\openlisp.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPENL=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\options.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_OPTIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\pocket.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\newres.h"\
+	"\usr\jullien\emacs\src\pocket.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	
+NODEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\newres.h"\
+	"\usr\jullien\emacs\src\pocket.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	{$(INCLUDE)}"aygshell.h"\
+	{$(INCLUDE)}"sipapi.h"\
+	
+NODEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\newres.h"\
+	"\usr\jullien\emacs\src\pocket.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_POCKE=\
+	".\ipapi.h"\
+	".\ygshell.h"\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_POCKE=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\newres.h"\
+	"\usr\jullien\emacs\src\pocket.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_POCKE=\
+	".\ipapi.h"\
+	".\ygshell.h"\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\random.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RANDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\rawmode.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_RAWMO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\region.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_REGIO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\search.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SEARC=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\spawn.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_SPAWN=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\version.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_VERSI=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\window.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WINDO=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\winport.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_WINPO=\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_WINPO=\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_WINPO=\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_WINPO=\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\word.c
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+DEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+DEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+DEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	
+NODEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+DEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\config.h"\
+	"\usr\jullien\emacs\src\defines.h"\
+	"\usr\jullien\emacs\src\dirent.h"\
+	"\usr\jullien\emacs\src\emacs.h"\
+	"\usr\jullien\emacs\src\mouse.h"\
+	"\usr\jullien\emacs\src\winport.h"\
+	
+NODEP_CPP_WORD_=\
+	"\usr\jullien\emacs\src\openlisp.h"\
+	"\usr\jullien\emacs\src\xmalloc.h"\
+	
+# ADD CPP /D "_WINDOWS"
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\build.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\defines.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\dirent.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\emacs.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\mouse.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\pocket.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\version.h
+# End Source File
+# Begin Source File
+
+SOURCE=\usr\jullien\emacs\src\winport.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=..\pocket.rc
+
+!IF  "$(CFG)" == "emacs - Win32 (WCE ARM) Release"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE ARM) Debug"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Release"
+
+!ELSEIF  "$(CFG)" == "emacs - Win32 (WCE x86em) Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=..\winterm0.ico
+# End Source File
+# End Group
+# End Target
+# End Project

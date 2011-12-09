@@ -1,0 +1,42 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/10
+#
+# Optional flags :
+#
+#	-D_ANSITERM	to use with ANSI terminal
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_MOUSE	to use with Microsoft mouse.
+
+CC	= cl386
+LINK	= link
+SRCDIR	= .
+MODEL	= s	# l for the 16 bits version
+LIBS	= $(MODEL)libcer os2
+LFLAGS	= /Far /PackCode /NoIgnoreCase /NoDefault
+MFLAGS	= -D_DIRECTORY -D_MLISP
+CFLAGS	= $(MFLAGS) -D_PM20 -D_OS2 -Os -Gs -I. -nologo -W3
+
+OBJECTS	= ansi.obj     basic.obj    buffer.obj   dirent.obj   display.obj  \
+	  emacs.obj    file.obj     filecomp.obj fileio.obj   ibmterm.obj  \
+	  indent.obj   line.obj     llemacs.obj  minibuf.obj  mlisp.obj    \
+	  mouse.obj    mscterm.obj  nexterr.obj  openlisp.obj options.obj  \
+	  pm20.obj     random.obj   rawmode.obj  region.obj   search.obj   \
+	  spawn.obj    termio.obj   unicode.obj  version.obj  window.obj   \
+	  word.obj     xmalloc.obj
+
+# comment next 3 lines for the 16 bits version (OS2 1.x)
+ed.exe:	$(OBJECTS) pm20.res
+	@$(CC) $(CFLAGS) $(OBJECTS) pm20.def -o ed.exe
+	@rc pm20.res ed.exe
+
+# uncomment next 3 lines for the 16 bits version (OS2 1.x)
+#ed.exe:	$(OBJECTS) pm20.res
+#	@$(LINK) $(LFLAGS) @link.pm2, ed,, $(LIBS), pm20.def;
+#	@rc pm20.res ed.exe
+
+pm20.res: pm20.rc
+	@rc -r pm20.rc
+
+.c.obj:
+	@$(CC) $(CFLAGS) -c $(SRCDIR)\$<

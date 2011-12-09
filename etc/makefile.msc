@@ -1,0 +1,58 @@
+#
+#	Makefile for 'EmACT tools' (c) C. Jullien 	04/14/1996
+#
+
+#	-D_ISO			For ISO/IEC 9899:1990 C Compilers
+
+#	Tools:
+
+I386	= # 386
+
+CC	= cl$(I386)
+LD	= link$(I386)
+CDIR	= c:\msvc
+
+#	Note :
+#
+#	sources compile also with -Oz and -G2 options, but execute slower !!!
+
+#	Flags:
+
+DEFS	= -D_ISO
+OPTIM	= -Oacegilot -Ob2
+CHECK	= -Zi
+CFLAGS	= -nologo $(DEFS) $(OPTIM) -AC -W3 -f- -G3sx -I .
+LIBS	= # $(CDIR)\lib\llibce $(CDIR)\lib\olnames
+LOPTIM	= /E /PackCode /ExePack
+LCHECK	= /CodeView
+LDFLAGS	= /B $(LOPTIM) /FarCall /NoLogo /NOI /NOE /Stack:0x8000
+CDIR	= c:\msvc
+
+all: emgrep.exe emtags.exe diffh.exe krconv.exe
+
+emgrep.exe:	grep.c
+	@$(CC) -c $(CFLAGS) grep.c
+	@$(LD) grep.obj $(CDIR)\lib\setargv.obj,emgrep,$(LDFLAGS);
+
+emtags.exe:	emtags.c
+	@$(CC) -c -AC $(CFLAGS) emtags.c
+	@$(LD) emtags.obj $(CDIR)\lib\setargv.obj,emtags,$(LDFLAGS);
+
+etags.exe:	etags.c getopt.obj getopt1.obj
+	@$(CC) -c -AC $(CFLAGS) etags.c
+	@$(LD) etags getopt getopt1 $(CDIR)\lib\setargv,,$(LDFLAGS);
+
+diffh.exe:	diffh.obj
+	@$(LD) diffh.obj,diffh,$(LDFLAGS);
+
+krconv.exe:	krconv.c
+	@$(CC) -c $(CFLAGS) krconv.c
+	@$(LD) krconv.obj $(CDIR)\lib\setargv.obj,krconv,$(LDFLAGS);
+
+.c.obj:
+	@$(CC) -c $(CFLAGS) $<
+
+clean:
+	@-del *.obj
+	@-del *.bak
+	@-del *.map

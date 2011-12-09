@@ -1,0 +1,164 @@
+#!/bin/sh
+#ident	"@(#)convunix	(c) C. Jullien 2009/05/01"
+#
+
+#	Usage:  convunix
+
+#	Convert CR-LF (DOS) to LF (UNIX).
+
+if [ -f UNIX.distrib ]; then exit 1; fi		# already done!
+
+FILES="
+	./lib/c.lsp		\
+	./lib/cpp.lsp		\
+	./lib/defstruc.lsp	\
+	./lib/defclass.lsp	\
+	./lib/emacs.lsp		\
+	./lib/stderror.lsp	\
+	./lib/flet.lsp		\
+	./lib/java.lsp		\
+	./lib/lelisp.lsp	\
+	./lib/openlisp.lsp	\
+	./lib/pretty.lsp	\
+	./lib/setf.lsp		\
+	./lib/simple.lsp	\
+	./lib/sort.lsp		\
+	./lib/startup.lsp	\
+	./lib/xilog.lsp		\
+	./src/ansi.c		\
+	./src/basic.c		\
+	./src/build.h		\
+	./src/buffer.c		\
+	./src/charutil.c	\
+	./src/curses.c		\
+	./src/defines.h		\
+	./src/dirent.c		\
+	./src/dirent.h		\
+	./src/display.c		\
+	./src/emacs.c		\
+	./src/emacs.h		\
+	./src/emacs.hpj		\
+	./src/emacs.rtf		\
+	./src/file.c		\
+	./src/filecomp.c	\
+	./src/fileio.c		\
+	./src/ibmterm.c		\
+	./src/indent.c		\
+	./src/line.c		\
+	./src/link.dos		\
+	./src/link.os2		\
+	./src/link.sc		\
+	./src/llemacs.c		\
+	./src/macros.inc	\
+	./src/main.c		\
+	./src/Makefile.in	\
+	./src/makefile.bnt	\
+	./src/makefile.gnt	\
+	./src/makefile.iva	\
+	./src/makefile.lcc	\
+	./src/makefile.msc	\
+	./src/makefile.nt	\
+	./src/makefile.os2	\
+	./src/makefile.pm2	\
+	./src/makefile.sc	\
+	./src/makefile.scn	\
+	./src/makefile.wnt	\
+	./src/makefile.xp	\
+	./src/minibuf.c		\
+	./src/mlisp.c		\
+	./src/mouse.c		\
+	./src/mouse.h		\
+	./src/mscterm.c		\
+	./src/nexterr.c		\
+	./src/newterm.c		\
+	./src/ntterm.c		\
+	./src/openlisp.c	\
+	./src/options.c		\
+	./src/os2term.c		\
+	./src/pcterm.asm	\
+	./src/pm20.c		\
+	./src/pm20.def		\
+	./src/pm20.h		\
+	./src/pm20.rc		\
+	./src/putline.asm	\
+	./src/random.c		\
+	./src/rawmode.c		\
+	./src/region.c		\
+	./src/search.c		\
+	./src/spawn.c		\
+	./src/tcap.c		\
+	./src/termio.c		\
+	./src/tinfo.c		\
+	./src/version.c		\
+	./src/version.h		\
+	./src/vt52.c		\
+	./src/window.c		\
+	./src/winterm.c		\
+	./src/winterm.def	\
+	./src/winterm.h		\
+	./src/winterm.rc	\
+	./src/xpterm.c		\
+	./src/xpterm.h		\
+	./src/xpterm.rc		\
+	./src/word.c		\
+	./src/x11.c		\
+	./src/x11.ico		\
+	./src/xmalloc.c		\
+	./src/xmem.h		\
+	./etc/makefile.msc	\
+	./etc/makefile.nt	\
+	./etc/makefile.sc	\
+	./etc/makefile.unx	\
+	./etc/build.c		\
+	./etc/diffh.c		\
+	./etc/emtags.c		\
+	./etc/fnmatch.c		\
+	./etc/fnmatch.h		\
+	./etc/grep.c		\
+	./etc/lowerdir.c	\
+	./etc/sed.c		\
+	./ChangeLog		\
+	./Makefile		\
+	./README		\
+	"
+
+for file in $FILES
+do
+  if [ -f $file ]
+  then
+    if test opt$1 != opt-quiet
+    then
+      echo $file
+    fi
+    tr -d "\015" < $file > conv$$.tmp
+    if `diff $file conv$$.tmp > UNIX.distrib`
+    then
+      mv conv$$.tmp $file
+    else
+      rm conv$$.tmp
+    fi
+  else
+    if test opt$1 != opt-quiet
+    then
+      echo "WARNING: $file does not exist"
+    fi
+  fi
+done
+
+#	Some cleanup
+
+chmod a-x *.bat *.hlp src/*\.* src/pocket/* doc/*
+
+sed -e "s/SYSTEM=.*/SYSTEM=invalid-system	\# display error/g" Makefile >  make$$.tmp
+
+mv make$$.tmp Makefile
+
+case "`uname`" in
+Linux*)		chgrp -R `groups $LOGNAME | cut -f3 -d\ ` * ;;
+CYGWIN* | QNX*)	;;
+*)		chgrp -R `groups $LOGNAME | cut -f1 -d\ ` * ;;
+esac
+
+echo UNIX distribution: CR/LF -\> LF. > UNIX.distrib
+
+exit 0

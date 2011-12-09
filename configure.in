@@ -1,0 +1,220 @@
+#
+# Configure template file for EmACT 2010/02/08
+# By Christian Jullien (jullien@eligis.com)
+#
+
+# Process this file with autoconf to produce a configure script
+
+AC_INIT(src/emacs.h)
+
+# where to find install.sh, config.sub, and config.guess
+
+AC_CONFIG_AUX_DIR(./conf)
+
+# use src/config.h.in template.
+
+AC_CONFIG_HEADER(src/config.h)
+
+# make sure we are using a recent autoconf version
+
+#AC_PREREQ(2.13)
+AC_PREREQ(2.65)
+
+VERSION=`grep Pro src/version.h | cut -c32-35`.0
+NAME=emact
+AC_SUBST(VERSION)
+AC_SUBST(NAME)
+
+# Canonicalize the host and os so we can do some tricky things.
+
+AC_CANONICAL_SYSTEM
+
+SYSTEM_TYPE="$host_vendor-$host_os"
+MACHINE_TYPE="$host_cpu"
+AC_SUBST(SYSTEM_TYPE)
+AC_DEFINE_UNQUOTED(SYSTEM_TYPE, "$SYSTEM_TYPE")
+AC_SUBST(MACHINE_TYPE)
+AC_DEFINE_UNQUOTED(MACHINE_TYPE, "$MACHINE_TYPE")
+
+# Checks for programs.
+
+AC_PROG_CC
+
+AC_CHECK_PROGS(AR, ar gar, no)
+if test $AR = no; then
+  AC_MSG_ERROR(Can\'t find ar or gar.)
+fi
+AC_SUBST(AR)
+
+# convert CR/LF -> LF.
+
+AC_CHECK_PROGS(TR, tr, no)
+if test $TR = no
+then
+  AC_MSG_ERROR(Can\'t find tr.)
+else
+  AC_MSG_CHECKING(if we need CR/LF conversion - may be long)
+  convert=no
+  if `sh ./convunix -quiet`; then convert="yes"; fi
+  AC_MSG_RESULT($convert)
+fi
+
+# User options
+
+CHARSET=_ANSICHARS
+
+#AC_MSG_CHECKING(for enabled UNICODE option)
+#AC_ARG_ENABLE(unicode,
+#[  --enable-unicode        enable unicode [default=no]],,enable_unicode=no)
+#if test "$enable_unicode" = "y" || test "$enable_unicode" = "yes"
+#then
+#   CHARSET=_WIDECHARS
+#   OPTIMS="$OPTIMS -std=c99"
+#   enable_unicode=yes
+#   AC_MSG_RESULT(yes)
+#else
+#   CHARSET=_ANSICHARS
+#   enable_unicode=no
+#   AC_MSG_RESULT(no)
+#fi
+
+# Check for specific system
+
+AC_AIX
+
+# Checks for libraries.
+
+CURSES=no
+
+if test "x-${CC}" != "x-cl"
+then
+  AC_CHECK_LIB(m,       sin)
+  AC_CHECK_LIB(termcap, tgetstr)
+  AC_SEARCH_LIBS(waddch, ncurses curses, CURSES=yes, CURSES=no)
+fi
+
+case $CURSES in
+yes)
+    AC_DEFINE(HAVE_LIBCURSES)
+    ;;
+no)
+    ;;
+esac
+
+# Checks for header files.
+
+AC_HEADER_STDC
+AC_HEADER_STAT
+AC_HEADER_TIME
+
+AC_CHECK_HEADERS(curses.h)
+AC_CHECK_HEADERS(ncurses.h)
+AC_CHECK_HEADERS(dirent.h)
+AC_CHECK_HEADERS(stdarg.h)
+AC_CHECK_HEADERS(string.h)
+AC_CHECK_HEADERS(strings.h)
+AC_CHECK_HEADERS(sgtty.h)
+AC_CHECK_HEADERS(sys/time.h)
+AC_CHECK_HEADERS(sys/stat.h)
+AC_CHECK_HEADERS(term.h)
+AC_CHECK_HEADERS(termios.h)
+AC_CHECK_HEADERS(unistd.h)
+
+# Checks for X Window System.
+
+AC_PATH_XTRA
+
+X11LIB="-lX11"
+
+if test "$no_x" = yes; then
+	X11LIB=""
+fi
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+AC_C_CONST
+AC_TYPE_SIZE_T
+AC_STRUCT_TM
+# AC_C_INLINE
+
+# get type size
+
+AC_CHECK_SIZEOF(void *, 4)
+AC_CHECK_SIZEOF(long,   4)
+AC_CHECK_SIZEOF(size_t, 4)
+
+# Checks for library functions.
+
+AC_PROG_GCC_TRADITIONAL
+AC_TYPE_SIGNAL
+AC_CHECK_FUNCS(clock ftime gethostname mktime select socket uname)
+
+# OS specifics, sets {EXE,OBJ}EXT
+
+AC_EXEEXT
+AC_OBJEXT
+
+# Optimization and Warnings options
+
+OPTIMS=""
+WARNINGS=""
+
+# Local options
+
+LOCAL_CFLAGS=""
+LOCAL_DEFS=""
+LOCAL_LIBS=""
+
+case "${CC}" in
+ gcc*)
+   WARNINGS="-Dlint -Wall -Wstrict-prototypes -Wshadow"
+   OPTIMS="$OPTIMS -finline-functions -fomit-frame-pointer -funroll-loops"
+   ;;
+ cl*)
+   WARNINGS="-D_ERRJMP -D_ISO -WX -W3 -I. -DC_CALL=__cdecl"
+   OPTIMS="-O2xa"
+   LOCAL_CFLAGS="-nologo -MT"
+   ;;
+ *i370*)
+   CFLAGS="$CFLAGS -O -Wc,XPLINK -Wl,XPLINK"
+   ;;
+esac
+
+case "${host_cpu}-${host_os}" in
+ *hppa2.0w*)	LOCAL_CFLAGS="+DA2.0W" ;;
+esac
+
+AC_SUBST(X11LIB)
+AC_SUBST(OPTIMS)
+AC_SUBST(WARNINGS)
+AC_SUBST(CHARSET)
+AC_SUBST(LOCAL_CFLAGS)
+AC_SUBST(LOCAL_DEFS)
+AC_SUBST(LOCAL_LIBS)
+
+sed -e "s/^SYSTEM=.*/SYSTEM=auto \# autoconf/g" Makefile > make$$.tmp
+mv make$$.tmp Makefile
+
+# Save result in src/Makefile (using src/Makefile.in template).
+
+AC_OUTPUT(src/Makefile src/emact.spec)
+
+echo \
+"------------------------------------------------------------------------
+Configuration:
+
+ Name:		${NAME}
+ Version:	${VERSION}
+ Source:        ${srcdir}
+ Compiler:	${CC}
+ Flags:         ${CFLAGS}
+ Warnings:      ${WARNINGS}
+ Optimizations: ${OPTIMS}
+ Library:       ${LIBS}
+ Build:         ${build}
+ Host:          ${host}
+ Target:        ${target}
+ Install:       ${prefix}
+
+See src/config.h for further configuration information.
+------------------------------------------------------------------------"

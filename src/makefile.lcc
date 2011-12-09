@@ -1,0 +1,61 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/04
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_OPENLISP	to use with OpenLisp language.
+
+#	Tools :
+
+CC	= lcc
+LD	= lcclnk
+RC	= lrc
+
+#	Default for NT
+
+DEFS	= -D_DIRECTORY -D_MLISP -Dlint
+CFLAGS	= -O6 -I. $(DEFS)
+RES	= ntlcterm.res
+
+OBJECTS	= basic.obj    \
+	  buffer.obj   \
+	  charutil.obj \
+	  dirent.obj   \
+	  display.obj  \
+	  emacs.obj    \
+	  file.obj     \
+	  filecomp.obj \
+	  fileio.obj   \
+	  indent.obj   \
+	  line.obj     \
+	  llemacs.obj  \
+	  main.obj     \
+	  minibuf.obj  \
+	  mlisp.obj    \
+	  mouse.obj    \
+	  nexterr.obj  \
+	  ntterm.obj   \
+	  openlisp.obj \
+	  options.obj  \
+	  random.obj   \
+	  region.obj   \
+	  search.obj   \
+	  spawn.obj    \
+	  unicode.obj  \
+	  version.obj  \
+	  window.obj   \
+	  word.obj     \
+	  xmalloc.obj
+
+ed.exe:	$(OBJECTS)
+	@echo Linking ed.exe ..
+	@$(LD) -o ed.exe $(OBJECTS)
+
+$(RES): ntterm.rc winterm0.ico
+	@$(RC) -r ntterm.rc -fo ntlcterm.res
+
+.c.obj:
+	@echo $<
+	@$(CC) $(CFLAGS) -c $<

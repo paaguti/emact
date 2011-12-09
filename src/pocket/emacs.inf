@@ -1,0 +1,227 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; EmACT INF by C. Jullien, 2001/12/31
+; This INF file is used as the input file for "Cabwiz.exe".
+; Along with binary files, it will create CAB files for:
+; - Pocket PC 2002  with the ARM CPU
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Macro String	Pocket PC Directory
+; %CE1%		\Program Files
+; %CE2%		\Windows
+; %CE4%		\Windows\StartUp
+; %CE5%		\My Documents
+; %CE6%		\Program Files\Accessories
+; %CE7%		\Program Files\Communication
+; %CE8%		\Program Files\Games
+; %CE11%	\Windows\Start Menu\Programs
+; %CE12%	\Windows\Start Menu\Programs\Accessories
+; %CE13%	\Windows\Start Menu\Programs\Communications
+; %CE14%	\Windows\Start Menu\Programs\Games
+; %CE15%	\Windows\Fonts
+; %CE17%	\Windows\Start Menu
+
+;
+; Required "Version" section. Contains INF version information
+;
+[Version]
+Signature   = "$Windows NT$"	; Should be $Windows NT$ or $Windows 98$ or other OS name
+Provider    = "Eligis"          ; full app name will be "<Provider> <AppName>"
+CESignature = "$Windows CE$"	; Must be $Windows CE$
+
+;
+; Required "CEStrings" section, specific strings used by Windows CE AppInstall
+;
+[CEStrings]
+AppName     = "EmACT"           ; full app name will be "<Provider> <AppName>"
+InstallDir  = %CE1%\%AppName%   ; "\Program Files\EmACT" (default install directory, which can be changed by end user.)
+
+
+;
+; Optional "Strings" section
+;   Contains  string substitutions replacing the key string (enclosed
+;   with percent symbols) with the value string.
+[Strings]
+src			= "c:\usr\jullien\emacs"
+
+;
+; Required "CEDevice" section
+;   Specifies the various types of CAB files that will be generated
+;
+[CEDevice]
+UnsupportedPlatforms    = "HPC", "Jupiter"
+
+[CEDevice.Pocket2003]
+ProcessorType           = 2577     ; ARM SA1110 CPU
+VersionMin 		= 3.00
+VersionMax 		= 9.00
+
+[CEDevice.SmartPhone]
+ProcessorType           = 2577     ; SmartPhone
+VersionMin 		= 5.00
+VersionMax 		= 9.00
+
+[CEDevice.PPC300_ARM]
+ProcessorType           = 2577     ; ARM SA1110 CPU
+VersionMin 		= 3.00
+VersionMax 		= 9.00
+
+;
+; Required "SourceDisksNames" section
+;   Specifies the source directories of the binary files
+;   Format:     
+;	<source ID> = ,<label>,,<source directory>
+;
+;       <source ID>        will be used to specify the source files belonging
+;                          to this directory
+;       <label>            is unused
+;       <source directory> is the relative or absolute directory of the source
+;                          files
+;
+[SourceDisksNames]
+; standard library
+1 = ,"lib",     ,"%src%\lib"
+; binary file
+2 = ,"bin",     ,"%src%\src\pocket\Pocket PC 2003 (ARMV4)\Release"
+
+;; old ARM
+;2 = ,"bin",     ,"%src%\src\pocket\ARMRel"	           ; binary file
+
+;
+; Required "SourceDisksFiles" section
+;   Specifies the source filenames that will be packaged in the CAB files
+;   Format:     
+;    <filename> = <source ID>
+;    <filename>  is the source filename (enclose in doublequotes for long
+;                filenames)
+;    <source ID> is the ID used in [SourceDisksNames] to specify the 
+;                source directory
+;
+[SourceDisksFiles]
+;
+; ./lib
+;
+"c.lsp"		= 1
+"cpp.lsp"	= 1
+"defclass.lsp"	= 1
+"defstruc.lsp"	= 1
+"emacs.lsp"	= 1
+"EmACT.lsp"	= 1
+"error.lsp"	= 1
+"flet.lsp"	= 1
+"java.lsp"	= 1
+"lelisp.lsp"	= 1
+"openlisp.lsp"	= 1
+"pretty.lsp"	= 1
+"sam.lsp"	= 1
+"setf.lsp"	= 1
+"simple.lsp"	= 1
+"sml.lsp"	= 1
+"sort.lsp"	= 1
+"startup.lsp"	= 1
+"wml.lsp"	= 1
+"xilog.lsp"	= 1
+;
+; binary
+;
+"emacs.exe"	= 2
+
+;
+; Required "DefaultInstall" section
+;   Specifies the INF sections for file copying, registry settings and creating shortcuts
+;   INF sections that are not listed here will not be used
+;
+[DefaultInstall]
+AddReg	     = Reg.Version			; Required INF sections that lists the registry entries to be created
+CopyFiles    = Files.InstallDir,Files.Lib	; 
+CEShortcuts  = Links				; Optional INF sections that lists the shortcuts to be created
+
+;
+; Required "DestinationDirs" section
+;   Specifies the directories to use for the file copy lists
+;   Format:     
+;	<section name> = 0,<dest directory>
+;       <section name>   is the section name used in
+;			 "[DefaultInstall] CopyFiles"
+;       <dest directory> is the destination directory, using an absolute
+;                        device path, the directory macros, or the install
+;                        directory %InstallDir%
+;
+[DestinationDirs]
+Files.InstallDir    = 0,%InstallDir%	       ; "\Program Files\EmACT"
+Files.Lib	    = 0,"%InstallDir%\lib"     ; "\Program Files\EmACT\lib"
+Links               = 0,%CE11%                 ; "\Windows\Programs\Start Menu"
+DefaultDestDir      = 0,%InstallDir%           ; "\Program Files\EmACT"
+
+;
+; Required sections specified in "[DefaultInstall] CopyFiles" key
+;   Specifies the files to copy
+;   Format:     
+;	<dest filename>,<source filename>,,<copy flags>
+;       <dest filename>   is the destination filename (or the source filename
+;                         if <source filename> is empty)
+;       <source filename> is the source filename
+;       <copy flags>      is the copy flags to use
+;
+[Files.Windows]
+; Rename this file, and warn the user if this file is being skipped copying
+; "EmACT.htp","EmACT.htp",,0x00000001
+
+[Files.InstallDir]
+"emacs.exe",emacs.exe
+
+[Files.Lib]
+"c.lsp","c.lsp"
+"cpp.lsp","cpp.lsp"
+"defclass.lsp","defclass.lsp"
+"defstruc.lsp","defstruc.lsp"
+"emacs.lsp","emacs.lsp"
+"EmACT.lsp","EmACT.lsp"
+"error.lsp","error.lsp"
+"flet.lsp","flet.lsp"
+"java.lsp","java.lsp"
+"lelisp.lsp","lelisp.lsp"
+"openlisp.lsp","openlisp.lsp"
+"pretty.lsp","pretty.lsp"
+"sam.lsp","sam.lsp"
+"setf.lsp","setf.lsp"
+"simple.lsp","simple.lsp"
+"sml.lsp","sml.lsp"
+"sort.lsp","sort.lsp"
+"startup.lsp","startup.lsp"
+"wml.lsp","wml.lsp"
+"xilog.lsp","xilog.lsp"
+
+;
+; Required sections specified in "[DefaultInstall] AddReg" key
+;   Specifies the registry entries to create
+;   Format:     
+;	<reg root>,<reg key>,<reg val>,<reg flags>,<reg data>[,<reg data>]
+;       <reg root>  is HKCR, HKLM or HKCU
+;       <reg key>   is the registry key name
+;       <reg val>   is the registry value name, which is set to "default"
+;		    if empty
+;       <reg flags> is the registry type/flags to use
+;       <reg data>  is the numeric/string registry data, which depends on the
+;                   <reg flags> used
+;
+[Reg.Version]
+; Set a sample application version number, using the TYPE_DWORD registry type
+HKLM,Software\Eligis\%AppName%,MajorVersion,0x00010001,2
+HKLM,Software\Eligis\%AppName%,MinorVersion,0x00010001,30
+; Current directory
+HKCR,EmACT\Environment\,EMACSLIB,0x00000000,"%InstallDir%\lib"
+
+;
+; Sections specified in "[DefaultInstall] CEShortcuts" key
+;   Specifies the shortcuts to create
+;   Format:     
+;	<shortcut filename>,<shortcut type>,<target file/path>[,<standard dest path>]
+;       <shortcut filename>  is the filename of the shortcut
+;       <shortcut type>      specifies if the shortcut is to a file or a folder
+;       <target file/path>   is the target filename or pathname, which depends
+;                            on the <shortcut type> flag used
+;       <standard dest path> is an optional destination directory macro
+;                            (or %InstallDir%) to use
+;
+[Links]
+"emacs",0,"emacs.exe",%CE17%  ; shortcut to a file, created in the standard destination path %CE11%

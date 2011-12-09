@@ -1,0 +1,78 @@
+#
+#	Makefile for 'EmACT tools' (c) C. Jullien 	2005/10/21
+#
+
+#	-D_ISO			For ISO/IEC 9899:1990 C Compilers
+
+#	Tools:
+
+CC	= cl
+LD	= link
+
+!if ("$(CPU)" == "IA64")
+CPUFLAG		= -As64 -Wp64 -G2 # G2=Itanium2
+ARCH		= 64
+LDARCH		= IA64
+HC		= echo Missing hcrtf -xn
+!endif
+
+!if ("$(CPU)" == "AMD64")
+CPUFLAG 	= -Wp64
+ARCH		= 64
+LDARCH		= AMD64
+HC		= echo Missing hcrtf -xn
+LIBEXTRA	= bufferoverflowU.lib
+!endif
+
+!if ("$(CPU)" == "i386" || "$(CPU)" == "")
+CPUFLAG 	= -G6 # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
+ARCH		= 32
+LDARCH		= x86
+HC		= hcrtf -xn
+!endif
+
+#	Flags:
+
+DEFS	= -D_ISO -DWIN32 -D_DIRECTORY -D_NT
+OPTIM	= -Ox -Ob2 $(CPUFLAG)
+CHECK	= # -Zi
+CFLAGS	= -nologo $(CHECK) $(DEFS) $(OPTIM) -W3 -Ox -I. -I..\src
+ARGV	= setargv.obj
+LIBS	= $(LIBEXTRA)
+
+all: emgrep.exe emsed.exe emtags.exe diffh.exe lowerdir.exe build.exe
+
+build.exe:	build.obj
+	@$(CC) $(CFLAGS) build.obj $(LIBS)
+
+diffh.exe:	diffh.obj
+	@$(CC) $(CFLAGS) diffh.obj $(LIBS)
+
+emgrep.exe:	grep.obj fnmatch.obj dirent.obj
+	@$(CC) $(CFLAGS) -Feemgrep.exe grep.obj fnmatch.obj dirent.obj $(ARGV)  $(LIBS)
+
+grep.obj:	grep.c
+	@$(CC) -c $(CFLAGS) -D_RGREP grep.c
+
+emsed.exe:	sed.obj
+	@$(CC) $(CFLAGS) -Feemsed.exe sed.obj $(LIBS)
+
+emtags.exe:	emtags.obj
+	@$(CC) $(CFLAGS) emtags.obj $(ARGV) $(LIBS)
+
+lowerdir.exe:	lowerdir.obj dirent.obj
+	@$(CC) $(CFLAGS) -Felowerdir.exe lowerdir.obj dirent.obj $(ARGV) $(LIBS)
+
+#	for dirent ..
+
+dirent.obj:	..\src\dirent.c ..\src\dirent.h
+	@$(CC) -c $(CFLAGS) -Fodirent.obj ..\src\dirent.c
+
+.c.obj:
+	@$(CC) -c $(CFLAGS) $<
+
+clean:
+	@-del *.obj
+	@-del *.bak
+	@-del *.map
+

@@ -1,0 +1,163 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/06/20
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_OPENLISP	to use with OpenLisp language.
+#	-D_WIN32	to use with Windows NT / Windows 95 / WIN32.
+
+#	Assumes that we have <install-dir>\emacs and <install-dir>\openlisp
+
+EMACSDIR	= ..\..\emacs
+OLDIR		= ..\..\openlisp
+
+ARCH		= 32
+EMACSSRC	= $(EMACSDIR)\src
+OLSRC		= $(OLDIR)\src
+
+#	Tools
+
+CROSSPREFIX	=
+AR		= $(CROSSPREFIX)ar
+CC		= $(CROSSPREFIX)gcc
+STRIP		= $(CROSSPREFIX)strip
+SH		= cmd /s
+HC		= echo You need HC Microsoft Help Compiler for this command: HC
+
+#	Product libraries
+
+EMACSLIB	= libemacs.a
+LISPLIB		= libolisp.a
+
+#	Lisp files and directory
+
+EMLIB		= c:\usr\lib\emacs
+EMLSP		= $(EMACSDIR)\lib
+OLLSP		= $(OLDIR)\lib
+LIBFILES	= defclass defstruc error flet pretty sort startup setf
+
+#	You must comment the next 3 lines if you want the standard vesion
+
+#OLFLAG		= -D_OPENLISP
+#OLDEP		= $(OLSRC)\openlisp.h $(OLSRC)\defs.h $(OLSRC)\proto.h $(OLSRC)\README
+#OLLIB		= $(LISPLIB)
+
+#	Compilation flags
+
+ARFLAGS		= rc
+CHARSET		= _ANSICHARS
+MFLAGS		= -D_WIN32 -D_MLISP -D_DIRECTORY -D$(CHARSET) $(OLFLAG)
+CPUFLAG		= -mno-cygwin		# Optimize for Pentium
+WFLAGS		= \
+		 -W                       \
+		 -Wall			  \
+		 -Waggregate-return       \
+		 -Wcast-align	   	  \
+		 -Wchar-subscripts        \
+		 -Wcomment                \
+		 -Wextra                  \
+		 -Wformat-extra-args	  \
+		 -Wimplicit               \
+		 -Wmissing-braces	  \
+		 -Wmissing-declarations   \
+		 -Wmissing-noreturn	  \
+		 -Wmissing-prototypes     \
+		 -Wnested-externs	  \
+		 -Wold-style-definition   \
+		 -Wparentheses            \
+		 -Wpointer-arith	  \
+		 -Wredundant-decls	  \
+		 -Wsequence-point	  \
+		 -Wshadow                 \
+		 -Wsign-compare	   	  \
+		 -Wstrict-aliasing	  \
+		 -Wstrict-prototypes	  \
+		 -Wuninitialized          \
+		 -Wunused                 \
+		 -Wwrite-strings          \
+		 -Wunused-macros
+
+#		 -Wconversion             
+
+PROC		= -m$(ARCH) -std=gnu99
+CFLAGS		= $(MFLAGS) $(WFLAGS) -Dlint -c -O2 $(CPUFLAG) -I. -I$(OLSRC)
+ARFLAG		= 
+DEBUG		= # -g		# debug binary file
+RES		= cygwin.res
+
+# --------------------------------------------------------------------------
+
+OBJECTS		= \
+		basic.o      \
+		buffer.o     \
+		charutil.o   \
+		dirent.o     \
+		display.o    \
+		emacs.o      \
+		file.o       \
+		filecomp.o   \
+		fileio.o     \
+		indent.o     \
+		line.o       \
+		main.o       \
+		minibuf.o    \
+		mlisp.o      \
+		mouse.o      \
+		nexterr.o    \
+		ntterm.o     \
+		openlisp.o   \
+		options.o    \
+		random.o     \
+		region.o     \
+		search.o     \
+		spawn.o      \
+		unicode.o    \
+		version.o    \
+		window.o     \
+		word.o  
+
+LDLIBS		= \
+		-luser32     \
+		-lshell32    \
+		-lgdi32      \
+		-lws2_32     \
+		-lcomctl32   \
+		-lcomdlg32
+
+all:	ed.exe emacs.hlp
+
+ed.exe:	$(OBJECTS) $(RES) $(OLLIB)
+	@$(CC) $(DEBUG) -o ed.exe $(OBJECTS) $(LDLIBS) $(OLLIB)
+	@echo Done.
+
+cygwin.res: ntterm.rc winterm0.ico
+	@windres ntterm.rc cygwin.res
+
+emacs.hlp: emacs.rtf emacs.hpj
+	@$(HC) emacs.hpj
+
+.c.o:
+	@echo $<
+	@$(CC) $(CFLAGS) -c $<
+
+#	OpenLisp library if needed
+
+$(LISPLIB): $(OLDEP)
+	@echo Compiling OpenLisp library ..
+	@cd $(OLSRC)
+	-@del $(OLSRC)\*.o  
+	@$(MAKE) -nologo -f makefile.nt $(LISPLIB)
+	@cd $(EMACSSRC)
+	@copy $(OLSRC)\$(LISPLIB) . > nul
+	@for %I in ($(LIBFILES)) do @copy $(OLLSP)\%I.lsp $(EMLSP) > nul
+	@for %I in ($(LIBFILES)) do @copy $(OLLSP)\%I.lsp $(EMLIB) > nul
+
+#	EmACT library
+
+$(EMACSLIB):	$(OBJECTS)
+	@echo Building $(EMACSLIB) ..
+	@if exist $(EMACSLIB) del $(EMACSLIB) > nul
+	@$(AR) $(ARFLAGS) $(EMACSLIB) $(OBJECTS)
+	@if exist $(OLDIR)\src\openlisp.h copy $(EMACSLIB) $(OLDIR)\src > nul

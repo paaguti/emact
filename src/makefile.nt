@@ -1,0 +1,202 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2008/04/06
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_OPENLISP	to use with OpenLisp language.
+
+#	Assumes that we have <install-dir>\emacs and <install-dir>\openlisp
+
+EMACSDIR=..\..\emacs
+OLDIR	=..\..\openlisp
+
+EMACSSRC=$(EMACSDIR)\src
+OLSRC	=$(OLDIR)\src
+
+!if "$(CPU)" == "IA64"
+CPUFLAG		= -As64 -Wp64 -G2 # G2=Itanium2
+ARCH		= 64
+LDARCH		= IA64
+HC		= echo Missing hcrtf -xn
+!endif
+
+!if "$(CPU)" == "AMD64"
+CPUFLAG 	= -Wp64
+ARCH		= 64
+LDARCH		= AMD64
+HC		= echo Missing hcrtf -xn
+!endif
+
+!if "$(CPU)" == "i386" || "$(CPU)" == ""
+CPUFLAG 	= # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
+ARCH		= 32
+LDARCH		= x86
+HC		= hcrtf -xn
+!endif
+
+!if "$(CHARSET)"  == "_WIDECHARS"
+CHARLIB		= u
+STARTUP		= -subsystem:windows -entry:wWinMainCRTStartup
+UNICODE		= -D_UNICODE
+!else
+CHARLIB		= a
+STARTUP		= -subsystem:windows -entry:WinMainCRTStartup
+UNICODE		=
+!endif
+
+#	Tools
+
+CC	= cl
+AR	= lib
+
+CLEANC	= # -Tp
+
+!if	"$(OS)" != ""
+SCOPY	= @copy
+!else
+SCOPY	= copy
+!endif
+
+#	Product libraries
+
+EMACSLIB= emmt$(CHARLIB)$(ARCH).lib
+LISPLIB	= olmt$(CHARLIB)$(ARCH).lib
+
+#	Lisp files and directory
+
+EMLIB	= c:\usr\lib\emacs
+EMLSP	= $(EMACSDIR)\lib
+OLLSP	= $(OLDIR)\lib
+LIBFILES= defclass defstruc stderror flet pretty sort startup setf
+
+#	You must comment the next 3 lines if you want the standard version
+
+OLFLAG	= -D_OPENLISP
+OLDEP	= $(OLSRC)\openlisp.h $(OLSRC)\defs.h $(OLSRC)\proto.h $(OLSRC)\README
+OLLIB	= $(LISPLIB)
+EMLISP	= openlisp.obj
+
+#	Compilation flags
+
+MFLAGS	= -D_MLISP -D_DIRECTORY $(OLFLAG) -D_WINCONSOLE
+DEBUG	= -MTd -Zi -D_WINDEBUG
+RELEASE	= -MT
+CLEANC	= # -Tp
+#CFLAGS	= $(MFLAGS) -nologo $(DEBUG) -Ox -Gs -GF -W3 $(CPUFLAG) -I. -I$(OLSRC)
+CFLAGS	= $(MFLAGS) -nologo $(RELEASE) -Ox -Gs -GF -W4 $(CPUFLAG) -I. -I$(OLSRC)
+ARFLAG	= -nologo
+LDLIBS	= user32.lib advapi32.lib shell32.lib gdi32.lib wsock32.lib \
+	  comctl32.lib comdlg32.lib
+LDFLAGS	= /link /subsystem:windows
+RES	= ntterm.res
+
+KERNEL		= basic.obj	\
+		  buffer.obj	\
+		  charutil.obj	\
+		  dirent.obj	\
+		  display.obj	\
+		  emacs.obj	\
+		  file.obj	\
+		  filecomp.obj	\
+		  fileio.obj	\
+		  indent.obj	\
+		  line.obj	\
+		  main.obj	\
+		  minibuf.obj	\
+		  mouse.obj	\
+		  nexterr.obj	\
+		  options.obj	\
+		  random.obj	\
+		  region.obj	\
+		  search.obj	\
+		  spawn.obj	\
+		  unicode.obj	\
+		  version.obj	\
+		  window.obj	\
+		  word.obj
+
+LISPOBJECTS	= mlisp.obj	\
+		  openlisp.obj
+
+TERMINAL	= ntterm.obj
+
+ALLOBJECTS	= $(KERNEL)	\
+		  $(LISPOBJECTS)\
+		  $(TERMINAL)
+
+OBJECTS		= $(KERNEL)	\
+		  $(EMLISP)	\
+		  $(TERMINAL)
+
+all:	ed.exe emacs.hlp $(LISPLIB)
+
+ed.exe:	$(OBJECTS) $(RES) $(OLLIB)
+	@$(CC) -nologo $(DEBUG) -Feed.exe \
+		$(OBJECTS) $(LDLIBS) $(OLLIB) $(RES) $(LDFLAGS)
+	@echo Done.
+
+nolib:	$(OBJECTS) $(RES)
+	@$(CC) -nologo $(DEBUG) -Feed.exe $(OBJECTS) $(LDLIBS) $(OLLIB) $(RES)
+	@echo Done.
+
+ntterm.res: ntterm.rc winterm0.ico
+	@rc -r -fo ntterm.res -D_MICROSOFT $(MFLAGS) -d_NT ntterm.rc
+
+emacs.hlp: emacs.rtf emacs.hpj
+#	@emsed -e "s/[\\][\*][\\]panose [a-f0-9]*}//g" emacs.rtf > emacshlp.rtf
+	@-$(HC) emacs.hpj 2> nul
+#	-@del emacshlp.rtf > nul
+
+.c.obj:
+	@$(CC) $(CFLAGS) -c $(CLEANC) $<
+
+#	OpenLisp library if needed
+
+$(LISPLIB): $(OLDEP)
+	@echo Compiling OpenLisp library ..
+	@cd $(OLSRC)
+	-@del $(OLSRC)\*.obj
+	@$(MAKE) -nologo -f makefile.nt $(LISPLIB)
+	@cd $(EMACSSRC)
+	@copy $(OLSRC)\$(LISPLIB) . > nul
+	@for %I in ($(LIBFILES)) do $(SCOPY) $(OLLSP)\%I.lsp $(EMLSP) > nul
+	@for %I in ($(LIBFILES)) do $(SCOPY) $(OLLSP)\%I.lsp $(EMLIB) > nul
+
+#	EmACT library
+
+$(EMACSLIB):	$(OBJECTS)
+	@echo Building $(EMACSLIB) ..
+	@if exist $(EMACSLIB) del $(EMACSLIB) > nul
+	@$(AR) -out:$(EMACSLIB) $(ARFLAG) $(OBJECTS)
+
+$(EMACSLIB)laternate:	$(OBJECTS)
+	@echo Building $(EMACSLIB) ..
+	@if exist $(EMACSLIB) del $(EMACSLIB) > nul
+	@$(AR)	-out:$(EMACSLIB) $(ARFLAG) basic.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) buffer.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) dirent.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) display.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) emacs.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) file.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) filecomp.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) fileio.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) indent.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) line.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) llemacs.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) minibuf.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) mlisp.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) mouse.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) nexterr.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) ntterm.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) openlisp.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) options.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) random.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) rawmode.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) region.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) search.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) spawn.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) version.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) window.obj
+	@$(AR)	     $(EMACSLIB) $(ARFLAG) word.obj

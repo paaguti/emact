@@ -1,0 +1,28 @@
+NAME		EmACT
+
+DESCRIPTION	'EmACT Editor'
+
+EXETYPE		WINDOWS
+
+STUB		'WINSTUB.EXE'
+
+CODE		PRELOAD MOVEABLE
+DATA		PRELOAD MOVEABLE MULTIPLE
+
+HEAPSIZE	0x4000
+STACKSIZE	0x4000
+
+EXPORTS
+		MainWndProc		@1
+		About			@2
+		GetTextDlg		@3
+		ReplaceDlg		@4
+		EmacsEditWndProc	@5
+		ParamsDlgProc		@6
+		BarWndProc		@7
+		fBarWndProc		@8
+		AbortProc		@9
+		AbortDlg		@10
+		SignOnProc		@11
+		WarningDlg		@12
+

@@ -1,0 +1,54 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2009/05/01
+#
+# Optional flags :
+#
+#	-D_ANSITERM	to use with ANSI terminal
+#	-D_DIRECTORY	to use with file completion
+#	-D_MLISP	to use with user defined macros.
+#	-D_MOUSE	to use with Microsoft mouse.
+
+CC	= cl
+MODEL	= c
+LINK	= /Far /PackCode /NoIgnoreCase /NoDefault
+MFLAGS	= -D_DIRECTORY -D_MLISP -D_OS2
+CFLAGS	= -M$(MODEL) $(MFLAGS) -Os -Gs -nologo -Zi -W3 -Fb -I.
+
+OBJECTS	= ansi.obj     \
+	  basic.obj    \
+	  buffer.obj   \
+	  charutil.obj \
+	  dirent.obj   \
+	  display.obj  \
+	  emacs.obj    \
+	  file.obj     \
+	  filecomp.obj \
+	  fileio.obj   \
+	  ibmterm.obj  \
+	  indent.obj   \
+	  line.obj     \
+	  llemacs.obj  \
+	  main.obj     \
+	  minibuf.obj  \
+	  mlisp.obj    \
+	  mouse.obj    \
+	  nexterr.obj  \
+	  openlisp.obj \
+	  options.obj  \
+	  os2term.obj  \
+	  random.obj   \
+	  rawmode.obj  \
+	  region.obj   \
+	  search.obj   \
+	  spawn.obj    \
+	  unicode.obj  \
+	  version.obj  \
+	  window.obj   \
+	  word.obj
+
+ed.exe:	$(OBJECTS)
+	@link $(LINK) @link.os2, ed,,os2 $(MODEL)libcep;
+	@bind ed.exe
+
+.c.obj:
+	@$(CC) $(CFLAGS) -c $<
