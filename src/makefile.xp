@@ -19,7 +19,7 @@ CPUFLAG		= -G2 # G2=Itanium2
 ARCH		= 64
 LDARCH		= IA64
 HC		= echo Missing hcrtf -xn
-LIBEXTRA	= bufferoverflowU.lib
+LIBEXTRA	= # bufferoverflowU.lib
 !endif
 
 !if "$(CPU)" == "AMD64"
@@ -27,7 +27,7 @@ CPUFLAG 	= -GS- -D_SECURE_SCL=0
 ARCH		= 64
 LDARCH		= AMD64
 HC		= if exist ..\hc\hcrtf ..\hc\hcrtf -xn
-LIBEXTRA	= bufferoverflowU.lib
+LIBEXTRA	= # bufferoverflowU.lib
 !endif
 
 !if "$(CPU)" == "i386" || "$(CPU)" == ""
