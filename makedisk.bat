@@ -4,7 +4,7 @@ rem	Build EmACT distribution disk. 2010/05/10.
 setlocal
 set EMACSDIR=c:\usr\jullien\emacs
 set EMACS_MAJOR=2
-set EMACS_MINOR=55
+set EMACS_MINOR=56
 set EMACS_RELEASE=0
 set VERSION=%EMACS_MAJOR%-%EMACS_MINOR%
 set ARCHIVE=emact-%EMACS_MAJOR%.%EMACS_MINOR%.%EMACS_RELEASE%
@@ -38,6 +38,10 @@ goto main
  mkdir %TMPDIR%\lib						> nul
  mkdir %TMPDIR%\src						> nul
  mkdir %TMPDIR%\src\pocket					> nul
+ rem fix permissions
+ pushd %TMPDIR%\..
+ chmod -R a+rwx *
+ popd
  goto :eof
 
 :updatelibs
@@ -212,6 +216,11 @@ rem
  copy src\emacs.reg		%TMPDIR%\src\emacs.reg		> nul
  copy src\emacs.rtf		%TMPDIR%\src\emacs.rtf		> nul
  copy src\emacs.hpj		%TMPDIR%\src\emacs.hpj		> nul
+ rem fix permissions
+ pushd %TMPDIR%
+ chmod -R a+r *
+ chmod a+rwx *.exe
+ popd
  goto :eof
 
 :makezip
