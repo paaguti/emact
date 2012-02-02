@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: buffer.c,v 1.11 2009/05/02 12:25:43 jullien Exp $";
+static	char rcsid[] = "$Id: buffer.c,v 1.13 2012-02-02 09:13:58 jullien Exp $";
 #endif
 
 /*
@@ -613,12 +613,13 @@ usebuffer( void )
 	complete.fn = bufmatch;
 
 	bp1 = bheadp;
-	for( bp = bheadp ; bp != NULL ; bp = bp->b_bufp )
+	for( bp = bheadp ; bp != NULL ; bp = bp->b_bufp ) {
 		if( bp->b_count == 0 ) {
 			/* Not on screen yet.	*/
 			bp1 = bp;
 			break;
 		}
+	}
 
 	(void)emstrcpy( prompt, ECSTR("Switch to buffer: (default ") );
 	(void)emstrcat( prompt, bp1->b_bname );
@@ -910,7 +911,7 @@ killbuffer( void )
 	if( (s = WDGedit( prompt, bufn, NBUFN )) == ABORT )
 		return( s );
 
-	if( (s == NIL) )
+	if( s == NIL )
 		bp = curbp;
 	else	if( (bp = bfind( bufn, NIL, 0, 0 )) == NULL )
 			return( NIL );

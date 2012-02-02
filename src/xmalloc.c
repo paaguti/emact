@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: xmalloc.c,v 1.3 2008/04/04 18:42:31 jullien Exp $";
+static	char rcsid[] = "$Id: xmalloc.c,v 1.5 2012-02-02 09:13:58 jullien Exp $";
 #endif	/* lint */
 
 /*
@@ -52,6 +52,19 @@ static	char rcsid[] = "$Id: xmalloc.c,v 1.3 2008/04/04 18:42:31 jullien Exp $";
  */
 
 #if	!defined( _XALLOC_DEFAULT )
+
+#if	defined(_WIN32)      || \
+	defined(_WIN64)      || \
+	defined(__MINGW32__) || \
+	defined(__MINGW64__)
+#define	_WINDOWS_SOURCE
+#if	!defined( _CRT_SECURE_NO_DEPRECATE )
+#define	_CRT_SECURE_NO_DEPRECATE	1
+#endif
+#if	!defined( _CRT_NONSTDC_NO_DEPRECATE )
+#define	_CRT_NONSTDC_NO_DEPRECATE	1
+#endif
+#endif	/* _WIN32 || _WIN64 || __MINGW32__ || __MINGW64__ */
 
 #if	defined( _WINDOWS ) || defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>
@@ -123,7 +136,9 @@ int	_traceflag = 0;
 
 static	void	_ftrace( const char* o, size_t s, void* p );
 static	FILE*	_tracefd = NULL;
-static	FILE*	_logfd   = stderr;
+static	FILE*	_logfd   = (FILE *)NULL;
+
+#define	INSURE_LOG	if( _logfd == (FILE *)NULL ) _logfd = stderr
 
 #define	trace( o, s, p )	_ftrace( o, s, p )
 #define	traceon()		_traceflag = 1
@@ -269,7 +284,8 @@ static void
 _xmalloc_error( const char *e, MHEAD *p, const char *f, unsigned int l )
 {
 #if	defined( _XALLOC_TRACE )
-	if( p && p->mh_file )
+	if( p && p->mh_file ) {
+		INSURE_LOG;
 		if( p->mh_alloc == ISFREE || p->mh_alloc == ISALLOC )
 			(void)fprintf(
 				       _logfd,
@@ -278,11 +294,13 @@ _xmalloc_error( const char *e, MHEAD *p, const char *f, unsigned int l )
 				       p->mh_line
 				     );
 		else	(void)fprintf( _logfd, "Block at address %p\n\r", p );
+	}
 #else	/* _XALLOC_TRACE */
 	_xmalloc_unused( &p );
 #endif	/* _XALLOC_TRACE */
 
 #if	defined( _XALLOC_DEBUG )
+	INSURE_LOG;
 	(void)fprintf( _logfd, "Assertion '%s' fails: %s(%d)\n\r", e, f, l );
  	(void)fflush( _logfd ); /* just in case user buffered it */
 #else	/* _XALLOC_DEBUG */
@@ -610,7 +628,8 @@ xmalloc_find_untagged( void )
 
 	for( i = 0 ; i < MAXBLOCK ; ++i )
 	     for( p = nextused[i] ; p ; p = p->mh_next )
-		  if( p->mh_pad1 == (_byte)0 )
+		     if( p->mh_pad1 == (_byte)0 ) {
+		      INSURE_LOG;
 		      if( p->mh_file )
 			   (void)fprintf(
 			   		  _logfd,
@@ -625,6 +644,7 @@ xmalloc_find_untagged( void )
 					  p->mh_nbytes,
 					  unknown
 					);
+		     }
 }
 
 #endif	/* _XALLOC_TRACE */
@@ -980,6 +1000,8 @@ xmalloc_stats_print()
 	XMALLOC_STATS	v;
 	int		i;
 
+	INSURE_LOG;
+
 	(void)fprintf(_logfd,"         | Size     | Free     | Used     |\n\r");
 
 	for( i = 0 ; i < (MAXBLOCK-1) ; i++ ) {
@@ -1039,6 +1061,8 @@ xmalloc_mem_free( void )
 _XIMPORT void
 xmalloc_set_log( const char *file )
 {
+	INSURE_LOG;
+
 	if( _logfd != stderr ) {
 		(void)fflush( _logfd );
 		(void)fclose( _logfd );
@@ -1048,8 +1072,7 @@ xmalloc_set_log( const char *file )
 		_logfd = fopen( file, "w" );
 	else	_logfd = (FILE*)NULL;
 
-	if( _logfd == (FILE*)NULL )
-		_logfd = stderr;
+	INSURE_LOG;
 }
 
 _XIMPORT void
@@ -1084,6 +1107,8 @@ _xmalloc_check_leaks( const char *file, int line )
 	unsigned long	diffs = xmalloc_mem_used() - _memory_saved;
 
 	if( diffs ) {
+		INSURE_LOG;
+
 		(void)fprintf(
 			       _logfd,
 			       "LEAKS: %s(%d) found %lu bytes leaks",
@@ -1140,7 +1165,7 @@ sysgetmem( size_t n )
 {
 	void	*p = sbrk( n + _XALLOC_ALIGN );
 
-	if( (p == (char *)-1) )
+	if( p == (char *)-1 )
 		return( NULL );
 
 	return( (void *)ALIGN( p ) );
@@ -1161,11 +1186,16 @@ static	void *
 sysgetmem( size_t n )
 {
 	HANDLE	hMem;
+	DWORD	memFlag;
 
-	if( _allocHeap == 0 )
+	if( _allocHeap == 0 ) {
 		_allocHeap = HeapCreate( 0, INITIAL_SIZE, 0 );
+		if( _allocHeap == 0 )
+			return( NULL );
+	}
 
-	hMem = HeapAlloc( _allocHeap, 0, (DWORD)n + _XALLOC_ALIGN );
+	memFlag = HEAP_ZERO_MEMORY;
+	hMem = HeapAlloc( _allocHeap, memFlag, (DWORD)n + _XALLOC_ALIGN );
 
 	if( hMem == (HANDLE)0 )
 		return( NULL );
