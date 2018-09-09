@@ -2,7 +2,7 @@
 ;;;; Title:     defclass.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: defclass.lsp,v 1.31 2010-06-20 08:22:14 jullien Exp $"
+;;;; CVS:       "$Id: defclass.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;; DEFCLASS package.
 
@@ -14,21 +14,20 @@
 
 (require "setf")
 
-(in-package "openlisp")
+(in-package #:openlisp)
 
-(export '("defclass") "islisp")
-(export '("*initarg-as-keywords*" "slot-unbound" "slot-missing") "openlisp")
+(export '(*initarg-as-keywords* slot-unbound slot-missing))
 
-(defpackage "defclass"
-   (:use    "openlisp"))
+(defpackage #:defclass
+  (:use #:openlisp))
 
-(in-package "defclass")
+(in-package #:defclass)
 
 (defglobal *initarg-as-keywords* ())    ;; ISLISP standard (CLtL is t)
 
 ;;; The DEFCLASS macro.
 
-(defmacro defclass (name sc-list slot-spec &rest class-opt)
+(defmacro islisp:defclass (name sc-list slot-spec &rest class-opt)
    ;; Define a new class,  just a wrapper to the real %expand-defclass
    ;; function
    (%expand-defclass name sc-list slot-spec class-opt))
@@ -48,9 +47,9 @@
 
 ;;; Helper functions
 
-(defconstant *slot-option-keywords*
-             ;; slot keywords that define generic functions
-             '(:accessor :reader :writer :boundp))
+(defconstant +slot-option-keywords+
+  ;; slot keywords that define generic functions
+  '(:accessor :reader :writer :boundp))
 
 (defun %expand-defclass (name sc-list slot-spec class-opt)
    ;; Check the name
@@ -208,7 +207,7 @@
    (cond
          ((null slot)
           ())
-         ((member (car slot) *slot-option-keywords*)
+         ((member (car slot) +slot-option-keywords+)
           (%compute-direct-slot-declarations (cddr slot)))
          (t (cons (car slot) (%compute-direct-slot-declarations (cdr slot))))))
 
@@ -218,7 +217,7 @@
    (cond
          ((null slot)
           gf)
-         ((member (car slot) *slot-option-keywords*)
+         ((member (car slot) +slot-option-keywords+)
           (%compute-generic-functions (cddr slot) (cons (cadr slot) gf)))
          (t (%compute-generic-functions (cdr slot) gf))))
 
@@ -227,7 +226,7 @@
    (cond
          ((null slot)
           ())
-         ((and (member (car slot) *slot-option-keywords*)
+         ((and (member (car slot) +slot-option-keywords+)
                (member (cadr slot) gf))
           (%compute-slot-no-conflitcs (cddr slot) gf))
          (t (cons (car slot) (%compute-slot-no-conflitcs (cdr slot) gf)))))
@@ -321,7 +320,7 @@
                       (push `(defsetf ,val ,(%compute-name "%setf-" val))
                             accessors))
                      (t (error "defclass: invalid slot option ~a~%" key))))
-        (list (or initform ''|#<unbound-value>|)
+        (list (or initform ''system::|#<unbound-value>|)
               initarg
               (append
                       (%compute-missing-generic-functions accessors)

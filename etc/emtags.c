@@ -463,9 +463,12 @@ int	f;              /* f == TRUE when function */
 
         if( (np = (NODE *)malloc( sizeof( NODE ))) == NULL ) {
 		fprintf( stderr, "emtags: too many entries to sort\n" );
+/*
 		put_entries( head );
 		free_tree( head );
 		head = np = (NODE *) malloc(sizeof (NODE));
+*/
+		exit( 2 );
 	}
         if( xflag == 0 && !strcmp( name, "main" ) ) {
 		fp = rindex( curfile, '/' );
@@ -474,7 +477,7 @@ int	f;              /* f == TRUE when function */
                 else	fp++;
 		sprintf( nbuf, "M%s", fp );
 		fp = rindex( nbuf, '.' );
-		if( fp && fp[2] == 0 )
+		if( fp != 0 && fp[2] == 0 )
 			*fp = 0;
 		name = nbuf;
 	}

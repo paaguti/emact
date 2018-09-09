@@ -2,29 +2,37 @@
 ;;;; Title:     pretty.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: pretty.lsp,v 1.14 2009-11-22 08:05:03 jullien Exp $"
+;;;; CVS:       "$Id: pretty.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;; Trivial pretty-printer
 
 (require "setf")
 
-(export '("pretty" "pprint") "openlisp")
+(in-package #:openlisp)
 
-(defpackage "pretty"
-   (:use    "openlisp"))
+(export '(pretty pprint))
 
-(in-package "pretty")
+(defpackage #:pretty
+   (:use    #:openlisp))
+
+(in-package #:pretty)
 
 (defglobal *max-pos*  79)
 (defglobal *pos*       0)
 (defglobal *ppstream* ())
 
-(set-property 2 'lambda         'special)
-(set-property 2 'tagbody        'special)
-(set-property 4 'case-using     'special)
-(set-property 6 'unwind-protect 'special)
-(set-property 6 'return-from    'special)
-(set-property 7 'dynamic-let    'special)
+(set-property 2 'lambda                'special)
+(set-property 2 'tagbody               'special)
+(set-property 4 'case-using            'special)
+(set-property 6 'unwind-protect        'special)
+(set-property 6 'return-from           'special)
+(set-property 7 'dynamic-let           'special)
+(set-property 4 'with-open-input-file  'special)
+(set-property 4 'with-open-output-file 'special)
+(set-property 4 'with-open-io-file     'special)
+(set-property 4 'with-handler          'special)
+(set-property 4 'with-standard-input   'special)
+(set-property 4 'with-standard-output  'special)
 
 ;; Main functions
 
@@ -83,8 +91,6 @@
         (setq res (get-output-stream-string str))
         (close str)
         (length res)))
-
-(defglobal %pp-chars "@abcdefghijklmnopqrstuvwxyz")
 
 (defun %pp-object (x cst)
    ;; pretty print a single object

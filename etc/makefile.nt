@@ -9,14 +9,18 @@
 CC	= cl
 LD	= link
 
-!if ("$(CPU)" == "IA64")
+!if "$(CPU)" == ""
+CPU		= i386
+!endif
+
+!if "$(CPU)" == "IA64"
 CPUFLAG		= -As64 -Wp64 -G2 # G2=Itanium2
 ARCH		= 64
 LDARCH		= IA64
 HC		= echo Missing hcrtf -xn
 !endif
 
-!if ("$(CPU)" == "AMD64")
+!if "$(CPU)" == "AMD64"
 CPUFLAG 	= -Wp64
 ARCH		= 64
 LDARCH		= AMD64
@@ -24,11 +28,12 @@ HC		= echo Missing hcrtf -xn
 LIBEXTRA	= bufferoverflowU.lib
 !endif
 
-!if ("$(CPU)" == "i386" || "$(CPU)" == "")
-CPUFLAG 	= -G6 # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
+!if "$(CPU)" == "i386"
+CPUFLAG 	= # -G6 # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
 ARCH		= 32
 LDARCH		= x86
 HC		= hcrtf -xn
+ANALYZE		= # -analyze:WX-
 !endif
 
 #	Flags:
@@ -36,7 +41,7 @@ HC		= hcrtf -xn
 DEFS	= -D_ISO -DWIN32 -D_DIRECTORY -D_NT
 OPTIM	= -Ox -Ob2 $(CPUFLAG)
 CHECK	= # -Zi
-CFLAGS	= -nologo $(CHECK) $(DEFS) $(OPTIM) -W3 -Ox -I. -I..\src
+CFLAGS	= -nologo $(ANALYZE) $(CHECK) $(DEFS) $(OPTIM) -W3 -Ox -I. -I..\src
 ARGV	= setargv.obj
 LIBS	= $(LIBEXTRA)
 

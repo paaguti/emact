@@ -2,7 +2,7 @@
 ;;;; Title:     defstruct.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: defstruc.lsp,v 1.27 2010-06-20 12:43:43 jullien Exp $"
+;;;; CVS:       "$Id: defstruc.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;; DEFSTRUCT package.
 
@@ -12,14 +12,14 @@
 
 (require "setf")
 
-(in-package "openlisp")
+(in-package #:openlisp)
 
-(export '("defstruct" "structurep" "make"))
+(export '(defstruct structurep make))
 
-(defpackage "defstruct"
-   (:use    "openlisp"))
+(defpackage #:defstruct
+  (:use #:openlisp))
 
-(in-package "defstruct")
+(in-package #:defstruct)
 
 ;;; The DEFSTRUCT macro.
 

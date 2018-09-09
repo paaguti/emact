@@ -2,7 +2,7 @@
 ;;;; Title:     flet.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: flet.lsp,v 1.13 2010-06-12 12:45:42 jullien Exp $"
+;;;; CVS:       "$Id: flet.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;;
 ;;; FLET / LABELS Special Forms (written as MACRO).
@@ -15,14 +15,12 @@
 
 (require "setf")
 
-(export '("flet" "labels") "islisp")
+(defpackage #:flet
+   (:use    #:openlisp))
 
-(defpackage "flet"
-   (:use    "openlisp"))
+(in-package #:flet)
 
-(in-package "flet")
-
-(defmacro flet (lfun &rest body-form)
+(defmacro islisp:flet (lfun &rest body-form)
   ;; flet Special Form.
   ;; the scope of a function identifier is only the body-form.
   `(let ,(mapcar (lambda (x)
@@ -30,7 +28,7 @@
                  lfun)
         ,@(%fl-body 'flet body-form (mapcar #'car lfun))))
 
-(defmacro labels (lfun &rest body-form)
+(defmacro islisp:labels (lfun &rest body-form)
   ;; labels Special Form.
   ;; the scope of a function identifier is the whole labels special
   ;; form (excluding nested scopes, if any).
@@ -59,9 +57,12 @@
    ;; using  lexical  function  list  lfun.  The  first form is never
    ;; expanded. It's used by binding forms such as LET, LET*, DO ...
    (mapcar (lambda (x)
-              (if (atom x)
-                  x
-                  (cons (car x) (%fl-body name (cdr x) lfun))))
+              (cond
+                    ((atom x)
+                     x)
+                    (t
+                     (cons (car x)
+                           (%fl-body name (cdr x) lfun)))))
            form))
 
 (defun %fl-one-form (name f l)
@@ -101,12 +102,25 @@
                        f)))
                ((CASE CASE-USING)
                 ;; expand  the value and the body forms.  Case values
-                ;; are leave unmodified.
-                `(,op ,(%fl-one-form name (cadr f) l)
+                ;; are left unmodified.
+                `(,op
+                      ;; value to compare
+                      ,(%fl-one-form name (cadr f) l)
+                      ;; list of cases
                       ,@(%fl-expand-rest name (cddr f) l)))
                ((COND)
                 `(,op ,@(mapcar (lambda (x)
-                                   (%fl-expand-rest name x l))
+                                   (cond
+                                         ((and (consp x) (symbolp (car x)))
+                                          ;; condition is a symbol that may
+                                          ;; name a label/flet definition,
+                                          ;; only expand rest.
+                                          (cons
+                                           (%fl-one-form name (car x) l)
+                                           (%fl-body name (cdr x) l)))
+                                         (t
+                                          ;; exapand both condition and body.
+                                          (%fl-one-form name x l))))
                                 (cdr f))))
                ((LET LET* DYNAMIC-LET)
                 ;; expand initialization values and body.

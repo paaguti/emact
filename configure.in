@@ -166,7 +166,7 @@ LOCAL_DEFS=""
 LOCAL_LIBS=""
 
 case "${CC}" in
- gcc*)
+ gcc*|clang)
    WARNINGS="-Dlint -Wall -Wstrict-prototypes -Wshadow"
    OPTIMS="$OPTIMS -finline-functions -fomit-frame-pointer -funroll-loops"
    ;;

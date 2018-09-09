@@ -4,7 +4,7 @@ rem	Build EmACT distribution disk. 2010/05/10.
 setlocal
 set EMACSDIR=c:\usr\jullien\emacs
 set EMACS_MAJOR=2
-set EMACS_MINOR=56
+set EMACS_MINOR=58
 set EMACS_RELEASE=0
 set VERSION=%EMACS_MAJOR%-%EMACS_MINOR%
 set ARCHIVE=emact-%EMACS_MAJOR%.%EMACS_MINOR%.%EMACS_RELEASE%
@@ -61,6 +61,7 @@ rem
  copy ChangeLog			%TMPDIR%\ChangeLog		> nul
  copy COPYING			%TMPDIR%\COPYING		> nul
  copy README			%TMPDIR%\README			> nul
+ copy README.win		%TMPDIR%\README.win		> nul
  copy convunix			%TMPDIR%\convunix		> nul
  copy configure			%TMPDIR%\configure		> nul
  copy configure.in		%TMPDIR%\configure.in		> nul
@@ -220,6 +221,7 @@ rem
  pushd %TMPDIR%
  chmod -R a+r *
  chmod a+rwx *.exe
+ chmod a+rwx configure
  popd
  goto :eof
 
@@ -230,6 +232,7 @@ rem
  copy a:\%ARCHIVE%.zip %EMACSDIR% > nul
  copy c:\usr\bin\unzip.exe a:\    > nul
  cd %EMACSDIR%
+ goto :eof
 
 :maketar
  if exist %ARCHIVE%.tar del %ARCHIVE%.tar
@@ -261,6 +264,11 @@ rem
  copy ChangeLog            ftp > nul
  goto :eof
 
+:sourceforge
+ zip -9 EmACT-v%EMACS_MAJOR%.%EMACS_MINOR%.%EMACS_RELEASE%-Windows-bin.zip ^
+     emacsxp*.exe emacs.hlp README README.win
+ goto :eof
+
 :clean
  rmdir %TMPDIR% /s/q
  goto :eof
@@ -274,6 +282,7 @@ rem
  call :maketmp
  call :copyfiles
  call :maketar
+ call :sourceforge
  call :updatesite
  call :clean
 

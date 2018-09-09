@@ -2,14 +2,14 @@
 ;;;; Title:     sort.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: sort.lsp,v 1.14 2009-09-19 11:28:33 jullien Exp $"
+;;;; CVS:       "$Id: sort.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;; SORT:  various sorting functions on sequences.
 
-(defpackage "sort"
-   (:use "openlisp"))
+(defpackage #:sort
+   (:use #:openlisp))
 
-(in-package "sort")
+(in-package #:sort)
 
 ;;;
 ;;; Special sort if argument is a list.
@@ -83,7 +83,7 @@
 ;;;
 
 (defun %make-sort-function (sort-name compare-function)
-   (let ((aux (intern (string-append "aux-" (symbol-name sort-name)) "sort")))
+   (let ((aux (intern (string-append "aux-" (symbol-name sort-name)) :sort)))
        `(progn
 
            (defun ,sort-name (l)
@@ -131,9 +131,9 @@
 ;;; Standard predefined sort functions:
 ;;;
 
-(in-package "openlisp")
+(in-package #:openlisp)
 
-(export '("sort" "make-specialized-sort-function" "sortn" "sortl"))
+(export '(sort make-specialized-sort-function sortn sortl))
 
 (defun sort (l fn)
    ;; use %sort-list if argument is a list, %qsort otherwise.

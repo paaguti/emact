@@ -110,8 +110,8 @@
         (setq compiler-name              "cl")    ;; Microsoft C compiler
         (setq confirm-unsaved-buffer     t)       ;; Default GNU behavior
         (setq date-completion            t)       ;; Change the date on save.
-        (setq display-43-lines           t)       ;; Obsolete, use screen-XXXX
-        (setq fast-redisplay             t)       ;; For very OLD PCs
+;        (setq display-43-lines           t)       ;; Obsolete, use screen-XXXX
+;        (setq fast-redisplay             t)       ;; For very OLD PCs
         (setq foreground-color           3)       ;; Light grey
         (setq fill-prefix                "")      ;; Default fill prefix
         (setq fill-column                70)      ;; Default fill column

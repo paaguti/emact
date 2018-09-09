@@ -444,7 +444,7 @@ execute( char *file )
 			c = p2[1];
 			do	{
 				if( (*p1 != c) && (!iflag || (c ^ *p1) != ' '
-					|| letterp(c) != letterp(*p1)))
+				   || letterp((int)c) != letterp((int)*p1)))
 					continue;
 				if( advance( p1, p2 ) )
 					goto found;
@@ -542,14 +542,14 @@ advance( char *alp, char *aep )
 		case CBRC:
 			if( lp == expbuf )
 				continue;
-			if(   (uletterp( *lp ) || digitp( *lp ))
-			   && !uletterp( lp[-1] )
-			   && !digitp( lp[-1]) )
+			if(   (uletterp( (int)*lp ) || digitp( (int)*lp ))
+			   && !uletterp( (int)lp[-1] )
+			   && !digitp( (int)lp[-1]) )
 			   	continue;
 			return( 0 );
 
 		case CLET:
-			if( !uletterp( *lp ) && !digitp( *lp ) )
+			if( !uletterp( (int)*lp ) && !digitp( (int)*lp ) )
 				continue;
 			return( 0 );
 

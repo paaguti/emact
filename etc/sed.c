@@ -393,6 +393,7 @@ static	char		TOOREADS[]	 = "Too many reads after line %ld\n";
 static	char		TOOTEXT[]	 = "Too much text: %s\n";
 static	char		TOOWFILE[]	 = "Too many files in w commands\n";
 static	char		UNDEFLABEL[]	 = "Undefined label: %s\n";
+static	char		INTERNALERR[]	 = "Internal error!!\n";
 
 static	unsigned char	bittab[]  = {
 	1,
@@ -508,11 +509,12 @@ char	*argv[];
 			if( eargc-- <= 0 )
 				return( 2 );
 
-			if( (fin = fopen( *++eargv, "r" )) == NULL )
+			if( (fin = fopen( *++eargv, "r" )) == NULL ) {
 				sederror( NOPATTERN, *eargv);
-
-			fcomp();
-			fclose( fin );
+			} else	{
+				fcomp();
+				fclose( fin );
+			}
 			continue;
 
 		case 'e':
@@ -691,15 +693,14 @@ swit:
 
 			goto comploop;
 		case '}':
-			if( rep->ad1 )
+			if( rep->ad1 ) {
 				sederror( NOADDRESS, linebuf );
-
-			if( --idepth < 0 )
+			} else	if( --idepth < 0 ) {
 				sederror( TOOCLOSEBRACES, NULL );
-
-			*cmpend[idepth] = rep;
-
-			rep->ad1 = p;
+			} else	{
+				*cmpend[idepth] = rep;
+				rep->ad1 = p;
+			}
 			continue;
 		case '=':
 			rep->command = EQCOM;
@@ -1918,6 +1919,10 @@ struct reptr	*ipc;
 					p2 = genbuf;
 				}
 			} else	{
+				if( (*p1 - 1) < 0 ) {
+					sederror( INTERNALERR, NULL );
+					exit( 2 );
+				}
 				p3 = trans[*p1-1];
 				while( (*p2++ = *p3++) != 0 )
 					if( p2 >= lcomend ) {

@@ -1,6 +1,13 @@
 RELEASE NOTES:
 --------------
 
+2015/08/23: Switch to VC++ 2015. Other Windows compilers are no more supported.
+2013/02/20: Support CC=clang.
+2012/10/21: Raspberry Pi port.
+2012/10/21: Windows UNICODE Fix.
+2011/09/22: Prepare Windows ARM port.
+2011/09/22: Fix -analyze cl warnings.
+2010/06/26: Change to version 2.56 BETA.
 2010/06/25: Tag 2.55 final.
 2010/06/25: Fix M-Escape not recognized.
 2009/06/20: Change to version 2.55 BETA.

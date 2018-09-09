@@ -2,13 +2,13 @@
 ;;;; Title:    setf.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:      "$Id: setf.lsp,v 1.22 2010-06-20 08:22:14 jullien Exp $"
+;;;; CVS:      "$Id: setf.lsp,v 1.48 2018/07/29 13:16:39 jullien Exp $"
 
 ;;; Generalized set function
 
-(in-package "openlisp")
+(in-package #:openlisp)
 
-(export '("defsetf" "incf" "decf" "pop" "push" "pushnew") "openlisp")
+(export '(defsetf incf decf pop push pushnew))
 
 (defmacro setf (forms val)
    (cond
@@ -29,15 +29,15 @@
                       (setq form   (car forms))
                       (setq exp    (cadr forms))
                       (setq expand forms)
-                      (%setf-macro-expander form val exp expand))
+                      (system::setf-macro-expander form val exp expand))
                      (t
                       (setq form   (if (symbolp expand) expand (car expand)))
                       (setq exp    (cadr expand))
-                      (%setf-macro-expander form val exp expand)))))
+                      (system::setf-macro-expander form val exp expand)))))
          (t
            (error "SETF: unknown form : ~A~%" forms))))
 
-(defun %setf-macro-expander (form val exp expand)
+(defun system::setf-macro-expander (form val exp expand)
    (case form
          ;; Standard for ISLISP
 
@@ -104,9 +104,8 @@
          ((file-mode)       `(set-file-mode  ,val ,exp))
          ((string-type)     `(string-type ,exp ,val))
          ((vector-type)     `(vector-type ,exp ,val))
-
+         ((readtable-case)  `(set-readtable-case ,exp ,val))
          ;; a defsetf or a slot-access ?
-
          (t
            (if (eq (function-type form) 'slot-access)
                ;; slot-access
@@ -144,7 +143,8 @@
          ((symbolp (car rest))
           ;; simple case : (defsetf f g)
           `(set-property ',(car rest) ',access 'setf))
-         (t (error "DEFSETF : bad definition ~A~%" (car rest)))))
+         (t
+          (error "DEFSETF : bad definition ~A~%" (car rest)))))
 
 ;;; Warning  !!  the  following  macros are globally false when place
 ;;; has side effect

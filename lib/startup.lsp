@@ -2,13 +2,13 @@
 ;;;; Title:     startup.lsp
 ;;;; Author:    C. Jullien
 ;;;; License:   New BSD license
-;;;; CVS:       "$Id: startup.lsp,v 1.66 2010-06-20 12:43:43 jullien Exp $"
+;;;; CVS:       "$Id: startup.lsp,v 1.46 2018/07/29 13:16:39 jullien Exp $"
 
 ;;;
 ;;; Startup for standard environnment.
 ;;;
 
-(in-package "openlisp")
+(set-dynamic (find-package '#:openlisp) *package*)
 
 ;;;
 ;;; Define  backconstant as the very first function in startup.lsp so
@@ -29,7 +29,7 @@
 (if (and (not *quiet-mode*) (not system::*compiled-env*))
     (let ((info (machine-info))
           (st   (standard-output)))
-         (format st ";; Copyright (c) 1988-2010.~%")
+         (format st ";; Copyright (c) Eligis - 1988-2018.~%")
          (format st ";; System '~a' (~dbit, ~a CPU) on '~a', ~a.~%"
                  (system-name)
                  (* (system::pointer-size) 8)
@@ -42,7 +42,7 @@
 ;;; ISLISP Level : ISO/IEC 13816:2007(E) ISLISP Programing Language.
 ;;;
 
-(export '("*islisp-version*"))
+(export '(*islisp-version*))
 
 (defconstant *islisp-version* 200710) ;; 10 October 2007
 
@@ -50,7 +50,7 @@
 ;;; Installation directory
 ;;;
 
-(export '("*system-directory*" "*system-path*"))
+(export '(*system-directory* *system-path*))
 
 (defdynamic *system-directory*
    ;; can be something like "/usr/local/openlisp"
@@ -130,11 +130,11 @@
           (list 'system::|@| (read stream)))
          ((#\,)
           (case (preview-char stream)
-              ((#\@) (read-char stream)
-                     (cons 'system::|,@| (read stream)))
-              ((#\.) (read-char stream)
-                     (cons 'system::|,.| (read stream)))
-              (t     (cons 'system::|,|  (read stream)))))
+                ((#\@) (read-char stream)
+                       (cons 'system::|,@| (read stream)))
+                ((#\.) (read-char stream)
+                       (cons 'system::|,.| (read stream)))
+                (t     (cons 'system::|,|  (read stream)))))
          (t
           (error "backquote-dispatcher: unsupported character ~s." char))))
 
@@ -142,7 +142,7 @@
 (set-macro-character #\, #'system::backquote-dispatcher)
 (set-macro-character #\@ #'system::backquote-dispatcher)
 
-(export '("macroexpand" "macroexpand-1" "macroexpand-all"))
+(export '(macroexpand macroexpand-1 macroexpand-all))
 
 (defun macroexpand-1 (x)
    (if (and (consp x) (symbolp (car x)) (macro-function (car x)))
@@ -178,7 +178,7 @@
 ;;; The eval-when Special Form written as macro
 ;;;
 
-(export '("eval-when"))
+(export '(eval-when))
 
 (defmacro eval-when (situations &rest body)
    ;; conditionally execute code from a situation list.
@@ -190,7 +190,7 @@
 ;;; Declarations
 ;;;
 
-(export '("proclaim" "declaim" "declare" "inline" "definline"))
+(export '(proclaim declaim declare inline definline))
 
 (defun proclaim (decl-spec)
    (identity decl-spec))
@@ -211,7 +211,7 @@
 ;;; Stream extensions
 ;;;
 
-(export '("with-output-to-string" "with-input-from-string"))
+(export '(with-output-to-string with-input-from-string))
 
 (defmacro with-output-to-string (stream &rest body)
    `(let ((,(car stream) (create-string-output-stream)))
@@ -223,7 +223,7 @@
          (unwind-protect (progn ,@body)
                          (close ,(car stream)))))
 
-(export '("with-open-input-pipe" "with-open-output-pipe"))
+(export '(with-open-input-pipe with-open-output-pipe))
 
 (defmacro with-open-input-pipe (stream &rest body)
    `(let ((,(car stream) (open-input-pipe ,@(cdr stream))))
@@ -321,7 +321,7 @@
 ;;; Control structures (extensions).
 ;;;
 
-(export '("when" "unless" "dotimes" "dolist" "until" "repeat" "typecase"))
+(export '(when unless dotimes dolist repeat typecase))
 
 (defmacro when (test &rest body)
    (if (and (consp body) (null (cdr body)))
@@ -356,10 +356,8 @@
               (SETQ ,(car %loop) (car ,%dolist-var))
               ,@%body)))
 
-(defmacro until (test &rest body)
-  `(progn (while (null ,test) ,@body) t))
-
 (defmacro repeat (n &rest body)
+   ;; only used by EmACT compat.
    (let ((repeat (gensym)))
        `(for ((,repeat (1- ,n) (1- ,repeat)))
              ((minusp ,repeat) t)
@@ -372,7 +370,7 @@
 ;;; Environment
 ;;;
 
-(export '("defvar" "defkeyword" "get-function-name"))
+(export '(defvar defkeyword get-function-name))
 
 (synonym 'defvar 'defdynamic)
 
@@ -398,7 +396,44 @@
 ;;; Packages
 ;;;
 
-(export '("defpackage" "do-symbols"))
+(export '(defpackage do-symbols do-external-symbols do-all-symbols in-package))
+
+(defmacro in-package (name)
+   ;; define in-package as macro.
+   (cond
+         ((symbolp name)
+          (setq name (symbol-name name)))
+         ((not (stringp name))
+          (error "IN-PACKAGE '~a' is not a package name.~%")))
+   `(if (find-package ,name)
+        (set-dynamic (find-package ,name) *package*)
+        (error "IN-PACKAGE: there is no package with name '~a'.~%" ,name)))
+
+(defun %sort-defpackage-options (options)
+   ;; sort options
+   (let ((new-options options)
+         (key-order   '(
+                        ;; reverse order so that last key comes first.
+                        :export
+                        :import-from :intern
+                        :use
+                        :shadow :shadowing-import-from)))
+        (dolist (key key-order new-options)
+           (dolist (opt options)
+              (when (and (consp opt) (eq (car opt) key))
+                    (setf new-options (cons opt (remove opt new-options))))))))
+
+(defun %add-unique-names (names key l)
+   ;; check that name was not already used or declared.
+   (let ((val nil))
+        (dolist (name names l)
+           (setq name (string name))
+           (setq val  (cassoc name l :test #'equal))
+           (if val
+               (error "DEFPACKAGE: '~a' is already set by ~a keyword.~%"
+                      name
+                      val)
+               (push (cons name key) l)))))
 
 (defmacro defpackage (name &rest options)
    ;; The defpackage macro.
@@ -407,9 +442,26 @@
    (let ((exp       nil)
          (p         nil)
          (nicknames nil)
+         (unique1   nil)
+         (unique2   nil)
          (l         nil))
-        (setq name (string name))
-        (dolist (x options)
+        (setq name (intern (string name) :keyword))
+        ;; Options are processed in the following order:
+        ;;  1. :SHADOW and :SHADOWING-IMPORT-FROM
+        ;;  2. :USE
+        ;;  3. :IMPORT-FROM and :INTERN
+        ;;  4. :EXPORT
+        ;;
+        ;; Tests:
+        ;; * An error is signaled if the same symbol-name argument (in the sense
+        ;;   of comparing names with string=) appears more than once among the
+        ;;   arguments to all the :SHADOW, :SHADOWING-IMPORT-FROM, :IMPORT-FROM,
+        ;;   and :INTERN options. (Collected in unique1).
+        ;; * An error is signaled if the same symbol-name argument (in the sense
+        ;;   of comparing names with string=) appears more than once among the
+        ;;   arguments to all the :INTERN and :EXPORT options. (Collected in
+        ;;   unique2).
+        (dolist (x (%sort-defpackage-options options))
                 (if (not (consp x))
                     (error "DEFPACKAGE: invalid list option ~a~%" x))
                 (case (car x)
@@ -423,7 +475,22 @@
                        (if (atom (cdr x))
                            (setq l (list (cdr x)))
                            (setq l (cdr x)))
+                       (setq unique1 (%add-unique-names l (car x) unique1))
                        (push `(SHADOW ',(mapcar #'string l) ,name) exp))
+                      ((:SHADOWING-IMPORT-FROM)
+                       ;; These symbols are imported into the package being
+                       ;; defined, shadowing other symbols if necessary,
+                       ;; just as with the function shadowing-import.
+                       (if (atom (cdr x))
+                           (setq l (list (cdr x)))
+                           (setq l (cdr x)))
+                       (setq unique1 (%add-unique-names l (car x) unique1))
+                       (push
+                             `(SHADOWING-IMPORT (LIST ,@(mapcar (lambda (s)
+                                                           `(INTERN ,s ,p))
+                                                      (mapcar #'string l)))
+                                      ,name)
+                              exp))
                       ((:USE)
                        ;; The  package being defined is made to "use"
                        ;; the packages specified.
@@ -439,6 +506,7 @@
                        (if (atom (cddr x))
                            (setq l (list (cddr x)))
                            (setq l (cddr x)))
+                       (setq unique1 (%add-unique-names l (car x) unique1))
                        (push
                              `(IMPORT (LIST ,@(mapcar (lambda (s)
                                                         `(INTERN ,s ,p))
@@ -453,6 +521,9 @@
                        ;; Symbols   with   the  specified  names  are
                        ;; located  or  created  in  the package being
                        ;; defined, just as with the function intern.
+                       (setq l (cdr x))
+                       (setq unique1 (%add-unique-names l (car x) unique1))
+                       (setq unique2 (%add-unique-names l (car x) unique2))
                        (dolist (s (cdr x))
                                (push `(INTERN ,(string s) ,name) exp)))
                       ((:EXPORT)
@@ -460,14 +531,20 @@
                        ;; located  or  created  in  the package being
                        ;; defined  and  then  exported,  just as with
                        ;; the function export.
-                       (push `(EXPORT ',(cdr x) ,name) exp))
+                       (setq l (cdr x))
+                       (setq unique2 (%add-unique-names l (car x) unique2))
+                       (push `(EXPORT (MAPCAR (LAMBDA (X)
+                                                 (INTERN (STRING X) ,name))
+                                              ',l)
+                                      ,name)
+                             exp))
                       (t
                        (error "DEFPACKAGE: invalid option ~a~%" x))))
         `(PROGN (CREATE-PACKAGE ,name ',nicknames)
                 ,@(nreverse exp))))
 
 (defmacro do-symbols (loop &rest body)
-   ;; (DO-SYMBOLS (var [init [res]]) exp1 .. expN)
+   ;; (DO-SYMBOLS (var [package [res]]) exp1 .. expN)
    ;; do-symbols  provides straightforward iteration over the symbols
    ;; of  a  package.  The  body  is  performed  once for each symbol
    ;; accessible  in  the package,  in no particular order,  with the
@@ -478,7 +555,45 @@
          (pkg (nth 1 loop))
          (res (nth 2 loop))
          (it  (gensym)))
-       `(for ((,it ,(if pkg `(oblist ',pkg) '(oblist)) (cdr ,it))
+       `(for ((,it ,(if pkg
+                        `(oblist ',pkg)
+                        '(oblist (dynamic *package*)))
+                   (cdr ,it))
+              (,var () ()))
+             ((null ,it) ,res)
+             (setq ,var (car ,it))
+             ,@body)))
+
+(defmacro do-external-symbols (loop &rest body)
+   ;; (DO-EXTERNAL-SYMBOLS (var [package [res]]) exp1 .. expN)
+   ;; do-external-symbols  is just like  do-symbols, except that only
+   ;; the external symbols of the specified package are scanned.
+   (let ((var (nth 0 loop))
+         (pkg (nth 1 loop))
+         (res (nth 2 loop))
+         (it  (gensym)))
+       `(for ((,it ,(if pkg
+                        `(oblist ',pkg :external)
+                        '(oblist (dynamic *package*) :external))
+                   (cdr ,it))
+              (,var () ()))
+             ((null ,it) ,res)
+             (setq ,var (car ,it))
+             ,@body)))
+
+(defmacro do-all-symbols (loop &rest body)
+   ;; (DO-ALL-SYMBOLS (var [res]) exp1 .. expN)
+   ;; This  is  similar  to do-symbols but executes the body once for
+   ;; every  symbol  contained  in  every  package.  (This  will  not
+   ;; process   every   symbol   whatsoever,  because  a  symbol  not
+   ;; accessible  in  any  package  will not be processed.  Normally,
+   ;; uninterned  symbols  are  not accessible in any package.) It is
+   ;; not  in  general  the  case  that each symbol is processed only
+   ;; once, because a symbol may appear in many packages.
+   (let ((var (nth 0 loop))
+         (res (nth 1 loop))
+         (it  (gensym)))
+       `(for ((,it (oblist) (cdr ,it))
               (,var () ()))
              ((null ,it) ,res)
              (setq ,var (car ,it))
@@ -488,10 +603,10 @@
 ;;; Missing sequence functions from standard lib
 ;;;
 
-(export '("remove-duplicates" "delete-duplicates"))
+(export '(remove-duplicates delete-duplicates))
 
 (defun remove-duplicates (seq)
-   ;; This is a dispatcher for the correct algorithm.
+   ;; This is a dispatcher for the specialized algorithm.
    ;; Sequence is not physically modified.
    (cond
          ((consp seq)
@@ -502,7 +617,7 @@
          (t seq)))
 
 (defun delete-duplicates (seq)
-   ;; This is a dispatcher for the correct algorithm.
+   ;; This is a dispatcher for the specialized algorithm.
    (cond
          ((consp seq)
           (system::delete-duplicates-list seq))
@@ -538,10 +653,91 @@
          (t seq)))
 
 ;;;
+;;; Useful string function.
+;;;
+
+(export '(string-replace))
+
+#+(fboundp 'regcomp)
+(defun string-replace (from to str)
+   ;; Replace all occurrences of FROM (a regexp) with TO in STR.
+   (let ((res     nil)
+         (pos     nil)
+         (start   0)
+         (replace nil)
+         (re      nil))
+        (cond
+              ((or (= (length from) 0) (= (length str) 0))
+               ;; silly, but legal. This test avoids infinite loop.
+               str)
+              (t
+               (setf re  (regcomp from))
+               (setf pos (create-vector 2 0))
+               (while (regexe re str pos start)
+                      (setf replace t)
+                      (when (/= start (elt pos 0))
+                            (push (subseq str start (elt pos 0)) res))
+                      (when (> (length to) 0)
+                            (push to res))
+                      (setf start (elt pos 1)))
+               (when (< start (length str))
+                     ;; non-matching part
+                     (push (subseq str start) res))
+               (cond
+                     ((null replace)
+                      ;; no match, returns original string.
+                      str)
+                     ((null res)
+                      ;; empty string.
+                      "")
+                     ((= (length res) 1)
+                      ;; only one element, no need to append.
+                      (car res))
+                     (t
+                      ;; append string chunks in reverse order.
+                      (apply #'string-append (nreverse res))))))))
+
+#-(fboundp 'regcomp)
+(defun string-replace (from to str)
+   ;; Replace all occurrences of FROM with TO in STR.
+   ;; This version is used when regexp module is not linked in.
+   (let ((res     nil)
+         (replace nil)
+         (pos     0))
+        (cond
+              ((or (= (length from) 0) (= (length str) 0))
+               ;; silly, but legal. This test avoids infinite loop.
+               str)
+              (t
+               (while (setf pos (string-index from str))
+                      (setf replace t)
+                      (when (> pos 0)
+                            (push (subseq str 0 pos) res))
+                      (when (> (length to) 0)
+                            (push to res))
+                      (setf str (subseq str (+ (length from) pos))))
+               (when (> (length str) 0)
+                     ;; non-matching part
+                     (push str res))
+               (cond
+                     ((null replace)
+                      ;; no match, returns original string.
+                      str)
+                     ((null res)
+                      ;; empty string.
+                      "")
+                     ((= (length res) 1)
+                      ;; only one element, no need to append.
+                      (car res))
+                     (t
+                      ;; append string chunks in reverse order.
+                      (apply #'string-append (nreverse res))))))))
+
+;;;
 ;;; Feature functions
 ;;;
 
-(export '("list-features" "add-feature" "rem-feature" "featurep"))
+(export '(list-features add-feature rem-feature featurep))
 
 (defun list-features ()
    *modules*)
@@ -562,7 +758,7 @@
 ;;; Standard functions (in ../lib/*)
 ;;;
 
-(export '("autoload"))
+(export '(autoload))
 
 (defglobal system::*autoload-required*
     ;; A-list (fn . "file") used by the compiler
@@ -574,7 +770,7 @@
                        ;; remember this function to help compiler
                        (setq system::*autoload-required*
                              (cons (cons f file) system::*autoload-required*))
-                       (export f "openlisp")
+                       (export f :openlisp)
                        `(defmacro ,f (&rest body)
                            (require ,file)
                            (cons ',f body)))
@@ -587,37 +783,83 @@
 
 ;;; Define report-condition generic function.
 
+(export '(
+  serious-condition-continualble
+  serious-condition-function
+  serious-condition-arguments
+  serious-condition-message
+))
+
+(defun serious-condition-continualble (condition)
+   (svref condition 0))
+
+(defun serious-condition-function (condition)
+   (svref condition 1))
+
+(defun serious-condition-arguments (condition)
+   (svref condition 2))
+
+(defun serious-condition-message (condition)
+   (svref condition 3))
+
 (defgeneric report-condition (condition stream)
-   (:method ((condition <error>) (stream <stream>))
-            (if (eq (svref condition 2) '<unbound-variable>)
-                (format stream "** ~a : ~a~%"
-                        (svref condition 1)
-                        (svref condition 3))
-                (format stream "** ~a : ~a : ~a~%"
-                        (svref condition 1)
-                        (svref condition 3)
-                        (svref condition 2))))
+   (:method ((condition <program-error>) (stream <stream>))
+            (format stream "** ~a : ~a : ~a : ~a~%"
+                    (class-name (class-of condition))
+                    (serious-condition-function condition)
+                    (serious-condition-message condition)
+                    (serious-condition-arguments condition)))
    (:method ((condition <simple-error>) (stream <stream>))
-            (when (svref condition 0)
-                  (format-object stream (svref condition 0) nil))
-            (apply #'format stream (svref condition 4) (svref condition 5)))
+            (apply #'format stream
+                   (simple-error-format-string condition)
+                   (simple-error-format-arguments condition)))
+   (:method ((condition <undefined-entity>) (stream <stream>))
+            (format stream "** ~a : undefined-~a~%"
+                    (undefined-entity-name condition)
+                    (undefined-entity-namespace condition)))
+   (:method ((condition <domain-error>) (stream <stream>))
+            (format stream "** ~a : function '~a' requires a ~a received ~s.~%"
+                    (class-name (class-of condition))
+                    (serious-condition-function condition)
+                    (class-name (domain-error-expected-class condition))
+                    (domain-error-object condition)))
+   (:method ((condition <arithmetic-error>) (stream <stream>))
+            (format stream "** ~a : ~a : ~a~%"
+                    (class-name (class-of condition))
+                    (serious-condition-function condition)
+;                    (arithmetic-error-operation condition)
+                    (arithmetic-error-operands condition)))
+   (:method ((condition <parse-error>) (stream <stream>))
+            (format stream "** ~a : ~s is not a ~a~%"
+                    (class-name (class-of condition))
+                    (parse-error-string condition)
+                    (class-name (parse-error-expected-class condition))))
+   (:method ((condition <stream-error>) (stream <stream>))
+            (format stream "** ~a : ~a : ~a~%"
+                    (class-name (class-of condition))
+                    (serious-condition-message condition)
+                    (stream-error-stream condition)))
+   (:method ((condition <user-interruption>) (stream <stream>))
+            (format stream "** OpenLisp : user-interruption~%"))
    (:method ((condition <serious-condition>) (stream <stream>))
-            (format stream "** ~a : ~a~%"
-                    (svref condition 1)
-                    (svref condition 3))))
+            ;; root of exception (abstact class)
+            (format stream "** ~a : ~a : ~a~%"
+                    (class-name (class-of condition))
+                    (serious-condition-function condition)
+                    (serious-condition-message condition))))
 
 ;;;
 ;;; Loader for standard environment.
 ;;;
 
-(export '("libload" "load-stdlib"))
+(export '(libload load-stdlib))
 
 (defun libload (file &rest verbose)
    ;; load a library file (from *system-path*)
    (setq file (convert file <string>))
    (let ((f (search-in-path file)))
         (if f
-            (load f verbose)
+            (load f (and verbose (car verbose)))
             (error "LIBLOAD: invalid filename '~a'~%" file))))
 
 (defun load-stdlib (compiled &rest verbose)
@@ -646,18 +888,11 @@
      ;; to load file
      (lambda (stream char) `(libload ',(read-line stream))))
 
-#-(eq (system-name) 'mvs)
-(set-macro-character #\control-t
-     ;; to launch a test file.
-     (lambda (stream char)
-        `(run-test ,(string-append (getenv "OPENLISP")
-                                   "/tst/" (read-line stream) ".lsp"))))
-
 ;;;
 ;;; Shell argument $0, $1, .. $n. $# = arg. count.
 ;;;
 
-(export '("shift"))
+(export '(shift))
 
 (defglobal system::*command-shift* 0)
 
@@ -702,7 +937,7 @@
 ;;; Extended format
 ;;;
 
-(export '("add-format" "rem-format" "get-format" "format-user-type"))
+(export '(add-format rem-format get-format format-user-type))
 
 (defglobal system::*format-table* (make-hash-table :test #'eq))
 
@@ -744,11 +979,10 @@
                      make-date date= date/= date> date>= date< date<=)
 (autoload "defstruc" defstruct make)
 (autoload "describe" describe)
-(autoload "disasm"   disassemble dump-lap)
+(autoload "disasm"   disassemble)
 (autoload "extern"   external-module)
 (autoload "gcstats"  room)
 (autoload "loader"   lap-loader lap-require)
-(autoload "logfile"  log-format)
 (autoload "mine"     mine mine-toplevel)
 (autoload "mvalues"  values values-list multiple-value-setq)
 (autoload "pretty"   pretty pprint)
@@ -765,21 +999,13 @@
 (set-macro-character #\control-v
      (lambda (stream char) (pretty (read stream)) t))
 
-(unless (fboundp 'initty)
-        (autoload "virtty" initty typrologue))
-
-(when (fboundp 'edit)
-      (defglobal system::*edit-name* "scratch")
-      (add-feature 'edit))
-
 (when (member (system-name) '(windows pocket-pc))
       (defun edit (file)
          (mine-toplevel (list file))))
 
-
 #+(fboundp 'comline)
 (progn
-       (export '("spawn"))
+       (export '(spawn))
 
        (unless (fboundp 'edit)
                (defun edit (&rest file)
@@ -802,6 +1028,8 @@
 #+(or (fboundp 'comline) (fboundp 'edit))
 (progn
        (defglobal system::*edit-name* "scratch.lsp")
+
+       (add-feature 'edit)
 
 #-(eq (system-name) 'mvs)
        (set-macro-character #\control-e
@@ -836,7 +1064,7 @@
 ;;; Debugger
 ;;;
 
-(export '("debug" "break"))
+(export '(debug break))
 
 (defun debug (flag)
    ;; [de]activate the internal debugger on errors.
@@ -854,17 +1082,25 @@
 ;;; Socket
 ;;;
 
-(export '("with-client-socket" "with-server-socket"))
+(export '(with-client-socket with-server-socket))
 
 (defmacro with-client-socket (socket &rest body)
-   `(let ((,(car socket) (socket)))
+   ;; manage a client socket.
+   `(let ((,(car socket)
+           ,(if (= (length socket) 5)
+                `(socket ,(fourth socket) ,(fifth socket))
+                `(socket ,(fourth socket)))))
          (when ,(car socket)
                (unwind-protect (when ,`(connect ,@socket)
                                      ,@body)
                                (close ,(car socket))))))
 
 (defmacro with-server-socket (socket &rest body)
-   `(let ((,(car socket) (socket)))
+   ;; manage a server socket.
+   `(let ((,(car socket)
+           ,(if (= (length socket) 4)
+                `(socket ,(third socket) ,(fourth socket))
+                `(socket ,(third socket)))))
          (when ,(car socket)
                (unwind-protect (when ,`(listen ,@socket)
                                      ,@body)
@@ -882,8 +1118,9 @@
 (set-dynamic "? " *prompt*)                     ;; default prompt ?
 (set-dynamic t    *read-level*)                 ;; print read level 2>
 (set-dynamic 2    *warning-level*)              ;; OpenLisp warning level [0, 2]
-(set-dynamic nil  *print-nil-as-list*)          ;; nil or ()
+(set-dynamic 10   *read-base*)                  ;; integer default read base
 (set-dynamic 10   *print-base*)                 ;; integer default print base
+(set-dynamic nil  *print-nil-as-list*)          ;; nil or ()
 (set-dynamic t    *print-escape*)               ;; control printer
 (set-dynamic 256  *print-length*)               ;; max. list to print
 (set-dynamic 256  *print-level*)                ;; max. recursive print level
@@ -909,7 +1146,8 @@
 (when (member (system-name) '(pocket-pc))
       (change-directory (getenv "OPENLISP")))
 
-(in-package "user")
+(create-package '#:user)
+(in-package #:user)
 
 ;;;
 ;;; End of startup bootstrap

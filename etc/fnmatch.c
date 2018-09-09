@@ -27,7 +27,9 @@ static	char *sccsid = "@(#)fnmatch.c	(c) C. Jullien 2009/05/02";
 #include <ctype.h>
 #include "fnmatch.h"
 
-#define fold(c)	 ((char)((flags&FNM_CASEFOLD) && isupper(c) ? tolower(c) : (c)))
+#define fold(c)	 ((char)((flags&FNM_CASEFOLD) && isupper((int)c) ? \
+			 tolower((int)c) \
+			 : (c)))
 
 #if	defined( _DOS ) || defined( _NT )
 #define	slashp(c) (((c) == '/') || ((c) == '\\'))
