@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: ntterm.c,v 1.7 2008/11/29 08:57:38 jullien Exp $";
+static	char rcsid[] = "$Id: ntterm.c,v 1.9 2015/10/25 15:22:27 jullien Exp $";
 #endif
 
 /*
@@ -36,6 +36,7 @@ static	char rcsid[] = "$Id: ntterm.c,v 1.7 2008/11/29 08:57:38 jullien Exp $";
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <commdlg.h>
 #if	defined( _ADD_TO_RECENT_DOCS )
 #include <shlobj.h>
 #endif
@@ -295,7 +296,6 @@ NTconsolewin( void )
 static	void
 NTopen( void )
 {
-	OSVERSIONINFO		   osvInfo;
 	CONSOLE_SCREEN_BUFFER_INFO csInfo;
 	CONSOLE_CURSOR_INFO 	   ccInfo;
 	int			   fg = (foreground_color % 8);
@@ -342,13 +342,6 @@ NTopen( void )
 
 	GetConsoleScreenBufferInfo( NTcout, &csInfo );
 
-	/*
-	 *	Get system information.
-	 */
-
-	osvInfo.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
-	GetVersionEx( &osvInfo );
-
 	if( NTinitflg == 0 ) {
 		NToldcoord.X	 = csInfo.dwSize.X;
 		NToldcoord.Y	 = csInfo.dwSize.Y;
@@ -359,19 +352,43 @@ NTopen( void )
 		NToldsize.Right	 = csInfo.srWindow.Right;
 	}
 
+#if	defined(_MSC_VER) && (_MSC_VER >= 1800)
+	csInfo.dwSize.X  = NLINE;	/* used to be 256 */
+	SetConsoleScreenBufferSize( NTcout, csInfo.dwSize );
+	TTYncol = csInfo.srWindow.Right  - csInfo.srWindow.Left + 1;
+	TTYnrow = csInfo.srWindow.Bottom - csInfo.srWindow.Top;
+	pipe_process = T;
+#else
 #if	defined( _CHANGE_BUFFER_SIZE )
+	{
+	OSVERSIONINFO		   osvInfo;
+
+	/*
+	 *	Get system information.
+	 */
+
+	osvInfo.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
+	GetVersionEx( &osvInfo );
+
 	if( osvInfo.dwPlatformId == VER_PLATFORM_WIN32_NT ) {
 		csInfo.dwSize.X  = NLINE;	/* used to be 256 */
 		SetConsoleScreenBufferSize( NTcout, csInfo.dwSize );
 		TTYncol = csInfo.srWindow.Right  - csInfo.srWindow.Left + 1;
 		TTYnrow = csInfo.srWindow.Bottom - csInfo.srWindow.Top;
+		pipe_process = T;
 	} else	{
 		TTYncol = csInfo.dwSize.X;
 		TTYnrow = csInfo.dwSize.Y - 1;
+		/*
+		 *	pipes hang on Windows 95.
+		 */
+		pipe_process = NIL;
+	}
 	}
 #else
 	TTYncol = csInfo.srWindow.Right  - csInfo.srWindow.Left + 1;
 	TTYnrow = csInfo.srWindow.Bottom - csInfo.srWindow.Top;
+#endif
 #endif
 
 	NTinitflg	   = 1;
@@ -409,14 +426,6 @@ NTopen( void )
 	GetConsoleCursorInfo( NTcout, &ccInfo );
 	NToldcursize  = ccInfo.dwSize;
 	NTbigcursor();
-
-	/*
-	 *	pipes hang on Windows 95.
-	 */
-
-	if( osvInfo.dwPlatformId == VER_PLATFORM_WIN32_NT )
-		pipe_process = T;
-	else	pipe_process = NIL;
 
 #if	defined( _WIN64 )
 	NThinst = (HINSTANCE)GetWindowLongPtr( NThwnd, GWLP_HINSTANCE );

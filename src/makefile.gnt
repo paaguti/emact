@@ -49,7 +49,7 @@ LIBFILES	= defclass defstruc error flet pretty sort startup setf
 ARFLAGS		= rc
 CHARSET		= _ANSICHARS
 MFLAGS		= -D_WIN32 -D_MLISP -D_DIRECTORY -D$(CHARSET) $(OLFLAG)
-CPUFLAG		= -mno-cygwin		# Optimize for Pentium
+CPUFLAG		=	# Optimize for Pentium
 WFLAGS		= \
 		 -W                       \
 		 -Wall			  \

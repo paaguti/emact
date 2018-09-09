@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: unicode.c,v 1.8 2009/05/09 07:15:25 jullien Exp $";
+static	char rcsid[] = "$Id: unicode.c,v 1.10 2015/08/22 14:27:13 jullien Exp $";
 #endif
 
 /*
@@ -220,6 +220,10 @@ emnewstring(const char *str)
 	size_t	len = strlen( str );
 	EMCHAR *res = (EMCHAR *)malloc( (len + 1) * sizeof( EMCHAR ) );
 	int	i;
+
+	if( res == (EMCHAR *)NULL ) {
+		return( res );
+	}
 
 	for( i = 0 ; i < (int)len ; ++i )
 		res[ i ] = (EMCHAR)str[ i ];

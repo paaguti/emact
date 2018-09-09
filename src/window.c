@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: window.c,v 1.5 2009/05/01 07:36:14 jullien Exp $";
+static	char rcsid[] = "$Id: window.c,v 1.6 2011/09/22 05:55:23 jullien Exp $";
 #endif
 
 /*
@@ -85,7 +85,11 @@ resize( void )
 		}
 
 	(void)onlywind();
-	wheadp->w_ntrows = (TTYnrow-1);
+
+	if( wheadp == NULL )
+		return( NIL );
+
+	wheadp->w_ntrows = (TTYnrow - 1);
 	modeline( curwp );
 
 	(void)WDGtitle((EMCHAR*)&curbp->b_bname[0],(EMCHAR*)&curbp->b_fname[0]);

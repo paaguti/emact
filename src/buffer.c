@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: buffer.c,v 1.13 2012-02-02 09:13:58 jullien Exp $";
+static	char rcsid[] = "$Id: buffer.c,v 1.13 2012/02/02 09:13:58 jullien Exp $";
 #endif
 
 /*

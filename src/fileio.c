@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: fileio.c,v 1.18 2009/05/02 09:01:16 jullien Exp $";
+static	char rcsid[] = "$Id: fileio.c,v 1.19 2011/09/22 05:55:22 jullien Exp $";
 #endif
 
 /*
@@ -807,8 +807,8 @@ NTfullname( EMCHAR *rname, EMCHAR *fname )
 	 */
 
 	if( s && (emstrlen( s ) >= 2) && s[1] == ':' ) {
-		if( isalpha( s[0] ) && islower( s[0] ) )
-			s[0] = (TCHAR)toupper( s[0] );
+		if( isalpha( (int)s[0] ) && islower( (int)s[0] ) )
+			s[0] = (TCHAR)toupper( (int)s[0] );
 	}
 #else
 	WIN32_FIND_DATA	data;

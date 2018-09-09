@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: curses.c,v 1.4 2008/06/20 09:25:11 jullien Exp $";
+static	char rcsid[] = "$Id: curses.c,v 1.6 2012/10/21 19:07:18 jullien Exp $";
 #endif
 
 /*
@@ -399,7 +399,7 @@ cursessi( void )
 #if	defined( COLOR_PAIR )
 	if( monochrome_monitor == T )
 		(void)standout();
-	else	(void)attrset( (attr_t)(cursescolor = COLOR_PAIR( 2 )) );
+	else	(void)attrset( (chtype)(cursescolor = COLOR_PAIR( 2 )) );
 #else
 	(void)standout();
 #endif
@@ -411,7 +411,7 @@ cursesei( void )
 #if	defined( COLOR_PAIR )
 	if( monochrome_monitor == T )
 		(void)standend();
-	else	(void)attrset( (attr_t)(cursescolor = COLOR_PAIR( 1 )) );
+	else	(void)attrset( (chtype)(cursescolor = COLOR_PAIR( 1 )) );
 #else
 	(void)standend();
 #endif

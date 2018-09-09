@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: xmalloc.c,v 1.5 2012-02-02 09:13:58 jullien Exp $";
+static	char rcsid[] = "$Id: xmalloc.c,v 1.7 2015/08/22 14:27:13 jullien Exp $";
 #endif	/* lint */
 
 /*
@@ -42,9 +42,11 @@ static	char rcsid[] = "$Id: xmalloc.c,v 1.5 2012-02-02 09:13:58 jullien Exp $";
  *
  *	These  routines  are  also  tuned to C++ in that free(0) is a
  *	noop    and    a    failed    malloc    automatically   calls
- *	(*_new_handler)().  If  your  compiler  supports the separate
- *	redefinitions  of new and delete for arrays that is new[] and
- *	delete[] operators, you must set _NEW_ARRAY_OPERATOR.
+ *	(*_std::new_handler)().
+ *
+ *	If your compiler supports  the separate redefinitions  of new
+ *	and delete for arrays  that is new[]  and delete[] operators,
+ *	you must set _NEW_ARRAY_OPERATOR.
  *
  *	Note  :  this  file  use protypes so that it can compile with
  *	ISO/ANSI  C  compiles  as  well  as  C++ compilers.  You must
@@ -1255,10 +1257,10 @@ sysgetmem( size_t n )
 #endif	/* new */
 
 #if	!defined( _HAVE_NEW_HANDLER )
-typedef void (_CCALL *new_handler)();
+typedef void (_CCALL *std::new_handler)();
 #endif	/* _HAVE_NEW_HANDLER */
 
-new_handler	__new_handler;
+std::new_handler	__new_handler;
 
 #if	defined( _HAVE_NAMESPACE )
 namespace std {}
@@ -1272,15 +1274,15 @@ extern _XIMPORT const nothrow_t nothrow = empty_nothrow;
 #endif	/* __GNUC__ */
 #endif	/* _HAVE_NOTHROW_TYPE */
 
-_XIMPORT extern	new_handler set_new_handler( new_handler new_p ) THROW_ALL;
+_XIMPORT extern	std::new_handler set_new_handler( std::new_handler new_p ) THROW_ALL;
 static	void*		__raw_alloc( size_t size ) THROW_ALL;
 
 #if	!defined( _HAVE_LIBRARY_HANDLER )
 
-_XIMPORT new_handler
-set_new_handler( new_handler new_p ) THROW_ALL
+_XIMPORT std::new_handler
+set_new_handler( std::new_handler new_p ) THROW_ALL
 {
-	new_handler old_handler = __new_handler;
+	std::new_handler old_handler = __new_handler;
 
 	__new_handler = new_p;
 	return( old_handler );

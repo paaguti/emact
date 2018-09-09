@@ -1,5 +1,5 @@
 /*
- static char *sccsid = "@(#)build.h  (c) C. Jullien 2010/06/25";
+ static char *sccsid = "@(#)build.h  (c) C. Jullien 2018/06/10";
  */
 
 #if	!defined( __EMACS_BUILD_H )
@@ -10,7 +10,7 @@
  */
 
 #if	!defined( EMBUILD )
-#define	EMBUILD		2376
+#define	EMBUILD		2437
 #endif
 
 #endif

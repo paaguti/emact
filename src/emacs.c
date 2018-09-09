@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: emacs.c,v 1.18 2010-06-26 04:51:55 jullien Exp $";
+static	char rcsid[] = "$Id: emacs.c,v 1.19 2015/10/25 15:22:27 jullien Exp $";
 #endif
 
 /*
@@ -1019,21 +1019,20 @@ killemacs( void )
  *	bound to "C-X C-C".
  */
 
-static
-EMCHAR *warning = ECSTR("Modified buffer exist, do you really want to exit? ");
-
 CMD
 exitemacs( void )
 {
+	static EMCHAR *msg = ECSTR("Modified buffers exist; exit anymawy? ");
+
 	CMD	res = anycb( ANYCB_PROMPT );
 
 	if( res == ABORT )
 		return( NIL );
 
 	if( confirm_unsaved_buffer == T ) {
-		if( res == NIL || WDGyesno( warning ) == T )
+		if( res == NIL || WDGyesno( msg ) == T )
 			return( killemacs() );
-	} else	if( res == NIL || WDGyn( warning ) == T )
+	} else	if( res == NIL || WDGyn( msg ) == T )
 			return( killemacs() );
 
 	return( NIL );

@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: search.c,v 1.5 2008/06/20 09:25:13 jullien Exp $";
+static	char rcsid[] = "$Id: search.c,v 1.6 2012/10/21 12:21:49 jullien Exp $";
 #endif
 
 /*
@@ -887,8 +887,6 @@ completeword( void )
 	static	int	lasto    = 0;
 	static	int	indx	 = 0;
 	static	DIRFNP	find	 = bfindstring;
-	static	WINSCR	*searchwp;
-	static	WINSCR	*currentwp;
 
 	EDLINE	*clp;
 	EMCHAR	buf[ NPAT ];
@@ -926,8 +924,6 @@ completeword( void )
 		 *	indx and start with a backward search.
 		 */
 
-		searchwp = curwp;
-		currentwp= curwp;
 		find	 = bfindstring;
 		rejectnb = 0;
 		indx	 = 0;

@@ -10,7 +10,7 @@
 
 #	Assumes that we have <install-dir>\openlisp
 
-OLDIR		=..\..\openlisp
+OLDIR		=..\..\NOopenlisp
 OLSRC		= $(OLDIR)\src
 LIBFILES	= defclass defstruc stderror flet pretty sort startup setf
 

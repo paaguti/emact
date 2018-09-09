@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: openlisp.c,v 1.13 2010-06-26 04:51:55 jullien Exp $";
+static	char rcsid[] = "$Id: openlisp.c,v 1.16 2012/10/21 12:23:34 jullien Exp $";
 #endif
 
 /*
@@ -64,7 +64,7 @@ EXTERN_C int	_define(evalloop,(void));
 static	int	_define(initopenlisp,(void));
 static	void	_define(fillreadbuffer,(void));
 static	void	_define(olemttynextline,(void));
-static	void	_define(olemttyputs,(LCHAR *str, int len, FILE *fd));
+static	void	_define(olemttyputs,(LCHAR *str, size_t len, FILE *fd));
 static	int	_define(decrypt,(EMCHAR *str));
 static	POINTER	_define(insertstring,(POINTER s));
 static	POINTER	_define(insertchar,(POINTER c));
@@ -176,9 +176,6 @@ initopenlisp( void )
 	 *	LISP tagged types.
 	 */
 
-	if( olfloat31bits )
-		realzone = 0;
-
 	olregisterhook( OLCB_NEXTLINE, (PFUN)olemttynextline );
 	olregisterhook( OLCB_PUTS,     (PFUN)olemttyputs     );
 
@@ -254,12 +251,10 @@ olcustomize( void )
 
 	if( emacsenv == NIL ) {
 		for( ktp = pkeytab ; ktp < (pkeytab+nkeytab) ; ktp++ ) {
-		   symb = olfentry(
-			            (PFUN)ktp->k_fp,
-				    SUBR0,
-				    (LCHAR *)ktp->k_name
-			          );
-		   pkgaccess( symb ) = OLS_EXTERN;
+			(void) olfentry( (PFUN)ktp->k_fp,
+					 SUBR0,
+					 (LCHAR *)ktp->k_name
+				       );
 		}
 
 		olinitexternalmodulenames( ftab );
@@ -269,9 +264,8 @@ olcustomize( void )
 		 */
 
 		for( vtp = pvartab ; vtp < (pvartab + nvartab) ; vtp++ ) {
-		     symb              = olusersymbol( (LCHAR*)vtp->f_name );
-		     cval( symb )      = DEFAUTLVALUE;
-		     pkgaccess( symb ) = OLS_EXTERN;
+		     symb         = olusersymbol( (LCHAR*)vtp->f_name );
+		     cval( symb ) = DEFAUTLVALUE;
 		}
 
 		emacsenv = T;
@@ -758,7 +752,10 @@ bindtokey( POINTER fun, POINTER key )
 
 	len = (int)olstrlen( olstrval( pname( fun ) ) ) + 1;
 	s   = (EMCHAR *)malloc( len * sizeof( EMCHAR ) );
-	emstrcpy( s, lstrtoemstr( olstrval( pname( fun ) ) ) );
+
+	if( s != NULL ) {
+		emstrcpy( s, lstrtoemstr( olstrval( pname( fun ) ) ) );
+	}
 
 	MACcode( index ) = code;
 	MACname( index ) = s; // lstrtoemstr( olstrval( pname( fun ) ) );
@@ -809,7 +806,7 @@ olemttynextline( void )
 }
 
 static void
-olemttyputs( LCHAR *str, int len, FILE *fd )
+olemttyputs( LCHAR *str, size_t len, FILE *fd )
 {
 	int	f = T;
 

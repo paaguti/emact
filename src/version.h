@@ -1,5 +1,5 @@
 /*
- * static char rcsid[] = "$Id: version.h,v 1.10 2010-06-26 04:51:56 jullien Exp $";
+ * static char rcsid[] = "$Id: version.h,v 1.14 2015/08/22 14:27:13 jullien Exp $";
  */
 
 /*
@@ -30,21 +30,21 @@
  */
 
 #define	EMACS_MAJOR		"2"
-#define	EMACS_MINOR		"55"
+#define	EMACS_MINOR		"58"
 #define	EMACS_RELEASE		"0"
-#define	EMACS_VERSION		"2.55.0"
-#define	EMACS_COPYRIGHT		"Copyright (c) 1985 - 2009 Eligis"
-#define	EMACS_FULLVERSION	"Version 2.55.0"
+#define	EMACS_VERSION		"2.58.0"
+#define	EMACS_COPYRIGHT		"Copyright (c) 1985 - 2015 Eligis"
+#define	EMACS_FULLVERSION	"Version 2.58.0"
 
-#define	EMFILEVERSION		"2, 55, 0, 0\0"
-#define	EMPRODUCTVERSION	"2.55.0\0"
-#define	EMCOPYRIGHT		"Copyright (c) 1985 - 2009 Eligis\0"
-#define	EMVERSIONINFO		2,55,0,0
+#define	EMFILEVERSION		"2, 58, 0, 0\0"
+#define	EMPRODUCTVERSION	"2.58.0\0"
+#define	EMCOPYRIGHT		"Copyright (c) 1985 - 2015 Eligis\0"
+#define	EMVERSIONINFO		2,58,0,0
 
 #if	defined( _OPENLISP )
-#define	VERSION ECSTR("EmACT: v2.55 Pro")
+#define	VERSION ECSTR("EmACT: v2.58 Pro")
 #else
-#define	VERSION ECSTR("EmACT: v2.55")
+#define	VERSION ECSTR("EmACT: v2.58")
 #endif
 
 #endif

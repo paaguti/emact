@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: x11.c,v 1.10 2008/06/20 09:25:14 jullien Exp $";
+static	char rcsid[] = "$Id: x11.c,v 1.12 2013/02/20 06:06:25 jullien Exp $";
 #endif
 
 /*
@@ -254,7 +254,6 @@ X11open( void )
 	XGCValues	val;
 	Atom		delwin;
 	Atom		protocol;
-	int		res;
 	int		i;
 	int		depth;
 	int		height;
@@ -333,7 +332,7 @@ X11open( void )
 		 */
 
 		for( i = 0 ; i < COLOR_TABLE_SIZE ; i++ ) {
-			res = X11nearestcolor( X11dpy, X11rgbcolors[i], &rgb );
+			(void)X11nearestcolor( X11dpy, X11rgbcolors[i], &rgb );
 
 			X11pixelcolors[i] = rgb.pixel;
 
@@ -368,7 +367,7 @@ X11open( void )
 		 */
 
 		for( i = 0 ; i < MAXCOLOR ; i++ ) {
-			res = X11nearestcolor( X11dpy, X11name[i], &rgb );
+			(void)X11nearestcolor( X11dpy, X11name[i], &rgb );
 			X11color[ i ] = rgb.pixel;
 
 			if( X11debug )
@@ -977,7 +976,7 @@ X11title( EMCHAR *buf, EMCHAR *fname )
 {
 	static	EMCHAR	title[ 64 ] = { 0 };
 
-	fname = fname;
+	(void)fname;
 
 	if( emstrcmp( buf, title ) != 0 ) {
 		char	ascii[ 64 ];

@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: xpterm.c,v 1.20 2009/05/02 12:25:44 jullien Exp $";
+static	char rcsid[] = "$Id: xpterm.c,v 1.22 2018/06/16 15:00:00 jullien Exp $";
 #endif
 
 /*
@@ -84,7 +84,7 @@ static	HFONT	  xpfont;		/* Current font			*/
 static	int	  xpcharwidth;		/* Width of a char		*/
 static	int	  xpcharheight;		/* Height of a char		*/
 static	HANDLE	  xpprev;		/* Previous instance		*/
-static	HANDLE	  xpacctable;	        /* Accelerator table		*/
+static	HACCEL	  xpacctable;	        /* Accelerator table		*/
 static	LPSTR	  xpclipbuf  = NULL;	/* Pointers to clip buffer	*/
 static	LPSTR	  xpclipptr  = NULL;	/* Current ClipPtr		*/
 static	int	  xpstrokes  = 0;	/* to check for mouse move	*/
@@ -265,6 +265,7 @@ xpwait( void )
 	PeekMessage( &msg, xpwnd, 0, 0, PM_NOREMOVE );
 }
 
+#if 0
 static int
 xpgetcurwidth()
 {
@@ -277,6 +278,7 @@ xpgetcurwidth()
 	return( xpcharwidth );
 #endif
 }
+#endif
 
 static void
 xpsettextattrib( void )
@@ -346,7 +348,7 @@ xpopen( void )
 	 *	Set the Insert key of the keyboard to untoggle
 	 */
 
-	GetKeyboardState( (LPBYTE) &bKeyState );
+	(void)GetKeyboardState( (LPBYTE) &bKeyState );
 	bKeyState[ VK_INSERT ] &= ~(-1);
 	SetKeyboardState( (LPBYTE) &bKeyState );
 
@@ -370,7 +372,7 @@ xpopen( void )
 		wc.cbWndExtra	 = 0;
 		wc.hInstance	 = xpinst;
 		wc.hIcon	 = hIcon;
-		wc.hCursor	 = LoadCursor( (HANDLE)0, IDC_ARROW );
+		wc.hCursor	 = LoadCursor( 0, IDC_ARROW );
 		wc.lpszMenuName  = NULL; /* XP_EMACS_MENU */
 		wc.hbrBackground = xpbrush;
 		wc.lpszClassName = XP_EMACS_CLASS;
@@ -384,6 +386,11 @@ xpopen( void )
 	}
 
 	xpmenu = LoadMenu( xpinst, XP_EMACS_MENU );
+
+	if( xpmenu == NULL ) {
+		xpprinterror( _T("Can't load menu"), TRUE );
+		return;
+	}
 
 	xpwnd  = CreateWindowEx(
 				 WS_EX_ACCEPTFILES,
@@ -400,8 +407,10 @@ xpopen( void )
 				 NULL
 			       );
 
-	if( xpwnd == NULL )
+	if( xpwnd == NULL ) {
 		xpprinterror( _T("Can't create Window"), TRUE );
+		return;
+	}
 
 	if( show_menu )
 		SetMenu( xpwnd, xpmenu );
@@ -420,9 +429,11 @@ xpopen( void )
 	xpsettextattrib();
 
 #if	defined( _WIN32 )
-	SetClassLongPtr( xpwnd, GCLP_HICON, (LONG)(LONG_PTR)hIcon );
+	if( xpwnd )
+		SetClassLongPtr( xpwnd, GCLP_HICON, (LONG)(LONG_PTR)hIcon );
 #else
-	SetClassLongPtr( xpwnd, GCLP_HICON, (LONG_PTR)hIcon );
+	if( xpwnd )
+		SetClassLongPtr( xpwnd, GCLP_HICON, (LONG_PTR)hIcon );
 #endif
 	xpdrawx    = 0;
 	xpdrawy    = 0;
@@ -1427,9 +1438,9 @@ system( const TCHAR *s )
 	};
 
 	internal = FALSE;
-	for( slwr = (TCHAR *)s ; *slwr && !isspace( *slwr ) ; slwr++ )
-		if( isupper( *slwr ) )
-			*slwr = (TCHAR)tolower( *slwr );
+	for( slwr = (TCHAR *)s ; *slwr && !isspace( (int)*slwr ) ; slwr++ )
+		if( isupper( (int)*slwr ) )
+			*slwr = (TCHAR)tolower( (int)*slwr );
 
 	slwr = (TCHAR *)s;
 
@@ -1640,6 +1651,10 @@ xpsystemspawn( const TCHAR *cmd )
 		CloseHandle( hOutputFile );
 #endif
 	}
+
+	/* Release handles */ 
+	CloseHandle( piProcInfo.hProcess ); 
+	CloseHandle( piProcInfo.hThread  ); 
 
 	return( nRetCode );
 }
@@ -2053,7 +2068,7 @@ _tWinMain(HINSTANCE hInstance, HINSTANCE hPInst, LPTSTR lpCmdLine, int nCmdShow)
 		int		i;
 
 		for( i = 1 ; i < argc ; ++i ) {
-			_tfullpath( xpshared, argv[i], XP_EMACS_MAXPATH );
+			(void)_tfullpath( xpshared, argv[i], XP_EMACS_MAXPATH );
 
 			SendMessageTimeout(
 					    xpwnd,

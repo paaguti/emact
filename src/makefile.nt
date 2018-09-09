@@ -16,14 +16,14 @@ EMACSSRC=$(EMACSDIR)\src
 OLSRC	=$(OLDIR)\src
 
 !if "$(CPU)" == "IA64"
-CPUFLAG		= -As64 -Wp64 -G2 # G2=Itanium2
+CPUFLAG		= -As64 -G2 # G2=Itanium2
 ARCH		= 64
 LDARCH		= IA64
 HC		= echo Missing hcrtf -xn
 !endif
 
 !if "$(CPU)" == "AMD64"
-CPUFLAG 	= -Wp64
+CPUFLAG 	= 
 ARCH		= 64
 LDARCH		= AMD64
 HC		= echo Missing hcrtf -xn
