@@ -1,0 +1,273 @@
+REGEDIT4
+;; @(#)emacs.reg	(c) Christian Jullien 2004/09/15";
+;;
+
+[HKEY_CLASSES_ROOT\Applications\emacs.exe]
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell]
+"FriendlyCache"="Emacs text editor"
+"FriendlyCacheCTime"=hex:00,70,0e,7f,c4,a9,bf,01
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell\open]
+@="&Open with EmACT"
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell\open\command]
+@="emacs \"%1\""
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell\edit]
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell\edit\command]
+@="emacs \"%1\""
+[HKEY_CLASSES_ROOT\Applications\emacs.exe\shell\DefaultIcon]
+@="emacs.exe"
+
+;;
+;; C Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.c]
+"Content Type"="C Source File"
+"InfoTip"="C Source File"
+@="CFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.c\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile]
+@="C File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; C++ Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cpp]
+"Content Type"="C++ Source File"
+"InfoTip"="C++ Source File"
+@="CppFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cpp\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cc]
+"Content Type"="C++ Source File"
+"InfoTip"="C++ Source File"
+@="CppFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cc\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cxx]
+"Content Type"="C++ Source File"
+"InfoTip"="C++ Source File"
+@="CppFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cxx\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.idl]
+"Content Type"="IDL Source File"
+"InfoTip"="IDL Source File"
+@="CppFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile]
+@="C++ File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CppFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; C/C++ Header Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.h]
+"Content Type"="C/C++ Header File"
+"InfoTip"="C/C++ Header File"
+@="HFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.h\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.hh]
+"Content Type"="C++ Header File"
+"InfoTip"="C/C++ Header File"
+@="HFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.hh\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.hxx]
+"Content Type"="C++ Header File"
+"InfoTip"="C/C++ Header File"
+@="HFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.hxx\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile]
+@="C/C++ Header File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\HFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; Java Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.java]
+"Content Type"="Java Source File"
+@="JavaFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.java\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile]
+@="Java File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\JavaFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; WML Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.wml]
+"Content Type"="WML Files"
+@="WMLFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile]
+@="WML File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; WMLS Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.wmls]
+"Content Type"="WML Script Files"
+@="WMLSFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile]
+@="WMLS Script File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WMLSFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+;;
+;; Lisp Files
+;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cl]
+"Content Type"="Common Lisp Source File"
+"InfoTip"="Common Lisp Source File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.cl\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.el]
+"Content Type"="GNU Emacs Source File"
+"InfoTip"="GNU Emacs Source File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.el\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lisp]
+"Content Type"="Lisp Source File"
+"InfoTip"="Lisp Source File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lisp\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.ll]
+"Content Type"="Le-Lisp Source File"
+"InfoTip"="Le-Lisp Source File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.ll\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lsp]
+"Content Type"="Lisp Source File"
+"InfoTip"="Lisp Source File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lsp\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lap]
+"Content Type"="OpenLisp Compiled File"
+"InfoTip"="OpenLisp Compiler File"
+@="LispFile"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.lap\OpenWithList\emacs.exe]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile]
+@="Lisp File"
+"EditFlags"=hex:00,00,00,00
+"AlwaysShowExt"=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\DefaultIcon]
+@="emacs.exe"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\QuickView]
+@="*"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\Shell]
+@=""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\Shell\&Open with EmACT]
+@="&Open with EmACT"
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\Shell\&Open with EmACT\command]
+@="emacs.exe \"%1\""
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\Shell\Edit]
+"EditFlags"=hex:01,00,00,00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LispFile\Shell\Edit\command]
+@="emacs.exe \"%1\""
+
+[HKEY_CURRENT_USER\Console\emacs.exe]
+"ScreenBufferSize"=dword:003c0050
+"QuickEdit"=dword:1
+"WindowSize"=dword:003c0050
+"HistoryNoDup"=dword:00000000

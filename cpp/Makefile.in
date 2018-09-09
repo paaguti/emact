@@ -1,0 +1,150 @@
+#
+#	Makefile for 'EmACT' (c) C. Jullien
+#	$Id: Makefile.in,v 1.8 2018/09/08 07:14:39 jullien Exp $
+#
+
+# Automake special variables
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+datarootdir	= @datarootdir@
+bindir		= @bindir@
+libdir		= @libdir@
+mandir		= @mandir@
+includedir	= @includedir@
+datadir		= @datadir@
+localedir	= @localedir@
+infodir		= @infodir@
+
+CXX		= @CXX@
+AR		= @AR@
+VERSION		= @VERSION@
+O		= @OBJEXT@
+RANLIB		= @RANLIB@
+SOEXT		= @SOEXT@
+SONAME		= @SONAME@
+AEXT		= @AEXT@
+EXE		= @EXEEXT@
+ARFLAGS		= @AROPTS@
+WITHPIC         =
+CXXFLAGS	= @CXXFLAGS@ $(WITHPIC) -DHAVE_CONFIG_H
+CXXWARN		= @CXXWARN@
+INSTALL		= ./conf/install-sh
+LIBS		= @LIBS@
+KERN		= emact
+KRNLIB		= lib$(KERN).$(AEXT)
+KRNSHARED	= lib$(KERN).$(SOEXT).$(VERSION)
+NOPRINTDIR	= --no-print-directory
+STRIP		=
+
+OBJECTS         = basic.$(O)     \
+                  buffer.$(O)    \
+                  charutil.$(O)  \
+                  curses.$(O)    \
+                  display.$(O)   \
+                  emacs.$(O)     \
+                  file.$(O)      \
+                  filecomp.$(O)  \
+                  fileio.$(O)    \
+                  indent.$(O)    \
+                  line.$(O)      \
+                  killbuf.$(O)   \
+                  main.$(O)      \
+                  minibuf.$(O)   \
+                  mlisp.$(O)     \
+                  nexterr.$(O)   \
+                  options.$(O)   \
+                  random.$(O)    \
+                  region.$(O)    \
+                  search.$(O)    \
+                  spawn.$(O)     \
+                  unicode.$(O)   \
+                  version.$(O)   \
+                  window.$(O)    \
+                  word.$(O)      \
+                  x11.$(O)
+
+BINARIES	= ed$(EXE)
+DEFS		= -Dlint -D_CURSES -D_MLISP -DNDEBUG
+
+all: $(OBJECTS) $(BINARIES) $(KRNLIB)
+#all: libs $(BINARIES)
+
+libs: static-@STATIC_BUILD@
+
+ed$(EXE): $(OBJECTS)
+	@$(CXX) -o ed$(EXE) $(OBJECTS) $(LIBS)
+
+.cpp.$(O): emacs.h
+	@echo $(X_LIBS) $*.cpp
+	@$(CXX) -c $(DEFS) $(CXXFLAGS) $(CXXWARN) $*.cpp
+
+shared-std:
+	@echo Making shared lib $(KRNSHARED)
+	@rm -r -f $(OBJECTS)
+	@$(MAKE) $(NOPRINTDIR) WITHPIC=-fPIC $(KRNSHARED)
+
+static-std:
+	@echo Making static lib $(KRNLIB)
+	@rm -r -f $(OBJECTS)
+	@$(MAKE) $(NOPRINTDIR) WITHPIC= $(KRNLIB)
+
+$(KRNLIB): $(OBJECTS)
+	@rm -f $(KRNLIB)
+	@$(AR) $(ARFLAGS) $(KRNLIB) $(OBJECTS)
+	-@$(RANLIB) $(KRNLIB)
+
+$(KRNSHARED): $(OBJECT)
+	@$(CC) $(CXXFLAGS) -shared -Wl,-$(SONAME),$(KRNSHARED) -o $(KRNSHARED) \
+	       $(OBJECT)
+
+clean:
+	@-rm -f $(BINARIES)
+	@-rm -f *.$(O) *.$(AEXT) $(KRNSHARED)
+	@-rm -f \#* *.BAK *~
+
+valgrind: ed$(EXE)
+	@valgrind \
+		--leak-check=summary \
+		--track-fds=yes \
+		--log-file=testkern.log \
+		./ed$(EXE)
+
+cpplint:
+	cpplint.py --filter=-build/header_guard,build/c++11 *.h *.cpp
+
+install-strip:
+	@$(MAKE) $(NOPRINTDIR) STRIP=-s install
+
+install:
+	@echo Installing includes and libs
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) -d $(mandir)
+	$(INSTALL) -d $(mandir)/man1
+	$(INSTALL) -d $(includedir)/@NAME@
+	$(INSTALL) -d $(libdir)/pkgconfig
+	for i in big*h config.h ; \
+	do \
+	  $(INSTALL) -C -m 644 $$i $(includedir)/@NAME@/$$i; \
+	done
+	for i in $(KRNLIB) $(KRNSHARED) ; \
+	do \
+	  if [ -f $$i ]; \
+	  then \
+	    echo $$i; \
+	    $(INSTALL) -C -m 644 -T $$i $(libdir)/$$i; \
+	  fi \
+	done
+	(cd $(libdir) && ln -sf $(KRNSHARED) lib$(KERN).$(SOEXT).1)
+	(cd $(libdir) && ln -sf lib$(KERN).$(SOEXT).1 lib$(KERN).$(SOEXT))
+	$(INSTALL) -C -m 644 -T @NAME@.pc $(libdir)/pkgconfig/@NAME@.pc
+
+uninstall:
+	@echo Uninstalling includes and libs
+	rm -r -f $(includedir)/@NAME@
+	for i in lib$(KERN) ; \
+	do \
+	  rm -f $(libdir)/$$i\.*; \
+	done
+	rm -f $(libdir)/pkgconfig/@NAME@.pc
+	@echo Done.

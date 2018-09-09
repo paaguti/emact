@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+% 
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @NAME@
+Description: @NAME@ v@VERSION@ emacs clone
+Version: @VERSION@
+Libs: -L${libdir} -l@NAME@
+Cflags: -I${includedir}

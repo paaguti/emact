@@ -1,0 +1,131 @@
+#
+#	@(#)	EmACT	(c) by Christian Jullien	2009/04/29
+#
+# Optional flags :
+#
+#	-D_DIRECTORY	     to use with file completion
+#	-D_MLISP	     to use with user defined macros.
+#	-D_UNICODE	     to use with UNICODE characters.
+#	
+
+#	Assumes that we have <install-dir>\openlisp
+
+LIBFILES	= defclass defstruc stderror flet pretty sort startup setf
+
+!if "$(CPU)" == "AMD64"
+CPUFLAG 	= -GS- -D_SECURE_SCL=0
+ARCH		= 64
+LDARCH		= AMD64
+HC		= if exist ..\hc\hcrtf ..\hc\hcrtf -xn
+LIBEXTRA	= # bufferoverflowU.lib
+!endif
+
+!if "$(CPU)" == "i386" || "$(CPU)" == ""
+CPU 	     	= i386
+CPUFLAG 	= # -Wp64 # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
+ARCH		= 32
+LDARCH		= x86
+HC		= if exist ..\hc\hcrtf ..\hc\hcrtf -xn
+!endif
+
+!if "$(CHARSET)" == "_WIDECHARS"
+CHARLIB		= u
+STARTUP		= -subsystem:windows -entry:wWinMainCRTStartup
+UNICODE		= -D_WIDECHARS
+SETARGV		= wsetargv.obj
+!else
+CHARLIB		= a
+STARTUP		= -subsystem:windows -entry:WinMainCRTStartup
+UNICODE		=
+SETARGV		= setargv.obj
+!endif
+
+OLFLAGS		= -D_MLISP
+OLLIB		=
+EMLISP		= mlisp.obj
+
+CC		= cl -nologo
+AR		= lib
+ARFLAG		= -nologo
+SED		= emsed
+MFLAGS		= -D_WIN$(ARCH) -D_DIRECTORY -D_XPTERM $(UNICODE)
+CFLAGS		= $(MFLAGS) -EHsc -MT -Gs -Od $(CPUFLAG) -Zi -W4 -WL -I. $(OLFLAGS)
+EMACSLIB	= emmt$(CHARLIB)$(ARCH).lib
+EMACSBIN	= emacsxp$(CHARLIB)-$(CPU)
+LDFLAGS		= -link /PDB:$(EMACSBIN).pdb $(STARTUP) # -opt:REF -opt:ICF=8
+LIBS		= $(SETARGV)	\
+		  gdi32.lib	\
+		  comctl32.lib	\
+		  shell32.lib	\
+		  user32.lib	\
+		  advapi32.lib	\
+		  kernel32.lib	\
+		  wsock32.lib	\
+		  comdlg32.lib  \
+		  $(LIBEXTRA)
+
+KERNEL		= basic.obj	\
+		  buffer.obj	\
+		  charutil.obj	\
+		  dirent.obj	\
+		  display.obj	\
+		  emacs.obj	\
+		  file.obj	\
+		  filecomp.obj	\
+		  fileio.obj	\
+		  indent.obj	\
+		  killbuf.obj	\
+		  line.obj	\
+		  main.obj	\
+		  minibuf.obj	\
+		  nexterr.obj	\
+		  options.obj	\
+		  random.obj	\
+		  region.obj	\
+		  search.obj	\
+		  spawn.obj	\
+		  unicode.obj	\
+		  version.obj	\
+		  window.obj	\
+		  word.obj
+
+LISPOBJECTS	= mlisp.obj
+
+TERMINAL	= xpterm.obj
+
+ALLOBJECTS	= $(KERNEL)	\
+		  $(LISPOBJECTS)\
+		  $(TERMINAL)
+
+OBJECTS		= $(KERNEL)	\
+		  $(EMLISP)	\
+		  $(TERMINAL)
+
+all:	ed.exe emacs.hlp $(EMACSLIB)
+
+ed.exe:	$(ALLOBJECTS) xpterm.res
+	@$(CC) -Zi -Feed.exe $(OBJECTS) xpterm.res $(OLLIB) $(LIBS) $(LDFLAGS)
+	@del xpterm.res > nul
+
+unicode:
+	@$(MAKE) -nologo -f makefile.xp CHARSET=_WIDECHARS
+
+#	EmACT library
+
+$(EMACSLIB):	$(OBJECTS)
+	@echo Building $(EMACSLIB) ..
+	@if exist $(EMACSLIB) del $(EMACSLIB) > nul
+	@$(AR) -out:$(EMACSLIB) $(ARFLAG) $(OBJECTS)
+
+#	Resource file
+
+xpterm.res: xpterm.rc xpterm.h winterm0.ico
+	@rc -r $(MFLAGS) -fo xpterm.res xpterm.rc
+
+#	Help file
+
+emacs.hlp: emacs.rtf emacs.hpj
+	-@$(HC) emacs
+
+.cpp.obj:
+	@$(CC) -c $(CFLAGS) $<

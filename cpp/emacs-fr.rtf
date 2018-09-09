@@ -1,0 +1,796 @@
+{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang1036\deflangfe1036{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f5\fmodern\fcharset0\fprq1{\*\panose 02070409020205020404}Courier;}
+{\f36\fswiss\fcharset0\fprq0{\*\panose 00000000000000000000}Sans Serif PS;}{\f37\froman\fcharset238\fprq2 Times New Roman CE;}{\f38\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f40\froman\fcharset161\fprq2 Times New Roman Greek;}
+{\f41\froman\fcharset162\fprq2 Times New Roman Tur;}{\f42\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f43\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f44\froman\fcharset186\fprq2 Times New Roman Baltic;}
+{\f45\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}{\f47\fswiss\fcharset238\fprq2 Arial CE;}{\f48\fswiss\fcharset204\fprq2 Arial Cyr;}{\f50\fswiss\fcharset161\fprq2 Arial Greek;}{\f51\fswiss\fcharset162\fprq2 Arial Tur;}
+{\f52\fswiss\fcharset177\fprq2 Arial (Hebrew);}{\f53\fswiss\fcharset178\fprq2 Arial (Arabic);}{\f54\fswiss\fcharset186\fprq2 Arial Baltic;}{\f55\fswiss\fcharset163\fprq2 Arial (Vietnamese);}{\f57\fmodern\fcharset238\fprq1 Courier New CE;}
+{\f58\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f60\fmodern\fcharset161\fprq1 Courier New Greek;}{\f61\fmodern\fcharset162\fprq1 Courier New Tur;}{\f62\fmodern\fcharset177\fprq1 Courier New (Hebrew);}
+{\f63\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f64\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f65\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
+\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
+\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\nowidctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \snext0 Normal;}{
+\s1\qc \li0\ri0\sa240\nowidctlpar\faauto\outlinelevel0\adjustright\rin0\lin0\itap0 \b\f36\fs30\cf2\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext0 heading 1;}{\s2\ql \li0\ri5\sa240\widctlpar
+\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext0 heading 2;}{\s3\ql \li0\ri0\sa120\nowidctlpar\tx2880\faauto\outlinelevel2\adjustright\rin0\lin0\itap0 
+\b\f36\fs24\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 3;}{\s4\ql \li0\ri0\sa120\nowidctlpar\tx2880\faauto\outlinelevel3\adjustright\rin0\lin0\itap0 \b\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 
+\sbasedon0 \snext17 heading 4;}{\s5\ql \li720\ri0\nowidctlpar\faauto\outlinelevel4\adjustright\rin0\lin720\itap0 \b\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 5;}{
+\s6\ql \li720\ri0\nowidctlpar\faauto\outlinelevel5\adjustright\rin0\lin720\itap0 \f36\fs20\ul\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 6;}{
+\s7\ql \li720\ri0\nowidctlpar\faauto\outlinelevel6\adjustright\rin0\lin720\itap0 \i\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 7;}{
+\s8\ql \li720\ri0\nowidctlpar\faauto\outlinelevel7\adjustright\rin0\lin720\itap0 \i\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 8;}{
+\s9\ql \li720\ri0\nowidctlpar\faauto\outlinelevel8\adjustright\rin0\lin720\itap0 \i\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 heading 9;}{\*\cs10 \additive \ssemihidden Default Paragraph Font;}{\*
+\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\trcbpat1\trcfpat1\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
+\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{\*\cs15 \additive \fs16\up6\lang1036\langfe0\langnp1036\langfenp0 \sbasedon10 
+Appel note de bas de p.]\'1d\'f2w\'18;}{\s16\ql \li0\ri0\nowidctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext16 Note de bas de page\'88.\'14;}{
+\s17\ql \li720\ri0\nowidctlpar\faauto\adjustright\rin0\lin720\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext17 Normal Indent;}{\s18\ql \fi-2520\li2880\ri0\sa120\nowidctlpar\tx2880\faauto\adjustright\rin0\lin2880\itap0 
+\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext18 Func List;}{\s19\ql \fi-2880\li2880\ri0\sa120\nowidctlpar\tqr\tx720\tx900\tx2880\faauto\adjustright\rin0\lin2880\itap0 
+\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon18 \snext19 Binding;}{\s20\ql \fi-2160\li2880\ri0\sa120\nowidctlpar\tx2880\faauto\adjustright\rin0\lin2880\itap0 \f5\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 
+\sbasedon0 \snext20 Example;}{\s21\ql \li0\ri0\sa240\nowidctlpar\tx2880\faauto\adjustright\rin0\lin0\itap0 \f36\fs20\cf2\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext21 Title;}{
+\s22\ql \li0\ri0\sa120\nowidctlpar\faauto\adjustright\rin0\lin0\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext22 Main Text;}{\s23\ql \fi-1080\li1440\ri0\sa120\nowidctlpar
+\tx1440\tx2880\faauto\adjustright\rin0\lin1440\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon18 \snext23 Char List;}{\s24\ql \fi-360\li360\ri0\sa120\nowidctlpar
+\tx360\tx1440\tx2880\tx3600\tx4320\faauto\adjustright\rin0\lin360\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext24 Steps;}{\s25\ql \li0\ri0\sa120\nowidctlpar
+\tx180\tx1980\tx3780\tx5580\tx8550\faauto\adjustright\rin0\lin0\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon22 \snext25 Glossary;}{\s26\ql \fi-2520\li2880\ri0\sa120\sl120\slmult1\nowidctlpar
+\tx2880\faauto\adjustright\rin0\lin2880\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon18 \snext26 interline;}{\s27\ql \li360\ri0\sa120\nowidctlpar\tx2880\faauto\adjustright\rin0\lin360\itap0 
+\f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon22 \snext27 Jump List;}{\s28\ql \fi-720\li720\ri0\sa120\nowidctlpar\faauto\adjustright\rin0\lin720\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon22 \snext28 
+Note;}{\s29\ql \fi-2880\li2880\ri0\sa120\nowidctlpar\tx900\tx2880\faauto\adjustright\rin0\lin2880\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon19 \snext29 FunctionDesc;}{\s30\ql \fi-900\li900\ri0\sa120\nowidctlpar
+\tqr\tx720\tx900\faauto\adjustright\rin0\lin900\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon19 \snext30 BindingShort;}{\s31\ql \li0\ri0\nowidctlpar\tqr\tx9072\faauto\adjustright\rin0\lin0\itap0 
+\f5\fs24\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \snext31 SF;}{\s32\ql \li0\ri5\nowidctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon31 \snext32 Commandes;}{\*\cs33 
+\additive \super \sbasedon10 Appel de note de fin.\'14;}{\s34\qj \li1701\ri6\sa120\nowidctlpar\faauto\adjustright\rin6\lin1701\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext34 Texte;}{\s35\ql \li1701\ri6\nowidctlpar
+\tx5670\tx7371\faauto\adjustright\rin6\lin1701\itap0 \b\f2\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext35 Variables;}{\s36\ql \li0\ri0\nowidctlpar\tqc\tx4536\tqr\tx9072\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext36 header;}{\s37\ql \li0\ri0\nowidctlpar\tqc\tx4536\tqr\tx9072\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 \sbasedon0 \snext37 footer;}
+}{\*\rsidtbl \rsid13061360}{\*\generator Microsoft Word 10.0.2627;}{\info{\title $#+ EmACT }{\author jullien}{\operator jullien}{\creatim\yr1999\mo12\dy27\hr10\min8}{\revtim\yr2003\mo7\dy26\hr21\min52}{\version6}{\edmins6}{\nofpages53}{\nofwords4305}
+{\nofchars23681}{\*\company HOME}{\nofcharsws27931}{\vern16437}}\paperw11906\paperh16838\margl1417\margr1417\margt1417\margb1417 
+\deftab708\widowctrl\ftnbj\aenddoc\hyphhotz425\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\horzdoc\dghspace120\dgvspace120\dghorigin1701\dgvorigin1984\dghshow0\dgvshow3\jcompress\viewkind4\viewscale100\nolnhtadjtbl\rsidroot13061360 
+\fet0\sectd \linex0\headery709\footery709\colsx709\endnhere\sectdefaultcl\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang 
+{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl7
+\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain 
+\qc \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\fs28\up6\insrsid13061360 
+\par }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 
+$}{\lang1033\langfe1033\langnp1033\insrsid13061360  EmACT version Windows}}#{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  MainIndex}}+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Index:0000}}}{\b\f1\fs24\insrsid13061360\charrsid13061360  }{
+\f1\fs64\cf2\insrsid13061360\charrsid13061360 EmACT}{\b\f1\fs24\insrsid13061360\charrsid13061360  }{\v\f1\fs32\insrsid13061360\charrsid13061360 MainIndex}{\f1\fs32\insrsid13061360\charrsid13061360 
+\par 
+\par }{\i\f1\fs32\insrsid13061360 {\field{\*\fldinst SYMBOL 227 \\f "Symbol" \\s 16}{\fldrslt\f3\fs32}}}{\i\f1\fs32\insrsid13061360\charrsid13061360  1985-200}{\i\f1\fs32\insrsid13061360\charrsid13061360 3,}{\i\f1\fs32\insrsid13061360\charrsid13061360 
+ C. Jullien
+\par }{\i\f1\fs32\insrsid13061360 4, Villa des Reinettes \endash  95390 Saint-Prix
+\par 
+\par }\pard \ql \li709\ri0\widctlpar\faauto\adjustright\rin0\lin709\itap0 {\f1\uldb\insrsid13061360 Copyright}{\v\f1\insrsid13061360 Copyright}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Introduction}{\v\f1\insrsid13061360 Introduction}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 G\'e9n\'e9ralit\'e9s}{\v\f1\insrsid13061360 General}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Utilisation de la souris}{\v\f1\insrsid13061360 MouseCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Fonctions de d\'e9placement du curseur}{\v\f1\insrsid13061360 CursorCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Fonctions de modification}{\v\f1\insrsid13061360 ModificationCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Fonctions sur les fichiers}{\v\f1\insrsid13061360 FileCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Commandes de manipulation de tampons}{\v\f1\insrsid13061360 BufferCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Fen\'eatre d'\'e9dition}{\v\f1\insrsid13061360 WindowCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les modes d'\'e9dition}{\v\f1\insrsid13061360 EditModeCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les recherches automatiques}{\v\f1\insrsid13061360 FindCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les r\'e9gions de texte}{\v\f1\insrsid13061360 RegionCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les Tags}{\v\f1\insrsid13061360 Tags}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les paragraphes}{\v\f1\insrsid13061360 Paragraphs}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les macros}{\v\f1\insrsid13061360 MacroCommands}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Utilisation du compteur}{\v\f1\insrsid13061360 InternalCounter}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les fichiers d\rquote aides personnels}{\v\f1\insrsid13061360 UserHelp}{\f1\fs32\insrsid13061360 
+\par }{\f1\uldb\insrsid13061360 Les param\'e8tres de l'\'e9diteurs}{\v\f1\insrsid13061360 Variables}{\f1\fs32\insrsid13061360 
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\fs32\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  Copyright}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  Copyright}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Copyright:0000}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 K}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Copyright;Licence;Diffusion}}}{\insrsid13061360  Copyright
+\par }\pard\plain \s22\ql \li0\ri0\sa120\widctlpar\faauto\adjustright\rin0\lin0\itap0 \f36\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  poss\'e8de une licence GPL (voir http://www.gnu.org).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\fs32\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Introduction}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  Introduction}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0001}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Introduction;Pr\'e9sentation}
+}}{\insrsid13061360  Introduction
+\par }\pard\plain \s34\qj \li0\ri6\sa120\nowidctlpar\faauto\adjustright\rin6\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Emacs est tr\'e8s certainement l'\'e9
+diteur le plus populaire des programmeurs Lisp. Initialement d\'e9velopp\'e9 en Lisp par Richard M. Stallman au MIT, il a \'e9t\'e9 r\'e9\'e9crit sous de nombreuses versions dans diff\'e9rents langages (Go
+sling Emacs, C-macs, GNU-Emacs, XEmacs, MicroEmacs, Gmacs, lemacs, Zmacs, Freemacs, Epsilon, Jove, Edwin...). EmACT est une version initialement adapt\'e9e \'e0 l'\'e9criture des programmes du syst\'e8
+me Le-Lisp de l'INRIA ou OpenLisp sur PC. Elle a l'avantage d'\'eatre peu gourmande en espace m\'e9moire et d'\'eatre facilement portable sur diff\'e9rentes machines. Qu'il soit int\'e9gr\'e9 dans les distributions Le\_
+Lisp, OpenLisp ou dans sa version standard, EmACT a \'e9t\'e9 port\'e9 \'e0 ce jour sur MS-DOS, Windows 3.x, Windows NT, Windows 95, XENIX, OS/2 1.x et 2.x (texte et Presentation Manager), UNIX System V.3 et V.4 g\'e9n\'e9
+riques, sur Linux 1.1, sur la gamme SUN sous SUN/OS et Solaris, sur VAX, sous ULTRIX, BSD4.[1-4] ou VMS, sous IBM AIX, sous SPIX ainsi que sous la plupart des syst\'e8mes UNIX utilisant l'environnement X11 et les fonctions de la Xlib. En g\'e9n\'e9
+ral, le portage sur un nouveau syst\'e8me non list\'e9 ne pose aucun probl\'e8me. Le noyau du code source, enti\'e8rement r\'e9alis\'e9 en C, respecte les normes NF EN 29899:1993 - ISO/IEC 9899:1990 (Langage C)
+, et NF EN 29945-1:1994 - ISO/IEC 9945-1:1990 (POSIX 1003.1).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  G\'e9n\'e9ralit\'e9s}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  General}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0002}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  G\'e9n
+\'e9ralit\'e9s;Commandes simples;Commandes Ctrl;Commandes Meta}}}{\insrsid13061360  G\'e9n\'e9ralit\'e9s
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Les diff\'e9rents \'e9diteurs Emacs ont en commun un ensemble de commandes et de fonctionnalit\'e9
+s utilisables \'e0 partir du clavier. Celles d'}{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  h\'e9ritent plus sp\'e9cialement des commandes de GNU Emacs.
+\par 
+\par }\pard \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 {\b\f1\fs24\insrsid13061360 1) Les commandes simples
+\par }{\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Les commandes simples de type "Control" o\'f9 il suffit d'appuyer sur la touche }{\b\f1\cf6\insrsid13061360 Ctrl}{\f1\insrsid13061360  du clavier puis, en laissan
+t enfonc\'e9e la touche }{\b\f1\cf6\insrsid13061360 Ctrl}{\f1\insrsid13061360 , appuyer en m\'eame temps sur la touche li\'e9e \'e0 la commande. Par exemple, la commande Control-E qui permet d'aller en fin de ligne s'active en appuyant \'e0
+ la fois sur la touche }{\b\f1\cf6\insrsid13061360 Ctrl}{\f1\insrsid13061360  et sur la touche E. Le plus souvent, les commandes li\'e9es aux touches de contr\'f4le permettent de se d\'e9placer \'e0 l'int\'e9rieur du texte et ont comme mn\'e9
+monique l'initiale anglaise de la commande. }{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 On trouve dans cette cat\'e9gorie }{\f1\cf6\lang1033\langfe1033\langnp1033\insrsid13061360 Ctrl}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 -}{
+\f1\cf2\lang1033\langfe1033\langnp1033\insrsid13061360 E}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  (end-of-line), }{\f1\cf6\lang1033\langfe1033\langnp1033\insrsid13061360 Ctrl}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 -}{
+\f1\cf2\lang1033\langfe1033\langnp1033\insrsid13061360 B}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  (backward-character), }{\f1\cf6\lang1033\langfe1033\langnp1033\insrsid13061360 CTRL}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 -}{
+\f1\cf2\lang1033\langfe1033\langnp1033\insrsid13061360 F}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  (forward-character), }{\f1\cf6\lang1033\langfe1033\langnp1033\insrsid13061360 Ctrl}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 -}{
+\f1\cf2\lang1033\langfe1033\langnp1033\insrsid13061360 P}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  (previous-line), }{\f1\cf6\lang1033\langfe1033\langnp1033\insrsid13061360 Ctrl}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 -}{
+\f1\cf2\lang1033\langfe1033\langnp1033\insrsid13061360 D}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  (delete-character), etc...
+\par 
+\par }\pard \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 {\b\f1\fs24\insrsid13061360 2) Les commandes compos\'e9es de type M\'e9ta
+\par }{\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Les \'e9diteurs de type Emacs ont trop de fonctionnalit\'e9s pour que chacune d'elle soit affect\'e9e \'e0 une touche de contr\'f4
+le du clavier. Les commandes moins usuelles, ou celles qui englobent plusieurs caract\'e8res \'e0 la fois, sont activ\'e9es par la combinaison de deux touches : le code pr\'e9fixe qui s\'e9lectionne un  nouveau groupe de commandes puis le code lui-m\'ea
+me qui d\'e9clenche l'action souhait\'e9e. Le premier type de commande compos\'e9e est activ\'e9 par la touche "M\'e9ta" qui correspond en g\'e9n\'e9ral \'e0 la touche }{\b\f1\cf6\insrsid13061360 ESC}{\f1\insrsid13061360  (\'e9
+chappement). Par exemple, pour passer en mode Lisp, il faut appuyer sur }{\b\f1\cf6\insrsid13061360 ESC}{\f1\insrsid13061360  puis sur }{\f1\cf6\insrsid13061360 Ctrl}{\f1\insrsid13061360 -}{\f1\cf2\insrsid13061360 L}{\f1\insrsid13061360 . L'abr\'e9
+viation standard de META est "}{\b\f1\insrsid13061360 M-}{\f1\insrsid13061360 " comme dans M-C-L qui correspond aux combinaisons }{\f1\cf6\insrsid13061360 ESC}{\f1\insrsid13061360  puis Control-L.
+\par 
+\par }\pard \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 {\b\f1\fs24\insrsid13061360 3) Les commandes de type Control-X
+\par }{\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Enfin, dernier type de commandes, celles pr\'e9fix\'e9es par "}{\f1\cf6\insrsid13061360 Ctrl-X}{\f1\insrsid13061360 " qui, \'e0 la mani\'e8re de }{
+\f1\cf6\insrsid13061360 ESC}{\f1\insrsid13061360 , donnent acc\'e8s \'e0 un autre jeu de commandes. La commande }{\f1\cf6\insrsid13061360 Ctrl-XCtrl}{\f1\insrsid13061360 -}{\f1\cf2\insrsid13061360 C}{\f1\insrsid13061360 
+ permet, par exemple, de sortir de l'\'e9diteur, son abr\'e9viation est C-XC-C.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Utilisation de la souris}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  MouseCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0003}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Utilisation de la souris;souris;presse-papiers;s\'e9lections;button1;button2;Couper/coller}}}{\insrsid13061360  Utilisation de la souris
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Sur les syst\'e8mes poss\'e9dant un dispositif de pointage, la souris peut \'eatre utilis\'e9
+e pour positionner le curseur ou faire des s\'e9lections. EmACT n'utilise que les deux premiers boutons de la souris en partant de la gauche. Le bouton le plus \'e0 gauche est appel\'e9 }{\f1\cf6\insrsid13061360 button1}{\f1\insrsid13061360 
+ et le suivant, s'il existe, }{\f1\cf6\insrsid13061360 button2}{\f1\insrsid13061360 . Certaines actions peuvent \'eatre appel\'e9es en combinant le clic du bouton et l\rquote appui d\rquote une des touches de modification du clavier }{
+\f1\cf6\insrsid13061360 shift}{\f1\insrsid13061360  ou }{\f1\cf6\insrsid13061360 control}{\f1\insrsid13061360 .
+\par La commande }{\f1\cf6\insrsid13061360 button1}{\f1\insrsid13061360  sert \'e0 changer la position du curseur ou, \'e9ventuellement, \'e0 changer de fen\'eatre active. Un }{\f1\cf6\insrsid13061360 shift-button1}{\f1\insrsid13061360  permet de faire une s
+\'e9lection \'e0 partir de la derni\'e8re position connue du curseur et la nouvelle position d\'e9termin\'e9 par l\rquote emplacement du pointeur. Cette s\'e9lection est copi\'e9e dans un tampon interne et, sur certains syst\'e8
+mes (Windows ou X11), dans un presse-papiers global qui peut servir d'\'e9change entre plusieurs applications. Pour copier le contenu du presse-papiers ou du tampon interne, il suffit de faire un clic sur le }{\f1\cf6\insrsid13061360 button2}{
+\f1\insrsid13061360  de la souris (par exemple : le bouton de droite si la souris a deux boutons ou celui du milieu si elle en comporte trois). La s\'e9lection pr\'e9c\'e9demment copi\'e9e s'ins\'e8re \'e0 l'endroit d\'e9sign\'e9
+ par le pointeur. Si on effectue }{\f1\cf6\insrsid13061360 control-button2}{\f1\insrsid13061360 , la s\'e9lection est copi\'e9e dans le tampon interne et la r\'e9gion d\'e9sign\'e9e est effac\'e9e du tampon d'\'e9dition courant. Enfin, }{
+\f1\cf6\insrsid13061360 control-button1}{\f1\insrsid13061360  effectue une s\'e9lection sans que le curseur soit d\'e9plac\'e9.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions de d\'e9placement du curseur}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  CursorCommands}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360 
+ Index:0004}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{
+\insrsid13061360  Fonctions de d\'e9placement du curseur}}}{\insrsid13061360  Fonctions de d\'e9placement du curseur
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Ces commandes modifient la position courante de la marque dans la fen\'eatre active d'\'e9
+dition. Elles ont pour cons\'e9quence de d\'e9placer le curseur \'e0 la nouvelle position. Sur la majeure partie des syst\'e8mes d'exploitation, ces commandes sont \'e9galement accessibles au moyen des touches de d\'e9placement du curseur.
+\par }\pard \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Va en d\'e9but de ligne\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{
+\cf2\insrsid13061360 A}{\insrsid13061360 )
+\par Va sur le caract\'e8re pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 B}{\insrsid13061360 )
+\par Va en fin de ligne\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 E}{\insrsid13061360 )
+\par Va sur le caract\'e8re suivant\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 F}{\insrsid13061360 )
+\par Va \'e0 la ligne suivante\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 N}{\insrsid13061360 )
+\par Va \'e0 la ligne pr\'e9c\'e9dente\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 P}{\insrsid13061360 )
+\par Va \'e0 la page suivante\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 V}{\insrsid13061360 )
+\par Va en fin de fichier\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 >}{\insrsid13061360 )
+\par Va en d\'e9but de fichier\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 <}{\insrsid13061360 )
+\par Va sur le mot suivant\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 F}{\insrsid13061360 )
+\par Va \'e0 un num\'e9ro de ligne\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 G)}{\insrsid13061360 
+\par Va \'e0 un num\'e9ro de ligne (}{\i\insrsid13061360 alternative}{\insrsid13061360 )\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 N)}{\insrsid13061360 
+\par Va \'e0 la page pr\'e9c\'e9dente\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 V}{\insrsid13061360 )
+\par Va sur le mot pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 B}{\insrsid13061360 )
+\par D\'e9place l'\'e9cran sur la ligne suivante\tab (}{\cf6\insrsid13061360 Ctrl-XCtrl}{\insrsid13061360 -}{\cf2\insrsid13061360 N}{\insrsid13061360 )
+\par D\'e9place l'\'e9cran sur la ligne pr\'e9c\'e9dente\tab (}{\cf6\insrsid13061360 Ctrl-XCtrl}{\insrsid13061360 -}{\cf2\insrsid13061360 P}{\insrsid13061360 )
+\par Met la ligne en d\'e9but de fen\'eatre\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 !}{\insrsid13061360 )
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions de modifications}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  ModificationCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0005}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Modification;Effacement;Insertion;Echanges de caract\'e8res}}}{\insrsid13061360  Fonctions de modifications 
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Ces commandes modifient le contenu du tampon d'\'e9dition courant en ajoutant, supprimant ou rempla\'e7
+ant une partie du texte. Les modifications ne seront effectives qu'apr\'e8s avoir sauvegard\'e9 le contenu du tampon sur disque.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Efface le caract\'e8re pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}
+{\cf2\insrsid13061360 H}{\insrsid13061360 ) ou }{\cf2\insrsid13061360 DEL}{\insrsid13061360 
+\par Efface jusqu'\'e0 la fin de ligne\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 K}{\insrsid13061360 )
+\par Cr\'e9e une nouvelle ligne\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 M}{\insrsid13061360 )
+\par Coupe la ligne courante\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 O}{\insrsid13061360 )
+\par Ins\'e8re un caract\'e8re sp\'e9cial\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 Q}{\insrsid13061360 ) ou (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 Q}{\insrsid13061360 )
+\par Echange les 2 caract\'e8res pr\'e9c\'e9dents\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 T}{\insrsid13061360 )
+\par Efface la zone dans un tampon\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 W}{\insrsid13061360 )
+\par Restitue le tampon d\'e9truit\tab (}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 Y}{\insrsid13061360 )
+\par Efface les lignes blanches\tab (}{\cf6\insrsid13061360 Ctrl-XCtrl}{\insrsid13061360 -}{\cf2\insrsid13061360 O}{\insrsid13061360 )
+\par Echange une ligne avec la pr\'e9c\'e9dente\tab (}{\cf6\insrsid13061360 Ctrl-XCtrl}{\insrsid13061360 -}{\cf2\insrsid13061360 T}{\insrsid13061360 )
+\par Efface le mot pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 H}{\insrsid13061360 )
+\par Efface le mot suivant\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 D}{\insrsid13061360 )
+\par Met une majuscule sur le mot\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 C}{\insrsid13061360 )
+\par Change le mot insertion/remplacement\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 I}{\insrsid13061360 )
+\par Met un mot en minuscules\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 L}{\insrsid13061360 )
+\par Echange un mot avec son pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 T}{\insrsid13061360 )
+\par Met un mot en majuscules\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 U}{\insrsid13061360 )
+\par Ins\'e8re exactement un espace\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 SPACE}{\insrsid13061360 )
+\par Efface le mot pr\'e9c\'e9dent\tab (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf2\insrsid13061360 DEL}{\insrsid13061360 ) ou (}{\cf6\insrsid13061360 ESC}{\insrsid13061360 -}{\cf6\insrsid13061360 Ctrl}{\insrsid13061360 -}{\cf2\insrsid13061360 H}{
+\insrsid13061360 )
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions sur les fichiers}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  FileCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0006}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Fichiers;Sauvegarde d'un fichier;Lecture d'un fichier;Fichiers .BAK}}}{\insrsid13061360  Fonctions sur les fichiers
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Vous pouvez \'e9diter les fichiers de n'importe quel r\'e9
+pertoire, du moment que vous en donnez le chemin. Par d\'e9faut, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  travaille sur le r\'e9pertoire courant. Pour certaines commandes n\'e9cessitant que vous donniez un nom de fichier, }{
+\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  peut vous aider dans votre recherche (syst\'e8mes MS/DOS, OS/2, Windows ou UNIX). D\'e8s que vous tapez la barre d'espace, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360 
+ propose tous les noms de fichiers qui correspondent \'e0 ce que vous avez d\'e9j\'e0 tap\'e9. Vous passez au fichier suivant avec la barre d'espace et s\'e9lectionnez le nom voulu avec retour chariot.
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Lit le fichier\tab (Ctrl-XCtrl-R)
+\par Sauve le fichier courant\tab (Ctrl-XCtrl-S)
+\par Charge un nouveau fichier\tab (Ctrl-XCtrl-F)
+\par Sauve sous un nouveau nom\tab (Ctrl-XCtrl-W)
+\par Sauve les tampons modifi\'e9s avec confirmation\tab (Ctrl-XS)
+\par Ins\'e8re un fichier\tab (Ctrl-XCtrl-I)
+\par Inverse les droits d'\'e9criture du fichier\tab (Ctrl-XCtrl-Q)}{\f0\insrsid13061360 
+\par }{\insrsid13061360 Remplace par un nouveau fichier\tab (Ctrl-XCtrl-V)
+\par Marque le tampon comme non modifi\'e9\tab (ESC-~)
+\par Lit un r\'e9pertoire en mode dired\tab (C-XD)
+\par Efface un fichier\tab (Unbound)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Commandes de manipulation de tampons}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  BufferCommands}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360 
+ Index:0007}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{
+\insrsid13061360  Buffers;Tampons d'\'e9dition}}}{\insrsid13061360  Commandes de manipulation de tampons
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Lorsqu'un fichier est \'e9dit\'e9, il est en fait copi\'e9
+ dans un tampon. Toute modification dans le texte n'affecte que le tampon, tant que celui-ci n'est pas sauvegard\'e9 dans le fichier.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Ctrl-XCtrlB liste tous les tampons existants, leur taille et les fichiers auxquels ils sont reli\'e9s. Ctrl-XB permet de s\'e9lectionner un tampon. Si le tampon existe d
+\'e9j\'e0, la fen\'eatre courante visualise son contenu ; si le tampon n'existe pas, il est cr\'e9\'e9 et son contenu est visualis\'e9 dans la fen\'eatre courante. Ctrl-XK d\'e9truit le tampon dont vous donnez le nom. Si le tampon est en cou
+rs de visualisation, il ne peut \'eatre d\'e9truit. Le message suivant appara\'eet :
+\par 
+\par }\pard \ql \li1134\ri5\widctlpar\faauto\adjustright\rin5\lin1134\itap0 {\i\f1\insrsid13061360\charrsid13061360 "Buffer is being displayed"}{\f1\insrsid13061360\charrsid13061360 
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360\charrsid13061360 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Change de tampon actif\tab (Ctrl-XB)
+\par Efface un tampon\tab (Ctrl-XK)
+\par Donne la liste des tampons d'\'e9dition\tab (Ctrl-XCtrl-B)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions sur le fenetrage}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  WindowCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0008}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Fen\'ea
+tre d'\'e9dition;Edition multiple}}}{\b0\fs16\up6\insrsid13061360  }{\insrsid13061360 Fonctions sur le fen\'eatrage
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  est un \'e9diteur multi-fen\'eatrage. Une fen\'ea
+tre visualisant une portion de tampon, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  permet donc de voir et d'\'e9diter en m\'eame temps plusieurs fichiers, ou diff\'e9rentes parties d'un m\'eame fichier. Des commandes permettent de cr\'e9
+er, fermer, changer la taille... d'une fen\'eatre. D'autres permettent de passer d'une fen\'eatre \'e0 une autre, ce qui autorise le d\'e9placement de blocs de texte d'une fen\'eatre \'e0 l'autre, donc de fichier en fichier.
+\par 
+\par A tout moment, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  peut fournir une aide concernant les commandes. ESC-? provoque l'ouverture d'une fen\'eatre d'aide donnant une br\'e8ve description des commandes disponibles.
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Diminue la fen\'eatre courante\tab (Ctrl-XCtrl-Z)
+\par Efface la fen\'eatre courante\tab (Ctrl-X0)
+\par Efface les autres fen\'eatres\tab (Ctrl-X1)
+\par Partage en deux la fen\'eatre courante\tab (Ctrl-X2)
+\par Efface la fen\'eatre courante\tab (Ctrl-XD)
+\par Va sur la fen\'eatre suivante\tab (Ctrl-XN)
+\par Va sur la fen\'eatre suivante\tab (Ctrl-XO)
+\par Va sur la fen\'eatre pr\'e9c\'e9dente\tab (Ctrl-XP)
+\par Va sur la fen\'eatre du haut\tab (Ctrl-XT)
+\par Agrandit la fen\'eatre courante\tab (Ctrl-XZ)
+\par Ajuste l'\'e9cran \'e0 80 colonnes}{\f0\insrsid13061360 \tab (}{\insrsid13061360 Ctrl-X8)}{\f0\insrsid13061360 
+\par }{\insrsid13061360 Affiche une fen\'eatre d'aide\tab (ESC-?)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Les modes d'\'e9dition}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  EditModeCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0009}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Modes d'
+\'e9dition;Mode C/C++;Mode Lisp;Mode Assembleur;Mode Pascal;Mode Prolog}}}{\b0\fs16\up6\insrsid13061360  }{\insrsid13061360 Les modes d'\'e9dition
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  poss\'e8de plusieurs modes d'\'e9
+dition (FUNDAMENTAL, C, C++, JAVA, LISP, PROLOG, ASSEMBLER, DIRED), chacun \'e9tant adapt\'e9 \'e0 un mode d'\'e9dition particulier. Les modes LISP, C et C++ v\'e9rifient, par exemple, le bon parenth\'e9
+sage des expressions et indentent la ligne suivante en fonction des r\'e8gles propres au langage. Le mode DIRED permet, quant \'e0 lui, de naviguer (mode browse) \'e0 travers les r\'e9pertoires si le syst\'e8me l\rquote 
+autorise (MS/DOS, Windows 3.x, Windows NT/2000, Windows 9x/ME, OS/2, UNIX).
+\par  
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Passe en mode Assembleur\tab (ESC-Ctrl-A)
+\par Passe en mode C\tab (ESC-Ctrl-C)
+\par Passe en mode C++\tab (ESC-+)
+\par Cherche une d\'e9finition\tab (ESC-Ctrl-F)
+\par Passe en mode Lisp\tab (ESC-Ctrl-L)
+\par Passe en mode Java\tab (ESC-Ctrl-J)
+\par Passe en mode normal\tab (ESC-Ctrl-N)
+\par Passe en mode Prolog\tab (ESC-Ctrl-P)
+\par V\'e9rifie le crochet gauche\tab (ESC-[)
+\par V\'e9rifie le crochet droit\tab (ESC-])
+\par V\'e9rifie l'accolade gauche\tab (ESC-X-match-left-curly-bracket)
+\par V\'e9rifie l'accolade droite\tab (ESC-X-match-right-curly-bracket)
+\par V\'e9rifie la parenth\'e8se gauche\tab (ESC-()
+\par V\'e9rifie la parenth\'e8se droite\tab (ESC-))
+\par Indente la ligne courante\tab TAB ou (Ctrl-I)
+\par Indente une nouvelle ligne\tab (Ctrl-J)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Les recherches automatiques}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  FindCommands}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0010}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Recherche;Remplacement automatique;Remplacement interactif}}}{\b0\fs16\up6\insrsid13061360  }{\insrsid13061360 Les recherches automatiques
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360 
+ propose deux sortes de recherches : les recherches simples en avant ou en arri\'e8re par rapport \'e0 la position courante du curseur, les recherches sur tout le texte, avec remplacement de texte. Dans ce dernier cas, }{\b\f1\insrsid13061360 EmACT}{
+\f1\insrsid13061360  demande la cha\'eene \'e0 remplacer, puis la cha\'eene de remplacement.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Avec ESC-%, le curseur se place \'e0 chaque occurrence de la cha\'eene \'e0 remplacer, et attend confirmation du remplacement par le message "replace".
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Vous devez r\'e9pondre "}{\i\f1\insrsid13061360 y}{\f1\insrsid13061360 " pour confirmer, une autre touche pour passer \'e0 l'occurrence suivante. Attention \'e0
+ la commande ESC-& qui remplace le texte sans demander confirmation.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Cherche en arri\'e8re\tab (Ctrl-R) ou (ESC-R)
+\par Cherche en avant\tab (Ctrl-S) ou (ESC-S)
+\par Cherche et remplace avec confirmation\tab (ESC-%)
+\par Cherche et remplace sur tout le texte\tab (ESC-&)
+\par Compl\'e8te le mot courant dans le texte\tab (ESC-/)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions sur les r\'e9gions de texte}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  RegionCommands}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360 
+ Index:0011}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{
+\insrsid13061360  Marque; Position d'une marque; Blocks de textes;Sauvegarde de blocks de texte;D\'e9placemements de blocks de texte}}}{\insrsid13061360  Fonctions sur les r\'e9gions de texte
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Une r\'e9gion est la portion de texte d\'e9limit\'e9
+e entre une "marque" et la position courante du curseur. Chaque fen\'eatre d'\'e9dition peut avoir sa propre r\'e9gion d\'e9finie. La commande Ctrl-SPACE ou Ctrl-@ ins\'e8re une marque invisible \'e0 la position du curseur. En d\'e9pla\'e7
+ant celui-ci, vous d\'e9finissez une r\'e9gion entre la marque pos\'e9e et la position courante du curseur. Pour d\'e9placer du texte ou pour copier une partie d'un fichier, on commence par poser une marque \'e0 une extr\'e9mit\'e9 de la r\'e9gion \'e0
+ copier ou \'e0 d\'e9placer puis on d\'e9place le curseur \'e0 l'autre extr\'e9mit\'e9 de ce texte. On efface Ctrl-W ou on copie ESC-W la r\'e9gion de texte qui est alors mise dans la zone d'effacement. Celle-ci peut alors \'eatre copi\'e9
+e plusieurs fois et \'e0 n'importe quel endroit, en utilisant la commande Ctrl-Y.
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Positionne la marque\tab (Ctrl-@) ou (Ctrl-SPACE) ou (Ctrl-X-SPACE)
+\par Marque tout le tampon courant\tab (C-XH)
+\par Met une r\'e9gion en minuscules\tab (Ctrl-XCtrl-L)
+\par Met une r\'e9gion en majuscules\tab (Ctrl-XCtrl-U)
+\par Copie une r\'e9gion\tab (ESC-W) ou (Ctrl-W)
+\par Copie une r\'e9gion dans un fichier\tab (ESC-Ctrl-W)
+\par D\'e9cale une r\'e9gion d'une tabulation vers la droite\tab (Ctrl-X>)
+\par D\'e9cale une r\'e9gion d'une tabulation vers la gauche\tab (Ctrl-X<)
+\par R\'e9indente une r\'e9gion\tab (ESC-Ctrl-\\)
+\par Remplit une r\'e9gion\tab (ESC-X-fill-region)
+\par Change tout le tampon en caract\'e8res OEM\tab (ESC-X-ansi-to-oem)
+\par Change tout le tampon en caract\'e8res ANSI\tab (ESC-X-oem-to-ansi)
+\par Change tout le tampon (Mac) en caract\'e8res OEM\tab (ESC-X-mac-to-oem)
+\par Change tout le tampon (Mac) en caract\'e8res ANSI\tab (ESC-X-mac-to-ansi)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 {\*\bkmkstart _Toc306358469}$
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions sur tags}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  Tags}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0012}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ TAGS; Fonctions sur tags}}}{\insrsid13061360  Fonctions sur tags{\*\bkmkend _Toc306358469}
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Les tags sont des marques calcul\'e9es \'e0 l'avance qui permettent rapidement de retrouver la d\'e9
+finition d'une fonction dans l'ensemble des fichiers composant un projet. Ces marques sont regroup\'e9es dans un fichier qui, par d\'e9faut, s'appelle TAGS. La cr\'e9ation (ou la modification) de ce fichier est effectu\'e9e au moyen de la commande exter
+ne emtags qui accompagne l'\'e9diteur EmACT. Cette commande accepte un ensemble de fichiers sources (C, C++ ou Lisp) et regroupe l'ensemble des d\'e9finitions sous une forme directement exploitable depuis l'\'e9diteur. Ensuite, si on d\'e9
+sire rapidement retrouver la d\'e9finition d'une fonction on ex\'e9cute la commande find-tag d'EmACT qui demande le nom de la d\'e9finition souhait\'e9 puis ouvre le fichier correspondant en se positionnant directement sur la ligne contenant la d\'e9
+finition. Il convient de mettre r\'e9guli\'e8rement \'e0 jour le fichier TAGS qui devient rapidement obsol\'e8te \'e0 mesure que l'on modifie les lignes de code.
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Recherche la d\'e9finition d'une fonction\tab (ESC-.)
+\par Continue la recherche \'e0 partir du dernier tag trouv\'e9\tab (ESC-,)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Fonctions sur les paragraphes}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 
+#{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  Paragraphs}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0013}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Paragraphe; Fonctions sur paragraphes}}}{\insrsid13061360  Fonctions sur les paragraphes
+\par }\pard\plain \qj \li0\ri0\nowidctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Un paragraphe est la portion de texte d\'e9limit\'e9e entre deux marques de fin de paragraphe. En mode 
+\'93\~texte\~\'94, le d\'e9limiteur de paragraphe est une ligne vide. On peut changer ce d\'e9limiteur en indiquant la valeur de la variable }{\b\f2\insrsid13061360 fill-prefix}{\f1\insrsid13061360  ou en ex\'e9cutant la commande }{\b\f2\insrsid13061360 
+set-fill-prefix}{\f1\insrsid13061360  Ctrl-X. qui prend comme pr\'e9fixe le texte compris entre le d\'e9but de la ligne et la position courante du curseur. Dans ce cas, un paragraphe est l'ensemble des lignes contenant le }{\b\f2\insrsid13061360 
+fill-prefix}{\f1\insrsid13061360  en d\'e9but de ligne. La variable }{\b\f2\insrsid13061360 fill-column}{\f1\insrsid13061360 
+ indique la colonne maximale d'affichage permise pour un paragraphe. On peut positionner la valeur de cette variable au moyen de la commande }{\b\f2\insrsid13061360 set-fill-column}{\f1\insrsid13061360 
+ Ctrl-XF qui utilise la position du curseur comme nouvelle valeur. Lorsque le mode }{\b\f2\insrsid13061360 auto-fill-mode}{\f1\insrsid13061360  est positionn\'e9 \'e0 vrai, le texte tap\'e9 est automatiquement ajust\'e9 \'e0 la ligne suivante d\'e8
+s que le caract\'e8re espace est rencontr\'e9 et que la position courante est sup\'e9rieure \'e0 la valeur de }{\b\f2\insrsid13061360 fill-column}{\f1\insrsid13061360 . Le curseur est positionn\'e9 sur une nouvelle ligne qui est \'e9ventuellement compl
+\'e9t\'e9e par la valeur du }{\b\f2\insrsid13061360 fill-prefix}{\f1\insrsid13061360 . Par d\'e9faut, la justification se fait sur la colonne de gauche. Pour une justification totale, il faut ex\'e9cuter la commande }{\b\f2\insrsid13061360 
+set-justification-full}{\f1\insrsid13061360  qui ins\'e9rera des espaces suppl\'e9mentaires afin de remplir la ligne jusqu'\'e0 la valeur de la variable }{\b\f2\insrsid13061360 fill-column}{\f1\insrsid13061360 .
+\par }{\insrsid13061360 
+\par }\pard\plain \s32\ql \li0\ri5\nowidctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Va en d\'e9but de paragraphe\tab (M-\{)
+\par Va en fin de paragraphe\tab (M-\})
+\par Positionne la colonne du fill-mode\tab (Ctrl-XF)
+\par Positionne la cha\'eene du fill-mode\tab (Ctrl-X.)
+\par Remplit le paragraphe courant\tab (M-Q)
+\par Justifie \'e0 gauche le paragraphe courant\tab (M-set-justification-left)
+\par Justifie compl\'e8tement le paragraphe courant\tab (M-set-justification-full)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Les Macros}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  MacroCommands}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0014}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ Macros;Enregistrements de macros}}}{\insrsid13061360  Les macros
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Lorsque vous avez un ensemble de commandes \'e0 ex\'e9cuter plusieurs fois, vous pouvez d\'e9
+finir une macro-commande qui pourra \'eatre utilis\'e9e par la suite autant de fois que vous le d\'e9sirez. Cependant, vous ne pouvez m\'e9moriser qu'une macro commande \'e0 la fois.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \ql \li1134\ri5\widctlpar\faauto\adjustright\rin5\lin1134\itap0 {\f1\insrsid13061360 Ctrl-X( }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  m\'e9morise les commandes qui suivent.
+\par Ctrl-X) }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  finit de m\'e9moriser
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Ainsi, toutes les commandes tap\'e9es entre Ctrl-X( et Ctrl-X) sont enregistr\'e9es et d\'e9finissent une macro-commande.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par }\pard \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 Ctrl-XE, ex\'e9cute la derni\'e8re macro m\'e9moris\'e9e. Une macro d\'e9finie est en m\'e9moire tant qu'une autre macro n'a pas \'e9t\'e9 cr\'e9\'e9e.
+\par }\pard \ql \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 {\f1\insrsid13061360 
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Commence une macro\tab (Ctrl-X()
+\par Termine une macro\tab (Ctrl-X))
+\par Ex\'e9cute une macro\tab (Ctrl-XE) ou F9
+\par D\'e9compile une macro\tab (Ctrl-XU)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Utilisation du compteur}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  InternalCounter}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0015}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Compteur
+\~;Compteur dans les macros}}}{\insrsid13061360  Utilisation du compteur
+\par }\pard\plain \s34\qj \li0\ri6\sa120\nowidctlpar\faauto\adjustright\rin6\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Lors de la d\'e9finition d'une macro, il est souvent int\'e9
+ressant de pouvoir utiliser un compteur interne pour afficher des informations num\'e9riques diff\'e9rentes \'e0 chaque ex\'e9cution. }{\b\insrsid13061360 EmACT}{\insrsid13061360  poss\'e8de \'e0 cette fin un compteur qui peut \'eatre pilot\'e9
+ au moyen des commandes }{\b\f2\insrsid13061360 counter-XXX}{\insrsid13061360 . Le format d'affichage utilise les directives de formatage du langage C. Par d\'e9faut, le compteur est affich\'e9 de fa\'e7on num\'e9rique avec la directive }{
+\b\f2\insrsid13061360 %d}{\insrsid13061360 . La commande }{\b\f2\insrsid13061360 counter-format}{\insrsid13061360  permet de changer cette valeur. Par exemple, la directive }{\b\f2\insrsid13061360 0x%04x}{\insrsid13061360 
+ affichera le compteur sous la forme hexad\'e9cimale, pr\'e9c\'e9d\'e9 de }{\b\f2\insrsid13061360 0x}{\insrsid13061360 , sur 4 caract\'e8res et, \'e9ventuellement compl\'e9t\'e9 \'e0 gauche par des }{\b\f2\insrsid13061360 0}{\insrsid13061360 . S
+i la valeur courante du compteur est 132 (104 en hexad\'e9cimal), il s'affichera dans le tampon d'\'e9dition sous la forme }{\b\f2\insrsid13061360 0x0104}{\insrsid13061360 . La directive de formatage peut aussi s'appliquer pour afficher des caract\'e8
+res (directive }{\b\f2\insrsid13061360 %c}{\insrsid13061360 ). Au d\'e9marrage, le compteur vaut 0, on peut l'initialiser (r\'e9initialiser) au moyen de la commande }{\b\f2\insrsid13061360 counter-set}{\insrsid13061360  Ctrl-X$S qui utilise le pr\'e9
+fixe Ctrl-U pour positionner la nouvelle valeur. Ainsi, pour faire d\'e9marrer le compteur \'e0 100, il faut ex\'e9cuter Ctrl-U }{\b\f2\insrsid13061360 100}{\insrsid13061360  Ctrl-X$S. Attention, sans argument, la commande }{\b\f2\insrsid13061360 
+counter-set}{\insrsid13061360  initialise le compteur \'e0 1 (Ctr-U = 1). Le compteur peut \'eatre incr\'e9ment\'e9 au moyen de la commande }{\b\f2\insrsid13061360 counter-incr}{\insrsid13061360  et d\'e9cr\'e9ment\'e9 par la commande }{
+\b\f2\insrsid13061360 counter-decr}{\insrsid13061360 . Par d\'e9faut ces commandes, utilisent un pas de 1. Il faut les faire pr\'e9c\'e9der d'un Ctrl-U suivi d'un argument pour modifier cette valeur.
+\par }\pard\plain \s32\ql \li0\ri5\nowidctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Ins\'e8re la valeur courante du compteur\tab (Ctrl-X$-$)
+\par Incr\'e9mente le compteur\tab (Ctrl-X$-+)
+\par D\'e9cr\'e9mente le compteur\tab (Ctrl-X$--)
+\par Change la valeur courante du compteur\tab (Ctrl-X$-S)
+\par Change la directive de formatage}{\b\insrsid13061360 \tab }{\insrsid13061360 (Ctrl-X$-F)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Commandes et fonctionnalit\'e9s diverses}} #{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  MiscCommands}} +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0016}} K{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Divers, utilitaires}} Commandes et fonctionnalit\'e9s diverses
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Lorsqu\rquote }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  rencontre la forme }{
+\b\f2\insrsid13061360 ****/**/**}{\f1\insrsid13061360  sur la deuxi\'e8me ligne d'un fichier, il suppose que c'est un format de date et l'actualise automatiquement \'e0 chaque sauvegarde du fichier sur disque sous la forme }{\b\f2\insrsid13061360 
+YYYY/MM/DD}{\f1\insrsid13061360 .
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Arr\'eate la commande en cours\tab (Ctrl-G)
+\par R\'e9affiche l'\'e9cran\tab (Ctrl-L)
+\par R\'e9p\'e8te n fois la commande suivante\tab (Ctrl-U)
+\par Affiche la position courante\tab (Ctrl-X=)
+\par R\'e9p\'e8te la derni\'e8re commande\tab (Ctrl-XESC)
+\par Evalue le tampon (version Le-Lisp ou OpenLisp)\tab (Ctrl-XCtrl-E)
+\par Compare deux fen\'eatres \'e0 partir de la position courante\tab (Ctrl-^)
+\par 
+\par 
+\par }\pard\plain \qj \li0\ri5\widctlpar\faauto\adjustright\rin5\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Certaines commandes, d'un usage peu courant, ne sont pas li\'e9es \'e0
+ une combinaison de touches. Pour les appeler, il faut utiliser ESC-X suivi du nom de la commande
+\par 
+\par }\pard\plain \s32\ql \li0\ri5\nowidctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Affiche la version courante d'EmACT\tab (ESC-Xemacs-version)
+\par }\pard \s32\ql \li0\ri5\widctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 {\insrsid13061360 Recharge le tampon courant depuis le disque\tab (ESC-Xrevert-buffer)
+\par Efface un fichier\tab (ESC-Xunlink-file)
+\par Lance une compilation depuis l'\'e9diteur\tab (ESC-Xcompile)
+\par Cherche une cha\'eene dans un ensemble de fichiers\tab (ESC-Xgrep)
+\par }\pard \s32\ql \li0\ri5\nowidctlpar\tqr\tx6804\faauto\adjustright\rin5\lin0\itap0 {\insrsid13061360 Effectue des modifications complexes avec l\rquote utilitaire sed\tab (ESC-Xsed)
+\par Effectue des modifications complexes avec l\rquote utilitaire perl\tab (ESC-Xperl)
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Les fichiers d\rquote aides personnels}} #{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  UserHelp}} +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Index:0017}} K{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  Aides en ligne}} Les fichiers d\rquote aides personnels
+\par }\pard\plain \s34\qj \li0\ri6\sa120\nowidctlpar\faauto\adjustright\rin6\lin0\itap0 \f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\insrsid13061360 Sur certains syst\'e8
+mes (NT, Windows 95, unix), on peut lancer automatiquement ses propres fichiers d\rquote aides. Ceux-ci peuvent \'eatre au format HTML (extension .htm ou .html) sur tous les syst\'e8mes supportant des outils permettant de lire ce format. Sur les diff\'e9
+rents syst\'e8mes Windows, ils peuvent \'eatre, en plus, au format .hlp. On peut configurer jusqu\rquote \'e0 4 fichiers d\rquote aides nomm\'e9s respectivement }{\b\insrsid13061360 help-file1}{\insrsid13061360  (touche F11), }{\b\insrsid13061360 
+help-file2}{\insrsid13061360  (touche F12), }{\b\insrsid13061360 help-file3}{\insrsid13061360  (touche Alt-F11) et }{\b\insrsid13061360 help-file2}{\insrsid13061360  (touche Alt-F12). Pour lancer automatiquement l\rquote aide \'e0
+ partir de ces touches, il suffit de configurer le fichier emacs.lsp pour que ces variables pointent sur le fichier d\'e9sir\'e9. Dans le cas du format .hlp, le syst\'e8me d\rquote aide essaye de trouver l\rquote information correspondant au mot positionn
+\'e9 sous le curseur.
+\par }{\f2\lang1033\langfe1033\langnp1033\insrsid13061360 (setq help-file1 "d:/jdk1.1.4/hlp/jdk.hlp")
+\par (setq help-file2 "c:/usr/lib/cplusplus/iso/index.html")
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  Les variables de l'\'e9diteur}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  Variables}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360 
+ Index:0018}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{
+\insrsid13061360  Variables;Param\'e8tres de l'\'e9diteur}}}{\insrsid13061360  Les variables de l'\'e9diteur
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Le fonctionnement de l'\'e9diteur }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  est contr\'f4l\'e9
+ par un ensemble de variables qu'il est possible de modifier de fa\'e7on dynamique pour changer son comportement global. On peut par exemple rendre la recherche d'une cha\'eene de caract\'e8res insensible \'e0 la casse (majuscule/minuscule) des caract\'e8
+res qui la composent. Pour cela, il faut appeler la commande Ctrl-XR qui modifie un param\'e8tre d'}{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  puis taper le nom (ou le d\'e9but de nom) du param\'e8tre \'e0 modifier.
+\par 
+\par }{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 Exemple :
+\par 
+\par }\pard \qj \li708\ri0\widctlpar\faauto\adjustright\rin0\lin708\itap0 {\f1\lang1033\langfe1033\langnp1033\insrsid13061360 Ctrl-XR
+\par }{\i\f1\lang1033\langfe1033\langnp1033\insrsid13061360 : global-rebind case-}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 <SPACE>
+\par }{\b\f1\lang1033\langfe1033\langnp1033\insrsid13061360 EmACT}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360  r\'e9pond imm\'e9diatement
+\par }{\i\f1\lang1033\langfe1033\langnp1033\insrsid13061360 : global-rebind case-fold-search ?}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 
+\par }{\f1\insrsid13061360 Tapez <CR> pour valider.
+\par }\pard \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 {\f1\insrsid13061360 
+\par Les variables d'}{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  sont les suivantes (avec leur valeur et leur type)
+\par 
+\par }\pard \ql \li0\ri5\widctlpar\tx3402\tx4536\faauto\adjustright\rin5\lin0\itap0 {\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 append-process-buffer}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 AppendProcessBuffer}{
+\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 auto-fill-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 AutoFillMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab BOOLEAN
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 background-color}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 BackgroundColor}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (??)\tab INTEGER
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 backup-before-writing}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 BackupBeforeWriting}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 black-on-white}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 BlackOnWhite}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 binary-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 BinaryMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 compile-in-buffer}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 CompileInBuffer}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 compiler-arguments}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 CompilerArguments}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("-c")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 compiler-name}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 CompilerName}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("cc")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 confirm-unsaved-buffer}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 ConfirmUnsavedBuffer}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 date-completion}{\v\f1\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 DateCompletion}{\f1\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 \tab (t)
+\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 display-43-lines}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 Display43Lines}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 display-command}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 DisplayCommand}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 fill-column}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 FillColumn}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (70)\tab INTEGER
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 fill-prefix}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 FillPrefix}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 latex-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 LatexMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 java-compiler-arguments}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 JavaCompilerArguments}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 java-compiler-name}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 JavaCompilerName}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("javac")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 java-executable-arguments}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 JavaExecutableArguments}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("java")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 java-executable-name}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 JavaExecutableName}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 line-number-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 LineNumberMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 fast-redisplay}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 FastRedisplay}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 foreground-color}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 ForegroundColor}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (??)\tab INTEGER
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 gnu-compatible}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 GnuCompatible}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 isearch-toggle-case-fold}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 CaseFoldSearch}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 make-arguments}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 MakeArguments}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("Makefile")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 mouse-avoidance-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 MouseAvoidMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (t)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 mouse-avoidance-nudge-var}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 MouseAvoidNudge}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (3)\tab INTEGER
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 replace-mode}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 ReplaceMode}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (nil)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 pipe-process}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 PipeProcess}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (??)\tab FLAG
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 search-buffer}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 SearchBuffer}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab ("")\tab STRING
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 tabulation-display}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 TabulationDisplay}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (7)\tab INTEGER
+\par }{\b\f2\ul\lang1033\langfe1033\langnp1033\insrsid13061360 tabulation-size}{\v\f1\lang1033\langfe1033\langnp1033\insrsid13061360 TabulationSize}{\f1\lang1033\langfe1033\langnp1033\insrsid13061360 \tab (8)\tab INTEGER
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360\charrsid13061360 $}{
+\insrsid13061360\charrsid13061360  append-process-buffer}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  AppendProcessBuffer}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0000}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  append-process-buffer}}}{\insrsid13061360\charrsid13061360  append-process-buffer
+
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Cette variable est ignor\'e9e sous l'environnement Windows.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  auto-fill-mode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  AutoFillMode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0001}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{
+\lang1033\langfe1033\langnp1033\insrsid13061360  append-process-buffer}}}{\insrsid13061360  auto-fill-mode
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 
+Cette variable permet d'activer ou non le mode de remplissage automatique (voir aussi fill-column et fill-prefix).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  background-color}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  BackgroundColor}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0002}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  background-color;Couleur de fond}}}{\insrsid13061360  backgound-color
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Indice de la couleur du fond de la fen\'eatre.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  backup-before-writing}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  BackupBeforeWriting}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0003}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  backup-before-writing;BAK;Copie de sauvegarde}}}{\insrsid13061360\charrsid13061360 
+ backup-before-writing
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut NIL, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360 
+ ne construit pas de fichier de copie (extension }{\b\f1\insrsid13061360 .BAK}{\f1\insrsid13061360 ) avant de sauvegarder.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  black-on-white}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  BlackOnWhite}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0004}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  black-on-white}}}{\insrsid13061360\charrsid13061360  black-on-white
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut NIL, les couleurs du texte et du fond sont invers\'e9es.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  binary-mode}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360\charrsid13061360 #}{
+\insrsid13061360\charrsid13061360  BinaryMode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +}{\insrsid13061360\charrsid13061360  Variables:0005}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  binary-mode;Mode binaire;Compatibilit\'e9 avec UNIX;Caract\'e8re de fin de ligne;Conversions <CR><LF>;LineFeed}}}{\insrsid13061360  binary-mode
+
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T, les sauvegardes s'effectuent en mode binaire. Les fins de lignes sont constitu
+\'e9es du seul caract\'e8re <LF> (NewLine - code ASCII 0x10). Les fichiers ainsi sauvegard\'e9s sont compatibles avec les syst\'e8mes UN*X.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  case-fold-search}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  CaseFoldSearch}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0006}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  case-fold-search;Casse des caract\'e8
+res;Minuscules;Majuscules;Recherche minuscule/majuscule}}}{\insrsid13061360\charrsid13061360  isearch-toggle-case-fold
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut NIL, les fonctions de recherche et de remplacement ne diff\'e9
+rencient plus les majuscules et les minuscules
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  compile-in-buffer}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  CompileInBuffer}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0007}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  compile-in-buffer}}}{\insrsid13061360\charrsid13061360  compile-in-buffer
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T, le r\'e9sultat des compilations est retourn\'e9 dans un tampon d'\'e9dition.
+
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 $}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  compiler-arguments}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  CompilerArguments}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}
+{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0008}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  compiler-arguments}}}{\insrsid13061360  compiler-arguments
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Cette variable contient les options de compilation associ\'e9es au compilateur courant (ex: "-02 -D_ISO")
+
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  compiler-name}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  CompilerName}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0009}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  compiler-name,Compilation}}}{\insrsid13061360  compiler-name
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Cette variable contient le nom du compilateur C/C++ courant (ex: "cl, bcc, cc, ..").
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  confirm-unsaved-buffer}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  ConfirmUnsavedBuffer}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0010}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  confirm-unsaved-buffer}}}{\insrsid13061360\charrsid13061360  confirm-unsaved-buffer
+
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable est positionn\'e9e \'e0
+ T, EmACT demande une confirmation de sauvegarde pour tout tampon non sauv\'e9e avant la sortie d\'e9finitive.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  date-completion}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  DateCompletion}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0011}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  date-completion;Date}}}{\insrsid13061360  date-completion
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T (valeur par d\'e9faut), }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  compl
+\'e8te automatiquement la date courante si la cha\'eene de caract\'e8re "xxxx/xx/xx" se trouve sur la deuxi\'e8me ligne du fichier.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  display-43-lines}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  Display43Lines}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0012}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  display-43-lines}}}{\insrsid13061360  display-43-lines
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360 
+ affiche en mode 43 ou 50 lignes sous MS-DOS. Cette variable est sans effet sous les autres environnements.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  display-command}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  DisplayCommand}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0013}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  display-command,Debugging Mode}}}{\insrsid13061360  display-command
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360 
+ affiche le nom de la fonction appel\'e9e pour chaque commande tap\'e9e. Ce mode est utilis\'e9 pour le debugging ou pour l'\'e9criture de macros.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  fast-redisplay}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  FastRedisplay}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0014}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  fast-redisplay}}}{\insrsid13061360  fast-redisplay
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Sous MS-DOS, cette variable utilise l'acc\'e8s direct \'e0 la m\'e9moire video. Cette variable est ignor
+\'e9e sous les autres environnements.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  fill-column}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  FillColumn}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0015}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 K}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  fill-column,Colonne de remplissage}}}{
+\insrsid13061360  fill-column
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Colonne \'e0
+ partir de laquelle peut avoir lieu de le remplissage automatique de paragraphe (voir aussi fill-prefix et auto-fill-mode).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  fill-prefix}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  FillPrefix}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0016}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  fill-prefix,Prefixe}}}{\insrsid13061360  fill-prefix
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Cha\'eene de caract\'e8res qui sera automatiquement ajout\'e9e en d\'e9
+but de ligne par le mode de remplissage automatique (voir aussi fill-column et auto-fill-mode).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  foreground-color}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  ForegroundColor}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0017}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  foreground-color}}}{\insrsid13061360  foreground-color
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Indice de la couleur du texte de la fen\'eatre.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  gnu-compatible}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360 
+ GnuCompatible}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{
+\insrsid13061360  Variables:0018}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  gnu-compatible,GNU emacs}}}{\insrsid13061360  gnu-compatible
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Assure une certaine compatibilit\'e9 avec les commandes de l'\'e9diteur GNU Emacs.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  java-compiler-arguments}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  JavaCompilerArguments}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0019}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K }{\insrsid13061360 
+Java compiler options}}}{\insrsid13061360  java-compiler-arguments
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable contient les options courante du compilateur Java.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360 
+ java-compiler-name}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  JavaCompilerName}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0020}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K }{\insrsid13061360 Java compiler name}}}{\insrsid13061360\charrsid13061360  java-compiler-name
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable contient le nom du compilateur Java courant.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  java-executable-arguments}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  JavaExecutableArguments}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0021}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K }{\insrsid13061360 
+Java executable options}}}{\insrsid13061360  java-executable-arguments
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable contient les options courantes du lanceur Java.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 $}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  java-executable-name}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  JavaExecutableName}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 
++{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0022}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K }{\insrsid13061360 Java}}}{\insrsid13061360\charrsid13061360  java-executable-name
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable contient le nom du lanceur Java courant.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  latex-mode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  LatexMode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0023}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 K}
+{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  latex-mode,Latex}}}{\insrsid13061360  latex-mode
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T, }{\b\f1\insrsid13061360 EmACT}{\f1\insrsid13061360  remplace les caract\'e8
+res accentu\'e9s ins\'e9r\'e9s dans le texte par leur trigrammes \'e9quivalent.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360\charrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  line-number-mode}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  LineNumberMode}}}{\insrsid13061360\charrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360\charrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}
+{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0024}}}{\insrsid13061360\charrsid13061360  }{\cs15\fs16\up6\insrsid13061360\charrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  line-number-mode}}}{\insrsid13061360\charrsid13061360  line-number-mode
+\par }{\b0\insrsid13061360 Si cette variable vaut T, EmACT affiche dans la barre d'\'e9tat le num\'e9ro de la ligne courante et le pourcentage de la position relative du point d'insertion par rapport \'e0 l'ensemble du fichier.}{\insrsid13061360 \page }{
+\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{
+\lang1033\langfe1033\langnp1033\insrsid13061360  make-arguments}} #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  MakeArguments}} +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0025}} K{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360 
+ make-arguments, Make, Makefile}} }{\cs15\up6\insrsid13061360 make-arguments}{\cs15\fs16\up6\insrsid13061360 
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 arguments pass\'e9s \'e0 la commande make (ex\~: -k).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  mouse-avoidance-mode}} #{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  MouseAvoidMode}} +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0026}} K{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  mouse-avoidance-mode}} }{\cs15\up6\insrsid13061360 mouse-avoidance-mode}{
+\cs15\fs16\up6\insrsid13061360 
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Indique si le pointeur de la souris doit \'eatre d\'e9plac\'e9 automatiquement en bas de la fen\'ea
+tre ou de l'\'e9cran ou bout d'un certain nombre de caract\'e8res tap\'e9s (mouse-avoidance-nudge-var).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  mouse-avoidance-nudge-var}} #{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  MouseAvoidNudge}} +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0027}} K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 K}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  mouse-avoidance-nudge-var}} }{
+\cs15\up6\insrsid13061360 mouse-avoidance-nudge-var}{\cs15\fs16\up6\insrsid13061360 
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Le pointeur de la souris est d\'e9plac\'e9 automatiquement en bas de la fen\'eatre ou de l'\'e9cran \'e0
+ chaque fois que le nombre de caract\'e8res indiqu\'e9 par cette variable a \'e9t\'e9 tap\'e9.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 $}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  pipe-process}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  PipeProcess}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0028}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ pipe-process}}}{\insrsid13061360  pipe-process
+\par }\pard\plain \qj \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Si cette variable vaut T et que le syst\'e8me le permet, les commandes envoy\'e9es au syst\'e8
+me d'exploitation communiquent avec l'\'e9diteur au moyen d'un pipe. Chaque impression de la commande est imm\'e9diatement affich\'e9e dans une fen\'eatre de l'\'e9diteur. Si elle vaut NIL, le r\'e9sultat de l'ex\'e9cution est affich\'e9
+ lorsque la commande est termin\'e9e.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  replace-mode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  ReplaceMode}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0029}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360  replace-mode}}}{
+\insrsid13061360  replace-mode
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Mode }{\b\f1\insrsid13061360 insert}{\f1\insrsid13061360  / }{\b\f1\insrsid13061360 remplace}{
+\f1\insrsid13061360 
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  search-buffer}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 #}{\lang1033\langfe1033\langnp1033\insrsid13061360  SearchBuffer}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 +}{\lang1033\langfe1033\langnp1033\insrsid13061360  Variables:0030}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 K}{\lang1033\langfe1033\langnp1033\insrsid13061360  search-buffer}}}{\insrsid13061360  search-buffer
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Contenu du tampon de recherche.
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang1033\langfe1033\langnp1033\insrsid13061360 $}{\lang1033\langfe1033\langnp1033\insrsid13061360  tabulation-display}}}{
+\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {
+\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 #}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  TabulationDisplay}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +{\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 +}{
+\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  Variables:0031}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 
+\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360 K}{\lang2057\langfe1033\langnp2057\insrsid13061360\charrsid13061360  tabulation-display}}}{\insrsid13061360 
+ tabulation-display
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 Affiche les tabulations avec }{\i\f1\insrsid13061360 N}{\f1\insrsid13061360  caract\'e8res (8 par d\'e9
+faut).
+\par }\pard\plain \s2\ql \li0\ri5\sa240\widctlpar\tx2880\faauto\outlinelevel1\adjustright\rin5\lin0\itap0 \b\f1\fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\b0\insrsid13061360 \page }{\cs15\fs16\up6\insrsid13061360 ${\footnote \pard\plain 
+\s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 $}{\insrsid13061360  tabulation-size}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 #{\footnote 
+\pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 #}{\insrsid13061360  TabulationSize}}}{\insrsid13061360  }{\cs15\fs16\up6\insrsid13061360 +
+{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 +}{\insrsid13061360  Variables:0032}}}{\insrsid13061360  }{
+\cs15\fs16\up6\insrsid13061360 K{\footnote \pard\plain \s16\ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\cs15\fs16\up6\insrsid13061360 K}{\insrsid13061360 
+ tabulation-size,Tabulation,TAB}}}{\insrsid13061360  tabulation-size
+\par }\pard\plain \ql \li0\ri0\widctlpar\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1036\langfe1033\cgrid\langnp1036\langfenp1033 {\f1\insrsid13061360 La tabulation ins\'e8re }{\i\f1\insrsid13061360 N}{\f1\insrsid13061360  caract\'e8
+res. Si cette valeur est 8, le caract\'e8re tab (code ASCII 9) est ins\'e9r\'e9.}{\insrsid13061360 
+\par }}
