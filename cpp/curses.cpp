@@ -281,7 +281,7 @@ CursesTerminal::get() {
   case KEY_F(2)      : return (Ctrl|'S');
   case KEY_F(3)      : return (META|Ctrl|'F');
   case KEY_F(4)      : return (CTLX|Ctrl|'I');
-  case KEY_F(6)      : return (SPCL|'@');
+  case KEY_F(6)      : return (CTLX|METACH);
   case KEY_F(7)      : return (CTLZCH);
   case KEY_F(8)      : return (CTLX|Ctrl|'S');
   case KEY_F(9)      : return (CTLX|'E');

@@ -224,53 +224,6 @@ std::vector<KEYTAB> KEYTAB::keytab = {
   { CXDR|'-',      counterdecr,    ECSTR("counter-decr")                },
   { CXDR|'S',      counterset,     ECSTR("counter-set")                 },
   { CXDR|'F',      counterformat,  ECSTR("counter-format")              },
-#if defined(_WIN32)
-  { SPCL|';',      describekey,    ECSTR("apropos")                     },
-  { SPCL|'<',      forwsearch,     ECSTR("forward-search")              },
-  { SPCL|'=',      getdefinition,  ECSTR("get-definition")              },
-  { SPCL|'>',      indentline,     ECSTR("re-indent-line")              },
-  { SPCL|'?',      switchscreen,   ECSTR("switch-screen-size")          },
-  { SPCL|'4',      completeword,   ECSTR("complete-word")               },
-  { SPCL|'@',      again,          ECSTR("repeat-last-command")         },
-  { SPCL|'A',      nexterror,      ECSTR("next-error")                  },
-  { SPCL|'B',      filesave,       ECSTR("write-current-file")          },
-  { SPCL|'C',      ctlxe,          ECSTR("execute-keyboard-macro")      },
-  { SPCL|'G',      gotobob,        ECSTR("beginning-of-buffer")         },
-  { SPCL|'H',      backline,       ECSTR("previous-line")               },
-  { SPCL|'I',      backpage,       ECSTR("scroll-down")                 },
-  { SPCL|'K',      backchar,       ECSTR("backward-char")               },
-  { SPCL|'M',      forwchar,       ECSTR("next-character")              },
-  { SPCL|'O',      gotoeob,        ECSTR("end-of-buffer")               },
-  { SPCL|'P',      forwline,       ECSTR("next-line")                   },
-  { SPCL|'Q',      forwpage,       ECSTR("scroll-up")                   },
-  { SPCL|'R',      instoggle,      ECSTR("insert-toggle")               },
-  { SPCL|'S',      forwdel,        ECSTR("delete-next-character")       },
-  { SPCL|'k',      exitemacs,      ECSTR("exit-emacs")                  },
-  { SPCL|'s',      backword,       ECSTR("previous-word")               },
-  { SPCL|'t',      forwword,       ECSTR("next-word")                   },
-  { SPCL|'u',      mvdnwind,       ECSTR("move-down-window")            },
-  { SPCL|'w',      mvupwind,       ECSTR("move-up-window")              },
-  { SPCL|0x81,     setmark,        ECSTR("set-mark-command")            },
-  { SPCL|0x88,     filesave,       ECSTR("write-current-file")          },
-#endif
-#if defined(_POSIX_C_SOURCE)
-  { SPCL|'1',      gotobob,        ECSTR("beginning-of-buffer")         },
-  { SPCL|'2',      instoggle,      ECSTR("toggle-insert")               },
-  { SPCL|'3',      forwdel,        ECSTR("delete-next-character")       },
-  { SPCL|'4',      gotoeob,        ECSTR("end-of-buffer")               },
-  { SPCL|'5',      backpage,       ECSTR("scroll-down")                 },
-  { SPCL|'6',      forwpage,       ECSTR("scroll-up")                   },
-  { SPCL|'A',      backline,       ECSTR("previous-line")               },
-  { SPCL|'B',      forwline,       ECSTR("next-line")                   },
-  { SPCL|'C',      forwchar,       ECSTR("next-character")              },
-  { SPCL|'D',      backchar,       ECSTR("backward-character")          },
-  { SPCL|'U',      forwpage,       ECSTR("scroll-up")                   },
-  { SPCL|'V',      backpage,       ECSTR("scroll-down")                 },
-  { SPCL|'F',      gotoeob,        ECSTR("end-of-buffer")               },
-  { SPCL|'H',      gotobob,        ECSTR("beginning-of-buffer")         },
-  { SPCL|'L',      instoggle,      ECSTR("overwrite-mode")              },
-  { SPCL|'Y',      gotoeob,        ECSTR("end-of-buffer")               },
-#endif
   { BACKDEL,       backdel,        ECSTR("delete-previous-character")   },
   { MEVT,          findwind,       ECSTR("find-window")                 },
 
@@ -672,7 +625,8 @@ editloop() {
       display->update();
     }
 
-    if (c == (SPCL|'@') || c == (CTLX|METACH)) {
+    if (c == (CTLX|METACH)) {
+			/* repeat previous action. */
       c = clast;
       n = nlast;
     } else {
