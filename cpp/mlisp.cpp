@@ -967,7 +967,7 @@ getmacfile() {
   CMD    s;
   EMCHAR fname[NFILEN];
 
-  complete._fn = filematch;
+  complete = filematch;
 
   s = mlreply(ECSTR(": macro-file "), fname, NFILEN);
 

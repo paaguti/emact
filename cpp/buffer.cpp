@@ -600,7 +600,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
       WDGupdate(prompt, bp->bufname());
       switch (TTYgetc()) {
       case 0x07:
-        complete._status = Completion::Status::COMPLETE_ABORT;
+        complete.setStatus(Completion::Status::COMPLETE_ABORT);
         WDGwrite(ECSTR("Quit"));
         return nullptr;
       case 0x0D:
@@ -613,7 +613,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
     bp = bp->next();
   }
 
-  complete._status = Completion::Status::COMPLETE_AGAIN;
+  complete.setStatus(Completion::Status::COMPLETE_AGAIN);
   TTYbeep();
   return buffer;
 }
@@ -631,7 +631,7 @@ usebuffer() {
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
 
-  complete._fn = bufmatch;
+  complete = bufmatch;
 
   auto bp1 = BUFFER::head();
   for (bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
@@ -928,7 +928,7 @@ killbuffer() {
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
 
-  complete._fn = bufmatch;
+  complete = bufmatch;
 
   (void)emstrcpy(prompt, ECSTR("Kill buffer: (default "));
   (void)emstrcat(prompt, curbp->bufname());

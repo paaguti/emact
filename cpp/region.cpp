@@ -334,7 +334,7 @@ writeregion() {
     return NIL;
   }
 
-  complete._fn = filematch;
+  complete = filematch;
 
   EMCHAR fname[NFILEN];
 

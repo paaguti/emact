@@ -168,19 +168,19 @@ loop:
       switch ((newchar[0] = (EMCHAR)TTYgetc())) {
       case 0x03: /* Ctrl-C */
         (void)closedir(dirp);
-        complete._status = Completion::Status::COMPLETE_AGAIN;
+        complete.setStatus(Completion::Status::COMPLETE_AGAIN);
         *pmatch    = '\000';
         return pmatch;
       case 0x04: /* Ctrl-D */
         (void)closedir(dirp);
         (void)newfile(updir(pmatch, NOSLASH));
-        complete._status = Completion::Status::COMPLETE_ABORT;
+        complete.setStatus(Completion::Status::COMPLETE_ABORT);
         return nullptr;
       case 0x07: /* Ctrl-G */
         (void)closedir(dirp);
         TTYbeep();
         WDGmessage(ECSTR("Quit"));
-        complete._status = Completion::Status::COMPLETE_ABORT;
+        complete.setStatus(Completion::Status::COMPLETE_ABORT);
         return nullptr;
       case 0x0D: /* Ctrl-M */
       case 0x0A: /* Ctrl-J */
@@ -196,7 +196,7 @@ loop:
            * a / and restart match.
            */
           (void)emstrcat(file, ECSTR("/"));
-          complete._status = Completion::Status::COMPLETE_AGAIN;
+          complete.setStatus(Completion::Status::COMPLETE_AGAIN);
           (void)emstrcpy(pmatch, file);
           return pmatch;
         }
@@ -214,7 +214,7 @@ loop:
             (void)emstrcat(pmatch, ECSTR("/"));
             (void)emstrcat(pmatch, newchar);
           }
-          complete._status = Completion::Status::COMPLETE_AGAIN;
+          complete.setStatus(Completion::Status::COMPLETE_AGAIN);
           return pmatch;
         }
         TTYbeep();
@@ -224,7 +224,7 @@ loop:
 
   (void)closedir(dirp);
 
-  complete._status = Completion::Status::COMPLETE_AGAIN;
+  complete.setStatus(Completion::Status::COMPLETE_AGAIN);
   TTYbeep();
   return file;
 }
@@ -268,7 +268,7 @@ CMD
 dired() {
   EMCHAR fname[NFILEN];
 
-  complete._fn = filematch;
+  complete = filematch;
 
   (void)emstrcpy(fname, curbp->filename());
   (void)ffullname(fname, ECSTR("file"));
@@ -478,7 +478,7 @@ diredcmd(int c) {
         *++p = '\000';
       }
 
-      complete._fn = filematch;
+      complete = filematch;
     
       if (WDGedit(prompt, newname, NFILEN) != T) {
         return NIL;

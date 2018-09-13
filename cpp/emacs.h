@@ -1418,8 +1418,14 @@ extern const EMCHAR* MACname(int i);
 extern int           MACsize(int i);
 */
 
+/**
+ * Handle completion.
+ */
+class Completion {
+ private:
+  using Callback = EMCHAR* (*)(const EMCHAR* prompt, EMCHAR* buf);
 
-struct Completion {
+ public:
   enum class Status {
     COMPLETE_ONE,
     COMPLETE_AGAIN,
@@ -1427,17 +1433,40 @@ struct Completion {
     COMPLETE_FAIL
   };
 
-  EMCHAR*
+  const EMCHAR*
   operator()(const EMCHAR* prompt, EMCHAR* buf) {
     return _fn(prompt, buf);
   }
 
-  Status _status;
+  Completion&
+  operator=(Callback cb) {
+    _fn = cb;
+    return *this;
+  }
 
-  union {
-    EMCHAR* (*_fn)(const EMCHAR* prompt, EMCHAR* buf);
-    void* _flag;
-  };
+  bool
+  operator==(Callback cb) {
+    return _fn == cb;
+  }
+
+  bool
+  operator!=(Callback cb) {
+    return _fn != cb;
+  }
+
+  Status
+  status() const noexcept {
+    return _status;
+  }
+
+  void
+  setStatus(Status status) noexcept {
+    _status = status;
+  }
+
+ private:
+  Status _status;
+  Callback _fn;
 };
 
 extern Completion complete;            // Automatic completion
