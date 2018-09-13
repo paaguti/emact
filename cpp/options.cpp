@@ -346,8 +346,8 @@ setvar() {
   EMCHAR buf[NPAT];
   auto status = T;
 
-  complete.fn = varmatch;
-  index_type  = INDEX_UNKNOWN;
+  complete._fn = varmatch;
+  index_type   = INDEX_UNKNOWN;
 
   if (mlreply(ECSTR(": eval-function "), buf, NPAT) != T) {
     return NIL;

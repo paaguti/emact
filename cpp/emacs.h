@@ -375,7 +375,6 @@ enum class EDITMODE {
 };
 
 static constexpr auto DIREDMARK(2);   // Two characters to mark dired
-static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
 
 /*
  * Flags for functions that deal with directories
@@ -1401,10 +1400,8 @@ struct VARTAB {
 #define VARname(i)    VARTAB::vartab[i].name()
 #define VARtype(i)    VARTAB::vartab[i].type()
 
-using POINTER = int*;
-
 struct MACTAB {
-  POINTER m_exec;  // Code
+  int*    m_exec;  // Code
   EMCHAR* m_name;  // Macro name
   int     m_code;  // Key bind
   int     m_size;  // total command length
@@ -1418,24 +1415,32 @@ struct MACTAB {
 /*
 extern int           MACcode(int i);
 extern const EMCHAR* MACname(int i);
-extern POINTER       MACexec(int i);
 extern int           MACsize(int i);
 */
 
-union COMPLETE {
-  EMCHAR* (*fn)(const EMCHAR* prompt, EMCHAR* buf);
-  long flag;
+
+struct Completion {
+  enum class Status {
+    COMPLETE_ONE,
+    COMPLETE_AGAIN,
+    COMPLETE_ABORT,
+    COMPLETE_FAIL
+  };
+
+  EMCHAR*
+  operator()(const EMCHAR* prompt, EMCHAR* buf) {
+    return _fn(prompt, buf);
+  }
+
+  Status _status;
+
+  union {
+    EMCHAR* (*_fn)(const EMCHAR* prompt, EMCHAR* buf);
+    void* _flag;
+  };
 };
 
-enum class COMPLETION {
-  COMPLETE_ONE   = 0x00,
-  COMPLETE_AGAIN = 0x01,
-  COMPLETE_ABORT = 0x02,
-  COMPLETE_FAIL  = 0x04
-};
-
-extern COMPLETE complete;              // Automatic completion
-extern COMPLETION completion;          // Next action for completion
+extern Completion complete;            // Automatic completion
 
 extern WINSCR* curwp;                  // Current window
 extern BUFFER* curbp;                  // Current buffer
@@ -1510,6 +1515,13 @@ struct MEvent {
 extern MEvent mevent;
 
 class Emacs {
+ public:
+#if 0
+  static int repeat;                 // Repeat count
+  static int thisflag;               // Flags, this command
+  static int lastflag;               // Flags, last command
+  static int curgoal;                // Goal for C-P, C-N
+#endif
 };
 
 extern Emacs* emact;
@@ -1521,7 +1533,7 @@ extern int     kbdm[NKBDM];            // Holds keyboard macro data
 extern int*    kbdmip;                 // Input pointer for above
 extern int*    kbdmop;                 // Output pointer for above
 
-extern EMCHAR search_buffer[NPAT];    // Search pattern
+extern EMCHAR search_buffer[NPAT];     // Search pattern
 
 /*
  * Configurable variables:

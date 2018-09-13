@@ -35,6 +35,8 @@ static bool    savebname(const EMCHAR* bname);
 
 BUFFER* BUFFER::bheadp{nullptr}; /* Head of list of buffers      */
 
+static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
+
 #define BUFFER_DEBUG    1
 
 EDLINE*
@@ -598,7 +600,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
       WDGupdate(prompt, bp->bufname());
       switch (TTYgetc()) {
       case 0x07:
-        completion = COMPLETION::COMPLETE_ABORT;
+        complete._status = Completion::Status::COMPLETE_ABORT;
         WDGwrite(ECSTR("Quit"));
         return nullptr;
       case 0x0D:
@@ -611,7 +613,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
     bp = bp->next();
   }
 
-  completion = COMPLETION::COMPLETE_AGAIN;
+  complete._status = Completion::Status::COMPLETE_AGAIN;
   TTYbeep();
   return buffer;
 }
@@ -629,7 +631,7 @@ usebuffer() {
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
 
-  complete.fn = bufmatch;
+  complete._fn = bufmatch;
 
   auto bp1 = BUFFER::head();
   for (bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
@@ -926,7 +928,7 @@ killbuffer() {
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
 
-  complete.fn = bufmatch;
+  complete._fn = bufmatch;
 
   (void)emstrcpy(prompt, ECSTR("Kill buffer: (default "));
   (void)emstrcat(prompt, curbp->bufname());

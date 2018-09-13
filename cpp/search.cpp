@@ -341,7 +341,7 @@ subst(int length, const EMCHAR* newstr) {
 
 static CMD
 readpattern(const EMCHAR* prompt) {
-  complete.flag = 0L;
+  complete._flag = nullptr;
 
   return WDGedit(prompt, search_buffer, NPAT);
 }

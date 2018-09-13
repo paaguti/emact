@@ -411,7 +411,7 @@ grep() {
 
 CMD
 shellbuffer(EMCHAR* prog, EMCHAR* def) {
-  EMCHAR  buf[NLINE];
+  EMCHAR  buf[1024];
   EMCHAR  info[NLINE];
   EMCHAR  prompt[NLINE];
   EMCHAR  cdir[NLINE];
@@ -495,7 +495,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
 
 CMD
 sed() {
-  EMCHAR  buf[NLINE];
+  EMCHAR  buf[1024];
   EMCHAR  prompt[NLINE];
   EMCHAR  cdir[NLINE];
   EMCHAR  gdir[NLINE];
@@ -584,7 +584,7 @@ sed() {
 
 CMD
 perl() {
-  EMCHAR  buf[NLINE];
+  EMCHAR  buf[1024];
   EMCHAR  prompt[NLINE];
   EMCHAR  cdir[NLINE];
   EMCHAR  gdir[NLINE];

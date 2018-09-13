@@ -32,8 +32,7 @@ static  void    mlclearentry(EMCHAR* buf, int cpos);
 
 bool mpresf{false}; // true if message in last line.
 
-COMPLETE   complete;
-COMPLETION completion;
+Completion complete;
 
 static bool allowcomplete{false};
 static int mbcursor{0};
@@ -167,15 +166,15 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   auto    editflg = NIL;
 
  loop:
-  cpos       = 0;
-  completion = COMPLETION::COMPLETE_ONE;
+  cpos = 0;
+  complete._status = Completion::Status::COMPLETE_ONE;
 
   if (kbdmop != nullptr) {
     while ((c = *kbdmop++) != '\000') {
       buf[cpos++] = (EMCHAR)c;
     }
-    buf[cpos]   = '\000';
-    complete.flag = 0L;
+    buf[cpos] = '\000';
+    complete._flag = nullptr;
     return (buf[0] == 0) ? NIL : T;
   } else {
     cpos = emstrlen(buf);
@@ -201,8 +200,8 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       cpos = 0;
       break;
     case 0x07:      /* Abort                */
-      complete.flag = 0L;
-      completion    = COMPLETION::COMPLETE_ABORT;
+      complete._flag   = nullptr;
+      complete._status = Completion::Status::COMPLETE_ABORT;
       WDGmessage(ECSTR("Quit"));
       return ctrlg();
 
@@ -216,7 +215,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
           continue;
         }
       }
-      complete.flag = 0L;
+      complete._flag = nullptr;
       buf[cpos++] = 0;
       if (kbdmip != nullptr) {
         if (kbdmip+cpos > &kbdm[NKBDM-3]) {
@@ -241,7 +240,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       break;
 
     case METACH:
-      if (complete.fn == filematch) {
+      if (complete._fn == filematch) {
         buf[cpos] = '\000';
         (void)updir(buf, SLASH);
         cpos = emstrlen(buf);
@@ -284,7 +283,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         c = TTYgetc();
       }
 
-      if ((complete.fn == filematch) && (cpos > 0) && (c == ':')) {
+      if ((complete._fn == filematch) && (cpos > 0) && (c == ':')) {
         /*
          * Check for device change
          */
@@ -305,7 +304,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       }
 
       if (editflg == NIL) {
-        if (complete.fn == filematch && c != ' ' && c != '\t') {
+        if (complete._fn == filematch && c != ' ' && c != '\t') {
           if (cpos > 0 && buf[cpos - 1] == '/') {
             if (c == '/' || c == '\\') {
               mlclearentry(buf, cpos);
@@ -322,7 +321,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
             editflg = T;
             continue;
           }
-        } else if (complete.fn != filematch) {
+        } else if (complete._fn != filematch) {
           mlclearentry(buf, cpos);
           cpos = 0;
         }
@@ -332,23 +331,23 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         break;
       }
 
-      if (((c == ' ') || (c == '\t')) && (complete.flag != 0L)) {
+      if (((c == ' ') || (c == '\t')) && (complete._flag != nullptr)) {
         buf[cpos] = '\000';
-        completion  = COMPLETION::COMPLETE_ONE;
-        if ((s = (*complete.fn)(prompt,buf)) != nullptr) {
+        complete._status = Completion::Status::COMPLETE_ONE;
+        if ((s = complete(prompt, buf)) != nullptr) {
           (void)emstrcpy(buf, s);
-          if (completion == COMPLETION::COMPLETE_AGAIN) {
+          if (complete._status == Completion::Status::COMPLETE_AGAIN) {
             goto loop;
           }
 
-          complete.flag = 0L;
+          complete._flag = nullptr;
           return T;
         } else {
-          complete.flag = 0L;
-          if (completion == COMPLETION::COMPLETE_ABORT) {
+          complete._flag = nullptr;
+          if (complete._status == Completion::Status::COMPLETE_ABORT) {
             return ABORT;
           }
-          completion = COMPLETION::COMPLETE_FAIL;
+          complete._status = Completion::Status::COMPLETE_FAIL;
 
           return NIL;
         }

@@ -35,10 +35,10 @@ static char rcsid[] = "$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $"
 
 class REGION {
  public:
-  EDLINE* _linep;        /* Origin EDLINE address        */
-  int     _offset;       /* Origin EDLINE offset         */
-  int     _size;         /* Length in characters         */
-  int     _lines;        /* Number of lines              */
+  EDLINE* _linep{nullptr};  // Origin EDLINE address
+  int     _offset{0};       // Origin EDLINE offset
+  int     _size{0};         // Length in characters
+  int     _lines{0};        // Number of lines
 
   bool get();
 };
@@ -66,6 +66,7 @@ REGION::get() {
   }
 
   _lines = 0;
+  _size = 0;
 
   const auto& dot(curwp->getDot());
 
@@ -333,7 +334,7 @@ writeregion() {
     return NIL;
   }
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   EMCHAR fname[NFILEN];
 

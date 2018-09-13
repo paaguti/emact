@@ -902,7 +902,7 @@ findfile() {
   auto ofname = getbufdir();
   CMD s;
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   if ((s = WDGedit(ECSTR("Find file: "), ofname, NFILEN)) != T && s != NIL) {
     return s;
@@ -923,7 +923,7 @@ fileread() {
   auto ofname = getbufdir();
   CMD  s;
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   s = WDGedit(ECSTR("Find file read-only: "), ofname, NFILEN);
 
@@ -952,7 +952,7 @@ filealternate() {
   EMCHAR bname[BUFFER::NBUFN];
   CMD s;
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   if ((s = WDGedit(ECSTR("Find alternate file: "), ofname, NFILEN)) != T) {
     return s;
@@ -999,7 +999,7 @@ fileinsert() {
     return NIL;
   }
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   auto ofname = getbufdir();
 
@@ -1120,10 +1120,10 @@ filewrite() {
     /*
      * Must have a name.
      */
-    complete.fn = filematch;
+    complete._fn = filematch;
     s = WDGedit(ECSTR("File to save in: "), ofname, NFILEN);
   } else {
-    complete.fn = fileaccept;
+    complete._fn = fileaccept;
     (void)emstrcpy(ofname, curbp->filename());
     if ((s = WDGedit(ECSTR("Write file: "), ofname, NFILEN)) == NIL) {
       (void)filesave();
@@ -1244,7 +1244,7 @@ unlinkfile() {
   auto ofname = getbufdir();
   CMD s;
 
-  complete.fn = filematch;
+  complete._fn = filematch;
 
   if ((s = WDGedit(ECSTR("Delete file: "), ofname, NFILEN)) != T) {
     return s;
