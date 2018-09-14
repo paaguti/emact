@@ -168,8 +168,8 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   cpos = 0;
   complete.setStatus(Completion::Status::COMPLETE_ONE);
 
-  if (kbdmop != nullptr) {
-    while ((c = *kbdmop++) != '\000') {
+  if (Kbdm::isPlaying()) {
+    while ((c = Kbdm::play()) != '\000') {
       buf[cpos++] = (EMCHAR)c;
     }
     buf[cpos] = '\000';
@@ -203,7 +203,6 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       complete.setStatus(Completion::Status::COMPLETE_ABORT);
       WDGmessage(ECSTR("Quit"));
       return ctrlg();
-
     case 0x0D:      /* Return               */
     case 0x0A:      /* LineFeed             */
     case 0x12:      /* C-R, Back Search     */
@@ -214,19 +213,20 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
           continue;
         }
       }
+
       complete = nullptr;
       buf[cpos++] = 0;
-      if (kbdmip != nullptr) {
-        if (kbdmip+cpos > &kbdm[NKBDM-3]) {
-          return ctrlg();
-        }
-        for (i = 0; i < cpos; ++i) {
-          *kbdmip++ = buf[i];
+
+      if (Kbdm::isRecording()) {
+        try {
+          for (i = 0; i < cpos; ++i) {
+            Kbdm::record(buf[i]);
+          }
+        } catch (const Kbdm::BufferFullException&) {
+          (void)ctrlg();
         }
       }
-
       return (buf[0] == 0) ? NIL : editflg;
-
     case 0x7F:      /* Rubout, erase        */
     case 0x08:      /* Backspace, erase     */
     case Ctrl|'H':
@@ -237,7 +237,6 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         }
       }
       break;
-
     case METACH:
       if (complete == filematch) {
         buf[cpos] = '\000';
@@ -250,12 +249,10 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         mlwrite(ECSTR("%s%s"), prompt, buf);
       }
       break;
-
     case 0x0B:      /* kill ^K              */
       mlclearentry(buf, cpos);
       cpos = 0;
       break;
-
     case 0x19:      /* yank ^Y              */
       mlclearentry(buf, cpos);
       cpos = 0;
@@ -276,7 +273,6 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 
     doneyank:
       break;
-
     default:
       if (c == 0x11) { /* Quote next char */
         c = TTYgetc();

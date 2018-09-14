@@ -294,7 +294,6 @@ static constexpr auto NCMDN(16);            // # of bytes, command name
 static constexpr auto NMAX(64);             // # of macros
 static constexpr auto MAXLINE(0x8000);      // # of bytes, line in read
 static constexpr auto NLINE(256);           // # of bytes, line (internal)
-static constexpr auto NKBDM(256);           // # of strokes, keyboard macro
 static constexpr auto NPAT(80);             // # of bytes, pattern
 
 static constexpr auto METACH(0x1B);         // M- prefix, Control-[, ESC
@@ -1558,9 +1557,68 @@ extern Emacs* emact;
 extern int      eargc;                 // Argc
 extern EMCHAR** eargv;                 // Argv
 
-extern int     kbdm[NKBDM];            // Holds keyboard macro data
-extern int*    kbdmip;                 // Input pointer for above
-extern int*    kbdmop;                 // Output pointer for above
+class Kbdm {
+ public:
+  class BufferFullException {};
+  /*
+   * Playing methods
+   */
+  static void
+  startPlaying() noexcept {
+    kbdmop = &kbdm[0];
+  }
+
+  static void
+  stopPlaying() noexcept {
+    kbdmop = nullptr;
+  }
+
+  static bool
+  isPlaying() noexcept {
+    return kbdmop != nullptr;
+  }
+
+  static int
+  play() noexcept {
+    return *kbdmop++;
+  }
+
+  /*
+   * Recording methods
+   */
+  static void
+  startRecording() noexcept {
+    kbdmip = &kbdm[0];
+  }
+
+  static void
+  stopRecording() noexcept {
+    kbdmip = nullptr;
+  }
+
+  static bool
+  isRecording() noexcept {
+    return kbdmip != nullptr;
+  }
+
+  static void
+  record(int c) {
+    if (kbdmip >= &kbdm[NKBDM]) {
+      stopRecording();
+      kbdm[0] = -1;
+      throw BufferFullException{};
+    } else {
+      *kbdmip++ = c;
+    }
+  }
+
+  static constexpr size_t NKBDM = 512; // # of strokes, keyboard macro
+  static int  kbdm[NKBDM];             // Holds keyboard macro data
+
+ private:
+  static int* kbdmip;                 // Input pointer for above
+  static int* kbdmop;                 // Output pointer for above
+};
 
 extern EMCHAR search_buffer[NPAT];     // Search pattern
 
