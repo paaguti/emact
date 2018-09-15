@@ -1544,6 +1544,52 @@ extern MEvent mevent;
 
 class Emacs {
  public:
+  template<typename T>
+  Emacs(int argc, T* argv[])
+    : _argc{argc},
+      _argv{new EMCHAR*[argc + 1]} {
+    auto cvt = [](const T* str) -> EMCHAR* {
+                 size_t len = 0;
+                 while (str[len] != 0) {
+                   ++len;
+                 }
+                 auto res = new EMCHAR[len + 1];
+
+                 for (int i = 0; i < (int)len; ++i) {
+                   res[i] = (EMCHAR)str[i];
+                 }
+                 res[len] = '\000';
+
+                 return res;
+               };
+    for (int i = 0; i < argc; ++i) {
+      _argv[i] = cvt(argv[i]);
+    }
+
+    _argv[argc] = nullptr;
+  }
+
+  ~Emacs() {
+    for (int i = 0; i < _argc; ++i) {
+      delete[] _argv[i];
+    }
+  }
+
+  void
+  engine();
+
+  static const EMCHAR*
+  getName() {
+    return _name;
+  };
+
+private:
+  int _argc{0};
+  std::unique_ptr<EMCHAR*[]> _argv{nullptr};
+
+  static const EMCHAR* _name;
+
+//  Emacs(int argc, char* argv[]);
 #if 0
   static int repeat;                 // Repeat count
   static int thisflag;               // Flags, this command
@@ -1551,11 +1597,6 @@ class Emacs {
   static int curgoal;                // Goal for C-P, C-N
 #endif
 };
-
-extern Emacs* emact;
-
-extern int      eargc;                 // Argc
-extern EMCHAR** eargv;                 // Argv
 
 class Kbdm {
  public:
@@ -1636,6 +1677,11 @@ class Kbdm {
 extern Kbdm kbdm;
 
 extern EMCHAR search_buffer[NPAT];     // Search pattern
+
+static inline bool
+self_insert(int c) {
+  return (((unsigned int)c & MAX_EMCHAR) >= 0x20 && c != 0x7F);
+}
 
 /*
  * Configurable variables:

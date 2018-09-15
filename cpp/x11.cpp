@@ -1111,7 +1111,7 @@ X11emacs(int argc, char* argv[]) {
   arglist[0] = argv[0];
 
   /*
-   *      copy arg list
+   * copy arg list
    */
 
   for (int i = 1; i < argcount; ++i) {
@@ -1120,10 +1120,13 @@ X11emacs(int argc, char* argv[]) {
   arglist[argcount] = nullptr;
 
   /*
-   *      call the real entry point
+   * call the real entry point
    */
 
-  return emacsascii(argcount, arglist);
+  Emacs emacs(argcount, arglist);
+  emacs.engine();
+
+  return 0;
 }
 
 void

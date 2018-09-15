@@ -63,14 +63,6 @@ size_t	emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count);
 int	emmbclen(int c);
 
 /*
- *	emacs.c
- */
-
-bool    self_insert(int c);
-int     emacsascii(int argc, char *argv[]);
-int     emacs(int argc, EMCHAR* argv[]);
-
-/*
 int	EMCDECL main(int argc, char *argv[]);
 */
 CMD	execute(int c, int n);

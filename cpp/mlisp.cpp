@@ -919,11 +919,11 @@ mlcustomize() {
     /*
      * Set the _library PATH where the binary is found.
      */
-    (void)emstrcpy(MLisp::_library, eargv[0]);
+    (void)emstrcpy(MLisp::_library, Emacs::getName());
     (void)updir(MLisp::_library, SLASH);
   }
 
-  makename((EMCHAR*)&base[0], eargv[0]);
+  makename((EMCHAR*)&base[0], Emacs::getName());
 
   for (p = base; *p; p++) {
     if (*p == '.') {

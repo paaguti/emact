@@ -32,16 +32,11 @@ static  char rcsid[] = "$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $"
  */
 
 #define _CRT_SECURE_NO_WARNINGS
-#include <vector>
 #include "emacs.h"
 #include "build.h"
 
-#define internaleval(i)       mlinternaleval(i)
-#define customize()           mlcustomize()
-
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false}; // Edit flag
-
 
 static void    edinit(const EMCHAR* bname);
 static void    editloop();
@@ -53,7 +48,6 @@ static CMD     again();
 extern const EMCHAR* version;   /* Current version              */
 
 DISPLAY* display{nullptr};
-Emacs*   emact{nullptr};
 
 bool    initflag  = false;      /* Init flag                    */
 int     nmactab   = 0;          /* Number of user macros        */
@@ -61,8 +55,6 @@ int     repeat    = 1;          /* Repeat count                 */
 
 int     thisflag;               /* Flags, this command          */
 int     lastflag;               /* Flags, last command          */
-int     eargc;                  /* Argc                         */
-EMCHAR** eargv;                 /* Argv                         */
 BUFFER* curbp;                  /* Current buffer               */
 WINSCR* curwp;                  /* Current window               */
 MACTAB* pmactab;                /* User macros table pointer    */
@@ -402,59 +394,23 @@ static int     clast = 0;      /* last executed command        */
 static int     nlast = 1;      /* last executed repeat count   */
 static bool    isoset;         /* ISO 8859-1 char set          */
 
-bool
-self_insert(int c) {
-  return (((unsigned int)c & MAX_EMCHAR) >= 0x20 && c != BACKDEL);
-}
+const EMCHAR* Emacs::_name{nullptr};
 
-int
-emacsascii(int argc, char* argv[]) {
-  std::unique_ptr<EMCHAR*[]> argvu(new EMCHAR*[argc + 1]);
-  auto cvt = [](const char* str) -> EMCHAR* {
-    auto len = strlen(str);
-    auto res = new EMCHAR[len + 1];
-
-    for (int i = 0; i < (int)len; ++i) {
-      res[i] = (EMCHAR)str[i];
-    }
-    res[len] = '\000';
-
-    return res;
-  };
-
-  for (int i = 0; i < argc; ++i) {
-    argvu[i] = cvt(argv[i]);
-  }
-
-  argvu[argc] = nullptr;
-
-  auto res = emacs(argc, argvu.get());
-
-  for (int i = 0; i < argc; ++i) {
-    delete[] argvu[i];
-  }
-
-  return res;
-}
-
-int
-emacs(int argc, EMCHAR* argv[]) {
+void
+Emacs::engine() {
   int     curarg   = 1;
   int     lineinit = 1;
   int     i        = 0;
   EMCHAR  bname[BUFFER::NBUFN];
 
-  emact = new Emacs;
-
-  eargc    = argc;
-  eargv    = argv;
+  _name    = _argv[0];
   lastflag = 0;
   editflag = true;
   isoset   = true;
 
-  if (eargc > curarg) {
-    if (linenump(eargv[curarg])) {
-      lineinit = emstrtoi(eargv[curarg]);
+  if (_argc > curarg) {
+    if (linenump(_argv[curarg])) {
+      lineinit = emstrtoi(_argv[curarg]);
       curarg++;
     }
   }
@@ -471,7 +427,7 @@ emacs(int argc, EMCHAR* argv[]) {
 
     search_buffer[0] = '\000';
 
-    (void)customize();
+    (void)mlcustomize();
 
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
@@ -483,22 +439,22 @@ emacs(int argc, EMCHAR* argv[]) {
     display = new DISPLAY;
     edinit(bname);
 
-    if (eargc > curarg) {
+    if (_argc > curarg) {
       i++;
       display->update(DISPLAY::Mode::REFRESH);
-      (void)newfile(eargv[curarg++]);
+      (void)newfile(_argv[curarg++]);
     }
 
-    if (eargc > curarg) {
+    if (_argc > curarg) {
       i++;
       (void)splitwind();
-      (void)newfile(eargv[curarg++]);
+      (void)newfile(_argv[curarg++]);
       (void)prevwind();
     }
 
-    while (eargc > curarg) {
+    while (_argc > curarg) {
       i++;
-      (void)newfile(eargv[curarg++]);
+      (void)newfile(_argv[curarg++]);
     }
 
     (void)curwp->connect(curbp);
@@ -515,22 +471,22 @@ emacs(int argc, EMCHAR* argv[]) {
 
     for (i = 0; i < nmactab; ++i) {
       if (MACname(i) && emstrcmp(MACname(i), ECSTR("emacs-init")) == 0) {
-        (void)internaleval(i);
+        (void)mlinternaleval(i);
         break;
       }
     }
 
     initflag = true;
   } else {
-    (void)customize();
+    (void)mlcustomize();
 
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
 
     TTYopen();
     display->update(DISPLAY::Mode::REFRESH);
-    if (eargc > curarg) {
-      (void)newfile(eargv[curarg]);
+    if (_argc > curarg) {
+      (void)newfile(_argv[curarg]);
     }
   }
 
@@ -540,14 +496,11 @@ emacs(int argc, EMCHAR* argv[]) {
     (void)gotoline();
   }
 
-  if (eargc == 1) {
+  if (_argc == 1) {
     emacsversion();
   }
 
   editloop();
-
-  delete emact;
-  return 0;
 }
 
 /*
@@ -661,7 +614,7 @@ execute(int c, int n) {
           WDGwrite(ECSTR("%s"), MACname(i));
         }
         thisflag = 0;
-        status   = internaleval(i);
+        status   = mlinternaleval(i);
         lastflag = thisflag;
         return status;
       }
@@ -867,12 +820,12 @@ getctl() {
   if (c == METACH) {
     return c;
   } else if (c >= 0x00 && c <= 0x1F) {
-    return Ctrl | (c+'@');
+    return (Ctrl|(c + '@'));
   }
 
-  if (isalpha(c) && islower(c)) {
+  if (std::isalpha(c) && std::islower(c)) {
     /* Force to upper       */
-    c = toupper(c);
+    c = std::toupper(c);
   }
 
   return c;
@@ -959,9 +912,7 @@ ctlxrp() {
 
 CMD
 ctlxe() {
-  auto n = repeat;
-  int     c;
-  int     an;
+  const auto n = repeat;
 
   if (!kbdm.exist()) {
     WDGmessage(ECSTR("No keyboard macro to execute."));
@@ -975,8 +926,11 @@ ctlxe() {
 
   auto s = T;
 
-  do {
+  for (decltype(repeat) i = 0; (i < n) && (s == T); ++i) {
     auto save = repeat;
+    int c;
+    int an;
+
     kbdm.startPlaying();
     do {
       if ((c = kbdm.play()) == (Ctrl|'U')) {
@@ -986,10 +940,10 @@ ctlxe() {
         an = 1;
       }
     } while (c != (CTLX|')') && (s = execute(c, an)) == T);
-
     kbdm.stopPlaying();
+
     repeat = save;
-  } while (s == T && --n);
+  }
 
   return s;
 }

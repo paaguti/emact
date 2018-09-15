@@ -1945,7 +1945,10 @@ xpunicodegen() {
  */
 
 int WINAPI
-_tWinMain(HINSTANCE hInstance, HINSTANCE hPInst, LPTSTR lpCmdLine, int nCmdShow) {
+_tWinMain(HINSTANCE hInstance,
+          HINSTANCE hPInst,
+          LPTSTR lpCmdLine,
+          int nCmdShow) {
   auto share(true);
 
   if (hPInst) {
@@ -2078,11 +2081,13 @@ _tWinMain(HINSTANCE hInstance, HINSTANCE hPInst, LPTSTR lpCmdLine, int nCmdShow)
    * Enter emacs Wonderland
    */
 
-  emacs(argc, (EMCHAR**)argv);
+  Emacs emacs(argc, argv);
+
+  emacs.engine();
 
   if (hMutex != 0) {
     ReleaseMutex(hMutex);
   }
 
-  return(0);
+  return 0;
 }

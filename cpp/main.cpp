@@ -180,7 +180,7 @@ insert(const EMCHAR* str) {
 
 int
 main(int argc, char *argv[]) {
-  int     res;
+  int     res = 0;
 
 #if defined(_WINDEBUG)
   res = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
@@ -214,16 +214,13 @@ main(int argc, char *argv[]) {
      * never called but pretends glob is actually used to
      * prevent compiler warning.
      */
-    glob(&argc, &((EMCHAR **)argv));
+    glob(&argc, &((EMCHAR**)argv));
   }
 #endif
 #endif
 
-#if defined(_WIDECHARS)
-  res = emacsascii(argc, argv);
-#else
-  res = emacs(argc, argv);
-#endif
+  Emacs emacs(argc, argv);
+  emacs.engine();
 
 #if defined(_WINDEBUG)
   _CrtCheckMemory();

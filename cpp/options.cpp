@@ -41,8 +41,6 @@ extern int     nmactab;
 
 static int     tagfound = -1;
 
-#define COLUMN_VALUE            30
-
 CMD
 describekey() {
   int     c;
@@ -116,6 +114,7 @@ getkeyname(int key, EMCHAR* buf) {
 
 CMD
 help() {
+  static constexpr int COLUMN_VALUE{30};
   int     i;
   EMCHAR  ch[2];
   EMCHAR  meta[10];
@@ -144,7 +143,7 @@ help() {
     }
     getkeyname(c, meta);
     (void)emstrcpy(line, ktp.name());
-    for (i = emstrlen(line); i < COLUMN_VALUE; i++) {
+    for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
       line[i] = ' ';
     }
     line[i++] = '(';
@@ -178,7 +177,7 @@ help() {
       continue;
     }
     (void)emstrcpy(line, MACname(j));
-    for (i = emstrlen(line); i < COLUMN_VALUE; i++) {
+    for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
       line[i] = ' ';
     }
     line[i] = '\0';
