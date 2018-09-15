@@ -54,7 +54,7 @@ nexttab(int col) {
       curbp->editMode() == EDITMODE::CSHARPMODE ||
       curbp->editMode() == EDITMODE::LISPMODE   ||
       curbp->editMode() == EDITMODE::JAVAMODE) {
-    return linsert(col, ' ');
+    return linsert(' ', col);
   }
 
   if (((i = col / opt::tab_display) != 0 && linsert('\t', i) == false) ||
