@@ -1604,18 +1604,27 @@ class Kbdm {
   static void
   record(int c) {
     if (kbdmip >= &kbdm[NKBDM]) {
-      stopRecording();
-      kbdm[0] = -1;
+      reset();
       throw BufferFullException{};
     } else {
       *kbdmip++ = c;
     }
   }
 
-  static constexpr size_t NKBDM = 512; // # of strokes, keyboard macro
-  static int  kbdm[NKBDM];             // Holds keyboard macro data
+  static void
+  reset() noexcept {
+    kbdmip = nullptr;
+    kbdm[0] = -1;
+  }
+
+  static bool
+  exist() noexcept {
+    return kbdm[0] != -1;
+  }
 
  private:
+  static constexpr size_t NKBDM = 512; // # of strokes, keyboard macro
+  static int  kbdm[NKBDM];             // Holds keyboard macro data
   static int* kbdmip;                 // Input pointer for above
   static int* kbdmop;                 // Output pointer for above
 };

@@ -712,7 +712,7 @@ CMD
 uncompile() {
   int c;
 
-  if (Kbdm::kbdm[0] == -1) {
+  if (Kbdm::exist()) {
     WDGmessage(ECSTR("No keyboard macro to uncompile."));
     return NIL;
   }

@@ -481,7 +481,7 @@ emacs(int argc, EMCHAR* argv[]) {
 
     TTYopen();
 
-    Kbdm::kbdm[0] = -1;
+    Kbdm::reset();
 
     display = new DISPLAY;
     edinit(bname);
@@ -966,7 +966,7 @@ ctlxe() {
   int     c;
   int     an;
 
-  if (Kbdm::kbdm[0] == -1) {
+  if (!Kbdm::exist()) {
     WDGmessage(ECSTR("No keyboard macro to execute."));
     return NIL;
   }
@@ -1008,8 +1008,7 @@ ctrlg() {
   TTYbeep();
 
   if (Kbdm::isRecording()) {
-    Kbdm::kbdm[0] = (CTLX|')');
-    Kbdm::stopRecording();
+    Kbdm::reset();
   }
 
   return ABORT;
