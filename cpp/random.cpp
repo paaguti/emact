@@ -606,7 +606,7 @@ setfillcolumn() {
 
   opt::fill_column = newfill;
 
-  if (!Kbdm::isPlaying()) {
+  if (!kbdm.isPlaying()) {
     WDGwrite(ECSTR("fill-column set to %d"), opt::fill_column);
   }
 
@@ -621,7 +621,7 @@ setfillcolumn() {
 CMD
 setfillprefix() {
   if (curwp->pos() == 0) {
-    if (!Kbdm::isPlaying()) {
+    if (!kbdm.isPlaying()) {
       WDGwrite(ECSTR("fill-prefix cancelled."));
     }
 
@@ -640,7 +640,7 @@ setfillprefix() {
 
   opt::fill_prefix[i] = '\0';
 
-  if (!Kbdm::isPlaying()) {
+  if (!kbdm.isPlaying()) {
     WDGwrite(ECSTR("fill-prefix: \"%s\""), opt::fill_prefix);
   }
 

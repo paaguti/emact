@@ -1560,74 +1560,80 @@ extern EMCHAR** eargv;                 // Argv
 class Kbdm {
  public:
   class BufferFullException {};
+  Kbdm() {
+    reset();
+  }
+
   /*
    * Playing methods
    */
-  static void
+  void
   startPlaying() noexcept {
-    kbdmop = &kbdm[0];
+    _kbdmop = &_kbdm[0];
   }
 
-  static void
+  void
   stopPlaying() noexcept {
-    kbdmop = nullptr;
+    _kbdmop = nullptr;
   }
 
-  static bool
+  bool
   isPlaying() noexcept {
-    return kbdmop != nullptr;
+    return _kbdmop != nullptr;
   }
 
-  static int
+  int
   play() noexcept {
-    return *kbdmop++;
+    return *_kbdmop++;
   }
 
   /*
    * Recording methods
    */
-  static void
+  void
   startRecording() noexcept {
-    kbdmip = &kbdm[0];
+    _kbdmip = &_kbdm[0];
   }
 
-  static void
+  void
   stopRecording() noexcept {
-    kbdmip = nullptr;
+    _kbdmip = nullptr;
   }
 
-  static bool
-  isRecording() noexcept {
-    return kbdmip != nullptr;
+  bool
+  isRecording() const noexcept {
+    return _kbdmip != nullptr;
   }
 
-  static void
+  void
   record(int c) {
-    if (kbdmip >= &kbdm[NKBDM]) {
+    if (_kbdmip >= &_kbdm[NKBDM]) {
       reset();
       throw BufferFullException{};
     } else {
-      *kbdmip++ = c;
+      *_kbdmip++ = c;
     }
   }
 
-  static void
+  void
   reset() noexcept {
-    kbdmip = nullptr;
-    kbdm[0] = -1;
+    _kbdmip = nullptr;
+    _kbdm[0] = -1;
   }
 
-  static bool
-  exist() noexcept {
-    return kbdm[0] != -1;
+  bool
+  exist() const noexcept {
+    return _kbdm[0] != -1;
   }
 
  private:
-  static constexpr size_t NKBDM = 512; // # of strokes, keyboard macro
-  static int  kbdm[NKBDM];             // Holds keyboard macro data
-  static int* kbdmip;                 // Input pointer for above
-  static int* kbdmop;                 // Output pointer for above
+  static constexpr size_t NKBDM = 512;  // # of strokes, keyboard macro
+  int  _kbdm[NKBDM];                    // Holds keyboard macro data
+  int* _kbdmip{nullptr};                // Input pointer for above
+  int* _kbdmop{nullptr};                // Output pointer for above
 };
+
+extern Kbdm kbdm;
 
 extern EMCHAR search_buffer[NPAT];     // Search pattern
 

@@ -168,8 +168,8 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   cpos = 0;
   complete.setStatus(Completion::Status::COMPLETE_ONE);
 
-  if (Kbdm::isPlaying()) {
-    while ((c = Kbdm::play()) != '\000') {
+  if (kbdm.isPlaying()) {
+    while ((c = kbdm.play()) != '\000') {
       buf[cpos++] = (EMCHAR)c;
     }
     buf[cpos] = '\000';
@@ -217,10 +217,10 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       complete = nullptr;
       buf[cpos++] = 0;
 
-      if (Kbdm::isRecording()) {
+      if (kbdm.isRecording()) {
         try {
           for (i = 0; i < cpos; ++i) {
-            Kbdm::record(buf[i]);
+            kbdm.record(buf[i]);
           }
         } catch (const Kbdm::BufferFullException&) {
           (void)ctrlg();

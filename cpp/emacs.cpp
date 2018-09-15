@@ -67,13 +67,10 @@ BUFFER* curbp;                  /* Current buffer               */
 WINSCR* curwp;                  /* Current window               */
 MACTAB* pmactab;                /* User macros table pointer    */
 MEvent  mevent;                 /* Mouse event (if any)         */
+Kbdm    kbdm;                   /* Keyboad Macro                */
 
-int     Kbdm::kbdm[NKBDM];      /* Macro                        */
-int*    Kbdm::kbdmip;           /* Input  for above             */
-int*    Kbdm::kbdmop;           /* Output for above             */
-
-static MACTAB mactab[NMAX];         /* User macros table        */
-EMCHAR search_buffer[NPAT];          // Internal search buffer
+static MACTAB mactab[NMAX];     /* User macros table        */
+EMCHAR search_buffer[NPAT];     // Internal search buffer
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -481,7 +478,7 @@ emacs(int argc, EMCHAR* argv[]) {
 
     TTYopen();
 
-    Kbdm::reset();
+    kbdm.reset();
 
     display = new DISPLAY;
     edinit(bname);
@@ -608,13 +605,13 @@ editloop() {
       n = 1;
     }
 
-    if (Kbdm::isRecording()) {          /* Save macro strokes.  */
+    if (kbdm.isRecording()) {          /* Save macro strokes.  */
       try {
         if (n > 1) {
-          Kbdm::record((Ctrl|'U'));
-          Kbdm::record(n);
+          kbdm.record((Ctrl|'U'));
+          kbdm.record(n);
         }
-        Kbdm::record(c);
+        kbdm.record(c);
       } catch (const Kbdm::BufferFullException&) {
         WDGwrite(ECSTR("Macro buffer is full."));
         (void)ctrlg();
@@ -734,7 +731,7 @@ execute(int c, int n) {
 
     lastflag = thisflag;
 
-    if (!Kbdm::isPlaying()) {
+    if (!kbdm.isPlaying()) {
       if ((c == ')' || c == '}' || c == ']')
           && emode != EDITMODE::FUNDAMENTAL) {
         return automatch(c) ? T : NIL;
@@ -927,13 +924,13 @@ exitemacs() {
 
 CMD
 ctlxlp() {
-  if (Kbdm::isRecording() || Kbdm::isPlaying()) {
+  if (kbdm.isRecording() || kbdm.isPlaying()) {
     WDGmessage(ECSTR("Already defining kbd macro."));
     return NIL;
   }
   WDGplay(false);
   WDGmessage(ECSTR("Defining kbd macro..."));
-  Kbdm::startRecording();
+  kbdm.startRecording();
   return T;
 }
 
@@ -944,13 +941,13 @@ ctlxlp() {
 
 CMD
 ctlxrp() {
-  if (!Kbdm::isRecording()) {
+  if (!kbdm.isRecording()) {
     WDGmessage(ECSTR("Not defining a kbd macro."));
     return NIL;
   }
   WDGplay(true);
   WDGmessage(ECSTR("Keyboard macro defined."));
-  Kbdm::stopRecording();
+  kbdm.stopRecording();
   return T;
 }
 
@@ -966,12 +963,12 @@ ctlxe() {
   int     c;
   int     an;
 
-  if (!Kbdm::exist()) {
+  if (!kbdm.exist()) {
     WDGmessage(ECSTR("No keyboard macro to execute."));
     return NIL;
   }
 
-  if (Kbdm::isRecording() || Kbdm::isPlaying()) {
+  if (kbdm.isRecording() || kbdm.isPlaying()) {
     WDGmessage(ECSTR("You can't call the keyboard macro while defining it."));
     return NIL;
   }
@@ -980,17 +977,17 @@ ctlxe() {
 
   do {
     auto save = repeat;
-    Kbdm::startPlaying();
+    kbdm.startPlaying();
     do {
-      if ((c = Kbdm::play()) == (Ctrl|'U')) {
-        an = Kbdm::play();
-        c  = Kbdm::play();
+      if ((c = kbdm.play()) == (Ctrl|'U')) {
+        an = kbdm.play();
+        c  = kbdm.play();
       } else {
         an = 1;
       }
     } while (c != (CTLX|')') && (s = execute(c, an)) == T);
 
-    Kbdm::stopPlaying();
+    kbdm.stopPlaying();
     repeat = save;
   } while (s == T && --n);
 
@@ -1007,8 +1004,8 @@ CMD
 ctrlg() {
   TTYbeep();
 
-  if (Kbdm::isRecording()) {
-    Kbdm::reset();
+  if (kbdm.isRecording()) {
+    kbdm.reset();
   }
 
   return ABORT;

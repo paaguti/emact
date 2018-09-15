@@ -276,15 +276,14 @@ readin(const EMCHAR* fname) {
  * { "foo/bar/../gee",             "foo/gee"       },
  * { "../..",                      "../.."         },
  * { "/",                          "/"             },
- * { nullptr,                         nullptr            }
+ * { nullptr,                      nullptr         }
  * };
- *
  */
 
 EMCHAR*
 normalize(EMCHAR* fname, int flag) {
   /*
-   *      convert \\ to /
+   * convert \\ to /
    */
 
   for (auto p = fname; *p != 0; ++p) {
@@ -294,7 +293,7 @@ normalize(EMCHAR* fname, int flag) {
   }
 
   /*
-   *      skip initial './'
+   * skip initial './'
    */
 
   while (!emstrncmp(fname, ECSTR("./"), 2)) {

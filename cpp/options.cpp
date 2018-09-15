@@ -712,12 +712,12 @@ CMD
 uncompile() {
   int c;
 
-  if (Kbdm::exist()) {
+  if (kbdm.exist()) {
     WDGmessage(ECSTR("No keyboard macro to uncompile."));
     return NIL;
   }
 
-  if (Kbdm::isRecording() || Kbdm::isPlaying()) {
+  if (kbdm.isRecording() || kbdm.isPlaying()) {
     WDGmessage(ECSTR("You can't uncompile macro while defining it."));
     return NIL;
   }
@@ -737,17 +737,17 @@ uncompile() {
     return NIL;
   }
 
-  Kbdm::startPlaying();
-  while ((c = Kbdm::play()) != (CTLX|')')) {
+  kbdm.startPlaying();
+  while ((c = kbdm.play()) != (CTLX|')')) {
     if (c == (Ctrl|'U')) {
-      count = Kbdm::play();
-      c     = Kbdm::play();
+      count = kbdm.play();
+      c     = kbdm.play();
     } else {
       count = 1;
     }
     printcmd(c, bp);
   }
-  Kbdm::stopPlaying();
+  kbdm.stopPlaying();
   printmacro(nullptr, bp);
 
   if (!addline(bp, ECSTR(")"))) {
