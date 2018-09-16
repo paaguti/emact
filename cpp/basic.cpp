@@ -29,8 +29,6 @@ static  char rcsid[] = "$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $"
 
 #include "emacs.h"
 
-int curgoal; // Goal column
-
 static int getgoal(const EDLINE* dlp);
 
 /*
@@ -51,7 +49,7 @@ gotobol() {
 
 CMD
 backchar() {
-  auto n = repeat;
+  auto n = Emacs::_repeat;
 
   while (n--) {
     if (curwp->pos() == 0) {
@@ -88,7 +86,7 @@ gotoeol() {
 
 CMD
 forwchar() {
-  int n = repeat;
+  int n = Emacs::_repeat;
 
   while (n--) {
     if (curwp->pos() == curwp->line()->length()) {
@@ -140,7 +138,7 @@ gotoeob() {
 
 CMD
 gotoline() {
-  int n = repeat;
+  int n = Emacs::_repeat;
         
   if (n <= 1) {
     EMCHAR buf[20];
@@ -176,13 +174,13 @@ gotoline() {
 CMD
 forwline() {
   EDLINE* dlp;
-  int     n = repeat;
+  int     n = Emacs::_repeat;
 
-  if ((lastflag & CFCPCN) == 0) {
+  if ((Emacs::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P or C-N */
-    curgoal = DISPLAY::_curcol;
+    Emacs::_curgoal = DISPLAY::_curcol;
   }
-  thisflag |= CFCPCN;
+  Emacs::_thisflag |= CFCPCN;
   if ((dlp = curwp->line()) == curbp->lastline()) {
     return NIL;
   }
@@ -206,19 +204,19 @@ forwline() {
 
 CMD
 backline() {
-  if ((lastflag & CFCPCN) == 0) {
+  if ((Emacs::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
-    curgoal = DISPLAY::_curcol;
+    Emacs::_curgoal = DISPLAY::_curcol;
   }
 
-  thisflag |= CFCPCN;
+  Emacs::_thisflag |= CFCPCN;
   auto dlp  = curwp->line();
   if (dlp->back() == curbp->lastline()) {
     TTYbeep();
     return NIL;
   }
 
-  auto n = repeat;
+  auto n = Emacs::_repeat;
 
   while (n-- && dlp->back() != curbp->lastline()) {
     dlp = dlp->back();
@@ -255,7 +253,7 @@ getgoal(const EDLINE* dlp) {
       ++newcol;
     }
 
-    if (newcol > curgoal) {
+    if (newcol > Emacs::_curgoal) {
       break;
     }
 

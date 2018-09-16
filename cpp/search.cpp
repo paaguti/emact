@@ -698,21 +698,21 @@ waitmatch(int n) {
 
 CMD
 forwsearch() {
-  thisflag |= CFFSRC;
+  Emacs::_thisflag |= CFFSRC;
 
-  if (!(lastflag & (CFFSRC | CFBSRC))) {
+  if (!(Emacs::_lastflag & (CFFSRC | CFBSRC))) {
     CMD s;
 
     if ((s = readpattern(ECSTR("Search: "))) != T) {
-      thisflag &= ~CFFSRC;
+      Emacs::_thisflag &= ~CFFSRC;
       return s;
     }
   } else {
     WDGwrite(ECSTR("Search \"%s\": "), Emacs::searchBuffer());
   }
 
-  if (lastflag & CFFAIL) {
-    lastflag &= ~CFFAIL;
+  if (Emacs::_lastflag & CFFAIL) {
+    Emacs::_lastflag &= ~CFFAIL;
     (void)gotobob();
     return forwsearch();
   }
@@ -724,7 +724,7 @@ forwsearch() {
   } else {
     TTYbeep();
     WDGwrite(ECSTR("Failing search: %s"), Emacs::searchBuffer());
-    thisflag |= CFFAIL;
+    Emacs::_thisflag |= CFFAIL;
     return NIL;
   }
 }
@@ -739,21 +739,21 @@ forwsearch() {
 
 CMD
 backsearch() {
-  thisflag |= CFBSRC;
+  Emacs::_thisflag |= CFBSRC;
 
-  if (!(lastflag & (CFFSRC | CFBSRC))) {
+  if (!(Emacs::_lastflag & (CFFSRC | CFBSRC))) {
     CMD s;
 
     if ((s = readpattern(ECSTR("Search backward: "))) != T) {
-      thisflag &= ~CFBSRC;
+      Emacs::_thisflag &= ~CFBSRC;
       return s;
     }
   } else {
     WDGwrite(ECSTR("Search backward \"%s\": "), Emacs::searchBuffer());
   }
 
-  if (lastflag & CFFAIL) {
-    lastflag &= ~CFFAIL;
+  if (Emacs::_lastflag & CFFAIL) {
+    Emacs::_lastflag &= ~CFFAIL;
     (void)gotoeob();
     return backsearch();
   }
@@ -765,7 +765,7 @@ backsearch() {
   } else {
     TTYbeep();
     WDGwrite(ECSTR("Failing search backward: %s"), Emacs::searchBuffer());
-    thisflag |= CFFAIL;
+    Emacs::_thisflag |= CFFAIL;
     return NIL;
   }
 }
@@ -902,9 +902,9 @@ completeword() {
   CMD     s;
   bool    res;
 
-  thisflag |= CFCPLT;
+  Emacs::_thisflag |= CFCPLT;
 
-  if (lastflag & CFCPLT) {
+  if (Emacs::_lastflag & CFCPLT) {
     /*
      * Last command was ESC/, add match to reject history,
      * delete the word and continue.
@@ -960,7 +960,7 @@ completeword() {
   (void)emstrcpy(Emacs::searchBuffer(), buf);
 
 loop:
-  if (lastflag & CFCPLT) {
+  if (Emacs::_lastflag & CFCPLT) {
     curwp->setDot(found);
   }
 
@@ -1086,7 +1086,7 @@ loop:
         return T;
       }
 
-      thisflag &= ~CFCPLT;
+      Emacs::_thisflag &= ~CFCPLT;
       if (rejectnb == 0) {
         WDGwrite(ECSTR("No dynamic expansion for '%s' found"),
                  Emacs::searchBuffer());
@@ -1153,7 +1153,7 @@ comparewindows() {
   auto lo2 = dot2.pos();
   auto bp2 = wp2->buffer();
 
-  if (lastflag & CFCOMP) {
+  if (Emacs::_lastflag & CFCOMP) {
     /*
      *      continue on next line
      */
@@ -1193,7 +1193,7 @@ comparewindows() {
       wp1->setDot(lp1, lo1);
       wp1->setFlags(WINSCR::WFMOVE);
 
-      thisflag    |= CFCOMP;
+      Emacs::_thisflag    |= CFCOMP;
       return showcpos();
     }
   }
@@ -1217,11 +1217,11 @@ comparewindows() {
     wp1->setDot(lp1, 0);
     wp1->setFlags(WINSCR::WFMOVE);
 
-    thisflag |= CFCOMP;
+    Emacs::_thisflag |= CFCOMP;
     return T;
   }
 
-  if (lastflag & CFCOMP) {
+  if (Emacs::_lastflag & CFCOMP) {
     WDGmessage(ECSTR("no other change."));
   } else {
     WDGmessage(ECSTR("no change."));

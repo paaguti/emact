@@ -194,10 +194,10 @@ nexterror() {
     if (!newfile(errfname)) {
       return NIL;
     } else {
-      auto save(repeat);
-      repeat = errlinenum;
+      auto save(Emacs::_repeat);
+      Emacs::_repeat = errlinenum;
       (void)gotoline();
-      repeat = save;
+      Emacs::_repeat = save;
       WDGwrite(ECSTR("%L"), found.line());
     }
   }

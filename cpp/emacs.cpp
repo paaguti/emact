@@ -52,18 +52,20 @@ extern const EMCHAR* version;   /* Current version              */
 DISPLAY* display{nullptr};
 
 bool    initflag  = false;      /* Init flag                    */
-int     repeat    = 1;          /* Repeat count                 */
 
-int     thisflag;               /* Flags, this command          */
-int     lastflag;               /* Flags, last command          */
+
 BUFFER* curbp;                  /* Current buffer               */
 WINSCR* curwp;                  /* Current window               */
 MEvent  mevent;                 /* Mouse event (if any)         */
 Kbdm    kbdm;                   /* Keyboad Macro                */
 
-EMCHAR                   Emacs::_search[NPAT]; // Internal search buffer
-std::array<MACTAB, NMAX> Emacs::_mactab;       // User macros table
-int                      Emacs::_nmactab{0};   // Number of user macros
+int    Emacs::_curgoal;             // Goal column
+int    Emacs::_repeat{1};           // Repeat count
+int    Emacs::_thisflag{CFUNSET};   // Flags, this command
+int    Emacs::_lastflag{CFUNSET};   // Flags, last command
+int    Emacs::_nmactab{0};          // Number of user macros
+EMCHAR Emacs::_search[NPAT];        // Internal search buffer
+std::array<MACTAB, NMAX> Emacs::_mactab; // User macros table
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -97,7 +99,7 @@ std::vector<KEYTAB> KEYTAB::keytab = {
   { Ctrl|'Z',      spawncli,       ECSTR("suspend-emacs")               },
   { Ctrl|']',      completeword,   ECSTR("dabbrev-expand")              },
   { Ctrl|'_',      undo,           ECSTR("undo")                        },
-  { CTLX|METACH,   again,          ECSTR("repeat-last-command")         },
+  { CTLX|METACH,   again,          ECSTR("Emacs::_repeat-last-command")         },
   { CTLX|Ctrl|'B', listbuffers,    ECSTR("list-buffers")                },
   { CTLX|Ctrl|'C', exitemacs,      ECSTR("save-buffers-kill-emacs")     },
   { CTLX|Ctrl|'D', changedir,      ECSTR("cd")                          },
@@ -389,7 +391,7 @@ WIDGET widget = {
 };
 
 static int     clast = 0;      /* last executed command        */
-static int     nlast = 1;      /* last executed repeat count   */
+static int     nlast = 1;      /* last executed Emacs::_repeat count   */
 static bool    isoset;         /* ISO 8859-1 char set          */
 
 const EMCHAR* Emacs::_name{nullptr};
@@ -401,8 +403,9 @@ Emacs::engine() {
   int     i        = 0;
   EMCHAR  bname[BUFFER::NBUFN];
 
+  Emacs::_lastflag = CFUNSET;
+
   _name    = _argv[0];
-  lastflag = 0;
   editflag = true;
   isoset   = true;
 
@@ -487,7 +490,7 @@ Emacs::engine() {
   }
 
   if (lineinit > 1) {
-    repeat = lineinit;
+    Emacs::_repeat = lineinit;
     (void)gotobob();
     (void)gotoline();
   }
@@ -574,7 +577,7 @@ editloop() {
     }
 
     if (c == (CTLX|METACH)) {
-			/* repeat previous action. */
+			/* Emacs::_repeat previous action. */
       c = clast;
       n = nlast;
     } else {
@@ -588,8 +591,8 @@ editloop() {
 /*
  * This is the general command execution routine. It handles the
  * fake binding of all the keys to "self-insert". It also clears
- * out  the  "thisflag"  word,  and arranges to move it  to  the
- * "lastflag",  so that the next command can look at it.  Return
+ * out  the  "Emacs::_thisflag"  word,  and arranges to move it  to  the
+ * "Emacs::_lastflag",  so that the next command can look at it.  Return
  * the status of command.
  */
 
@@ -597,7 +600,7 @@ CMD
 execute(int c, int n) {
   CMD status;
 
-  repeat = n;
+  Emacs::_repeat = n;
   resetfreadonly(); // check for readonly is made only once for each command
 
   if (c > MAX_EMCHAR || c == BACKDEL) {
@@ -609,9 +612,9 @@ execute(int c, int n) {
         if (opt::display_command) {
           WDGwrite(ECSTR("%s"), MACname(i));
         }
-        thisflag = 0;
-        status   = mlinternaleval(i);
-        lastflag = thisflag;
+        Emacs::_thisflag = CFUNSET;
+        status = mlinternaleval(i);
+        Emacs::_lastflag = Emacs::_thisflag;
         return status;
       }
     }
@@ -624,12 +627,12 @@ execute(int c, int n) {
           WDGwrite(ECSTR("%s"), ktp.name());
         }
         if (c & SPCL) {
-          thisflag = CFFKEY;
+          Emacs::_thisflag = CFFKEY;
         } else {
-          thisflag = 0;
+          Emacs::_thisflag = CFUNSET;
         }
-        status   = ktp.execute();
-        lastflag = thisflag;
+        status = ktp.execute();
+        Emacs::_lastflag = Emacs::_thisflag;
         return status;
       }
     }
@@ -641,18 +644,18 @@ execute(int c, int n) {
 
   if (self_insert(c)) {
     if (n <= 0) {
-      lastflag = 0;
-      return repeat < 0 ? NIL : T;
+      Emacs::_lastflag = CFUNSET;
+      return Emacs::_repeat < 0 ? NIL : T;
     }
-    thisflag = 0;
+    Emacs::_thisflag = CFUNSET;
 
 #if defined(_POSIX_C_SOURCE)
     /*
      *      Check for F-KEY ^[[?~
      */
 
-    if ((c == '~') && (lastflag & CFFKEY)) {
-      lastflag = 0;
+    if ((c == '~') && (Emacs::_lastflag & CFFKEY)) {
+      Emacs::_lastflag = CFUNSET;
       return T;
     }
 #endif
@@ -666,19 +669,19 @@ execute(int c, int n) {
          emode == EDITMODE::PERLMODE   ||
          emode == EDITMODE::JAVAMODE)) {
       status   = (unindent(c) ? T : NIL);
-      lastflag = thisflag;
+      Emacs::_lastflag = Emacs::_thisflag;
       return status;
     }
 
     if (c > 0x7F && (opt::latex_mode || emode == EDITMODE::SGMLMODE)) {
-      status = (latexinsert(repeat, c) ? T : NIL);
+      status = (latexinsert(Emacs::_repeat, c) ? T : NIL);
     } else if (!opt::replace_mode) {
-      status = linsert(c, repeat) ? T : NIL;
+      status = linsert(c, Emacs::_repeat) ? T : NIL;
     } else {
-      status = lreplace(c, repeat) ? T : NIL;
+      status = lreplace(c, Emacs::_repeat) ? T : NIL;
     }
 
-    lastflag = thisflag;
+    Emacs::_lastflag = Emacs::_thisflag;
 
     if (!kbdm.isPlaying()) {
       if ((c == ')' || c == '}' || c == ']')
@@ -703,7 +706,7 @@ execute(int c, int n) {
     return status;
   }
 
-  lastflag = 0;
+  Emacs::_lastflag = CFUNSET;
   return NIL;
 }
 
@@ -908,7 +911,7 @@ ctlxrp() {
 
 CMD
 ctlxe() {
-  const auto n = repeat;
+  const auto n = Emacs::_repeat;
 
   if (!kbdm.exist()) {
     WDGmessage(ECSTR("No keyboard macro to execute."));
@@ -922,8 +925,8 @@ ctlxe() {
 
   auto s = T;
 
-  for (decltype(repeat) i = 0; (i < n) && (s == T); ++i) {
-    auto save = repeat;
+  for (decltype(Emacs::_repeat) i = 0; (i < n) && (s == T); ++i) {
+    auto save = Emacs::_repeat;
     int c;
     int an;
 
@@ -938,7 +941,7 @@ ctlxe() {
     } while (c != (CTLX|')') && (s = execute(c, an)) == T);
     kbdm.stopPlaying();
 
-    repeat = save;
+    Emacs::_repeat = save;
   }
 
   return s;
@@ -986,7 +989,7 @@ insertunicode() {
   buf[0] = (EMCHAR)c;
   buf[1] = '\000';
   WDGwrite(ECSTR("Unicode='%s', code(%d, 0x%x)"), buf, c, c);
-  linsert(c, repeat);
+  linsert(c, Emacs::_repeat);
   return T;
 }
 

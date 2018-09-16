@@ -353,9 +353,9 @@ setvar() {
 
   switch (index_type) {
   case INDEX_FUNCTION :
-    thisflag = 0;
+    Emacs::_thisflag = CFUNSET;
     status   = KEYTAB::keytab[VARindex].execute();
-    lastflag = thisflag;
+    Emacs::_lastflag = Emacs::_thisflag;
     return status;
   case INDEX_VARIABLE :
     switch (VARtype(VARindex)) {
@@ -520,10 +520,10 @@ internalfindtag(int tagnext) {
 
       (void)newfile(tagfile);
       {
-        auto save(repeat);
-        repeat = emstrtoi(line);
+        auto save(Emacs::_repeat);
+        Emacs::_repeat = emstrtoi(line);
         (void)gotoline();
-        repeat = save;
+        Emacs::_repeat = save;
       }
       return T;
     }
@@ -661,7 +661,7 @@ printcmd(int c, BUFFER* bp) {
 
   if (count > 1) {
     printmacro(nullptr, bp);
-    (void)emsprintf1(macline, ECSTR("   (repeat %d"), count);
+    (void)emsprintf1(macline, ECSTR("   (Emacs::_repeat %d"), count);
   }
 
   for (auto i(0); i < Emacs::_nmactab; ++i) {

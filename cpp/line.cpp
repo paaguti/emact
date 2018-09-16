@@ -583,7 +583,7 @@ delnewline() {
   if (curbp->editMode() != EDITMODE::FUNDAMENTAL &&
       curbp->editMode() != EDITMODE::DIRED       &&
       curbp->editMode() != EDITMODE::BUFFERMODE  &&
-      (thisflag & CFKILL) == 0) {
+      (Emacs::_thisflag & CFKILL) == 0) {
     while (cp2 - lp2->last()) {
       if (*cp2 == ' ' || *cp2 == '\t') {
         cp2++;

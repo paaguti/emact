@@ -27,8 +27,6 @@ static  char rcsid[] = "$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $
 
 #include "emacs.h"
 
-extern int curgoal; // Goal column
-
 static int  getccol();
 static CMD  addprefix();
 static bool prefixlinep(const EDLINE* line, int len);
@@ -190,7 +188,7 @@ twiddle() {
 
 CMD
 quotechar() {
-  auto n = repeat;
+  auto n = Emacs::_repeat;
   int  c;
 
   if ((c = TTYgetc()) == '\n') {
@@ -214,21 +212,21 @@ quotechar() {
 
 CMD
 tab() {
-  if (repeat == 0) {
+  if (Emacs::_repeat == 0) {
     opt::tab_size = 8;   /* restore to default */
     return T;
   }
 
-  if (repeat != 1) {
-    opt::tab_size = repeat;
+  if (Emacs::_repeat != 1) {
+    opt::tab_size = Emacs::_repeat;
     return T;
   }
 
-  if (lastflag & CFTAB) {
+  if (Emacs::_lastflag & CFTAB) {
     /*
      * Last indent fails, force a tab.
      */
-    thisflag &= ~CFTAB;
+    Emacs::_thisflag &= ~CFTAB;
     return tabexpand();
   }
 
@@ -239,7 +237,7 @@ tab() {
       /*
        * Intdentation is still at 0 after trying to indent
        */
-      thisflag |= CFTAB;
+      Emacs::_thisflag |= CFTAB;
     }
     return s;
   }
@@ -272,7 +270,7 @@ tabexpand() {
 
 CMD
 openline() {
-  for (auto i = 0; i < repeat; i++) {
+  for (auto i = 0; i < Emacs::_repeat; i++) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
       for (auto j = 0; opt::fill_prefix[j]; j++) {
         if (!linsert(opt::fill_prefix[j])) {
@@ -343,7 +341,7 @@ endline() {
 
 CMD
 newline() {
-  auto n = repeat;
+  auto n = Emacs::_repeat;
 
   while (n--) {
     const auto& dot(curwp->getDot());
@@ -405,7 +403,7 @@ deblank() {
 
 CMD
 forwdel() {
-  return ldelete(repeat) ? T : NIL;
+  return ldelete(Emacs::_repeat) ? T : NIL;
 }
 
 /*
@@ -432,7 +430,7 @@ backdel() {
   auto dotp(dot.line());
   auto doto(dot.pos());
 
-  if (curbp->editMode() != EDITMODE::FUNDAMENTAL && repeat == 1 && doto > 0) {
+  if (curbp->editMode() != EDITMODE::FUNDAMENTAL && Emacs::_repeat == 1 && doto > 0) {
     /*
      * Try to delete past a tab, expand tab before deleting.
      */
@@ -460,7 +458,7 @@ backdel() {
   }
 
   if (backchar() == T) {
-    return ldelete(repeat) ? T : NIL;
+    return ldelete(Emacs::_repeat) ? T : NIL;
   } else {
     return NIL;
   }
@@ -477,12 +475,12 @@ backdel() {
 
 CMD
 killtext() {
-  if ((lastflag & CFKILL) == 0) {
+  if ((Emacs::_lastflag & CFKILL) == 0) {
     /* Clear kill buffer if */
     kdelete(); /* last wasn't a kill.  */
   }
 
-  thisflag |= CFKILL;
+  Emacs::_thisflag |= CFKILL;
 
   const auto& dot(curwp->getDot());
   const auto dotp(dot.line());
@@ -510,12 +508,12 @@ killtext() {
 
 CMD
 yank() {
-  auto n          = repeat;
-  auto save       = repeat;
+  auto n          = Emacs::_repeat;
+  auto save       = Emacs::_repeat;
   auto lastlflag  = (curwp->line() == curbp->lastline());
   auto firstlflag = (curwp->line() == curbp->firstline());
 
-  repeat = 1;
+  Emacs::_repeat = 1;
 
   WDGclippaste();
 
@@ -533,7 +531,7 @@ yank() {
     }
   }
 
-  repeat = save;
+  Emacs::_repeat = save;
 
   if (lastlflag) {
     /*
@@ -561,7 +559,7 @@ yank() {
 }
 
 /*
- * Position  the CFKILL flag for the variable "thisflag" so that
+ * Position  the CFKILL flag for the variable "Emacs::_thisflag" so that
  * the  next  command can append text to the kill buffer.  Bound
  * to M-C-W.
  */
@@ -569,7 +567,7 @@ yank() {
 CMD
 appendnextkill() {
   WDGmessage(ECSTR("If the next command is a kill, it will append"));
-  thisflag |= CFKILL;
+  Emacs::_thisflag |= CFKILL;
   return T;
 }
 
@@ -592,12 +590,12 @@ prefixlinep(const EDLINE *line, int len) {
 
 /*
  * Set  the  fill-column at the value of cursor current location
- * or to the value set by the repeat command. Bound to C-X-F.
+ * or to the value set by the Emacs::_repeat command. Bound to C-X-F.
  */
 
 CMD
 setfillcolumn() {
-  auto newfill = ((repeat == 1) ? curwp->pos() : repeat);
+  auto newfill = ((Emacs::_repeat == 1) ? curwp->pos() : Emacs::_repeat);
 
   if (newfill < 3) {
     WDGwrite(ECSTR("fill-column can't be less than 3"));
@@ -758,7 +756,7 @@ fillparagraph() {
    * Reset the _curcol to the current position (any better solution ?)
    */
 
-  DISPLAY::_curcol = curgoal = getccol();
+  DISPLAY::_curcol = Emacs::_curgoal = getccol();
 
   curbp->setEditMode(oldmode);
 
@@ -1121,7 +1119,7 @@ counterinsert() {
 
 CMD
 counterincr() {
-  cntval += repeat;
+  cntval += Emacs::_repeat;
 
   return T;
 }
@@ -1132,7 +1130,7 @@ counterincr() {
 
 CMD
 counterdecr() {
-  cntval -= repeat;
+  cntval -= Emacs::_repeat;
 
   return T;
 }
@@ -1143,7 +1141,7 @@ counterdecr() {
 
 CMD
 counterset() {
-  cntval = repeat;
+  cntval = Emacs::_repeat;
 
   return T;
 }
@@ -1183,7 +1181,7 @@ enterdebug() {
   int* p;
   int* bug = nullptr;
 
-  if (repeat == 666) {
+  if (Emacs::_repeat == 666) {
     p  = bug;
     *p = 1;
   }

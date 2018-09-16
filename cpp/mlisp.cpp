@@ -275,7 +275,7 @@ MLisp::getfun() {
         fillmacro(SpecialForm::UPDATE);
       } else if (!emstrcmp(word, ECSTR("insert-system-command"))) {
         fillcommand(SpecialForm::INSERTCOMMAND);
-      } else if (!emstrcmp(word, ECSTR("repeat"))) {
+      } else if (!emstrcmp(word, ECSTR("Emacs::_repeat"))) {
         fillmacro(SpecialForm::REPEAT);
         word = getword();
         while (*word) {
@@ -827,9 +827,9 @@ MLisp::eval(int expr, size_t depth) {
       break;
     default:
       {
-        auto sv = repeat;
+        auto sv = Emacs::_repeat;
         s = execute(c, n);
-        repeat = sv;
+        Emacs::_repeat = sv;
       }
     }
     n = 1;
@@ -944,7 +944,7 @@ mlcustomize() {
 
 CMD
 mlinternaleval(int expr) {
-  for (decltype(repeat) i{0}; i < repeat; ++i) {
+  for (decltype(Emacs::_repeat) i{0}; i < Emacs::_repeat; ++i) {
     if (MLisp::eval(expr, 1) != true) {
       return NIL;
     }

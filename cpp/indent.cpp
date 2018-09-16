@@ -781,16 +781,16 @@ tabindent() {
 
 CMD
 indentline() {
-  auto n    = repeat;
-  auto save = repeat;
+  auto n    = Emacs::_repeat;
+  auto save = Emacs::_repeat;
 
-  repeat = 1;
+  Emacs::_repeat = 1;
 
   if (curbp->editMode() == EDITMODE::FUNDAMENTAL ||
       curbp->editMode() == EDITMODE::DIRED       ||
       curwp->line()->length() == 0) {
     (void)forwline();
-    repeat = save;
+    Emacs::_repeat = save;
     return NIL;
   }
 
@@ -798,7 +798,7 @@ indentline() {
     continue;
   }
 
-  repeat = save;
+  Emacs::_repeat = save;
 
   return T;
 }

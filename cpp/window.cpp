@@ -42,7 +42,7 @@ WINSCR::WINSCR()
 
 CMD
 reposition() {
-  curwp->_force = repeat;
+  curwp->_force = Emacs::_repeat;
   curwp->setFlags(WINSCR::WFFORCE);
   return T;
 }
@@ -258,11 +258,11 @@ topwind() {
 
 CMD
 mvdnwind() {
-  auto save = repeat;
+  auto save = Emacs::_repeat;
 
-  repeat = -repeat;
+  Emacs::_repeat = -Emacs::_repeat;
   (void)mvupwind();
-  repeat = save;
+  Emacs::_repeat = save;
 
   return T;
 }
@@ -278,7 +278,7 @@ mvdnwind() {
 CMD
 mvupwind() {
   auto lp = curwp->topline();
-  auto n = repeat;
+  auto n = Emacs::_repeat;
 
   if (n < 0) {
     while (n++ && lp != curbp->lastline()) {
@@ -484,30 +484,30 @@ enlargewind() {
       adjwp = adjwp->next();
   }
 
-  if (adjwp->_ntrows <= repeat) {
+  if (adjwp->_ntrows <= Emacs::_repeat) {
     WDGmessage(ECSTR("Can't change window size"));
     return NIL;
   }
 
   if (curwp->next() == adjwp) {          /* Shrink below.        */
     auto lp = adjwp->topline();
-    for (int i = 0; i < repeat && lp != adjwp->buffer()->lastline(); ++i) {
+    for (int i = 0; i < Emacs::_repeat && lp != adjwp->buffer()->lastline(); ++i) {
       lp = lp->forw();
     }
     adjwp->_toplinep = lp;
-    adjwp->_toprow  += repeat;
+    adjwp->_toprow  += Emacs::_repeat;
   } else {                       /* Shrink above.        */
     auto lp = curwp->topline();
-    for (int i = 0; i < repeat && lp->back() != curbp->lastline(); ++i) {
+    for (int i = 0; i < Emacs::_repeat && lp->back() != curbp->lastline(); ++i) {
       lp = lp->back();
     }
     curwp->_toplinep = lp;
-    curwp->_toprow  -= repeat;
+    curwp->_toprow  -= Emacs::_repeat;
   }
 
-  curwp->_ntrows += repeat;
+  curwp->_ntrows += Emacs::_repeat;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
-  adjwp->_ntrows -= repeat;
+  adjwp->_ntrows -= Emacs::_repeat;
   adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
 }
@@ -533,7 +533,7 @@ shrinkwind() {
     }
   }
 
-  if (curwp->rows() <= repeat) {
+  if (curwp->rows() <= Emacs::_repeat) {
     WDGmessage(ECSTR("Can't change window size"));
     return NIL;
   }
@@ -542,25 +542,25 @@ shrinkwind() {
      * Grow below.
      */
     auto lp = adjwp->topline();
-    for (int i(0); i < repeat && lp->back()!=adjwp->buffer()->lastline(); ++i) {
+    for (int i(0); i < Emacs::_repeat && lp->back()!=adjwp->buffer()->lastline(); ++i) {
       lp = lp->back();
     }
     adjwp->_toplinep = lp;
-    adjwp->_toprow  -= repeat;
+    adjwp->_toprow  -= Emacs::_repeat;
   } else {
     /*
      * Grow above.
      */
     auto lp = curwp->topline();
-    for (int i(0); i < repeat && lp != curbp->lastline(); ++i) {
+    for (int i(0); i < Emacs::_repeat && lp != curbp->lastline(); ++i) {
       lp = lp->forw();
     }
     curwp->_toplinep = lp;
-    curwp->_toprow  += repeat;
+    curwp->_toprow  += Emacs::_repeat;
   }
-  curwp->_ntrows -= repeat;
+  curwp->_ntrows -= Emacs::_repeat;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
-  adjwp->_ntrows += repeat;
+  adjwp->_ntrows += Emacs::_repeat;
   adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
 }
@@ -698,8 +698,8 @@ findwind() {
         break;
       }
 
-      thisflag = CFCPCN;
-      lastflag = 0;
+      Emacs::_thisflag = CFCPCN;
+      Emacs::_lastflag = CFUNSET;
 
       return T;
     }

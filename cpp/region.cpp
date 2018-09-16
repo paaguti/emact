@@ -144,11 +144,11 @@ killregion() {
     return NIL;
   }
 
-  if ((lastflag & CFKILL) == 0) {          /* This is a kill type  */
+  if ((Emacs::_lastflag & CFKILL) == 0) {          /* This is a kill type  */
     kdelete();
   }
 
-  thisflag |= CFKILL;
+  Emacs::_thisflag |= CFKILL;
   curwp->setDot(region._linep, region._offset);
 
   if (ldelete(region._size, true)) {
@@ -173,12 +173,12 @@ copyregion() {
     return NIL;
   }
 
-  if ((lastflag & CFKILL) == 0) {
+  if ((Emacs::_lastflag & CFKILL) == 0) {
     /* Kill type command. */
     kdelete();
   }
 
-  thisflag |= CFKILL;
+  Emacs::_thisflag |= CFKILL;
 
   auto linep = region._linep;                 /* Current line.        */
   auto loffs = region._offset;                /* Current offset.      */

@@ -298,6 +298,7 @@ static constexpr auto FIOERR(0x30);  // File I/O, error.
 static constexpr auto FIOWNL(0x40);  // File I/O, end without <NL>
 static constexpr auto FIOENC(0x50);  // File I/O, encoding error
 
+static constexpr auto CFUNSET(0);      // Last command was unknown
 static constexpr auto CFCPCN(1 << 0);  // Last command was C-P, C-N
 static constexpr auto CFKILL(1 << 1);  // Last command was a kill
 static constexpr auto CFMMOV(1 << 2);  // Last command needs mouse move
@@ -464,11 +465,6 @@ extern MEvent     mevent;              // Mouse event
 extern Terminal*  tt;                  // Emact terminal
 extern WIDGET     widget;              // Widgets tools
 extern WINSCR*    curwp;               // Current window
-
-extern int repeat;                     // Repeat count
-extern int thisflag;                   // Flags, this command
-extern int lastflag;                   // Flags, last command
-extern int curgoal;                    // Goal for C-P, C-N
 
 #include "defines.h"
 #endif

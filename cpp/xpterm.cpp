@@ -579,7 +579,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   auto szFind    = lpfr->lpstrFindWhat;
   auto szReplace = lpfr->lpstrReplaceWith;
 
-  lastflag = CFFSRC;
+  Emacs::_lastflag = CFFSRC;
   opt::case_sensitivity = (dwFlags & FR_MATCHCASE) != 0;
 
   tt->cshow(false);

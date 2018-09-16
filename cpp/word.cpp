@@ -117,7 +117,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
 
 CMD
 backword() {
-  int n = repeat;
+  int n = Emacs::_repeat;
 
   if (backchar() == NIL) {
     return NIL;
@@ -151,7 +151,7 @@ backword() {
 
 CMD
 forwword() {
-  int n = repeat;
+  int n = Emacs::_repeat;
 
   while (n--) {
     while (!inword()) {
@@ -181,7 +181,7 @@ upperword() {
     return NIL;
   }
 
-  int n = repeat;
+  int n = Emacs::_repeat;
 
   while (n--) {
     while (!inword()) {
@@ -217,7 +217,7 @@ lowerword() {
     return NIL;
   }
 
-  int n = repeat;
+  int n = Emacs::_repeat;
   while (n--) {
     while (!inword()) {
       if (forwchar() == NIL) {
@@ -249,7 +249,7 @@ lowerword() {
 
 CMD
 capword() {
-  int     n = repeat;
+  int     n = Emacs::_repeat;
 
   if (freadonly()) {
     return NIL;
@@ -293,10 +293,10 @@ capword() {
 
 CMD
 delfword() {
-  int n  = repeat;
-  int sv = repeat;
+  int n  = Emacs::_repeat;
+  int sv = Emacs::_repeat;
 
-  repeat = 1;
+  Emacs::_repeat = 1;
   while (n--) {
     while (!inword()) {
       if (forwdel() == NIL) {
@@ -309,7 +309,7 @@ delfword() {
       }
     }
   }
-  repeat = sv;
+  Emacs::_repeat = sv;
 
   return T;
 }
@@ -321,10 +321,10 @@ delfword() {
 
 CMD
 delbword() {
-  auto n  = repeat;
-  auto sv = repeat;
+  auto n  = Emacs::_repeat;
+  auto sv = Emacs::_repeat;
 
-  repeat = 1;
+  Emacs::_repeat = 1;
   while (n--) {
     while (backchar() == T && !inword()) {
       if (forwdel() == NIL) {
@@ -339,7 +339,7 @@ delbword() {
   }
 
   (void)forwchar();
-  repeat = sv;
+  Emacs::_repeat = sv;
 
   return T;
 }

@@ -1297,8 +1297,11 @@ class Emacs {
 
   /* User macros table */
   static std::array<MACTAB, NMAX> _mactab;
-  static int    _nmactab;
-
+  static int _nmactab;
+  static int _thisflag;                   // Flags, this command
+  static int _lastflag;                   // Flags, last command
+  static int _repeat;                     // Repeat count
+  static int _curgoal;                    // Goal for C-P, C-N
  private:
   int _argc{0};
   std::unique_ptr<EMCHAR*[]> _argv{nullptr};
