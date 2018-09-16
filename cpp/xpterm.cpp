@@ -509,7 +509,7 @@ XpTerminal::XpTerminal() {
   widget.w_clippaste      = xpclippaste;
   widget.w_title          = xptitle;
   widget.w_wait           = xpwait;
-  printer.p_print         = xpprint;
+  widget.w_print          = xpprint;
 
   xpsettextattrib();
 
@@ -1655,19 +1655,9 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
 
 static HDC
 xpgetprinterdc() {
-  PRINTDLG      pd;
-  HDC           hDC;
-  LPDEVMODE     lpDevMode = nullptr;
-  LPDEVNAMES    lpDevNames;
-  TCHAR *       lpszDriverName;
-  TCHAR *       lpszDeviceName;
-  TCHAR *       lpszPortName;
-
+  PRINTDLG pd;
   (void)std::memset(&pd, 0, sizeof(pd));
   pd.lStructSize    = sizeof(pd);
-  pd.hwndOwner      = GetTopWindow(GetDesktopWindow()); /* nullptr */
-  pd.hDevMode       = nullptr;
-  pd.hDevNames      = nullptr;
   pd.Flags          = PD_RETURNDC | PD_NOSELECTION | PD_NOPAGENUMS;
   pd.nCopies        = 1;
 
@@ -1678,6 +1668,7 @@ xpgetprinterdc() {
     return (HDC)((size_t)-1);
   }
 
+  HDC hDC;
   if (pd.hDC) {
     hDC = pd.hDC;
   } else {
@@ -1685,11 +1676,13 @@ xpgetprinterdc() {
       return (HDC)nullptr;
     }
 
-    lpDevNames     = (LPDEVNAMES)GlobalLock(pd.hDevNames);
-    lpszDriverName = (TCHAR *)lpDevNames + lpDevNames->wDriverOffset;
-    lpszDeviceName = (TCHAR *)lpDevNames + lpDevNames->wDeviceOffset;
-    lpszPortName   = (TCHAR *)lpDevNames + lpDevNames->wOutputOffset;
+    auto lpDevNames     = (LPDEVNAMES)GlobalLock(pd.hDevNames);
+    auto lpszDriverName = (TCHAR *)lpDevNames + lpDevNames->wDriverOffset;
+    auto lpszDeviceName = (TCHAR *)lpDevNames + lpDevNames->wDeviceOffset;
+    auto lpszPortName   = (TCHAR *)lpDevNames + lpDevNames->wOutputOffset;
     GlobalUnlock(pd.hDevNames);
+
+    LPDEVMODE lpDevMode = nullptr;
 
     if (pd.hDevMode) {
       lpDevMode = (LPDEVMODE)GlobalLock(pd.hDevMode);
@@ -1728,6 +1721,7 @@ xpprint() {
   auto hPr(xpgetprinterdc());
 
   if (hPr == (HDC)((size_t)-1)) {
+    /* cancelled */
     return;
   }
 

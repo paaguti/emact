@@ -1285,6 +1285,6 @@ removefile(const EMCHAR* fname, bool flag) {
 
 CMD
 printbuffer() {
-  LPTprint();
+  WDGprint();
   return T;
 }

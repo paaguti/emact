@@ -386,9 +386,6 @@ WIDGET widget = {
   mlupdate,
   mlclipcopy,
   mlclippaste,
-};
-
-EMPRINT printer = {
   mllpprint
 };
 

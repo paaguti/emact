@@ -938,6 +938,10 @@ struct WIDGET {
    * CBPAST Widget
    */
   void (*w_clippaste)();
+  /*
+   * print buffer
+   */
+  void (*w_print)();
 };
 
 /*
@@ -1297,12 +1301,5 @@ class Kbdm {
   int  _kbdm[NKBDM];                    // Holds keyboard macro data
   int* _kbdmip{nullptr};                // Input pointer for above
   int* _kbdmop{nullptr};                // Output pointer for above
-};
-
-struct EMPRINT {
-  /*
-   * print buffer
-   */
-  void (*p_print)();
 };
 #endif /* __OBJECTS_H */

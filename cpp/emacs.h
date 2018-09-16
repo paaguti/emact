@@ -359,8 +359,6 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define TTYcheck()            tt->check()
 #define TTYrawmode()          tt->rawmode()
 
-#define LPTprint()            (*printer.p_print)()
-
 #define WDGyn(s)              (*widget.w_yn)(s)
 #define WDGyesno(s)           (*widget.w_yesno)(s)
 #define WDGconfirm(s)         (*widget.w_confirm)(s)
@@ -374,9 +372,10 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define WDGmessage(s)         (*widget.w_message)(s)
 #define WDGwrite              (*widget.w_write)
 #define WDGadjust             (*widget.w_adjust)
-#define WDGupdate(p,b)        (*widget.w_update)(p,b)
+#define WDGupdate(p,b)        (*widget.w_update)(p, b)
 #define WDGclipcopy()         (*widget.w_clipcopy)()
 #define WDGclippaste()        (*widget.w_clippaste)()
+#define WDGprint()            (*widget.w_print)()
 
 #define VARstring(i)          VARTAB::vartab[i].string()
 #define VARintp(i)            VARTAB::vartab[i].intp()
@@ -460,7 +459,6 @@ extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 extern BUFFER*    curbp;               // Current buffer
 extern Completion complete;            // Automatic completion
 extern DISPLAY*   display;             // Object responsible to display things.
-extern EMPRINT    printer;             // Printer object
 extern Kbdm       kbdm;                // Keyboard macro
 extern MEvent     mevent;              // Mouse event
 extern Terminal*  tt;                  // Emact terminal
