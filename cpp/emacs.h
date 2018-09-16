@@ -321,8 +321,8 @@ static constexpr auto NOSLASH(0x0001);  // Normalize with no trailing /
  * Flags for functions that deal with external commands
  */
 
-static constexpr auto SYSCOMP_NOERROR = 0x0000; // Call system and no error
-static constexpr auto SYSCOMP_ERRORS  = 0x0001; // Call system and check errors
+static constexpr auto SYSCOMP_NOERROR(0x0000); // Call system and no error
+static constexpr auto SYSCOMP_ERRORS(0x0001);  // Call system and check errors
 
 /*
  * List of internal buffer names
@@ -404,7 +404,6 @@ self_insert(int c) {
  */
 
 namespace opt {
-
 extern EMCHAR as_name[NCMDN];         // Assembler name
 extern EMCHAR as_arg[NPAT];           // Assembler argument
 extern EMCHAR cc_arg[NPAT];           // Compiler argument

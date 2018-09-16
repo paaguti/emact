@@ -213,7 +213,8 @@ MLisp::getfun() {
         break;
       }
     }
-  } else for (indx = 0; indx < nmactab; indx++) {
+  } else {
+    for (indx = 0; indx < nmactab; indx++) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -225,10 +226,11 @@ MLisp::getfun() {
         break;
       }
     }
+  }
 
   if (indx == nmactab) {
     /*
-     *      It's a new macro.
+     * It's a new macro.
      */
     nmactab++;
   }
@@ -560,7 +562,7 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    * Look in macro table.
    */
 
-  for (int i = 0; i < nmactab; i++) {
+  for (auto i(0); i < nmactab; ++i) {
     if (MACname(i) && !emstrcmp(s, MACname(i))) {
       *indx = i;
       return MACcode(i);

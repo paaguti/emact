@@ -335,10 +335,8 @@ class WINSCR {
 
   static WINSCR* wheadp;        // Head of list of windows
 
-public:
+ public:
   static WINSCR* head() { return wheadp; }
-
-//private:
 };
 
 /*
@@ -869,7 +867,8 @@ class Terminal {
   int t_init{false};
 };
 
-struct WIDGET {
+class WIDGET {
+ public:
   /*
    * Y/N Widget
    */
@@ -996,7 +995,7 @@ enum EMVAR {
   STRING  = 0x0002           // String type
 };
 
-struct VARTAB {
+class VARTAB {
  public:
   template<typename T>
   constexpr VARTAB(T& val, EMCHAR* name, EMVAR type)
@@ -1051,7 +1050,8 @@ struct VARTAB {
 #define VARname(i)    VARTAB::vartab[i].name()
 #define VARtype(i)    VARTAB::vartab[i].type()
 
-struct MACTAB {
+class MACTAB {
+ public:
   int*    m_exec;  // Code
   EMCHAR* m_name;  // Macro name
   int     m_code;  // Key bind
@@ -1146,13 +1146,12 @@ class DISPLAY {
   void refresh(WINSCR* wp);
 };
 
-extern DISPLAY* display;
-
 /*
  *	Header for mouse driver (if any).
  */
 
-struct MEvent {
+class MEvent {
+ public:
   static constexpr auto SHIFTBUTTON = 0x10;
   static constexpr auto CTRLBUTTON  = 0x20;
 
