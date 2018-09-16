@@ -583,7 +583,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   opt::case_sensitivity = (dwFlags & FR_MATCHCASE) != 0;
 
   tt->cshow(false);
-  (void)emstrcpy(search_buffer, szFind);
+  (void)emstrcpy(Emacs::searchBuffer(), szFind);
 
   if (dwFlags & FR_DIALOGTERM) {
     xpcurdlg = nullptr;

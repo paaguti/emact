@@ -200,7 +200,7 @@ MLisp::getfun() {
   }
 
   if (code != SpecialForm::FUNCTION) {
-    for (indx = 0; indx < Emacs::_nmactab; indx++) {
+    for (indx = 0; indx < Emacs::_nmactab; ++indx) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -211,7 +211,7 @@ MLisp::getfun() {
       }
     }
   } else {
-    for (indx = 0; indx < Emacs::_nmactab; indx++) {
+    for (indx = 0; indx < Emacs::_nmactab; ++indx) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }

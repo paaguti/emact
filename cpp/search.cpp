@@ -85,11 +85,11 @@ ffindstring() {
       c = clp->get(cbo++);
     }
 
-    if (cmpchars(c, search_buffer[0])) {
+    if (cmpchars(c, Emacs::searchBuffer()[0])) {
       auto tlp = clp;
       auto tbo = cbo;
       EMCHAR* s;
-      for (s = &search_buffer[1]; *s != 0; s++) {
+      for (s = &Emacs::searchBuffer()[1]; *s != 0; s++) {
         if (tlp == curbp->lastline()) {
           return false;
         }
@@ -128,7 +128,7 @@ bfindstring() {
   EMCHAR* epp;
   EMCHAR* pp;
 
-  for (epp = &search_buffer[0]; epp[1] != 0; ++epp) {
+  for (epp = &Emacs::searchBuffer()[0]; epp[1] != 0; ++epp) {
     continue;
   }
 
@@ -155,7 +155,7 @@ bfindstring() {
       auto tlp = clp;
       auto tbo = cbo;
 
-      for (pp = epp; pp != &search_buffer[0]; pp--) {
+      for (pp = epp; pp != &Emacs::searchBuffer()[0]; pp--) {
         if (tbo == 0) {
           tlp = tlp->back();
           if (tlp == curbp->lastline()) {
@@ -175,7 +175,7 @@ bfindstring() {
         }
       }
 
-      if (pp == &search_buffer[0]) {
+      if (pp == &Emacs::searchBuffer()[0]) {
         found.set(tlp, tbo);
         return true;
       }
@@ -228,7 +228,7 @@ replace(bool prompt) {
     if (WDGchange(msgo, msgn, (EMCHAR*)opat, (EMCHAR*)npat, NPAT) != T) {
       return false;
     } else {
-      (void)emstrcpy(search_buffer, opat);
+      (void)emstrcpy(Emacs::searchBuffer(), opat);
     }
   }
 
@@ -343,7 +343,7 @@ static CMD
 readpattern(const EMCHAR* prompt) {
   complete = nullptr;
 
-  return WDGedit(prompt, search_buffer, NPAT);
+  return WDGedit(prompt, Emacs::searchBuffer(), NPAT);
 }
 
 /*
@@ -708,7 +708,7 @@ forwsearch() {
       return s;
     }
   } else {
-    WDGwrite(ECSTR("Search \"%s\": "), search_buffer);
+    WDGwrite(ECSTR("Search \"%s\": "), Emacs::searchBuffer());
   }
 
   if (lastflag & CFFAIL) {
@@ -723,7 +723,7 @@ forwsearch() {
     return T;
   } else {
     TTYbeep();
-    WDGwrite(ECSTR("Failing search: %s"), search_buffer);
+    WDGwrite(ECSTR("Failing search: %s"), Emacs::searchBuffer());
     thisflag |= CFFAIL;
     return NIL;
   }
@@ -749,7 +749,7 @@ backsearch() {
       return s;
     }
   } else {
-    WDGwrite(ECSTR("Search backward \"%s\": "), search_buffer);
+    WDGwrite(ECSTR("Search backward \"%s\": "), Emacs::searchBuffer());
   }
 
   if (lastflag & CFFAIL) {
@@ -764,7 +764,7 @@ backsearch() {
     return T;
   } else {
     TTYbeep();
-    WDGwrite(ECSTR("Failing search backward: %s"), search_buffer);
+    WDGwrite(ECSTR("Failing search backward: %s"), Emacs::searchBuffer());
     thisflag |= CFFAIL;
     return NIL;
   }
@@ -808,8 +808,8 @@ getdefinition() {
     return NIL;
   }
   
-  (void)emstrcpy(save, search_buffer);
-  *search_buffer = '\000';
+  (void)emstrcpy(save, Emacs::searchBuffer());
+  *Emacs::searchBuffer() = '\000';
 
   CMD s;
 
@@ -820,7 +820,7 @@ getdefinition() {
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
-  auto len(emstrlen(search_buffer));
+  auto len(emstrlen(Emacs::searchBuffer()));
 
   curwp->setDot(curbp->firstline(), 0);
 
@@ -838,7 +838,7 @@ getdefinition() {
     case EDITMODE::SHELLMODE:
       if (found.pos() == len) {
         curwp->setFlags(WINSCR::WFMOVE);
-        (void)emstrcpy(search_buffer, save);
+        (void)emstrcpy(Emacs::searchBuffer(), save);
         (void)backline();
         (void)reposition();
         return T;
@@ -852,7 +852,7 @@ getdefinition() {
         curwp->setDot(found);
       } else {
         curwp->setFlags(WINSCR::WFMOVE);
-        (void)emstrcpy(search_buffer, save);
+        (void)emstrcpy(Emacs::searchBuffer(), save);
         (void)backline();
         (void)reposition();
         return T;
@@ -864,7 +864,7 @@ getdefinition() {
   }
 
   curwp->setDot(clp, cbo);
-  (void)emstrcpy(search_buffer, save);
+  (void)emstrcpy(Emacs::searchBuffer(), save);
 
   WDGmessage(ECSTR("Not found"));
   return NIL;
@@ -956,8 +956,8 @@ completeword() {
 
   buf[slen] = 0;
 
-  (void)emstrcpy(save, search_buffer);
-  (void)emstrcpy(search_buffer, buf);
+  (void)emstrcpy(save, Emacs::searchBuffer());
+  (void)emstrcpy(Emacs::searchBuffer(), buf);
 
 loop:
   if (lastflag & CFCPLT) {
@@ -1056,7 +1056,7 @@ loop:
     } else {
       EMCHAR tagbuf[NLINE];
 
-      indx = completeintag(indx, search_buffer, tagbuf);
+      indx = completeintag(indx, Emacs::searchBuffer(), tagbuf);
 
       if (indx != 0) {
         /*
@@ -1082,22 +1082,22 @@ loop:
           }
         }
         
-        (void)emstrcpy(search_buffer, save);
+        (void)emstrcpy(Emacs::searchBuffer(), save);
         return T;
       }
 
       thisflag &= ~CFCPLT;
       if (rejectnb == 0) {
         WDGwrite(ECSTR("No dynamic expansion for '%s' found"),
-                 search_buffer);
+                 Emacs::searchBuffer());
       } else {
         WDGwrite(ECSTR("No further dynamic expansion for '%s' found"),
-                 search_buffer);
+                 Emacs::searchBuffer());
       }
     }
   }
 
-  (void)emstrcpy(search_buffer, save);
+  (void)emstrcpy(Emacs::searchBuffer(), save);
   return s;
 }
 

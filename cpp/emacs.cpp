@@ -61,11 +61,9 @@ WINSCR* curwp;                  /* Current window               */
 MEvent  mevent;                 /* Mouse event (if any)         */
 Kbdm    kbdm;                   /* Keyboad Macro                */
 
-EMCHAR search_buffer[NPAT];     // Internal search buffer
-
-MACTAB Emacs::_mactab[NMAX];    /* User macros table            */
-int    Emacs::_nmactab{0};      /* Number of user macros        */
-std::vector<MACTAB> Emacs::_vmactab;
+EMCHAR                   Emacs::_search[NPAT]; // Internal search buffer
+std::array<MACTAB, NMAX> Emacs::_mactab;       // User macros table
+int                      Emacs::_nmactab{0};   // Number of user macros
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -423,7 +421,7 @@ Emacs::engine() {
     (void)emstrcpy(opt::as_name,        ECSTR("masm"));
     (void)emstrcpy(opt::make_name,      ECSTR("make"));
 
-    search_buffer[0] = '\000';
+    _search[0] = '\000';
 
     (void)mlcustomize();
 

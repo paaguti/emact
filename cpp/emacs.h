@@ -71,6 +71,7 @@
 #include <climits>
 
 #include <vector>
+#include <array>
 #include <limits>
 #include <memory>
 
@@ -463,8 +464,6 @@ extern MEvent     mevent;              // Mouse event
 extern Terminal*  tt;                  // Emact terminal
 extern WIDGET     widget;              // Widgets tools
 extern WINSCR*    curwp;               // Current window
-
-extern EMCHAR search_buffer[NPAT];     // Search pattern
 
 extern int repeat;                     // Repeat count
 extern int thisflag;                   // Flags, this command

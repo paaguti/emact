@@ -40,8 +40,8 @@ geterror(EDLINE* line) {
   int    stop;
   EMCHAR save[NPAT];
 
-  (void)emstrcpy(save, search_buffer);
-  (void)emstrcpy(search_buffer, ECSTR(":"));
+  (void)emstrcpy(save, Emacs::searchBuffer());
+  (void)emstrcpy(Emacs::searchBuffer(), ECSTR(":"));
 
   for (;;) {
     errlinenum = 0;
@@ -52,7 +52,7 @@ geterror(EDLINE* line) {
       } else {
         WDGmessage(ECSTR("no errors"));
       }
-      (void)emstrcpy(search_buffer, save);
+      (void)emstrcpy(Emacs::searchBuffer(), save);
       return false;
     }
 
@@ -161,7 +161,7 @@ geterror(EDLINE* line) {
     break;
   }
 
-  (void)emstrcpy(search_buffer, save);
+  (void)emstrcpy(Emacs::searchBuffer(), save);
   return errlinenum != 0;
 }
 

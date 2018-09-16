@@ -1290,8 +1290,13 @@ class Emacs {
   };
 
  public:
-  static MACTAB _mactab[NMAX];     /* User macros table        */
-  static std::vector<MACTAB> _vmactab;
+  static EMCHAR*
+  searchBuffer() noexcept {
+    return &_search[0];
+  }
+
+  /* User macros table */
+  static std::array<MACTAB, NMAX> _mactab;
   static int    _nmactab;
 
  private:
@@ -1299,6 +1304,7 @@ class Emacs {
   std::unique_ptr<EMCHAR*[]> _argv{nullptr};
 
   static const EMCHAR* _name;
+  static EMCHAR _search[NPAT];
 
 #if 0
   static int repeat;                 // Repeat count
