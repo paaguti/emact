@@ -383,10 +383,10 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define VARname(i)            VARTAB::vartab[i].name()
 #define VARtype(i)            VARTAB::vartab[i].type()
 
-#define MACcode(i)            ((pmactab+i)->m_code)
-#define MACname(i)            ((pmactab+i)->m_name)
-#define MACexec(i)            ((pmactab+i)->m_exec)
-#define MACsize(i)            ((pmactab+i)->m_size)
+#define MACcode(i)            Emacs::_mactab[i].m_code
+#define MACname(i)            Emacs::_mactab[i].m_name
+#define MACexec(i)            Emacs::_mactab[i].m_exec
+#define MACsize(i)            Emacs::_mactab[i].m_size
 
 /*
 extern int           MACcode(int i);

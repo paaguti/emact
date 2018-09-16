@@ -111,9 +111,6 @@ EMCHAR MLisp::_arg1[MLisp::ARGLEN];
 EMCHAR MLisp::_arg2[MLisp::ARGLEN];
 EMCHAR MLisp::_arg3[MLisp::ARGLEN];
 
-extern MACTAB* pmactab;
-extern int     nmactab;
-
 /**
  * read next valid lisp character skipping comments.
  */
@@ -164,7 +161,7 @@ MLisp::getfun() {
   int     c;
   int     i;
 
-  if (nmactab == NMAX) {
+  if (Emacs::_nmactab == NMAX) {
     readerror(ECSTR("Macro workspace is full."), nullptr);
   }
 
@@ -203,7 +200,7 @@ MLisp::getfun() {
   }
 
   if (code != SpecialForm::FUNCTION) {
-    for (indx = 0; indx < nmactab; indx++) {
+    for (indx = 0; indx < Emacs::_nmactab; indx++) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -214,7 +211,7 @@ MLisp::getfun() {
       }
     }
   } else {
-    for (indx = 0; indx < nmactab; indx++) {
+    for (indx = 0; indx < Emacs::_nmactab; indx++) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -228,11 +225,11 @@ MLisp::getfun() {
     }
   }
 
-  if (indx == nmactab) {
+  if (indx == Emacs::_nmactab) {
     /*
      * It's a new macro.
      */
-    nmactab++;
+    Emacs::_nmactab++;
   }
 
   MACcode(indx) = static_cast<int>(code);
@@ -380,13 +377,13 @@ MLisp::fillcommand(SpecialForm key) {
     }
     break;
   case SpecialForm::BINDTOKEY:
-    for (i = 0; i < nmactab; i++) {
+    for (i = 0; i < Emacs::_nmactab; i++) {
       if (MACname(i) && !emstrcmp(MACname(i), word)) {
         break;
       }
     }
 
-    if (i >= nmactab) {
+    if (i >= Emacs::_nmactab) {
       readerror(ECSTR("Unknown function. "), word);
     }
 
@@ -562,7 +559,7 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    * Look in macro table.
    */
 
-  for (auto i(0); i < nmactab; ++i) {
+  for (auto i(0); i < Emacs::_nmactab; ++i) {
     if (MACname(i) && !emstrcmp(s, MACname(i))) {
       *indx = i;
       return MACcode(i);

@@ -36,10 +36,7 @@ static  CMD     internalfindtag(int lineno);
  * pressed.
  */
 
-extern MACTAB* pmactab;
-extern int     nmactab;
-
-static int     tagfound = -1;
+static int tagfound = -1;
 
 CMD
 describekey() {
@@ -58,7 +55,7 @@ describekey() {
   ch[0] = (EMCHAR)(c & MAX_EMCHAR);
   ch[1] = '\000';
 
-  for (auto i(0); i < nmactab; ++i) {
+  for (auto i(0); i < Emacs::_nmactab; ++i) {
     /* Look in macro table. */
     if (MACcode(i) == c) {
       WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, MACname(i));
@@ -171,7 +168,7 @@ help() {
     return NIL;
   }
 
-  for (auto j(0); j < nmactab; ++j) {
+  for (auto j(0); j < Emacs::_nmactab; ++j) {
     auto c(MACcode(j));
     if ((c & SPCL) && c != -1) {
       continue;
@@ -667,7 +664,7 @@ printcmd(int c, BUFFER* bp) {
     (void)emsprintf1(macline, ECSTR("   (repeat %d"), count);
   }
 
-  for (auto i(0); i < nmactab; ++i) {
+  for (auto i(0); i < Emacs::_nmactab; ++i) {
     /* Look in macro table. */
     if (MACcode(i) == c) {
       printmacro(MACname(i), bp);

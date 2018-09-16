@@ -1172,60 +1172,6 @@ class MEvent {
   int y;
 };
 
-class Emacs {
- public:
-  template<typename T>
-  Emacs(int argc, T* argv[])
-    : _argc{argc},
-      _argv{new EMCHAR*[argc + 1]} {
-    auto cvt = [](const T* str) -> EMCHAR* {
-                 size_t len = 0;
-                 while (str[len] != 0) {
-                   ++len;
-                 }
-                 auto res = new EMCHAR[len + 1];
-
-                 for (int i = 0; i < (int)len; ++i) {
-                   res[i] = (EMCHAR)str[i];
-                 }
-                 res[len] = '\000';
-
-                 return res;
-               };
-    for (int i = 0; i < argc; ++i) {
-      _argv[i] = cvt(argv[i]);
-    }
-
-    _argv[argc] = nullptr;
-  }
-
-  ~Emacs() {
-    for (int i = 0; i < _argc; ++i) {
-      delete[] _argv[i];
-    }
-  }
-
-  void
-  engine();
-
-  static const EMCHAR*
-  getName() {
-    return _name;
-  };
-
-private:
-  int _argc{0};
-  std::unique_ptr<EMCHAR*[]> _argv{nullptr};
-
-  static const EMCHAR* _name;
-
-#if 0
-  static int repeat;                 // Repeat count
-  static int thisflag;               // Flags, this command
-  static int lastflag;               // Flags, last command
-#endif
-};
-
 class Kbdm {
  public:
   class BufferFullException {};
@@ -1300,5 +1246,64 @@ class Kbdm {
   int  _kbdm[NKBDM];                    // Holds keyboard macro data
   int* _kbdmip{nullptr};                // Input pointer for above
   int* _kbdmop{nullptr};                // Output pointer for above
+};
+
+class Emacs {
+ public:
+  template<typename T>
+  Emacs(int argc, T* argv[])
+    : _argc{argc},
+      _argv{new EMCHAR*[argc + 1]} {
+    auto cvt = [](const T* str) -> EMCHAR* {
+                 size_t len = 0;
+                 while (str[len] != 0) {
+                   ++len;
+                 }
+                 auto res = new EMCHAR[len + 1];
+
+                 for (int i = 0; i < (int)len; ++i) {
+                   res[i] = (EMCHAR)str[i];
+                 }
+                 res[len] = '\000';
+
+                 return res;
+               };
+    for (int i = 0; i < argc; ++i) {
+      _argv[i] = cvt(argv[i]);
+    }
+
+    _argv[argc] = nullptr;
+  }
+
+  ~Emacs() {
+    for (int i = 0; i < _argc; ++i) {
+      delete[] _argv[i];
+    }
+  }
+
+  void
+  engine();
+
+  static const EMCHAR*
+  getName() {
+    return _name;
+  };
+
+ public:
+  static MACTAB _mactab[NMAX];     /* User macros table        */
+  static std::vector<MACTAB> _vmactab;
+  static int    _nmactab;
+
+ private:
+  int _argc{0};
+  std::unique_ptr<EMCHAR*[]> _argv{nullptr};
+
+  static const EMCHAR* _name;
+
+#if 0
+  static int repeat;                 // Repeat count
+  static int thisflag;               // Flags, this command
+  static int lastflag;               // Flags, last command
+#endif
 };
 #endif /* __OBJECTS_H */

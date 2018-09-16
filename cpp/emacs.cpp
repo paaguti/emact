@@ -52,19 +52,20 @@ extern const EMCHAR* version;   /* Current version              */
 DISPLAY* display{nullptr};
 
 bool    initflag  = false;      /* Init flag                    */
-int     nmactab   = 0;          /* Number of user macros        */
 int     repeat    = 1;          /* Repeat count                 */
 
 int     thisflag;               /* Flags, this command          */
 int     lastflag;               /* Flags, last command          */
 BUFFER* curbp;                  /* Current buffer               */
 WINSCR* curwp;                  /* Current window               */
-MACTAB* pmactab;                /* User macros table pointer    */
 MEvent  mevent;                 /* Mouse event (if any)         */
 Kbdm    kbdm;                   /* Keyboad Macro                */
 
-static MACTAB mactab[NMAX];     /* User macros table        */
 EMCHAR search_buffer[NPAT];     // Internal search buffer
+
+MACTAB Emacs::_mactab[NMAX];    /* User macros table            */
+int    Emacs::_nmactab{0};      /* Number of user macros        */
+std::vector<MACTAB> Emacs::_vmactab;
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -415,8 +416,6 @@ Emacs::engine() {
   }
 
   if (!initflag) {
-    pmactab = (MACTAB*)&mactab[0];
-
     (void)emstrcpy(bname,               BUF_SCRATCH);
     (void)emstrcpy(opt::cc_name,        ECSTR("cc"));
     (void)emstrcpy(opt::java_comp_name, ECSTR("javac"));
@@ -468,7 +467,7 @@ Emacs::engine() {
      *  to execute at startup.
      */
 
-    for (i = 0; i < nmactab; ++i) {
+    for (i = 0; i < _nmactab; ++i) {
       if (MACname(i) && emstrcmp(MACname(i), ECSTR("emacs-init")) == 0) {
         (void)mlinternaleval(i);
         break;
@@ -607,7 +606,7 @@ execute(int c, int n) {
     /*
      * Look in macro table.
      */
-    for (int i = 0; i < nmactab; ++i) {
+    for (int i(0); i < Emacs::_nmactab; ++i) {
       if (MACcode(i) == c) {
         if (opt::display_command) {
           WDGwrite(ECSTR("%s"), MACname(i));
