@@ -48,6 +48,8 @@ static  char rcsid[] = "$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $"
 #define PERLFMT1        ECSTR("%s %s %s")
 #endif
 
+extern void TTYopen();
+
 static  CMD     javaevalbuffer(void);
 
 /*
