@@ -219,7 +219,7 @@ main(int argc, char *argv[]) {
 #endif
 #endif
 
-  Emacs emacs(argc, argv);
+  Editor emacs(argc, argv);
   emacs.engine();
 
 #if defined(_WINDEBUG)

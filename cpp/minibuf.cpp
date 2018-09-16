@@ -209,7 +209,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     case 0x13:      /* C-S, Search          */
       if ((c != 0x0D) && (c != 0x0A)) {
         editflg = T;
-        if (!(Emacs::_thisflag & (CFFSRC | CFBSRC))) {
+        if (!(Editor::_thisflag & (CFFSRC | CFBSRC))) {
           continue;
         }
       }

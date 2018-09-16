@@ -1123,7 +1123,7 @@ X11emacs(int argc, char* argv[]) {
    * call the real entry point
    */
 
-  Emacs emacs(argcount, arglist);
+  Editor emacs(argcount, arglist);
   emacs.engine();
 
   return 0;

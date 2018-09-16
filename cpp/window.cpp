@@ -42,7 +42,7 @@ WINSCR::WINSCR()
 
 CMD
 reposition() {
-  curwp->_force = Emacs::_repeat;
+  curwp->_force = Editor::_repeat;
   curwp->setFlags(WINSCR::WFFORCE);
   return T;
 }
@@ -258,11 +258,11 @@ topwind() {
 
 CMD
 mvdnwind() {
-  auto save = Emacs::_repeat;
+  auto save = Editor::_repeat;
 
-  Emacs::_repeat = -Emacs::_repeat;
+  Editor::_repeat = -Editor::_repeat;
   (void)mvupwind();
-  Emacs::_repeat = save;
+  Editor::_repeat = save;
 
   return T;
 }
@@ -278,7 +278,7 @@ mvdnwind() {
 CMD
 mvupwind() {
   auto lp = curwp->topline();
-  auto n = Emacs::_repeat;
+  auto n = Editor::_repeat;
 
   if (n < 0) {
     while (n++ && lp != curbp->lastline()) {
@@ -484,30 +484,30 @@ enlargewind() {
       adjwp = adjwp->next();
   }
 
-  if (adjwp->_ntrows <= Emacs::_repeat) {
+  if (adjwp->_ntrows <= Editor::_repeat) {
     WDGmessage(ECSTR("Can't change window size"));
     return NIL;
   }
 
   if (curwp->next() == adjwp) {          /* Shrink below.        */
     auto lp = adjwp->topline();
-    for (int i = 0; i < Emacs::_repeat && lp != adjwp->buffer()->lastline(); ++i) {
+    for (int i = 0; i < Editor::_repeat && lp != adjwp->buffer()->lastline(); ++i) {
       lp = lp->forw();
     }
     adjwp->_toplinep = lp;
-    adjwp->_toprow  += Emacs::_repeat;
+    adjwp->_toprow  += Editor::_repeat;
   } else {                       /* Shrink above.        */
     auto lp = curwp->topline();
-    for (int i = 0; i < Emacs::_repeat && lp->back() != curbp->lastline(); ++i) {
+    for (int i = 0; i < Editor::_repeat && lp->back() != curbp->lastline(); ++i) {
       lp = lp->back();
     }
     curwp->_toplinep = lp;
-    curwp->_toprow  -= Emacs::_repeat;
+    curwp->_toprow  -= Editor::_repeat;
   }
 
-  curwp->_ntrows += Emacs::_repeat;
+  curwp->_ntrows += Editor::_repeat;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
-  adjwp->_ntrows -= Emacs::_repeat;
+  adjwp->_ntrows -= Editor::_repeat;
   adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
 }
@@ -533,7 +533,7 @@ shrinkwind() {
     }
   }
 
-  if (curwp->rows() <= Emacs::_repeat) {
+  if (curwp->rows() <= Editor::_repeat) {
     WDGmessage(ECSTR("Can't change window size"));
     return NIL;
   }
@@ -542,25 +542,25 @@ shrinkwind() {
      * Grow below.
      */
     auto lp = adjwp->topline();
-    for (int i(0); i < Emacs::_repeat && lp->back()!=adjwp->buffer()->lastline(); ++i) {
+    for (int i(0); i < Editor::_repeat && lp->back()!=adjwp->buffer()->lastline(); ++i) {
       lp = lp->back();
     }
     adjwp->_toplinep = lp;
-    adjwp->_toprow  -= Emacs::_repeat;
+    adjwp->_toprow  -= Editor::_repeat;
   } else {
     /*
      * Grow above.
      */
     auto lp = curwp->topline();
-    for (int i(0); i < Emacs::_repeat && lp != curbp->lastline(); ++i) {
+    for (int i(0); i < Editor::_repeat && lp != curbp->lastline(); ++i) {
       lp = lp->forw();
     }
     curwp->_toplinep = lp;
-    curwp->_toprow  += Emacs::_repeat;
+    curwp->_toprow  += Editor::_repeat;
   }
-  curwp->_ntrows -= Emacs::_repeat;
+  curwp->_ntrows -= Editor::_repeat;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
-  adjwp->_ntrows += Emacs::_repeat;
+  adjwp->_ntrows += Editor::_repeat;
   adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
 }
@@ -698,8 +698,8 @@ findwind() {
         break;
       }
 
-      Emacs::_thisflag = CFCPCN;
-      Emacs::_lastflag = CFUNSET;
+      Editor::_thisflag = CFCPCN;
+      Editor::_lastflag = CFUNSET;
 
       return T;
     }

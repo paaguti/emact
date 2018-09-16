@@ -579,11 +579,11 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   auto szFind    = lpfr->lpstrFindWhat;
   auto szReplace = lpfr->lpstrReplaceWith;
 
-  Emacs::_lastflag = CFFSRC;
+  Editor::_lastflag = CFFSRC;
   opt::case_sensitivity = (dwFlags & FR_MATCHCASE) != 0;
 
   tt->cshow(false);
-  (void)emstrcpy(Emacs::searchBuffer(), szFind);
+  (void)emstrcpy(Editor::searchBuffer(), szFind);
 
   if (dwFlags & FR_DIALOGTERM) {
     xpcurdlg = nullptr;
@@ -2075,8 +2075,7 @@ _tWinMain(HINSTANCE hInstance,
    * Enter emacs Wonderland
    */
 
-  Emacs emacs(argc, argv);
-
+  Editor emacs(argc, argv);
   emacs.engine();
 
   if (hMutex != 0) {

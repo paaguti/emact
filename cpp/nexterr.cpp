@@ -40,8 +40,8 @@ geterror(EDLINE* line) {
   int    stop;
   EMCHAR save[NPAT];
 
-  (void)emstrcpy(save, Emacs::searchBuffer());
-  (void)emstrcpy(Emacs::searchBuffer(), ECSTR(":"));
+  (void)emstrcpy(save, Editor::searchBuffer());
+  (void)emstrcpy(Editor::searchBuffer(), ECSTR(":"));
 
   for (;;) {
     errlinenum = 0;
@@ -52,7 +52,7 @@ geterror(EDLINE* line) {
       } else {
         WDGmessage(ECSTR("no errors"));
       }
-      (void)emstrcpy(Emacs::searchBuffer(), save);
+      (void)emstrcpy(Editor::searchBuffer(), save);
       return false;
     }
 
@@ -161,7 +161,7 @@ geterror(EDLINE* line) {
     break;
   }
 
-  (void)emstrcpy(Emacs::searchBuffer(), save);
+  (void)emstrcpy(Editor::searchBuffer(), save);
   return errlinenum != 0;
 }
 
@@ -194,10 +194,10 @@ nexterror() {
     if (!newfile(errfname)) {
       return NIL;
     } else {
-      auto save(Emacs::_repeat);
-      Emacs::_repeat = errlinenum;
+      auto save(Editor::_repeat);
+      Editor::_repeat = errlinenum;
       (void)gotoline();
-      Emacs::_repeat = save;
+      Editor::_repeat = save;
       WDGwrite(ECSTR("%L"), found.line());
     }
   }

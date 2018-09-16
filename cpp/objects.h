@@ -110,7 +110,7 @@ class WINSCR;
 class Terminal;
 class KEYTAB;
 class Completion;
-class Emacs;
+class Editor;
 class Kbdm;
 
 /**
@@ -1248,10 +1248,10 @@ class Kbdm {
   int* _kbdmop{nullptr};                // Output pointer for above
 };
 
-class Emacs {
+class Editor {
  public:
   template<typename T>
-  Emacs(int argc, T* argv[])
+  Editor(int argc, T* argv[])
     : _argc{argc},
       _argv{new EMCHAR*[argc + 1]} {
     auto cvt = [](const T* str) -> EMCHAR* {
@@ -1275,7 +1275,7 @@ class Emacs {
     _argv[argc] = nullptr;
   }
 
-  ~Emacs() {
+  ~Editor() {
     for (int i = 0; i < _argc; ++i) {
       delete[] _argv[i];
     }

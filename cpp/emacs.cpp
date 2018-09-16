@@ -42,30 +42,28 @@ static bool    editflag{false}; // Edit flag
 
 static void    edinit(const EMCHAR* bname);
 static void    editloop();
-static int     linenump(const EMCHAR* s);
+static bool    linenump(const EMCHAR* s);
 static int     getctl();
 static bool    latexinsert(int n, int c);
 static CMD     again();
 
 extern const EMCHAR* version;   /* Current version              */
 
+static bool initflag = false;   /* Init flag                    */
+
 DISPLAY* display{nullptr};
+BUFFER*  curbp{nullptr};        /* Current buffer               */
+WINSCR*  curwp{nullptr};        /* Current window               */
+MEvent   mevent;                /* Mouse event (if any)         */
+Kbdm     kbdm;                  /* Keyboad Macro                */
 
-bool    initflag  = false;      /* Init flag                    */
-
-
-BUFFER* curbp;                  /* Current buffer               */
-WINSCR* curwp;                  /* Current window               */
-MEvent  mevent;                 /* Mouse event (if any)         */
-Kbdm    kbdm;                   /* Keyboad Macro                */
-
-int    Emacs::_curgoal;             // Goal column
-int    Emacs::_repeat{1};           // Repeat count
-int    Emacs::_thisflag{CFUNSET};   // Flags, this command
-int    Emacs::_lastflag{CFUNSET};   // Flags, last command
-int    Emacs::_nmactab{0};          // Number of user macros
-EMCHAR Emacs::_search[NPAT];        // Internal search buffer
-std::array<MACTAB, NMAX> Emacs::_mactab; // User macros table
+int    Editor::_curgoal;             // Goal column
+int    Editor::_repeat{1};           // Repeat count
+int    Editor::_thisflag{CFUNSET};   // Flags, this command
+int    Editor::_lastflag{CFUNSET};   // Flags, last command
+int    Editor::_nmactab{0};          // Number of user macros
+EMCHAR Editor::_search[NPAT];        // Internal search buffer
+std::array<MACTAB, NMAX> Editor::_mactab; // User macros table
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -99,7 +97,7 @@ std::vector<KEYTAB> KEYTAB::keytab = {
   { Ctrl|'Z',      spawncli,       ECSTR("suspend-emacs")               },
   { Ctrl|']',      completeword,   ECSTR("dabbrev-expand")              },
   { Ctrl|'_',      undo,           ECSTR("undo")                        },
-  { CTLX|METACH,   again,          ECSTR("Emacs::_repeat-last-command")         },
+  { CTLX|METACH,   again,          ECSTR("Editor::_repeat-last-command")         },
   { CTLX|Ctrl|'B', listbuffers,    ECSTR("list-buffers")                },
   { CTLX|Ctrl|'C', exitemacs,      ECSTR("save-buffers-kill-emacs")     },
   { CTLX|Ctrl|'D', changedir,      ECSTR("cd")                          },
@@ -390,20 +388,20 @@ WIDGET widget = {
   mllpprint
 };
 
-static int     clast = 0;      /* last executed command        */
-static int     nlast = 1;      /* last executed Emacs::_repeat count   */
-static bool    isoset;         /* ISO 8859-1 char set          */
+static int  clast = 0;      /* last executed command        */
+static int  nlast = 1;      /* last executed Editor::_repeat count   */
+static bool isoset;         /* ISO 8859-1 char set          */
 
-const EMCHAR* Emacs::_name{nullptr};
+const EMCHAR* Editor::_name{nullptr};
 
 void
-Emacs::engine() {
+Editor::engine() {
   int     curarg   = 1;
   int     lineinit = 1;
   int     i        = 0;
   EMCHAR  bname[BUFFER::NBUFN];
 
-  Emacs::_lastflag = CFUNSET;
+  Editor::_lastflag = CFUNSET;
 
   _name    = _argv[0];
   editflag = true;
@@ -490,7 +488,7 @@ Emacs::engine() {
   }
 
   if (lineinit > 1) {
-    Emacs::_repeat = lineinit;
+    Editor::_repeat = lineinit;
     (void)gotobob();
     (void)gotoline();
   }
@@ -577,7 +575,7 @@ editloop() {
     }
 
     if (c == (CTLX|METACH)) {
-			/* Emacs::_repeat previous action. */
+			/* Editor::_repeat previous action. */
       c = clast;
       n = nlast;
     } else {
@@ -591,8 +589,8 @@ editloop() {
 /*
  * This is the general command execution routine. It handles the
  * fake binding of all the keys to "self-insert". It also clears
- * out  the  "Emacs::_thisflag"  word,  and arranges to move it  to  the
- * "Emacs::_lastflag",  so that the next command can look at it.  Return
+ * out  the  "Editor::_thisflag"  word,  and arranges to move it  to  the
+ * "Editor::_lastflag",  so that the next command can look at it.  Return
  * the status of command.
  */
 
@@ -600,21 +598,21 @@ CMD
 execute(int c, int n) {
   CMD status;
 
-  Emacs::_repeat = n;
+  Editor::_repeat = n;
   resetfreadonly(); // check for readonly is made only once for each command
 
   if (c > MAX_EMCHAR || c == BACKDEL) {
     /*
      * Look in macro table.
      */
-    for (int i(0); i < Emacs::_nmactab; ++i) {
+    for (int i(0); i < Editor::_nmactab; ++i) {
       if (MACcode(i) == c) {
         if (opt::display_command) {
           WDGwrite(ECSTR("%s"), MACname(i));
         }
-        Emacs::_thisflag = CFUNSET;
+        Editor::_thisflag = CFUNSET;
         status = mlinternaleval(i);
-        Emacs::_lastflag = Emacs::_thisflag;
+        Editor::_lastflag = Editor::_thisflag;
         return status;
       }
     }
@@ -627,12 +625,12 @@ execute(int c, int n) {
           WDGwrite(ECSTR("%s"), ktp.name());
         }
         if (c & SPCL) {
-          Emacs::_thisflag = CFFKEY;
+          Editor::_thisflag = CFFKEY;
         } else {
-          Emacs::_thisflag = CFUNSET;
+          Editor::_thisflag = CFUNSET;
         }
         status = ktp.execute();
-        Emacs::_lastflag = Emacs::_thisflag;
+        Editor::_lastflag = Editor::_thisflag;
         return status;
       }
     }
@@ -644,18 +642,18 @@ execute(int c, int n) {
 
   if (self_insert(c)) {
     if (n <= 0) {
-      Emacs::_lastflag = CFUNSET;
-      return Emacs::_repeat < 0 ? NIL : T;
+      Editor::_lastflag = CFUNSET;
+      return Editor::_repeat < 0 ? NIL : T;
     }
-    Emacs::_thisflag = CFUNSET;
+    Editor::_thisflag = CFUNSET;
 
 #if defined(_POSIX_C_SOURCE)
     /*
      *      Check for F-KEY ^[[?~
      */
 
-    if ((c == '~') && (Emacs::_lastflag & CFFKEY)) {
-      Emacs::_lastflag = CFUNSET;
+    if ((c == '~') && (Editor::_lastflag & CFFKEY)) {
+      Editor::_lastflag = CFUNSET;
       return T;
     }
 #endif
@@ -669,19 +667,19 @@ execute(int c, int n) {
          emode == EDITMODE::PERLMODE   ||
          emode == EDITMODE::JAVAMODE)) {
       status   = (unindent(c) ? T : NIL);
-      Emacs::_lastflag = Emacs::_thisflag;
+      Editor::_lastflag = Editor::_thisflag;
       return status;
     }
 
     if (c > 0x7F && (opt::latex_mode || emode == EDITMODE::SGMLMODE)) {
-      status = (latexinsert(Emacs::_repeat, c) ? T : NIL);
+      status = (latexinsert(Editor::_repeat, c) ? T : NIL);
     } else if (!opt::replace_mode) {
-      status = linsert(c, Emacs::_repeat) ? T : NIL;
+      status = linsert(c, Editor::_repeat) ? T : NIL;
     } else {
-      status = lreplace(c, Emacs::_repeat) ? T : NIL;
+      status = lreplace(c, Editor::_repeat) ? T : NIL;
     }
 
-    Emacs::_lastflag = Emacs::_thisflag;
+    Editor::_lastflag = Editor::_thisflag;
 
     if (!kbdm.isPlaying()) {
       if ((c == ')' || c == '}' || c == ']')
@@ -706,7 +704,7 @@ execute(int c, int n) {
     return status;
   }
 
-  Emacs::_lastflag = CFUNSET;
+  Editor::_lastflag = CFUNSET;
   return NIL;
 }
 
@@ -911,7 +909,7 @@ ctlxrp() {
 
 CMD
 ctlxe() {
-  const auto n = Emacs::_repeat;
+  const auto n = Editor::_repeat;
 
   if (!kbdm.exist()) {
     WDGmessage(ECSTR("No keyboard macro to execute."));
@@ -925,8 +923,8 @@ ctlxe() {
 
   auto s = T;
 
-  for (decltype(Emacs::_repeat) i = 0; (i < n) && (s == T); ++i) {
-    auto save = Emacs::_repeat;
+  for (decltype(Editor::_repeat) i = 0; (i < n) && (s == T); ++i) {
+    auto save = Editor::_repeat;
     int c;
     int an;
 
@@ -941,7 +939,7 @@ ctlxe() {
     } while (c != (CTLX|')') && (s = execute(c, an)) == T);
     kbdm.stopPlaying();
 
-    Emacs::_repeat = save;
+    Editor::_repeat = save;
   }
 
   return s;
@@ -989,7 +987,7 @@ insertunicode() {
   buf[0] = (EMCHAR)c;
   buf[1] = '\000';
   WDGwrite(ECSTR("Unicode='%s', code(%d, 0x%x)"), buf, c, c);
-  linsert(c, Emacs::_repeat);
+  linsert(c, Editor::_repeat);
   return T;
 }
 
@@ -1189,7 +1187,7 @@ switchshell() {
 }
 
 /*
- * Returns 1 if c is a separator, 0 otherwise.
+ * Returns true if c is a separator, false otherwise.
  */
 
 bool
@@ -1202,7 +1200,7 @@ charp(int c) {
   return isalnum(c) || (c == '-') || (c == '_') || (c == '+');
 }
 
-static int
+static bool
 linenump(const EMCHAR* s) {
   if (*s == '+') {
     s++;
@@ -1243,7 +1241,7 @@ latexinsert(int n, int c) {
     EMCHAR* sgml;
   } convtab[] = {
     /*
-     *        OEM   ISO   LaTeX       SGML
+     * OEM  ISO   LaTeX              SGML
      */
     { 0x85, 0xE0, ECSTR("\\`a"),     ECSTR("&agrave;") },
     { 0x83, 0xE2, ECSTR("\\^a"),     ECSTR("&acirc;")  },

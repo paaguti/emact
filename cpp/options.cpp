@@ -55,7 +55,7 @@ describekey() {
   ch[0] = (EMCHAR)(c & MAX_EMCHAR);
   ch[1] = '\000';
 
-  for (auto i(0); i < Emacs::_nmactab; ++i) {
+  for (auto i(0); i < Editor::_nmactab; ++i) {
     /* Look in macro table. */
     if (MACcode(i) == c) {
       WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, MACname(i));
@@ -168,7 +168,7 @@ help() {
     return NIL;
   }
 
-  for (auto j(0); j < Emacs::_nmactab; ++j) {
+  for (auto j(0); j < Editor::_nmactab; ++j) {
     auto c(MACcode(j));
     if ((c & SPCL) && c != -1) {
       continue;
@@ -353,9 +353,9 @@ setvar() {
 
   switch (index_type) {
   case INDEX_FUNCTION :
-    Emacs::_thisflag = CFUNSET;
+    Editor::_thisflag = CFUNSET;
     status   = KEYTAB::keytab[VARindex].execute();
-    Emacs::_lastflag = Emacs::_thisflag;
+    Editor::_lastflag = Editor::_thisflag;
     return status;
   case INDEX_VARIABLE :
     switch (VARtype(VARindex)) {
@@ -520,10 +520,10 @@ internalfindtag(int tagnext) {
 
       (void)newfile(tagfile);
       {
-        auto save(Emacs::_repeat);
-        Emacs::_repeat = emstrtoi(line);
+        auto save(Editor::_repeat);
+        Editor::_repeat = emstrtoi(line);
         (void)gotoline();
-        Emacs::_repeat = save;
+        Editor::_repeat = save;
       }
       return T;
     }
@@ -661,10 +661,10 @@ printcmd(int c, BUFFER* bp) {
 
   if (count > 1) {
     printmacro(nullptr, bp);
-    (void)emsprintf1(macline, ECSTR("   (Emacs::_repeat %d"), count);
+    (void)emsprintf1(macline, ECSTR("   (Editor::_repeat %d"), count);
   }
 
-  for (auto i(0); i < Emacs::_nmactab; ++i) {
+  for (auto i(0); i < Editor::_nmactab; ++i) {
     /* Look in macro table. */
     if (MACcode(i) == c) {
       printmacro(MACname(i), bp);

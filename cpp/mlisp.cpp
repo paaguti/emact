@@ -161,7 +161,7 @@ MLisp::getfun() {
   int     c;
   int     i;
 
-  if (Emacs::_nmactab == NMAX) {
+  if (Editor::_nmactab == NMAX) {
     readerror(ECSTR("Macro workspace is full."), nullptr);
   }
 
@@ -200,7 +200,7 @@ MLisp::getfun() {
   }
 
   if (code != SpecialForm::FUNCTION) {
-    for (indx = 0; indx < Emacs::_nmactab; ++indx) {
+    for (indx = 0; indx < Editor::_nmactab; ++indx) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -211,7 +211,7 @@ MLisp::getfun() {
       }
     }
   } else {
-    for (indx = 0; indx < Emacs::_nmactab; ++indx) {
+    for (indx = 0; indx < Editor::_nmactab; ++indx) {
       if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
         break;
       }
@@ -225,11 +225,11 @@ MLisp::getfun() {
     }
   }
 
-  if (indx == Emacs::_nmactab) {
+  if (indx == Editor::_nmactab) {
     /*
      * It's a new macro.
      */
-    Emacs::_nmactab++;
+    Editor::_nmactab++;
   }
 
   MACcode(indx) = static_cast<int>(code);
@@ -275,7 +275,7 @@ MLisp::getfun() {
         fillmacro(SpecialForm::UPDATE);
       } else if (!emstrcmp(word, ECSTR("insert-system-command"))) {
         fillcommand(SpecialForm::INSERTCOMMAND);
-      } else if (!emstrcmp(word, ECSTR("Emacs::_repeat"))) {
+      } else if (!emstrcmp(word, ECSTR("Editor::_repeat"))) {
         fillmacro(SpecialForm::REPEAT);
         word = getword();
         while (*word) {
@@ -377,13 +377,13 @@ MLisp::fillcommand(SpecialForm key) {
     }
     break;
   case SpecialForm::BINDTOKEY:
-    for (i = 0; i < Emacs::_nmactab; i++) {
+    for (i = 0; i < Editor::_nmactab; i++) {
       if (MACname(i) && !emstrcmp(MACname(i), word)) {
         break;
       }
     }
 
-    if (i >= Emacs::_nmactab) {
+    if (i >= Editor::_nmactab) {
       readerror(ECSTR("Unknown function. "), word);
     }
 
@@ -559,7 +559,7 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    * Look in macro table.
    */
 
-  for (auto i(0); i < Emacs::_nmactab; ++i) {
+  for (auto i(0); i < Editor::_nmactab; ++i) {
     if (MACname(i) && !emstrcmp(s, MACname(i))) {
       *indx = i;
       return MACcode(i);
@@ -827,9 +827,9 @@ MLisp::eval(int expr, size_t depth) {
       break;
     default:
       {
-        auto sv = Emacs::_repeat;
+        auto sv = Editor::_repeat;
         s = execute(c, n);
-        Emacs::_repeat = sv;
+        Editor::_repeat = sv;
       }
     }
     n = 1;
@@ -918,11 +918,11 @@ mlcustomize() {
     /*
      * Set the _library PATH where the binary is found.
      */
-    (void)emstrcpy(MLisp::_library, Emacs::getName());
+    (void)emstrcpy(MLisp::_library, Editor::getName());
     (void)updir(MLisp::_library, SLASH);
   }
 
-  makename((EMCHAR*)&base[0], Emacs::getName());
+  makename((EMCHAR*)&base[0], Editor::getName());
 
   for (p = base; *p; p++) {
     if (*p == '.') {
@@ -944,7 +944,7 @@ mlcustomize() {
 
 CMD
 mlinternaleval(int expr) {
-  for (decltype(Emacs::_repeat) i{0}; i < Emacs::_repeat; ++i) {
+  for (decltype(Editor::_repeat) i{0}; i < Editor::_repeat; ++i) {
     if (MLisp::eval(expr, 1) != true) {
       return NIL;
     }

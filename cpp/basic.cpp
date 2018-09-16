@@ -49,7 +49,7 @@ gotobol() {
 
 CMD
 backchar() {
-  auto n = Emacs::_repeat;
+  auto n = Editor::_repeat;
 
   while (n--) {
     if (curwp->pos() == 0) {
@@ -86,7 +86,7 @@ gotoeol() {
 
 CMD
 forwchar() {
-  int n = Emacs::_repeat;
+  int n = Editor::_repeat;
 
   while (n--) {
     if (curwp->pos() == curwp->line()->length()) {
@@ -138,7 +138,7 @@ gotoeob() {
 
 CMD
 gotoline() {
-  int n = Emacs::_repeat;
+  int n = Editor::_repeat;
         
   if (n <= 1) {
     EMCHAR buf[20];
@@ -174,13 +174,13 @@ gotoline() {
 CMD
 forwline() {
   EDLINE* dlp;
-  int     n = Emacs::_repeat;
+  int     n = Editor::_repeat;
 
-  if ((Emacs::_lastflag & CFCPCN) == 0) {
+  if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P or C-N */
-    Emacs::_curgoal = DISPLAY::_curcol;
+    Editor::_curgoal = DISPLAY::_curcol;
   }
-  Emacs::_thisflag |= CFCPCN;
+  Editor::_thisflag |= CFCPCN;
   if ((dlp = curwp->line()) == curbp->lastline()) {
     return NIL;
   }
@@ -204,19 +204,19 @@ forwline() {
 
 CMD
 backline() {
-  if ((Emacs::_lastflag & CFCPCN) == 0) {
+  if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
-    Emacs::_curgoal = DISPLAY::_curcol;
+    Editor::_curgoal = DISPLAY::_curcol;
   }
 
-  Emacs::_thisflag |= CFCPCN;
+  Editor::_thisflag |= CFCPCN;
   auto dlp  = curwp->line();
   if (dlp->back() == curbp->lastline()) {
     TTYbeep();
     return NIL;
   }
 
-  auto n = Emacs::_repeat;
+  auto n = Editor::_repeat;
 
   while (n-- && dlp->back() != curbp->lastline()) {
     dlp = dlp->back();
@@ -253,7 +253,7 @@ getgoal(const EDLINE* dlp) {
       ++newcol;
     }
 
-    if (newcol > Emacs::_curgoal) {
+    if (newcol > Editor::_curgoal) {
       break;
     }
 
