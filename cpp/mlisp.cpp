@@ -570,7 +570,7 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    * Look in key table.
    */
 
-  for (auto& ktp : KEYTAB::keytab) {
+  for (auto& ktp : Editor::_keytab) {
     if (!emstrcmp(s, ktp.name())) {
       return ktp.code();
     }
@@ -776,7 +776,7 @@ MLisp::eval(int expr, size_t depth) {
       /*
        * Delete previous binding of standard key.
        */
-      for (auto& ktp : KEYTAB::keytab) {
+      for (auto& ktp : Editor::_keytab) {
         if (ktp.code() == code) {
           ktp.unset();
           break;

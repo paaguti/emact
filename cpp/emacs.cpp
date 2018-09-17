@@ -70,7 +70,7 @@ std::array<MACTAB, NMAX> Editor::_mactab; // User macros table
  * to right across the characters of the command.
  */
 
-std::vector<KEYTAB> KEYTAB::keytab = {
+std::vector<EditorCommand> Editor::_keytab = {
   { Ctrl|'@',      setmark,        ECSTR("set-mark-command")            },
   { Ctrl|'A',      gotobol,        ECSTR("beginning-of-line")           },
   { Ctrl|'B',      backchar,       ECSTR("backward-char")               },
@@ -619,7 +619,7 @@ execute(int c, int n) {
 
     /* Look in key table.   */
 
-    for (const auto& ktp : KEYTAB::keytab) {
+    for (const auto& ktp : Editor::_keytab) {
       if (ktp.code() == c) {
         if (opt::display_command) {
           WDGwrite(ECSTR("%s"), ktp.name());
@@ -629,7 +629,7 @@ execute(int c, int n) {
         } else {
           Editor::_thisflag = CFUNSET;
         }
-        status = ktp.execute();
+        status = ktp(); // execute command
         Editor::_lastflag = Editor::_thisflag;
         return status;
       }

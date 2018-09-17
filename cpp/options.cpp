@@ -63,7 +63,7 @@ describekey() {
     }
   }
 
-  for (const auto& ktp : KEYTAB::keytab) {
+  for (const auto& ktp : Editor::_keytab) {
     if (ktp.code() == c) {
       WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, ktp.name());
       return T;
@@ -133,7 +133,7 @@ help() {
     return NIL;
   }
 
-  for (const auto& ktp : KEYTAB::keytab) {
+  for (const auto& ktp : Editor::_keytab) {
     auto c(ktp.code());
     if ((c & SPCL) && c != UNBOUND) {
       continue;
@@ -265,7 +265,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
   }
 
   i = 0;
-  for (const auto& ktp : KEYTAB::keytab) {
+  for (const auto& ktp : Editor::_keytab) {
     if (emstrcmp(ktp.name(), buf) == 0) {
       VARindex   = i;
       index_type = INDEX_FUNCTION;
@@ -305,7 +305,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
   }
 
   i = -1;
-  for (const auto& ktp : KEYTAB::keytab) {
+  for (const auto& ktp : Editor::_keytab) {
     ++i;
     if (len == 0 || emstrncmp(ktp.name(), buf, len) == 0) {
       if (len != (size_t)emstrlen(ktp.name())) {
@@ -354,7 +354,7 @@ setvar() {
   switch (index_type) {
   case INDEX_FUNCTION :
     Editor::_thisflag = CFUNSET;
-    status   = KEYTAB::keytab[VARindex].execute();
+    status  = Editor::_keytab[VARindex](); // execute command
     Editor::_lastflag = Editor::_thisflag;
     return status;
   case INDEX_VARIABLE :
@@ -672,7 +672,7 @@ printcmd(int c, BUFFER* bp) {
     }
   }
 
-  for (const auto& ktp : KEYTAB::keytab) {
+  for (const auto& ktp : Editor::_keytab) {
     if (ktp.code() == c) {
       printmacro(ktp.name(), bp);
       return;

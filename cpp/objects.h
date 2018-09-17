@@ -108,7 +108,7 @@ class EDLINE;
 class Point;
 class WINSCR;
 class Terminal;
-class KEYTAB;
+class EditorCommand;
 class Completion;
 class Editor;
 class Kbdm;
@@ -947,15 +947,12 @@ class WIDGET {
  * Commands and variables table.
  */
 
-class KEYTAB {
+class EditorCommand final {
  private:
-  typedef CMD (*CB)();
-  int     k_code;                // Key code
-  CMD     (*k_fp)();             // Routine to handle it
-  const EMCHAR* k_name;          // Name of the command
+  using CB = CMD (*)();
 
  public:
-  constexpr KEYTAB(int code, CB fp, const EMCHAR* name)
+  constexpr EditorCommand(int code, CB fp, const EMCHAR* name)
     : k_code{code},
       k_fp{fp},
       k_name{name} {
@@ -977,7 +974,7 @@ class KEYTAB {
   }
 
   CMD
-  execute() const noexcept {
+  operator()() const noexcept {
     return k_fp();
   }
 
@@ -986,7 +983,10 @@ class KEYTAB {
     return k_fp;
   }
 
-  static std::vector<KEYTAB> keytab;
+ private:
+  int           k_code;          // Key code
+  CB            k_fp;            // Routine to handle it
+  const EMCHAR* k_name;          // Name of the command
 };
 
 enum EMVAR {
@@ -1295,6 +1295,7 @@ class Editor {
     return &_search[0];
   }
 
+  static std::vector<EditorCommand> _keytab;
   /* User macros table */
   static std::array<MACTAB, NMAX> _mactab;
   static int _nmactab;
