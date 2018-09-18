@@ -112,7 +112,7 @@ EDLINE::free(EDLINE*& lp) {
     }
   }
 
-  for (auto bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (bp->count() == 0) {
       if (bp->line() == lp) {
         bp->setDot(lp->forw(), 0);
@@ -750,7 +750,7 @@ ltwiddle() {
     }
   }
 
-  for (auto bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (bp->count() == 0) {
       if (bp->line() == lp1) {
         bp->setDot(lp2, 0);

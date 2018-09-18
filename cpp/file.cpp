@@ -105,7 +105,7 @@ newfile(const EMCHAR* filename) {
     return false;
   }
 
-  for (auto bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (emstrcmp(bp->filename(), fname) == 0) {
       (void)curwp->connect(bp);
       auto lp = curwp->line();

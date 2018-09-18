@@ -71,6 +71,8 @@
 #include <climits>
 
 #include <vector>
+#include <algorithm>
+#include <list>
 #include <array>
 #include <limits>
 #include <memory>

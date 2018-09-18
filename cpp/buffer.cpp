@@ -33,7 +33,7 @@ static void    longtostrtr(EMCHAR* buf, int width, size_t num);
 static bool    makelist(BUFFER* blp);
 static bool    savebname(const EMCHAR* bname);
 
-BUFFER* BUFFER::bheadp{nullptr}; /* Head of list of buffers      */
+std::list<BUFFER*> BUFFER::_blist;
 
 static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
 
@@ -42,11 +42,6 @@ static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
 EDLINE*
 BUFFER::firstline()	{
   return _linep->forw();
-}
-
-BUFFER*
-BUFFER::head() noexcept {
-  return bheadp;
 }
 
 BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
@@ -62,8 +57,7 @@ BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
   (void)emstrcpy(_fname, ECSTR(""));
   (void)emstrcpy(_bname, bname);
 
-  _bufp = bheadp;
-  bheadp = this;
+  _blist.push_front(this);
 }
 
 /*
@@ -75,7 +69,7 @@ BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
 void
 BUFFER::validitycheck() {
 #if defined(BUFFER_DEBUG)
-  for (auto bp(head()); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     int count = 0;
 
     for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
@@ -85,6 +79,7 @@ BUFFER::validitycheck() {
     }
 
     if (count != bp->count()) {
+      printf("wrong buffer count %d vs. %d\n", count, bp->count());
       internalerror(ECSTR("wrong buffer count"));
     }
   }
@@ -102,17 +97,8 @@ BUFFER::ontop() noexcept {
   /*
    *      restack buffers (add the new buffer on top)
    */
-
-  if (this != bheadp) {
-    for (auto bp(head()); bp != nullptr; bp = bp->next()) {
-      if (bp->_bufp == this) {
-        bp->_bufp = this->next();
-        break;
-      }
-    }
-    this->_bufp = bheadp;
-    bheadp = this;
-  }
+  _blist.remove(this);
+  _blist.push_front(this);
 
   curbp = this;
 }
@@ -168,7 +154,7 @@ BUFFER::updatemodes() noexcept {
 
 BUFFER*
 BUFFER::find(const EMCHAR* bname, bool cflag, EDITMODE mode) {
-  for (auto bp(BUFFER::head()); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (emstrcmp(bname, bp->bufname()) == 0) {
       return bp;
     }
@@ -240,7 +226,6 @@ BUFFER::usewindow() const noexcept {
 
 bool
 BUFFER::discard() noexcept {
-  BUFFER* bp2;
   if (this->isChanged()) {
     EMCHAR buf[NLINE];
 
@@ -260,8 +245,10 @@ BUFFER::discard() noexcept {
    */
 
   auto bp1 = this;
+  auto bp2 = this;
 
-  for (bp2 = head(); bp2 != nullptr; bp2 = bp2->next()) {
+  for (auto bp : BUFFER::list()) {
+    bp2 = bp;
     if (bp2 == this) {
       continue;
     }
@@ -300,20 +287,7 @@ BUFFER::discard() noexcept {
 
   EDLINE::dispose(this->_linep);          /* Release header line. */
 
-  bp1 = nullptr;                          /* Find the header.     */
-  bp2 = bheadp;
-  while (bp2 != this) {
-    bp1 = bp2;
-    bp2 = bp2->next();
-  }
-
-  bp2 = bp2->next();                      /* Next one in chain.   */
-  if (bp1 == nullptr) {                   /* Unlink it.           */
-    bheadp = bp2;
-  } else {
-    bp1->_bufp = bp2;
-  }
-
+  _blist.remove(this);
   delete this;
   return true;
 }
@@ -322,7 +296,7 @@ BUFFER::discard() noexcept {
  * Long integer to ascii conversion (right justified).
  */
 
-static  void
+static void
 longtostrtr(EMCHAR* buf, int width, size_t num) {
   buf[width] = 0;                         /* End of string.       */
   while (num >= 10 && width >= 2) {
@@ -366,7 +340,7 @@ makelist(BUFFER *blp) {
     return false;
   }
 
-  for (auto bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     cp1 = &line[0];                 /* Start at left edge   */
     if (bp == curbp) {
       *cp1++ = '.';
@@ -507,7 +481,7 @@ anycb(ANYCB flag) {
   auto alert = false;
   auto saveall = false;
 
-  for (auto bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (!bp->isChanged()) {
       continue;
     }
@@ -592,7 +566,7 @@ static EMCHAR*
 bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
   auto len = emstrlen(buffer);
 
-  for (auto bp(BUFFER::head()); bp != nullptr; bp = bp->next()) {
+  for (auto bp : BUFFER::list()) {
     if (len == 0 || !emstrncmp(bp->bufname(), buffer, len)) {
       WDGupdate(prompt, bp->bufname());
       switch (TTYgetc()) {
@@ -622,15 +596,14 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
 
 CMD
 usebuffer() {
-  BUFFER* bp;
   CMD     s;
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
 
   complete = bufmatch;
 
-  auto bp1 = BUFFER::head();
-  for (bp = BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  auto bp1 = BUFFER::list().front();
+  for (auto bp : BUFFER::list()) {
     if (bp->count() == 0) {
       /* Not on screen yet.   */
       bp1 = bp;
@@ -648,6 +621,7 @@ usebuffer() {
     return s;
   }
 
+  BUFFER* bp;
   if (s == NIL) {
     bp = bp1;
   } else if ((bp = BUFFER::find(bufn, false)) == nullptr) {

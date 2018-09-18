@@ -22,6 +22,12 @@
 #if !defined(__OBJECTS_H)
 #define __OBJECTS_H
 
+#include <vector>
+#include <list>
+#include <array>
+#include <limits>
+#include <memory>
+
 /*
  * This  file  is  the  general header file for all components of the
  * EMACS   display  editor.  It  contains  C++ classes definitions  used  by
@@ -365,11 +371,6 @@ class BUFFER {
        bool cflag = true,
        EDITMODE mode = EDITMODE::FUNDAMENTAL);
 
-  BUFFER*
-  next() const noexcept {
-    return _bufp;
-  }
-
   void
   ontop() noexcept;
 
@@ -424,7 +425,9 @@ class BUFFER {
   static void
   updatemodes() noexcept;
 
-  static BUFFER* head() noexcept;
+  static std::list<BUFFER*>& list() noexcept {
+    return _blist;
+  }
 
   Point
   getDot() const noexcept {
@@ -566,10 +569,11 @@ class BUFFER {
   }
 
  private:
+  static std::list<BUFFER*> _blist;
+
   mode_t   _mode{0};                      // File permission mode.
   Point    _dot;                          // "." EDLINE and offset link.
   EDLINE*  _linep{nullptr};               // Link to the header EDLINE
-  BUFFER*  _bufp{nullptr};                // Link to next BUFFER
   Point    _mark;                         // Mark in this buffer.
   ENCODING _wide{ENCODING::EMASCII};      // Wide flag
   EDITMODE _emode{EDITMODE::FUNDAMENTAL}; // Buffer electric mode
@@ -580,8 +584,6 @@ class BUFFER {
   EMCHAR   _bname[NBUFN];                 // Buffer name
   time_t   _time{0};                      // Last modification time
   int      _count{0};                     // Count of windows on buffer
-
-  static BUFFER* bheadp;                  // Head of list of buffers
 };
 
 /*
