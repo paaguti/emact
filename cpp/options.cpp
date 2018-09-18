@@ -55,12 +55,8 @@ describekey() {
   ch[0] = (EMCHAR)(c & MAX_EMCHAR);
   ch[1] = '\000';
 
-  int indx = 0;
   for (const auto& macro : Editor::getMacros()) {
-    /* Look in macro table. */
-    if (indx++ == Editor::_nmactab) {
-      break;
-    } else if (macro.m_code == c) {
+    if (macro.m_code == c) {
       WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, macro.m_name);
       return T;
     }
@@ -171,36 +167,31 @@ help() {
     return NIL;
   }
 
-  int indx = 0;
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    if (indx++ == Editor::_nmactab) {
-      break;
+    auto c(macro.m_code);
+    if ((c & SPCL) && c != -1) {
+      continue;
+    }
+    (void)emstrcpy(line, macro.m_name);
+    for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
+      line[i] = ' ';
+    }
+    line[i] = '\0';
+    if (c != -1) {
+      getkeyname(c, meta);
+      ch[0] = (EMCHAR)(c & MAX_EMCHAR);
+      ch[1] = '\000';
+      (void)emstrcat(line, ECSTR("("));
+      (void)emstrcat(line, meta);
+      (void)emstrcat(line, ch);
+      (void)emstrcat(line, ECSTR(")"));
     } else {
-      auto c(macro.m_code);
-      if ((c & SPCL) && c != -1) {
-        continue;
-      }
-      (void)emstrcpy(line, macro.m_name);
-      for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
-        line[i] = ' ';
-      }
-      line[i] = '\0';
-      if (c != -1) {
-        getkeyname(c, meta);
-        ch[0] = (EMCHAR)(c & MAX_EMCHAR);
-        ch[1] = '\000';
-        (void)emstrcat(line, ECSTR("("));
-        (void)emstrcat(line, meta);
-        (void)emstrcat(line, ch);
-        (void)emstrcat(line, ECSTR(")"));
-      } else {
-        (void)emstrcat(line, ECSTR("unbound"));
-      }
+      (void)emstrcat(line, ECSTR("unbound"));
+    }
 
-      if (!addline(bp, line)) {
-        return NIL;
-      }
+    if (!addline(bp, line)) {
+      return NIL;
     }
   }
 
@@ -673,12 +664,9 @@ printcmd(int c, BUFFER* bp) {
     (void)emsprintf1(macline, ECSTR("   (repeat %d"), count);
   }
 
-  int indx = 0;
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    if (indx++ == Editor::_nmactab) {
-      break;
-    } else if (macro.m_code == c) {
+    if (macro.m_code == c) {
       printmacro(macro.m_name, bp);
       return;
     }

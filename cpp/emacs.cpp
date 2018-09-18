@@ -61,9 +61,7 @@ int    Editor::_curgoal;             // Goal column
 int    Editor::_repeat{1};           // Repeat count
 int    Editor::_thisflag{CFUNSET};   // Flags, this command
 int    Editor::_lastflag{CFUNSET};   // Flags, last command
-int    Editor::_nmactab{0};          // Number of user macros
 EMCHAR Editor::_search[NPAT];        // Internal search buffer
-std::array<MACTAB, NMAX> Editor::_mactab; // User macros table
 std::vector<MACTAB> Editor::_macros; // User macros table
 
 /*
@@ -467,16 +465,11 @@ Editor::engine() {
      *  to execute at startup.
      */
 
-    int indx = 0;
     for (const auto& macro : Editor::getMacros()) {
       /* Look in macro table. */
-      if (indx == Editor::_nmactab) {
+      if (macro.m_name && !emstrcmp(macro.m_name, ECSTR("emacs-init"))) {
+        (void)mlinternaleval(macro.m_index);
         break;
-      } else if (macro.m_name && !emstrcmp(macro.m_name, ECSTR("emacs-init"))) {
-        (void)mlinternaleval(indx);
-        break;
-      } else {
-        ++indx;
       }
     }
 
@@ -612,21 +605,16 @@ execute(int c, int n) {
     /*
      * Look in macro table.
      */
-    int indx = 0;
     for (const auto& macro : Editor::getMacros()) {
-      /* Look in macro table. */
-      if (indx == Editor::_nmactab) {
-        break;
-      } else if (macro.m_code == c) {
+      if (macro.m_code == c) {
         if (opt::display_command) {
           WDGwrite(ECSTR("%s"), macro.m_name);
         }
         Editor::_thisflag = CFUNSET;
-        status = mlinternaleval(indx);
+        status = mlinternaleval(macro.m_index);
         Editor::_lastflag = Editor::_thisflag;
         return status;
       }
-      ++indx;
     }
 
     /* Look in key table.   */

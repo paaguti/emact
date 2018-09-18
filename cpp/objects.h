@@ -1058,9 +1058,11 @@ class VARTAB {
 class MACTAB {
  public:
   MACTAB() = default;
+
+  template<typename T>
   void
-  set(int code, EMCHAR* name, int index) {
-    m_code  = code;
+  set(T code, EMCHAR* name, int index) {
+    m_code  = static_cast<int>(code);
     m_name  = name;
     m_index = index;
   }
@@ -1308,16 +1310,14 @@ class Editor {
     return &_search[0];
   }
 
-  static std::array<MACTAB, NMAX>&
+  static std::vector<MACTAB>&
   getMacros() {
-    return _mactab;
+    return _macros;
   }
 
   static std::vector<EditorCommand> _keytab;
   /* User macros table */
-  static std::array<MACTAB, NMAX> _mactab;
   static std::vector<MACTAB> _macros;
-  static int _nmactab;
   static int _thisflag;                   // Flags, this command
   static int _lastflag;                   // Flags, last command
   static int _repeat;                     // Repeat count
