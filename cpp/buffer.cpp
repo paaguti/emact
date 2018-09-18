@@ -590,9 +590,9 @@ anycb(ANYCB flag) {
 
 static EMCHAR*
 bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
-  size_t  len = (size_t)emstrlen(buffer);
+  auto len = emstrlen(buffer);
 
-  for (auto bp(BUFFER::head(); bp != nullptr; bp = bp->next()) {
+  for (auto bp(BUFFER::head()); bp != nullptr; bp = bp->next()) {
     if (len == 0 || !emstrncmp(bp->bufname(), buffer, len)) {
       WDGupdate(prompt, bp->bufname());
       switch (TTYgetc()) {
