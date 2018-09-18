@@ -235,15 +235,24 @@ MLisp::getfun() {
     }
   }
 
-  if (indx == Editor::_nmactab) {
+  (void)AttachConsole(ATTACH_PARENT_PROCESS);
+  (void)std::freopen("CON", "w", stdout);
+
+
+  printf("%d vs. %d\n", indx, Editor::_macros.size());
+
+
+  if (static_cast<size_t>(indx) == Editor::_macros.size()) {
     /*
      * It's a new macro.
      */
-    Editor::_nmactab++;
+    
+    Editor::_macros.emplace_back(MACTAB());
+    Editor::_nmactab = Editor::_macros.size();
   }
 
-  Editor::_mactab[indx].m_code = static_cast<int>(code);
-  Editor::_mactab[indx].m_name = name;
+  Editor::_mactab[indx].set(static_cast<int>(code), name, indx);
+  Editor::_macros[indx].set(static_cast<int>(code), name, indx);
 
   i = 0;
 
@@ -322,7 +331,8 @@ MLisp::getfun() {
 
   auto& macro(Editor::_mactab[indx]);
   macro.m_exec = buf;
-  macro.m_size = _msize;
+
+  Editor::_macros[indx].m_exec = buf;
 
   if (pmain) {
     (void)mlinternaleval(indx);

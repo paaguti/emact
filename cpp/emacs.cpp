@@ -64,6 +64,7 @@ int    Editor::_lastflag{CFUNSET};   // Flags, last command
 int    Editor::_nmactab{0};          // Number of user macros
 EMCHAR Editor::_search[NPAT];        // Internal search buffer
 std::array<MACTAB, NMAX> Editor::_mactab; // User macros table
+std::vector<MACTAB> Editor::_macros; // User macros table
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left

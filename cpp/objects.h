@@ -1057,10 +1057,18 @@ class VARTAB {
 
 class MACTAB {
  public:
-  int*    m_exec;  // Code
-  EMCHAR* m_name;  // Macro name
-  int     m_code;  // Key bind
-  int     m_size;  // total command length
+  MACTAB() = default;
+  void
+  set(int code, EMCHAR* name, int index) {
+    m_code  = code;
+    m_name  = name;
+    m_index = index;
+  }
+      
+  int*    m_exec{nullptr};  // Code
+  EMCHAR* m_name{nullptr};  // Macro name
+  int     m_code{0};        // Key bind
+  int     m_index{0};       // Index in macro key container.
 };
 
 /**
