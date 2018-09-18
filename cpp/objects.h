@@ -1055,7 +1055,9 @@ class VARTAB {
 #define VARname(i)    VARTAB::vartab[i].name()
 #define VARtype(i)    VARTAB::vartab[i].type()
 
+class MLisp;
 class MACTAB {
+  friend class MLisp;
  public:
   MACTAB() = default;
 
@@ -1067,6 +1069,22 @@ class MACTAB {
     m_index = index;
   }
       
+  const EMCHAR*
+  name() const noexcept {
+    return m_name;
+  }
+
+  int
+  index() const noexcept {
+    return m_index;
+  }
+
+  int
+  code() const noexcept {
+    return m_code;
+  }
+
+ private:
   int*    m_exec{nullptr};  // Code
   EMCHAR* m_name{nullptr};  // Macro name
   int     m_code{0};        // Key bind

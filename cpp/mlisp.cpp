@@ -200,16 +200,16 @@ MLisp::getfun() {
   size_t indx{0};
   if (code != SpecialForm::FUNCTION) {
     for (auto& macro : Editor::getMacros()) {
-      if (macro.m_code == static_cast<int>(SpecialForm::FREE)) {
+      if (macro.code() == static_cast<int>(SpecialForm::FREE)) {
         /*
          * Found a free slot
          */
         break;
-      } else if (macro.m_code == static_cast<int>(code)) {
+      } else if (macro.code() == static_cast<int>(code)) {
         /*
          * Found an existing slot (redefinition)
          */
-        delete[] macro.m_name;
+        delete[] macro.name();
         delete[] macro.m_exec;
         break;
       }
@@ -217,12 +217,12 @@ MLisp::getfun() {
     }
   } else {
     for (auto& macro : Editor::getMacros()) {
-      if (macro.m_code == static_cast<int>(SpecialForm::FREE)) {
+      if (macro.code() == static_cast<int>(SpecialForm::FREE)) {
         /*
          * Found a free slot
          */
         break;
-      } else if (name && !emstrcmp(macro.m_name, name)) {
+      } else if (name && !emstrcmp(macro.name(), name)) {
         /*
          * Delete previous definition
          */
@@ -315,7 +315,7 @@ MLisp::getfun() {
 
   {
     auto buf = new int[_msize + 1];
-    for (c = 0; c < _msize; c++) {
+    for (c = 0; c < _msize; ++c) {
       buf[c] = _macrotab[c];
     }
     buf[c] = 0;
@@ -389,8 +389,8 @@ MLisp::fillcommand(SpecialForm key) {
   case SpecialForm::BINDTOKEY:
     i = -1;
     for (const auto& macro : Editor::getMacros()) {
-      if (macro.m_name && !emstrcmp(macro.m_name, word)) {
-        i = macro.m_index;
+      if (macro.name() && !emstrcmp(macro.name(), word)) {
+        i = macro.index();
         break;
       }
     }
@@ -572,9 +572,9 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    */
 
   for (auto& macro : Editor::getMacros()) {
-    if (macro.m_name && !emstrcmp(s, macro.m_name)) {
-      *indx = macro.m_index;
-      return macro.m_code;
+    if (macro.name() && !emstrcmp(s, macro.name())) {
+      *indx = macro.index();
+      return macro.code();
     }
   }
 

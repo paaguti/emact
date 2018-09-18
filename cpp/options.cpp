@@ -56,8 +56,8 @@ describekey() {
   ch[1] = '\000';
 
   for (const auto& macro : Editor::getMacros()) {
-    if (macro.m_code == c) {
-      WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, macro.m_name);
+    if (macro.code() == c) {
+      WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, macro.name());
       return T;
     }
   }
@@ -169,11 +169,11 @@ help() {
 
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    auto c(macro.m_code);
+    auto c(macro.code());
     if ((c & SPCL) && c != -1) {
       continue;
     }
-    (void)emstrcpy(line, macro.m_name);
+    (void)emstrcpy(line, macro.name());
     for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
       line[i] = ' ';
     }
@@ -666,8 +666,8 @@ printcmd(int c, BUFFER* bp) {
 
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    if (macro.m_code == c) {
-      printmacro(macro.m_name, bp);
+    if (macro.code() == c) {
+      printmacro(macro.name(), bp);
       return;
     }
   }

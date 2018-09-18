@@ -467,8 +467,8 @@ Editor::engine() {
 
     for (const auto& macro : Editor::getMacros()) {
       /* Look in macro table. */
-      if (macro.m_name && !emstrcmp(macro.m_name, ECSTR("emacs-init"))) {
-        (void)mlinternaleval(macro.m_index);
+      if (macro.name() && !emstrcmp(macro.name(), ECSTR("emacs-init"))) {
+        (void)mlinternaleval(macro.index());
         break;
       }
     }
@@ -606,12 +606,12 @@ execute(int c, int n) {
      * Look in macro table.
      */
     for (const auto& macro : Editor::getMacros()) {
-      if (macro.m_code == c) {
+      if (macro.code() == c) {
         if (opt::display_command) {
-          WDGwrite(ECSTR("%s"), macro.m_name);
+          WDGwrite(ECSTR("%s"), macro.name());
         }
         Editor::_thisflag = CFUNSET;
-        status = mlinternaleval(macro.m_index);
+        status = mlinternaleval(macro.index());
         Editor::_lastflag = Editor::_thisflag;
         return status;
       }
