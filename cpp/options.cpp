@@ -25,11 +25,11 @@ static  char rcsid[] = "$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp 
 
 #include "emacs.h"
 
-static  void    getkeyname(int key, EMCHAR *buf);
-static  EMCHAR* varmatch(const EMCHAR* prompt, EMCHAR* buf);
-static  void    printcmd(int c, BUFFER* bp);
-static  void    printmacro(const EMCHAR* name, BUFFER* bp);
-static  CMD     internalfindtag(int lineno);
+static void    getkeyname(int key, EMCHAR *buf);
+static EMCHAR* varmatch(const EMCHAR* prompt, EMCHAR* buf);
+static void    printcmd(int c, BUFFER* bp);
+static void    printmacro(const EMCHAR* name, BUFFER* bp);
+static CMD     internalfindtag(int lineno);
 
 /*
  * Describe  the  next  key  or  the entire binding if RETURN is
@@ -55,10 +55,13 @@ describekey() {
   ch[0] = (EMCHAR)(c & MAX_EMCHAR);
   ch[1] = '\000';
 
-  for (auto i(0); i < Editor::_nmactab; ++i) {
+  int indx = 0;
+  for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    if (MACcode(i) == c) {
-      WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, MACname(i));
+    if (indx++ == Editor::_nmactab) {
+      break;
+    } else if (macro.m_code == c) {
+      WDGwrite(ECSTR("%s%s is bound to: %s"), meta, ch, macro.m_name);
       return T;
     }
   }
@@ -168,30 +171,36 @@ help() {
     return NIL;
   }
 
-  for (auto j(0); j < Editor::_nmactab; ++j) {
-    auto c(MACcode(j));
-    if ((c & SPCL) && c != -1) {
-      continue;
-    }
-    (void)emstrcpy(line, MACname(j));
-    for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
-      line[i] = ' ';
-    }
-    line[i] = '\0';
-    if (c != -1) {
-      getkeyname(c, meta);
-      ch[0] = (EMCHAR)(c & MAX_EMCHAR);
-      ch[1] = '\000';
-      (void)emstrcat(line, ECSTR("("));
-      (void)emstrcat(line, meta);
-      (void)emstrcat(line, ch);
-      (void)emstrcat(line, ECSTR(")"));
+  int indx = 0;
+  for (const auto& macro : Editor::getMacros()) {
+    /* Look in macro table. */
+    if (indx++ == Editor::_nmactab) {
+      break;
     } else {
-      (void)emstrcat(line, ECSTR("unbound"));
-    }
+      auto c(macro.m_code);
+      if ((c & SPCL) && c != -1) {
+        continue;
+      }
+      (void)emstrcpy(line, macro.m_name);
+      for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
+        line[i] = ' ';
+      }
+      line[i] = '\0';
+      if (c != -1) {
+        getkeyname(c, meta);
+        ch[0] = (EMCHAR)(c & MAX_EMCHAR);
+        ch[1] = '\000';
+        (void)emstrcat(line, ECSTR("("));
+        (void)emstrcat(line, meta);
+        (void)emstrcat(line, ch);
+        (void)emstrcat(line, ECSTR(")"));
+      } else {
+        (void)emstrcat(line, ECSTR("unbound"));
+      }
 
-    if (!addline(bp, line)) {
-      return NIL;
+      if (!addline(bp, line)) {
+        return NIL;
+      }
     }
   }
 
@@ -661,13 +670,16 @@ printcmd(int c, BUFFER* bp) {
 
   if (count > 1) {
     printmacro(nullptr, bp);
-    (void)emsprintf1(macline, ECSTR("   (Editor::_repeat %d"), count);
+    (void)emsprintf1(macline, ECSTR("   (repeat %d"), count);
   }
 
-  for (auto i(0); i < Editor::_nmactab; ++i) {
+  int indx = 0;
+  for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
-    if (MACcode(i) == c) {
-      printmacro(MACname(i), bp);
+    if (indx++ == Editor::_nmactab) {
+      break;
+    } else if (macro.m_code == c) {
+      printmacro(macro.m_name, bp);
       return;
     }
   }

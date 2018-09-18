@@ -385,17 +385,6 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define VARname(i)            VARTAB::vartab[i].name()
 #define VARtype(i)            VARTAB::vartab[i].type()
 
-#define MACcode(i)            Editor::_mactab[i].m_code
-#define MACname(i)            Editor::_mactab[i].m_name
-#define MACexec(i)            Editor::_mactab[i].m_exec
-#define MACsize(i)            Editor::_mactab[i].m_size
-
-/*
-extern int           MACcode(int i);
-extern const EMCHAR* MACname(int i);
-extern int           MACsize(int i);
-*/
-
 static inline bool
 self_insert(int c) {
   return (((unsigned int)c & MAX_EMCHAR) >= 0x20 && c != 0x7F);

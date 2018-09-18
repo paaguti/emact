@@ -466,10 +466,16 @@ Editor::engine() {
      *  to execute at startup.
      */
 
-    for (i = 0; i < _nmactab; ++i) {
-      if (MACname(i) && emstrcmp(MACname(i), ECSTR("emacs-init")) == 0) {
-        (void)mlinternaleval(i);
+    int indx = 0;
+    for (const auto& macro : Editor::getMacros()) {
+      /* Look in macro table. */
+      if (indx == Editor::_nmactab) {
         break;
+      } else if (macro.m_name && !emstrcmp(macro.m_name, ECSTR("emacs-init"))) {
+        (void)mlinternaleval(indx);
+        break;
+      } else {
+        ++indx;
       }
     }
 
@@ -605,16 +611,21 @@ execute(int c, int n) {
     /*
      * Look in macro table.
      */
-    for (int i(0); i < Editor::_nmactab; ++i) {
-      if (MACcode(i) == c) {
+    int indx = 0;
+    for (const auto& macro : Editor::getMacros()) {
+      /* Look in macro table. */
+      if (indx == Editor::_nmactab) {
+        break;
+      } else if (macro.m_code == c) {
         if (opt::display_command) {
-          WDGwrite(ECSTR("%s"), MACname(i));
+          WDGwrite(ECSTR("%s"), macro.m_name);
         }
         Editor::_thisflag = CFUNSET;
-        status = mlinternaleval(i);
+        status = mlinternaleval(indx);
         Editor::_lastflag = Editor::_thisflag;
         return status;
       }
+      ++indx;
     }
 
     /* Look in key table.   */

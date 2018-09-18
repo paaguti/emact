@@ -59,12 +59,11 @@ class MLisp {
   };
 
  public:
-  static bool    loadmacro(const EMCHAR* macfile);
-  static bool    eval(int expr, size_t depth);
+  static bool loadmacro(const EMCHAR* macfile);
+  static bool eval(int expr, size_t depth);
 
  private:
   static bool    getfun();
-  static void    fillmacro(int key);
   static void    fillcommand(SpecialForm key);
   static int     nextchar();
   static const EMCHAR* getword();
@@ -72,6 +71,7 @@ class MLisp {
   static EMCHAR* duplicate(const EMCHAR* s);
   static int     getcode(const EMCHAR* s, int* indx);
   static void    readerror(const EMCHAR* msg, const EMCHAR* arg);
+  static void    fillmacro(int key);
   static void    fillmacro(SpecialForm sf) {
     fillmacro(static_cast<int>(sf));
   }
@@ -157,7 +157,6 @@ MLisp::getfun() {
   int     lpar  = 0;
   auto    code = SpecialForm::NOTFOUND;
   int*    buf;
-  int     indx;
   int     c;
   int     i;
 
@@ -199,29 +198,40 @@ MLisp::getfun() {
     readerror(ECSTR("Error in macro description file: "), word);
   }
 
+  int indx = 0;
   if (code != SpecialForm::FUNCTION) {
-    for (indx = 0; indx < Editor::_nmactab; ++indx) {
-      if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
+    for (auto& macro : Editor::getMacros()) {
+      if (indx == Editor::_nmactab) {
+        break;
+     } if (macro.m_code == static_cast<int>(SpecialForm::FREE)) {
+        /*
+         * Found a free slot
+         */
+        break;
+      } else if (macro.m_code == static_cast<int>(code)) {
+        /*
+         * Found an existing slot (redefinition)
+         */
+        delete[] macro.m_name;
+        delete[] macro.m_exec;
         break;
       }
-      if (MACcode(indx) == static_cast<int>(code)) {
-        delete[] MACname(indx);
-        delete[] MACexec(indx);
-        break;
-      }
+      ++indx;
     }
   } else {
-    for (indx = 0; indx < Editor::_nmactab; ++indx) {
-      if (MACcode(indx) == static_cast<int>(SpecialForm::FREE)) {
+    for (auto& macro : Editor::getMacros()) {
+      if (indx == Editor::_nmactab) {
         break;
-      }
-      if (name && !emstrcmp(MACname(indx), name)) {
+      } if (macro.m_code == static_cast<int>(SpecialForm::FREE)) {
+        break;
+      } else if (name && !emstrcmp(macro.m_name, name)) {
         /*
          * Delete previous definition
          */
-        delete[] MACexec(indx);
+        delete[] macro.m_exec;
         break;
       }
+      ++indx;
     }
   }
 
@@ -232,8 +242,8 @@ MLisp::getfun() {
     Editor::_nmactab++;
   }
 
-  MACcode(indx) = static_cast<int>(code);
-  MACname(indx) = name;
+  Editor::_mactab[indx].m_code = static_cast<int>(code);
+  Editor::_mactab[indx].m_name = name;
 
   i = 0;
 
@@ -275,7 +285,7 @@ MLisp::getfun() {
         fillmacro(SpecialForm::UPDATE);
       } else if (!emstrcmp(word, ECSTR("insert-system-command"))) {
         fillcommand(SpecialForm::INSERTCOMMAND);
-      } else if (!emstrcmp(word, ECSTR("Editor::_repeat"))) {
+      } else if (!emstrcmp(word, ECSTR("repeat"))) {
         fillmacro(SpecialForm::REPEAT);
         word = getword();
         while (*word) {
@@ -310,13 +320,14 @@ MLisp::getfun() {
   }
   buf[c] = 0;
 
-  MACexec(indx) = buf;
-  MACsize(indx) = _msize;
+  auto& macro(Editor::_mactab[indx]);
+  macro.m_exec = buf;
+  macro.m_size = _msize;
 
   if (pmain) {
     (void)mlinternaleval(indx);
-    MACcode(indx) = static_cast<int>(SpecialForm::FREE);
-    delete[] MACexec(indx);
+    macro.m_code = static_cast<int>(SpecialForm::FREE);
+    delete[] macro.m_exec;
   }
 
   return true;
@@ -377,14 +388,14 @@ MLisp::fillcommand(SpecialForm key) {
     }
     break;
   case SpecialForm::BINDTOKEY:
-    for (i = 0; i < Editor::_nmactab; i++) {
-      if (MACname(i) && !emstrcmp(MACname(i), word)) {
+    i = 0;
+    for (const auto& macro : Editor::getMacros()) {
+      if (i == Editor::_nmactab) {
+        readerror(ECSTR("Unknown function. "), word);
+      } else if (macro.m_name && !emstrcmp(macro.m_name, word)) {
         break;
       }
-    }
-
-    if (i >= Editor::_nmactab) {
-      readerror(ECSTR("Unknown function. "), word);
+      ++i;
     }
 
     fillmacro(i);
@@ -559,11 +570,15 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
    * Look in macro table.
    */
 
-  for (auto i(0); i < Editor::_nmactab; ++i) {
-    if (MACname(i) && !emstrcmp(s, MACname(i))) {
+  int i = 0;
+  for (auto& macro : Editor::getMacros()) {
+    if (i == Editor::_nmactab) {
+      break;
+    } else if (macro.m_name && !emstrcmp(s, macro.m_name)) {
       *indx = i;
-      return MACcode(i);
+      return macro.m_code;
     }
+    ++i;
   }
 
   /*
@@ -597,7 +612,7 @@ MLisp::eval(int expr, size_t depth) {
     return false;
   }
 
-  auto bufcmd = MACexec(expr);
+  auto bufcmd = Editor::_mactab[expr].m_exec;
   auto s = T;
   auto n = 1;
 
@@ -782,11 +797,11 @@ MLisp::eval(int expr, size_t depth) {
           break;
         }
       }
-      MACcode(c) = code;
+      Editor::_mactab[c].m_code = code;
       break;
     case SpecialForm::FUNCTION:
       if (*++bufcmd == expr) {
-        bufcmd = MACexec(expr);
+        bufcmd = Editor::_mactab[expr].m_exec;
         continue;
       } else {
         while (n-- && s == T) {

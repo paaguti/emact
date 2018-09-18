@@ -958,6 +958,11 @@ class EditorCommand final {
       k_name{name} {
   }
 
+  bool
+  operator==(const EditorCommand& rhs) const noexcept {
+    return k_code == rhs.k_code;
+  }
+
   const EMCHAR*
   name() const noexcept {
     return k_name;
@@ -1295,9 +1300,15 @@ class Editor {
     return &_search[0];
   }
 
+  static std::array<MACTAB, NMAX>&
+  getMacros() {
+    return _mactab;
+  }
+
   static std::vector<EditorCommand> _keytab;
   /* User macros table */
   static std::array<MACTAB, NMAX> _mactab;
+  static std::vector<MACTAB> _macros;
   static int _nmactab;
   static int _thisflag;                   // Flags, this command
   static int _lastflag;                   // Flags, last command
