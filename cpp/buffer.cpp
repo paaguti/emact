@@ -590,12 +590,9 @@ anycb(ANYCB flag) {
 
 static EMCHAR*
 bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
-  BUFFER *bp;
   size_t  len = (size_t)emstrlen(buffer);
 
-  bp = BUFFER::head();
-
-  while (bp != nullptr) {
+  for (auto bp(BUFFER::head(); bp != nullptr; bp = bp->next()) {
     if (len == 0 || !emstrncmp(bp->bufname(), buffer, len)) {
       WDGupdate(prompt, bp->bufname());
       switch (TTYgetc()) {
@@ -610,7 +607,6 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
         return bp->bufname();
       }
     }
-    bp = bp->next();
   }
 
   complete.setStatus(Completion::Status::COMPLETE_AGAIN);
@@ -626,7 +622,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
 
 CMD
 usebuffer() {
-  BUFFER  *bp;
+  BUFFER* bp;
   CMD     s;
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
