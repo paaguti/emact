@@ -28,47 +28,6 @@ static  char rcsid[] = "$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $
 
 std::list<WINSCR*> WINSCR::_wlist;
 
-#if 0
-void
-_check(const char* file, int line, const char* msg) {
-  printf("\n\n== Checked %s %d '%s'\n", file, line, msg);
-  printf("== List size %d\n", (int)WINSCR::list().size());
-  int count = 0;
-  auto wo = WINSCR::head();
-  for (auto wp : WINSCR::list()) {
-    if (wo == nullptr) {
-      printf("wo == nullptr, iteration %d\n", count);
-    }
-
-    if (wp == nullptr) {
-      printf("wp == nullptr, iteration %d\n", count);
-    }
-
-    if (wo != wp) {
-      printf("Not the same list order, old=%p vs. new=%p iteration %d\n",
-             wo, wp, count);
-    }
-    if (wo != nullptr) {
-      wo = wo->next();
-    }
-    ++count;
-  }
-
-  if (wo != nullptr) {
-    printf("wo != nullptr, %p, iteration %d, remains:\n", wo, count);
-    while (wo != nullptr) {
-      printf(" - wo = %p iteration %d\n", wo, count++);
-      wo = wo->next();
-    }
-  }
-  printf("== Done %s %d '%s'\n", file, line, msg);
-}
-#endif
-
-/*
- * Reposition dot in the current window. Bound to "M-!"
- */
-
 WINSCR::WINSCR()
   : _ntrows{TTYnrow - 1} {
 	if (_wlist.empty()) {
@@ -81,35 +40,26 @@ WINSCR::~WINSCR() {
   disconnect();
 }
 
-CMD
-reposition() {
-  curwp->_force = Editor::_repeat;
-  curwp->setFlags(WINSCR::WFFORCE);
-  return T;
-}
-
 /*
- * Reposition  dot  in  the  middle  of  the  current window and
- * refresh the entire screen. Bound to "C-L".
+ * Pick  a  window  for  a pop-up.  Split the screen if there is
+ * only  one  window.  Pick  the uppermost window that isn't the
+ * current window.
  */
+WINSCR*
+WINSCR::popup() noexcept {
+  if (WINSCR::list().size() == 1) {
+    if (splitwind() == NIL) {
+      return nullptr;
+    }
+  }
 
-CMD
-recenter() {
-  curwp->_force = curwp->rows() / 2;
-  curwp->setFlags(WINSCR::WFFORCE);
-  redrawscreen();
+  for (auto wp : WINSCR::list()) {
+    if (wp != curwp) {
+      return wp;
+    }
+  }
 
-  return T;
-}
-
-/*
- * Refresh the entire screen. Not bound.
- */
-
-CMD
-redrawscreen() {
-  DISPLAY::garbaged();
-  return T;
+  return nullptr;
 }
 
 /*
@@ -146,7 +96,7 @@ WINSCR::resize() noexcept {
     if (wp == nullptr) {
       return false;
     } else {
-      return (wp->connect(bp) == T);
+      return wp->connect(bp);
     }
   } else {
     return true;
@@ -162,7 +112,7 @@ WINSCR::resize() noexcept {
  */
 
 void
-WINSCR::disconnect() {
+WINSCR::disconnect() noexcept {
   auto bp(this->buffer());
 
   if (bp != nullptr) {
@@ -183,8 +133,8 @@ WINSCR::disconnect() {
  * values in the buffer. This function is used internally.
  */
 
-CMD
-WINSCR::connect(BUFFER* bp) {
+bool
+WINSCR::connect(BUFFER* bp) noexcept {
   this->disconnect();
 
   if (this == curwp) {
@@ -217,19 +167,44 @@ WINSCR::connect(BUFFER* bp) {
   }
 
   BUFFER::validitycheck();
-  return T;
+  return true;
 }
 
 /*
  * Make the window pointed by wp the current window.  It restack
  * the  buffer so that it becomes on top of the list for command
- * switch-buffer or kill-buffer. Return always T.
+ * switch-buffer or kill-buffer.
  */
 
 void
-WINSCR::current() {
+WINSCR::current() noexcept {
   curwp = this;
   this->buffer()->ontop();
+}
+
+/*
+ * Reposition dot in the current window. Bound to "M-!"
+ */
+
+CMD
+reposition() {
+  curwp->_force = Editor::_repeat;
+  curwp->setFlags(WINSCR::WFFORCE);
+  return T;
+}
+
+/*
+ * Reposition  dot  in  the  middle  of  the  current window and
+ * refresh the entire screen. Bound to "C-L".
+ */
+
+CMD
+recenter() {
+  curwp->_force = curwp->rows() / 2;
+  curwp->setFlags(WINSCR::WFFORCE);
+  redrawscreen();
+
+  return T;
 }
 
 /*
@@ -273,7 +248,7 @@ prevwind() {
 /*
  * This  command makes the top window the current window.  There
  * arn't  any errors,  although the command does not do a lot if
- * there is 1 window.
+ * there is 1 window. Bount to C-XT
  */
 
 CMD
@@ -387,7 +362,7 @@ onlywind() {
 
 /*
  * Delete  current  window.  Do  nothing  if  there  is only one
- * window. Bound to C-XD or C-X0 in GNU compatible mode.
+ * window. Bound to C-X0.
  */
 
 CMD
@@ -613,28 +588,6 @@ shrinkwind() {
   adjwp->_ntrows += Editor::_repeat;
   adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
-}
-
-/*
- * Pick  a  window  for  a pop-up.  Split the screen if there is
- * only  one  window.  Pick  the uppermost window that isn't the
- * current window.
- */
-WINSCR*
-WINSCR::popup() noexcept {
-  if (WINSCR::list().size() == 1) {
-    if (splitwind() == NIL) {
-      return nullptr;
-    }
-  }
-
-  for (auto wp : WINSCR::list()) {
-    if (wp != curwp) {
-      return wp;
-    }
-  }
-
-  return nullptr;
 }
 
 /*

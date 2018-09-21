@@ -637,7 +637,7 @@ usebuffer() {
     }
   }
 
-  return curwp->connect(bp);
+  return curwp->connect(bp) ? T : NIL;
 }
 
 /*
@@ -698,7 +698,7 @@ buffercmd(int cmd) {
       }
     }
 
-    return curwp->connect(bp);
+    return curwp->connect(bp) ? T : NIL;
   case 'd':
   case 'k':
     if (curwp->line()->length() == 0) {

@@ -63,6 +63,10 @@ size_t	emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count);
 int	emmbclen(int c);
 
 /*
+ *	emacs.c
+ */
+
+/*
 int	EMCDECL main(int argc, char *argv[]);
 */
 CMD	execute(int c, int n);
@@ -93,6 +97,7 @@ CMD	switchperl();
 CMD	switchprolog();
 CMD	switchas();
 CMD	switchfortran();
+CMD	redrawscreen();
 
 /*
  *	file.c
@@ -409,7 +414,6 @@ char*   emutoa(const EMCHAR* in, char *out, int max);
 
 CMD	reposition();
 CMD	recenter();
-CMD	redrawscreen();
 CMD	nextwind();
 CMD	prevwind();
 CMD	topwind();

@@ -197,28 +197,36 @@ class WINSCR {
     return _bufp;
   }
 
+  /*
+   * Make the window pointed by wp the current window.  It restack
+   * the  buffer so that it becomes on top of the list for command
+   * switch-buffer or kill-buffer.
+   */
   void
-  current();
+  current() noexcept;
 
+  /**
+   * Disconnect  the  buffer  associated  to the window pointed by
+   * this.  If the buffer display count equals 0 (meaning that the
+   * buffer  is  no  more  displayed on the screen) then copy mark
+   * and   dot  values  in  the  buffer.  This  function  is  used
+   * internally.
+   */
   void
-  disconnect();
+  disconnect() noexcept;
 
-  CMD
-  connect(BUFFER* bp);
+  /**
+   * Connect  the  buffer  "bp" to the window pointed by "wp".  If
+   * another  window  point  to  the same buffer copy mark and dot
+   * values in the buffer. This function is used internally.
+   * @return true on success.
+   */
+  bool
+  connect(BUFFER* bp) noexcept;
 
   int
   toprow() const noexcept {
     return _toprow;
-  }
-
-  WINSCR*
-  down() const noexcept {
-    auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), this);
-    if (++it != WINSCR::list().end()) {
-      return *it;
-    } else {
-      return nullptr;
-    }
   }
 
   /**
@@ -235,8 +243,28 @@ class WINSCR {
    * @return true on success.
    */
   static bool
-  WINSCR::resize() noexcept;
+  resize() noexcept;
 
+  /**
+   * Return the window down this one in windows list or nullptr if it is
+   * the ast window.
+   * @return window down or nullptr.
+   */
+  WINSCR*
+  down() const noexcept {
+    auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), this);
+    if (++it != WINSCR::list().end()) {
+      return *it;
+    } else {
+      return nullptr;
+    }
+  }
+
+  /**
+   * Return the window above this one in windows list or nullptr if it is
+   * the last window.
+   * @return window up or nullptr.
+   */
   WINSCR*
   up() const noexcept {
     auto it = std::find(WINSCR::list().rbegin(), WINSCR::list().rend(), this);
@@ -1094,10 +1122,10 @@ class MACTAB {
 
   template<typename T>
   void
-  set(T code, EMCHAR* name, int index) {
-    m_code  = static_cast<int>(code);
-    m_name  = name;
-    m_index = index;
+  set(T keyCode, EMCHAR* cmdName, int indx) {
+    m_code  = static_cast<int>(keyCode);
+    m_name  = cmdName;
+    m_index = indx;
   }
       
   const EMCHAR*

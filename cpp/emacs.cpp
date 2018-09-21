@@ -1280,3 +1280,13 @@ latexinsert(int n, int c) {
 
   return linsert(c, n);
 }
+
+/*
+ * Refresh the entire screen. Not bound.
+ */
+
+CMD
+redrawscreen() {
+  DISPLAY::garbaged();
+  return T;
+}
