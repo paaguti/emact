@@ -410,7 +410,6 @@ char*   emutoa(const EMCHAR* in, char *out, int max);
 CMD	reposition();
 CMD	recenter();
 CMD	redrawscreen();
-CMD	resize();
 CMD	nextwind();
 CMD	prevwind();
 CMD	topwind();
@@ -423,7 +422,6 @@ CMD	enlargewind();
 CMD	shrinkwind();
 CMD	findwind();
 CMD	adjust();
-WINSCR* wpopup();
 
 /*
  *	word.c

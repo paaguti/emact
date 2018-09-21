@@ -547,7 +547,7 @@ yank() {
        * for all active buffer.
        */
 
-      for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+      for (auto wp : WINSCR::list()) {
         if (wp->buffer() == curbp) {
           wp->setFlags(WINSCR::WFFORCE);
         }

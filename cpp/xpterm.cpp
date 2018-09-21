@@ -355,7 +355,7 @@ XpTerminal::xpchangefont(int font) {
       TTYnrow = 2;
     }
     display = new DISPLAY;
-    resize();
+    (void)WINSCR::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
   } else {
     xpsetfontsize(font);
@@ -1094,7 +1094,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         TTYnrow = 2;
       }
       display = new DISPLAY;
-      resize();
+      (void)WINSCR::resize();
       display->update(DISPLAY::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);

@@ -98,7 +98,7 @@ EDLINE::dispose(EDLINE*& lp) {
 
 void
 EDLINE::free(EDLINE*& lp) {
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->topline() == lp) {
       wp->setTopline(lp->forw());
     }
@@ -151,7 +151,7 @@ lchange(int flag) {
     curbp->setChanged(true);
   }
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -178,7 +178,7 @@ notmodified() {
   curbp->setChanged(false);
   flag |= WINSCR::WFMODE;        /* update mode lines. */
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -304,7 +304,7 @@ linsert(int c, int n) {
     }
   }
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -438,7 +438,7 @@ lnewline() {
 
   lp1->setLength(lp1->length() - doto);
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -518,7 +518,7 @@ ldelete(int n, bool kflag) {
 
     dot.line()->setLength(dot.line()->length() - chunk);
 
-    for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+    for (auto wp : WINSCR::list()) {
       if (wp->line() == dot.line() && wp->pos() >= dot.pos()) {
         wp->moveDotPos(-chunk);
         if (wp->pos() < dot.pos()) {
@@ -607,7 +607,7 @@ delnewline() {
     *cp = *cp2++;
   }
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->topline() == del || wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -736,7 +736,7 @@ ltwiddle() {
 
   lchange(WINSCR::WFHARD);
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -776,7 +776,7 @@ CMD
 instoggle() {
   opt::replace_mode = !opt::replace_mode;
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     display->modeline(wp);
   }
 

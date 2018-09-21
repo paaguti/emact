@@ -681,7 +681,7 @@ X11Terminal::getEvent() {
 
     if (X11expose) {
       display = new DISPLAY;
-      resize();
+      (void)WINSCR::resize();
     }
 
     break;

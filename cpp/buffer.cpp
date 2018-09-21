@@ -72,7 +72,7 @@ BUFFER::validitycheck() {
   for (auto bp : BUFFER::list()) {
     int count = 0;
 
-    for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+    for (auto wp : WINSCR::list()) {
       if (wp->buffer() == bp) {
         count++;
       }
@@ -112,22 +112,22 @@ BUFFER::ontop() noexcept {
 
 WINSCR*
 BUFFER::show() noexcept {
-  WINSCR* wp;
   if (this->count() == 0) { /* Not on screen yet. */
-    if ((wp = wpopup()) == nullptr) {
-      return nullptr;
+    auto wp = WINSCR::popup();
+    if (wp != nullptr) {
+      (void)wp->connect(this);
     }
+    return wp;
   } else {
-    for (wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+    for (auto wp : WINSCR::list()) {
       if (wp->buffer() == this) {
-        break;
+        (void)wp->connect(this);
+        return wp;
       }
     }
   }
 
-  (void)wp->connect(this);
-
-  return wp;
+  return nullptr;
 }
 
 /*
@@ -145,7 +145,7 @@ BUFFER::updatemodes() noexcept {
 
   flag |= WINSCR::WFMODE; /* update mode lines.   */
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -209,7 +209,7 @@ BUFFER::clear() noexcept {
 
 bool
 BUFFER::usewindow() const noexcept {
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->buffer() == this) {
       wp->current();
       return true;
@@ -275,7 +275,7 @@ BUFFER::discard() noexcept {
    * containing buffer "this".
    */
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     if (wp->buffer() == this) {
       (void)wp->connect(bp1);
     }

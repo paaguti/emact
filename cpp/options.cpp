@@ -388,7 +388,7 @@ setvar() {
     break;
   }
 
-  for (auto wp = WINSCR::head(); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     display->modeline(wp);
   }
 

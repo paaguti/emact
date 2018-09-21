@@ -380,7 +380,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
     return;
   }
   
-  for (auto wp(WINSCR::head()); wp != nullptr; wp = wp->next()) {
+  for (auto wp : WINSCR::list()) {
     /*
      * Look at any window with update flags set on.
      */

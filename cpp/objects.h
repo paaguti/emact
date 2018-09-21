@@ -173,11 +173,10 @@ class Point final {
 };
 
 /*
- * There  is  a  window  structure  allocated  for  every active
- * display  window.  The windows are kept in a big list,  in top
- * to bottom screen order,  with the listhead at "wheadp".  Each
- * window  contains  its  own  values of dot and mark.  The flag
- * field  contains  some  bits that are set by commands to guide
+ * There is a window structure allocated for every active display
+ * window.  The windows are kept in a big list, in top to bottom
+ * screen order.  Each window contains its own values of dot and mark.
+ * The flag field contains some bits that are set by commands to guide
  * redisplay.
  */
 
@@ -191,12 +190,7 @@ class WINSCR {
   static constexpr uint32_t WFMODE  = 0x10; // Update mode line.
 
   WINSCR();
-  ~WINSCR() {}
-
-  WINSCR*
-  next() const noexcept {
-    return _wndp;
-  }
+  ~WINSCR();
 
   BUFFER*
   buffer() const noexcept {
@@ -215,6 +209,42 @@ class WINSCR {
   int
   toprow() const noexcept {
     return _toprow;
+  }
+
+  WINSCR*
+  down() const noexcept {
+    auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), this);
+    if (++it != WINSCR::list().end()) {
+      return *it;
+    } else {
+      return nullptr;
+    }
+  }
+
+  /**
+   * Pick  a  window  for  a pop-up.  Split the screen if there is
+   * only  one  window.
+   * @return uppermost window that isn't the current window.
+   */
+  static WINSCR*
+  popup() noexcept;
+
+  /*
+   * Redisplay  the  screen  after  a resize.  Useful on Windowing
+   * system. This command is not bound to any key stroke.
+   * @return true on success.
+   */
+  static bool
+  WINSCR::resize() noexcept;
+
+  WINSCR*
+  up() const noexcept {
+    auto it = std::find(WINSCR::list().rbegin(), WINSCR::list().rend(), this);
+    if (++it != WINSCR::list().rend()) {
+      return *it;
+    } else {
+      return nullptr;
+    }
   }
 
   /**
@@ -328,21 +358,20 @@ class WINSCR {
   friend CMD delwind();
   friend CMD splitwind();
 
+  static std::list<WINSCR*>& list() noexcept {
+    return _wlist;
+  }
+
  private:
+  static std::list<WINSCR*> _wlist;
   EDLINE*  _toplinep{nullptr};  // Top line in the window
   Point    _dot;                // Line containing "."
   Point    _mark;               // Mark point.
-  WINSCR*  _wndp{0};            // Next window
-  BUFFER*  _bufp{0};            // Buffer displayed in window
+  BUFFER*  _bufp{nullptr};      // Buffer displayed in window
   int      _toprow{0};          // Origin 0 top row of window
   int      _ntrows{0};          // # of rows of text in window
   uint32_t _flags{0};           // Flags.
   int      _force{0};           // If non-zero, forcing row.
-
-  static WINSCR* wheadp;        // Head of list of windows
-
- public:
-  static WINSCR* head() { return wheadp; }
 };
 
 /*

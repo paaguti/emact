@@ -1104,14 +1104,19 @@ loop:
 CMD
 diffwindows() {
   auto wp1 = curwp;
-  auto wp2 = curwp->next();
+  auto wp2 = wp1;
 
-  if (wp2 == nullptr) {
-    wp2 = WINSCR::head();
-    if (wp2 == wp1) {
-      WDGmessage(ECSTR("no other window"));
-      return NIL;
-    }
+  auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), curwp);
+
+  if (++it != WINSCR::list().end()) {
+    wp2 = *it;
+  } else {
+    wp2 = WINSCR::list().front();
+  }
+
+  if (wp2 == wp1) {
+    WDGmessage(ECSTR("no other window"));
+    return NIL;
   }
 
   wp1->setDot(wp1->buffer()->firstline(), 0);
@@ -1133,14 +1138,19 @@ diffwindows() {
 CMD
 comparewindows() {
   auto wp1 = curwp;
-  auto wp2 = curwp->next();
+  auto wp2 = wp1;
 
-  if (wp2 == nullptr) {
-    wp2 = WINSCR::head();
-    if (wp2 == wp1) {
-      WDGmessage(ECSTR("no other window"));
-      return NIL;
-    }
+  auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), curwp);
+
+  if (++it != WINSCR::list().end()) {
+    wp2 = *it;
+  } else {
+    wp2 = WINSCR::list().front();
+  }
+
+  if (wp2 == wp1) {
+    WDGmessage(ECSTR("no other window"));
+    return NIL;
   }
 
   const auto& dot1(wp1->getDot());
