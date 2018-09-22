@@ -124,9 +124,9 @@ class Kbdm;
  */
 class Point final {
  public:
-  explicit Point(EDLINE* line = nullptr, int pos = 0)
-    : _line{line},
-      _pos{pos} {
+  explicit Point(EDLINE* pointLine = nullptr, int pointPos = 0)
+    : _line{pointLine},
+      _pos{pointPos} {
   }
 
   ~Point() = default;
@@ -144,19 +144,19 @@ class Point final {
   }
 
   void
-  set(EDLINE* line, int pos) {
-    _line = line;
-    _pos  = pos;
+  set(EDLINE* newLine, int newPos) {
+    _line = newLine;
+    _pos  = newPos;
   }
 
   void
-  setLine(EDLINE* line) {
-    _line = line;
+  setLine(EDLINE* newLine) {
+    _line = newLine;
   }
 
   void
-  setPos(int pos) {
-    _pos  = pos;
+  setPos(int newPos) {
+    _pos  = newPos;
   }
 
   EDLINE*
@@ -319,13 +319,13 @@ class WINSCR {
   }
 
   void
-  setDot(EDLINE* line, int pos) noexcept {
-    _dot.set(line, pos);
+  setDot(EDLINE* dotLine, int dotPos) noexcept {
+    _dot.set(dotLine, dotPos);
   }
 
   void
-  setDotPos(int pos) noexcept {
-    _dot.setPos(pos);
+  setDotPos(int dotPos) noexcept {
+    _dot.setPos(dotPos);
   }
 
   void
@@ -334,8 +334,8 @@ class WINSCR {
   }
 
   void
-  setDotLine(EDLINE* line) noexcept {
-    _dot.setLine(line);
+  setDotLine(EDLINE* dotLine) noexcept {
+    _dot.setLine(dotLine);
   }
 
   /**
@@ -355,8 +355,8 @@ class WINSCR {
   }
 
   void
-  setMark(EDLINE* line, int pos) noexcept {
-    _mark.set(line, pos);
+  setMark(EDLINE* markLine, int markPos) noexcept {
+    _mark.set(markLine, markPos);
   }
 
   void
@@ -375,8 +375,8 @@ class WINSCR {
   }
 
   void
-  setTopline(EDLINE* line) {
-    _toplinep = line;
+  setTopline(EDLINE* topLine) {
+    _toplinep = topLine;
   }
 
   /*
@@ -477,8 +477,8 @@ class BUFFER {
   }
 
   void
-  setEncoding(ENCODING encoding) noexcept {
-    _wide = encoding;
+  setEncoding(ENCODING encodingMode) noexcept {
+    _wide = encodingMode;
   }
 
   static void
@@ -502,8 +502,8 @@ class BUFFER {
   }
 
   void
-  setDot(EDLINE* line, int pos) noexcept {
-    _dot.set(line, pos);
+  setDot(EDLINE* dotLine, int dotPos) noexcept {
+    _dot.set(dotLine, dotPos);
   }
 
   /**
@@ -528,8 +528,8 @@ class BUFFER {
   }
 
   void
-  setMark(EDLINE* line, int pos) noexcept {
-    _mark.set(line, pos);
+  setMark(EDLINE* markLine, int markPos) noexcept {
+    _mark.set(markLine, markPos);
   }
 
   void
@@ -596,8 +596,8 @@ class BUFFER {
   }
 
   void
-  setTime(time_t time) noexcept {
-    _time = time;
+  setTime(time_t timeVal) noexcept {
+    _time = timeVal;
   }
 
   bool
@@ -606,8 +606,8 @@ class BUFFER {
   }
 
   void
-  setBinary(bool binary) noexcept {
-    _binary = binary;
+  setBinary(bool newBinary) noexcept {
+    _binary = newBinary;
   }
 
   void
@@ -621,8 +621,8 @@ class BUFFER {
   }
 
   void
-  setPermissions(mode_t mode) noexcept {
-    _mode = mode;
+  setPermissions(mode_t newMode) noexcept {
+    _mode = newMode;
   }
 
   mode_t
@@ -1016,10 +1016,10 @@ class EditorCommand final {
   using CB = CMD (*)();
 
  public:
-  constexpr EditorCommand(int code, CB fp, const EMCHAR* name)
-    : k_code{code},
+  constexpr EditorCommand(int keyCode, CB fp, const EMCHAR* keyName)
+    : k_code{keyCode},
       k_fp{fp},
-      k_name{name} {
+      k_name{keyName} {
   }
 
   bool
@@ -1067,16 +1067,16 @@ enum EMVAR {
 class VARTAB {
  public:
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* name, EMVAR type)
+  constexpr VARTAB(T& val, EMCHAR* varName, EMVAR varType)
   : f_val{&val},
-    f_name{name},
-    f_type{type} {
+    f_name{varName},
+    f_type{varType} {
   }
 
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* name, int)
+  constexpr VARTAB(T& val, EMCHAR* varName, int)
   : f_val{&val},
-    f_name{name},
+    f_name{varName},
     f_type{STRING} {
   }
 
@@ -1197,8 +1197,8 @@ class Completion {
   }
 
   void
-  setStatus(Status status) noexcept {
-    _status = status;
+  setStatus(Status newStatus) noexcept {
+    _status = newStatus;
   }
 
  private:
