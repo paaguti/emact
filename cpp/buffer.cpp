@@ -67,19 +67,20 @@ BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
  */
 
 void
-BUFFER::validitycheck() {
+BUFFER::validitycheck(const char* msg) {
 #if defined(BUFFER_DEBUG)
   for (auto bp : BUFFER::list()) {
     int count = 0;
 
     for (auto wp : WINSCR::list()) {
       if (wp->buffer() == bp) {
-        count++;
+        ++count;
       }
     }
 
     if (count != bp->count()) {
-      printf("wrong buffer count %d vs. %d\n", count, bp->count());
+      printf("%s: wrong buffer computed count %d vs. bp->count %d\n",
+             msg, count, bp->count());
       internalerror(ECSTR("wrong buffer count"));
     }
   }

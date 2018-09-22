@@ -34,14 +34,14 @@ WINSCR::WINSCR(BUFFER* bp) noexcept
     curwp = this;
     _wlist.push_front(this);
 	}
-
 	if (bp != nullptr) {
-		connect(bp);
+		connect(bp, false);
 	}
 }
 
 WINSCR::~WINSCR() {
   disconnect();
+  _wlist.remove(this);
 }
 
 /*
@@ -138,7 +138,7 @@ WINSCR::disconnect() noexcept {
  */
 
 bool
-WINSCR::connect(BUFFER* bp) noexcept {
+WINSCR::connect(BUFFER* bp, bool check) noexcept {
   this->disconnect();
 
   if (this == curwp) {
@@ -170,7 +170,9 @@ WINSCR::connect(BUFFER* bp) noexcept {
     }
   }
 
-  BUFFER::validitycheck();
+  if (check) {
+    BUFFER::validitycheck(__func__);
+  }
   return true;
 }
 
@@ -388,7 +390,6 @@ delwind() {
   wp->_ntrows += curwp->rows() + 1;
   wp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
 
-  WINSCR::list().remove(curwp);
   delete curwp;
 
   wp->current();
@@ -410,16 +411,10 @@ splitwind() {
     return NIL;
   }
 
-  auto wp = new WINSCR;
-
-  wp->_bufp = curbp;
+  auto wp = new WINSCR{curbp};
   wp->setDot(curwp->getDot());
   wp->setMark(curwp->getMark());
   wp->setFlags(WINSCR::WFCLEAR);
-
-  /* Displayed twice. */
-
-  curbp->incr();
 
   auto ntru = (curwp->rows() - 1) / 2;         /* Upper size           */
   auto ntrl = (curwp->rows() - 1) - ntru;      /* Lower size           */

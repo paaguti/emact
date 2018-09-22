@@ -193,8 +193,15 @@ class WINSCR {
 
   /**
    * Default ctor.
+   * Create a new WINSCR object and put its pointer on top of an internal list.
+   * @param [in] bp buffer associated to this window.
    */
-  WINSCR(BUFFER* bp = nullptr) noexcept;
+  WINSCR(BUFFER* bp) noexcept;
+
+  /**
+   * destroy window and uncontitionally removes its pointer
+   * from an internal list.
+   */
   ~WINSCR();
 
   BUFFER*
@@ -224,10 +231,12 @@ class WINSCR {
    * Connect  the  buffer  "bp" to the window pointed by "wp".  If
    * another  window  point  to  the same buffer copy mark and dot
    * values in the buffer. This function is used internally.
+   * @param [in] bp buffer to connect to thsi windows.
+   * @param [in] check if true, do a sanity check on buffer count.
    * @return true on success.
    */
   bool
-  connect(BUFFER* bp) noexcept;
+  connect(BUFFER* bp, bool check = true) noexcept;
 
   int
   toprow() const noexcept {
@@ -422,11 +431,14 @@ class BUFFER {
  public:
   static constexpr size_t NBUFN{16}; // # of bytes, buffer name
 
-  /*
-   * Find  a  buffer,  by  name.  Return  a  pointer to the BUFFER
-   * structure  associated with it.  If the named buffer is found,
-   * but is a TEMP buffer (like the buffer list) conplain.  If the
-   * buffer  is  not  found and the "cflag" is T,  create it.
+  /**
+   * Find a buffer, by name.
+   * @return a pointer to the BUFFER structure associated with it.  If
+   * the named buffer is found, but is a TEMP buffer (like the buffer
+   * list) conplain.
+   * @param [in] bname buffer name
+   * @param [in] cflag if true, create the buffer if not found.
+   * @param [in] mode buffer edit mode (default EDITMODE::FUNDAMENTAL).
    */
   static BUFFER*
   find(const EMCHAR* bname,
@@ -436,6 +448,11 @@ class BUFFER {
   void
   ontop() noexcept;
 
+  /**
+   * Show  an  internal  buffer  'bp'.  If  this  buffer in not on
+   * screen,  split  the  current  window  and  display  it.
+   * @return the window that display the buffer or nullptr if it fails.
+   */
   WINSCR*
   show() noexcept;
 
@@ -482,7 +499,7 @@ class BUFFER {
   }
 
   static void
-  validitycheck();
+  validitycheck(const char* msg);
 
   static void
   updatemodes() noexcept;
