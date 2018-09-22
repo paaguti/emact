@@ -1366,27 +1366,7 @@ class Editor {
  public:
   template<typename T>
   Editor(int argc, T* argv[])
-    : _argc{argc},
-      _argv{new EMCHAR*[argc + 1]} {
-    auto cvt = [](const T* str) -> EMCHAR* {
-                 size_t len = 0;
-                 while (str[len] != 0) {
-                   ++len;
-                 }
-                 auto res = new EMCHAR[len + 1];
-
-                 for (int i = 0; i < (int)len; ++i) {
-                   res[i] = (EMCHAR)str[i];
-                 }
-                 res[len] = '\000';
-
-                 return res;
-               };
-    for (int i = 0; i < argc; ++i) {
-      _argv[i] = cvt(argv[i]);
-    }
-
-    _argv[argc] = nullptr;
+    : Editor{argc, args(argc, argv), true} {
   }
 
   ~Editor() {
@@ -1421,17 +1401,41 @@ class Editor {
   static int _lastflag;                   // Flags, last command
   static int _repeat;                     // Repeat count
   static int _curgoal;                    // Goal for C-P, C-N
+
  private:
+  Editor(int argc, EMCHAR* argv[], bool);
+
+  template<typename T>
+  EMCHAR**
+  args(int argc, T* argv[]) {
+    auto p{new EMCHAR*[argc + 1]};
+    auto cvt = [](const T* str) -> EMCHAR* {
+                 size_t len = 0;
+                 while (str[len] != 0) {
+                   ++len;
+                 }
+                 auto res = new EMCHAR[len + 1];
+
+                 for (int i = 0; i < (int)len; ++i) {
+                   res[i] = (EMCHAR)str[i];
+                 }
+                 res[len] = '\000';
+
+                 return res;
+               };
+    for (int i = 0; i < argc; ++i) {
+      p[i] = cvt(argv[i]);
+    }
+
+    p[argc] = nullptr;
+    return p;
+  }
+
   int _argc{0};
   std::unique_ptr<EMCHAR*[]> _argv{nullptr};
 
   static const EMCHAR* _name;
   static EMCHAR _search[NPAT];
 
-#if 0
-  static int repeat;                 // Repeat count
-  static int thisflag;               // Flags, this command
-  static int lastflag;               // Flags, last command
-#endif
 };
 #endif /* __OBJECTS_H */

@@ -40,7 +40,6 @@ extern void TTYopen();
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false}; // Edit flag
 
-static void    edinit(const EMCHAR* bname);
 static void    editloop();
 static bool    linenump(const EMCHAR* s);
 static int     getctl();
@@ -393,12 +392,13 @@ static bool isoset;         /* ISO 8859-1 char set          */
 
 const EMCHAR* Editor::_name{nullptr};
 
-void
-Editor::engine() {
+Editor::Editor(int argc, EMCHAR* argv[], bool)
+  : _argc{argc},
+    _argv{argv} {
+
   int     curarg   = 1;
   int     lineinit = 1;
   int     i        = 0;
-  EMCHAR  bname[BUFFER::NBUFN];
 
   Editor::_lastflag = CFUNSET;
 
@@ -414,7 +414,6 @@ Editor::engine() {
   }
 
   if (!initflag) {
-    (void)emstrcpy(bname,               BUF_SCRATCH);
     (void)emstrcpy(opt::cc_name,        ECSTR("cc"));
     (void)emstrcpy(opt::java_comp_name, ECSTR("javac"));
     (void)emstrcpy(opt::java_exec_name, ECSTR("java"));
@@ -430,10 +429,17 @@ Editor::engine() {
 
     TTYopen();
 
-    kbdm.reset();
+    /* First buffer */
+    auto bp = BUFFER::find(BUF_SCRATCH, true, EDITMODE::LISPMODE);
 
+    if (bp == nullptr) {
+      exit(0);
+    }
+
+    new WINSCR{bp}; // Allocated WINSCR is managed by an internal list.
+
+    kbdm.reset();
     display = new DISPLAY;
-    edinit(bname);
 
     if (_argc > curarg) {
       i++;
@@ -452,8 +458,6 @@ Editor::engine() {
       i++;
       (void)newfile(_argv[curarg++]);
     }
-
-    (void)curwp->connect(curbp);
 
     if (i > 2) {
       (void)listbuffers();
@@ -496,26 +500,6 @@ Editor::engine() {
   if (_argc == 1) {
     emacsversion();
   }
-
-  editloop();
-}
-
-/*
- * Initialize all of the buffers and windows. The buffer name is
- * passed down as an argument, because the main routine may have
- * been told to read in a file by default.
- */
-
-static void
-edinit(const EMCHAR* bname) {
-  /* First buffer */
-  auto bp = BUFFER::find(bname, true, EDITMODE::LISPMODE);
-
-  if (bp == nullptr) {
-    exit(0);
-  }
-
-  new WINSCR{bp}; // Allocated WINSCR is managed by an internal list.
 }
 
 /*
@@ -525,8 +509,8 @@ edinit(const EMCHAR* bname) {
 
 extern bool mpresf; // true when stuff in message line.
 
-static void
-editloop() {
+void
+Editor::engine() {
   while (editflag) {
     int n;
 

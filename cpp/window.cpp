@@ -51,13 +51,13 @@ WINSCR::~WINSCR() {
  */
 WINSCR*
 WINSCR::popup() noexcept {
-  if (WINSCR::list().size() == 1) {
+  if (_wlist.size() == 1) {
     if (splitwind() == NIL) {
       return nullptr;
     }
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : _wlist) {
     if (wp != curwp) {
       return wp;
     }
@@ -75,7 +75,7 @@ bool
 WINSCR::resize() noexcept {
   BUFFER* bp{nullptr};
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : _wlist) {
     if (wp != curwp) {
       bp = wp->buffer();
       break;
@@ -84,7 +84,7 @@ WINSCR::resize() noexcept {
 
   (void)onlywind();
 
-  auto head(WINSCR::list().front());
+  auto head(_wlist.front());
 
   if (head == nullptr) {
     return false;
@@ -161,7 +161,7 @@ WINSCR::connect(BUFFER* bp, bool check) noexcept {
     /*
      * get the current values of the window already on screen.
      */
-    for (auto wp : WINSCR::list()) {
+    for (auto wp : _wlist) {
       if (wp != curwp && wp->buffer() == bp) {
         this->setDot(wp->getDot());
         this->setMark(wp->getMark());
