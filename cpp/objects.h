@@ -125,9 +125,11 @@ class Kbdm;
 class Point final {
  public:
   explicit Point(EDLINE* line = nullptr, int pos = 0)
-    : _line(line),
-      _pos(pos) {
+    : _line{line},
+      _pos{pos} {
   }
+
+  ~Point() = default;
   Point(const Point& p) = default;
   Point& operator=(const Point& p) = default;
 
@@ -189,7 +191,10 @@ class WINSCR {
   static constexpr uint32_t WFHARD  = 0x08; // Better to a full display
   static constexpr uint32_t WFMODE  = 0x10; // Update mode line.
 
-  WINSCR();
+  /**
+   * Default ctor.
+   */
+  WINSCR(BUFFER* bp = nullptr) noexcept;
   ~WINSCR();
 
   BUFFER*

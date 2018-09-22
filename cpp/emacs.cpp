@@ -510,13 +510,12 @@ static void
 edinit(const EMCHAR* bname) {
   /* First buffer */
   auto bp = BUFFER::find(bname, true, EDITMODE::LISPMODE);
-  auto wp = new WINSCR;
 
-  if (bp == nullptr || wp == nullptr) {
+  if (bp == nullptr) {
     exit(0);
   }
 
-  (void)wp->connect(bp);
+  new WINSCR{bp}; // Allocated WINSCR is managed by an internal list.
 }
 
 /*

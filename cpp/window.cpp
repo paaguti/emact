@@ -28,11 +28,15 @@ static  char rcsid[] = "$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $
 
 std::list<WINSCR*> WINSCR::_wlist;
 
-WINSCR::WINSCR()
+WINSCR::WINSCR(BUFFER* bp) noexcept
   : _ntrows{TTYnrow - 1} {
 	if (_wlist.empty()) {
     curwp = this;
     _wlist.push_front(this);
+	}
+
+	if (bp != nullptr) {
+		connect(bp);
 	}
 }
 

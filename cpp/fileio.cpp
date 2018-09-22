@@ -730,8 +730,8 @@ ffsetaccess(const EMCHAR* fname, BUFFER* bp) {
       bp->setTime(mode.st_mtime);
 
       {
-#if defined(_POSIX_C_SOURCE)
 #if 0
+#if defined(_POSIX_C_SOURCE)
        static auto first(true);
        if (first) {
         remove("trace");
@@ -746,12 +746,12 @@ ffsetaccess(const EMCHAR* fname, BUFFER* bp) {
                (mode.st_mode & S_IWGRP) != 0,
                (mode.st_mode & S_IRGRP) != 0);
        fclose(fd);
-#endif
 #else
        printf("perm: %x UW=%d UR=%d\n",
                bp->getPermissions(),
                (mode.st_mode & S_IWUSR) != 0,
                (mode.st_mode & S_IRUSR) != 0);
+#endif
 #endif
       }
     } else {
