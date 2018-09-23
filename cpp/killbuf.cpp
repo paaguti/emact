@@ -26,16 +26,14 @@ static  char rcsid[] = "$Id: killbuf.cpp,v 1.3 2018/08/28 12:03:54 jullien Exp $
 
 #include "emacs.h"
 
-static EMCHAR* kbufp{nullptr};      // Kill buffer data
-static size_t  kused{0};            // # of bytes used in KB
-static size_t  ksize{0};            // of bytes allocated in KB
+static std::vector<EMCHAR> kvect;
 
 /**
  * return current killbuffer as a pair.
  */
-std::pair<const EMCHAR*, size_t>
+const std::pair<const EMCHAR*, size_t>
 kget() {
-  return std::pair<const EMCHAR*, size_t>(kbufp, kused);
+  return std::pair<const EMCHAR*, size_t>(kvect.data(), kvect.size());
 }
 
 /*
@@ -47,10 +45,8 @@ kget() {
 
 void
 kdelete() {
-  delete[] kbufp;
-  kbufp = nullptr;
-  kused = 0;
-  ksize = 0;
+  kvect.resize(4096);
+  kvect.clear();
 }
 
 /*
@@ -63,37 +59,7 @@ kdelete() {
 
 bool
 kinsert(int c) {
-  if (kused == ksize) {
-    static constexpr size_t KBLOCK{4096};       // Kill buffer block size
-    static constexpr size_t KMAX{1024 * 1024};  // MAX kill buufer size.
-
-    /*
-     * set newsize to KBLOCK or add 50 % if the
-     * the kill-buffer is not empty
-     */
-
-    size_t newsize;
-
-    if (ksize == 0) {
-      newsize = KBLOCK;
-    } else {
-      newsize = ksize + (ksize / 2);
-    }
-
-    if (newsize > KMAX) {
-      WDGerror(ECSTR("Kill buffer full."));
-      return false;
-    }
-
-    auto nbufp = new EMCHAR[newsize];
-    (void)std::memcpy(nbufp, kbufp, ksize * sizeof(EMCHAR));
-    delete[] kbufp;
-
-    kbufp  = nbufp;
-    ksize  = newsize;
-  }
-
-  kbufp[kused++] = (EMCHAR)c;
+  kvect.emplace_back((EMCHAR)c);
   return true;
 }
 
@@ -105,9 +71,9 @@ kinsert(int c) {
 
 int
 kremove(int n) {
-  if (kbufp == nullptr || n >= (int)kused) {
+  if (n >= (int)kvect.size()) {
     return -1;
   } else {
-    return kbufp[n];
+    return kvect[n];
   }
 }

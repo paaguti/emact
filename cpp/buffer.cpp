@@ -469,11 +469,11 @@ savebname(const EMCHAR* bname) {
   return res;
 }
 
-#define ANYHLP \
-        ECSTR("y = save, n = skip, ! = save all, . = save and exit, q = exit")
-
 CMD
 anycb(ANYCB flag) {
+  static constexpr auto ANYHLP =
+    ECSTR("y = save, n = skip, ! = save all, . = save and exit, q = exit");
+
   CMD res = NIL;
   auto alert = false;
   auto saveall = false;
@@ -483,7 +483,7 @@ anycb(ANYCB flag) {
       continue;
     }
 
-#if     defined(_IGNORE_SCRATCH)
+#if defined(_IGNORE_SCRATCH)
     if (emstrcmp(bp->bufname(), BUF_SCRATCH) == 0) {
       continue;
     }
@@ -586,9 +586,9 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
 }
 
 /*
- * Attach a buffer to a window.  The values of dot and mark come
- * from the buffer if the use count is 0.  Otherwise,  they come
- * from some other window.
+ * Attach a buffer to a window.  The values of dot and mark come from
+ * the buffer if the use count is 0.  Otherwise, they come from some
+ * other window.
  */
 
 CMD

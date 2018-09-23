@@ -200,7 +200,7 @@ CMD	instoggle();
 void	kdelete();
 bool	kinsert(int c);
 int	kremove(int n);
-std::pair<const EMCHAR*, size_t> kget();
+const std::pair<const EMCHAR*, size_t> kget();
 
 /*
  *	llemacs.c

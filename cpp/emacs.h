@@ -70,8 +70,8 @@
 #include <cstring>
 #include <climits>
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 #include <list>
 #include <array>
 #include <limits>
