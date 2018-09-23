@@ -336,10 +336,8 @@ makelist(BUFFER *blp) {
 
   (void)emstrcpy(blp->filename(), ECSTR(""));
 
-  if (!addline(blp, ECSTR(" MRBE   Size Buffer           Edit-Mode   File")) ||
-      !addline(blp, ECSTR(" ----   ---- ------           ---------   ----"))) {
-    return false;
-  }
+  EDLINE::append(blp, ECSTR(" MRBE   Size Buffer           Edit-Mode   File"));
+  EDLINE::append(blp, ECSTR(" ----   ---- ------           ---------   ----"));
 
   for (auto bp : BUFFER::list()) {
     cp1 = &line[0];                 /* Start at left edge   */
@@ -439,9 +437,7 @@ makelist(BUFFER *blp) {
     }
 
     *cp1 = '\0';
-    if (!addline(blp, line)) {
-      return false;
-    }
+    EDLINE::append(blp, line);
   }
   return true;
 }
@@ -827,7 +823,7 @@ buffercmd(int cmd) {
         asked++;
         if (bp->discard()) {
           (void)gotobol();
-          (void)ldelete(curwp->line()->length() + 1);
+          (void)EDLINE::ldelete(curwp->line()->length() + 1);
           lchange(WINSCR::WFEDIT);
           (void)backline();
           (void)gotobol();

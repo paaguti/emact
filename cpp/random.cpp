@@ -192,11 +192,10 @@ quotechar() {
   int  c;
 
   if ((c = TTYgetc()) == '\n') {
-    CMD s;
-    while ((s = lnewline()) == T && --n) {
+    while (EDLINE::newline() && --n) {
       continue;
     }
-    return s;
+    return T;
   }
   return linsert(c, n) ? T : NIL;
 }
@@ -279,7 +278,7 @@ openline() {
       }
     }
 
-    if (lnewline() != T) {
+    if (!EDLINE::newline()) {
       return NIL;
     }
   }
@@ -354,8 +353,8 @@ newline() {
       if ((s = forwchar()) != T) {
         return s;
       }
-    } else if ((s = lnewline()) != T) {
-      return s;
+    } else if (!EDLINE::newline()) {
+      return NIL;
     }
   }
   return T;
@@ -391,7 +390,7 @@ deblank() {
 
   curwp->setDot(lp1->forw(), 0);
 
-  return ldelete(nld) ? T : NIL;
+  return EDLINE::ldelete(nld) ? T : NIL;
 }
 
 /*
@@ -403,7 +402,7 @@ deblank() {
 
 CMD
 forwdel() {
-  return ldelete(Editor::_repeat) ? T : NIL;
+  return EDLINE::ldelete(Editor::_repeat) ? T : NIL;
 }
 
 /*
@@ -442,7 +441,7 @@ backdel() {
        */
 
       if (backchar() == T) {
-        (void)ldelete(1);
+        (void)EDLINE::ldelete(1);
       }
 
       pos = getccol();
@@ -458,7 +457,7 @@ backdel() {
   }
 
   if (backchar() == T) {
-    return ldelete(Editor::_repeat) ? T : NIL;
+    return EDLINE::ldelete(Editor::_repeat) ? T : NIL;
   } else {
     return NIL;
   }
@@ -491,7 +490,7 @@ killtext() {
     chunk = 1;
   }
 
-  return ldelete(chunk, true) ? T : NIL;
+  return EDLINE::ldelete(chunk, true) ? T : NIL;
 }
 
 /*
@@ -499,7 +498,7 @@ killtext() {
  * the work is done by the standard insert routines.  All you do is
  * run the loop, and check for errors.  Bound to "C-Y".  The blank
  * lines are inserted with a call to "newline" instead of a call to
- * "lnewline" so that the magic stuff that happens when you
+ * "EDLINE::newline" so that the magic stuff that happens when you
  * type a carriage return also happens when a carriage return is
  * yanked back from the kill buffer.  As a special case we check if
  * yank is done at the end of buffer.  If so, insert push a new line
@@ -522,7 +521,7 @@ yank() {
 
     for (auto i = 0; (c = kremove(i)) >= 0; ++i) {
       if (c == '\n') {
-        if (lnewline() == NIL) {
+        if (!EDLINE::newline()) {
           return NIL;
         }
       } else if (!linsert(c)) {
@@ -669,7 +668,7 @@ addprefix() {
 
   while ((curwp->pos() < curwp->line()->length())
          && lgetdot() == ' ') {
-    (void)ldelete(1);
+    (void)EDLINE::ldelete(1);
   }
 
   return T;
@@ -697,7 +696,7 @@ fillparagraph() {
 
   curwp->setDotPos(0);
   if (prefixlinep(curwp->line(), len)) {
-    (void)ldelete(len);
+    (void)EDLINE::ldelete(len);
   }
 
   /*
@@ -707,9 +706,9 @@ fillparagraph() {
   while (curwp->line()->forw()->length() > len
          && prefixlinep(curwp->line()->forw(), len)) {
     (void)gotoeol();
-    (void)ldelete(1);
+    (void)EDLINE::ldelete(1);
     (void)linsert(' ');
-    (void)ldelete(len);
+    (void)EDLINE::ldelete(len);
   }
 
   /*
@@ -732,7 +731,7 @@ fillparagraph() {
         if (lgetdot() != ' ') {
           break;
         }
-        (void)ldelete(1);
+        (void)EDLINE::ldelete(1);
       }
     }
   }

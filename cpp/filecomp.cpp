@@ -327,21 +327,23 @@ diredbuffer(const EMCHAR* fname) {
 
   int nfiles = 0;
 
-  while ((dp = readdir(dirp)) != nullptr) {
-    (void)emstrcpy(buf, mark);
-    (void)emstrcat(buf, fname);
-    if (!rootp) {
-      (void)emstrcat(buf, ECSTR("/"));
-    }
-    (void)emstrcat(buf, caseconvert(emgetdirentry(dp)));
+  try {
+    while ((dp = readdir(dirp)) != nullptr) {
+      (void)emstrcpy(buf, mark);
+      (void)emstrcat(buf, fname);
+      if (!rootp) {
+        (void)emstrcat(buf, ECSTR("/"));
+      }
+      (void)emstrcat(buf, caseconvert(emgetdirentry(dp)));
     
-    if (!addline(bp, buf)) {
-      (void)closedir(dirp);
-      return false;
-    }
+      EDLINE::append(bp, buf);
 
-    ++nfiles;
-  }
+      ++nfiles;
+    }
+	} catch(...) {
+    (void)closedir(dirp);
+    return false;
+	}
 
   (void)closedir(dirp);
   (void)curwp->connect(bp);
@@ -431,7 +433,7 @@ diredcmd(int c) {
         if (removefile(pfname, true)) {
           removed++;
           (void)gotobol();
-          (void)ldelete(curwp->line()->length() + 1);
+          (void)EDLINE::ldelete(curwp->line()->length() + 1);
           (void)backline();
         }
 

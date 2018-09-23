@@ -197,7 +197,7 @@ unindent(int c, bool f) {
 
   while (curwp->pos() > 0) {
     if (!separatorp(curwp->line()->get(curwp->pos() - 1))) {
-      if (lnewline() == NIL) {
+      if (!EDLINE::newline()) {
         return false;
       } else {
         break;
@@ -727,7 +727,7 @@ indent() {
     switch (clp->get(i - 1)) {
     case '-' :
       if (i >= 2 && clp->get(i - 2) == ':') {
-        if (lnewline() != NIL) {
+        if (EDLINE::newline()) {
           return linsert('\t') ? T : NIL;
         } else {
           return NIL;
@@ -735,7 +735,7 @@ indent() {
       }
       break;
     case '.' :
-      return lnewline();
+      return EDLINE::newline() ? T : NIL;
     }
     break;
   default:

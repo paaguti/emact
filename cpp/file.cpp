@@ -851,7 +851,7 @@ savetime() {
                        (nt->tm_mday) % 100);
 
       curwp->setDot(lp, i);
-      (void)ldelete(datelen);
+      (void)EDLINE::ldelete(datelen);
 
       for (auto j = 0; sdate[j]; ++j) {
         (void)linsert(sdate[j]);

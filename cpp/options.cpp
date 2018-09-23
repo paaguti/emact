@@ -128,9 +128,7 @@ help() {
     return NIL;
   }
 
-  if (!addline(bp, ECSTR("===== Standard key definition ====="))) {
-    return NIL;
-  }
+  EDLINE::append(bp, ECSTR("===== Standard key definition ====="));
 
   for (const auto& ktp : Editor::_keytab) {
     auto c(ktp.code());
@@ -158,14 +156,10 @@ help() {
         (void)emstrcat(line, ECSTR(")"));
       }
     }
-    if (!addline(bp, line)) {
-      return NIL;
-    }
+    EDLINE::append(bp, line);
   }
 
-  if (!addline(bp, ECSTR("====== User macro definition ======"))) {
-    return NIL;
-  }
+  EDLINE::append(bp, ECSTR("====== User macro definition ======"));
 
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
@@ -190,14 +184,10 @@ help() {
       (void)emstrcat(line, ECSTR("unbound"));
     }
 
-    if (!addline(bp, line)) {
-      return NIL;
-    }
+    EDLINE::append(bp, line);
   }
 
-  if (!addline(bp, ECSTR("===== Customer variable value ====="))) {
-    return NIL;
-  }
+  EDLINE::append(bp, ECSTR("===== Customer variable value ====="));
 
   for (const auto& vtp : VARTAB::vartab) {
     (void)emstrcpy(line, vtp.name());
@@ -225,9 +215,7 @@ help() {
       (void)emstrcat(line, ECSTR("\""));
     }
 
-    if (!addline(bp, line)) {
-      return NIL;
-    }
+    EDLINE::append(bp, line);
   }
 
   (void)bp->show();
@@ -624,7 +612,7 @@ printmacro(const EMCHAR* name, BUFFER* bp) {
       (void)emstrcat(macline, ECSTR("\")"));
     }
 
-    (void)addline(bp, macline);
+    EDLINE::append(bp, macline);
   }
 
   if (name) {
@@ -642,7 +630,7 @@ printmacro(const EMCHAR* name, BUFFER* bp) {
       (void)emstrcat(macline, ECSTR(")"));
     }
 
-    (void)addline(bp, macline);
+    EDLINE::append(bp, macline);
   }
 
   instringp = false;
@@ -729,9 +717,7 @@ uncompile() {
     return NIL;
   }
 
-  if (!addline(bp, ECSTR("(defun current-macro ()"))) {
-    return NIL;
-  }
+  EDLINE::append(bp, ECSTR("(defun current-macro ()"));
 
   kbdm.startPlaying();
   while ((c = kbdm.play()) != (CTLX|')')) {
@@ -746,9 +732,7 @@ uncompile() {
   kbdm.stopPlaying();
   printmacro(nullptr, bp);
 
-  if (!addline(bp, ECSTR(")"))) {
-    return NIL;
-  }
+  EDLINE::append(bp, ECSTR(")"));
 
   (void)bp->show();
 

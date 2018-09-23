@@ -321,7 +321,7 @@ subst(int length, const EMCHAR* newstr) {
 
   for (; *newstr; ++newstr) {
     if (*newstr == '\n') {
-      (void)lnewline();
+      (void)EDLINE::newline();
     } else {
       (void)linsert(*newstr);
     }

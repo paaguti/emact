@@ -857,13 +857,56 @@ class EDLINE {
   void
   remove(EDLINE* line);
 
+   /**
+   * Insert a newline into the buffer at the current location of dot in
+   * the current window.  The funny ass-backwards way it does things is
+   * not a botch; it just makes the last line in the file not a special
+   * case.
+   * @return true if everything works out and false on error
+   * (memory allocation failure).
+   */
+  static bool
+  newline() noexcept;
+
   /**
    * swap current line with line argument.
    */
   void
   swap(EDLINE* line);
 
+  /**
+   * This function deletes "n" bytes, starting at dot.  It understands
+   * how do deal with end of lines, etc.
+   * @param [in] n number of character to delete.
+   * @param [in] kflag if true, text should be put in the kill buffer.
+   * @return true if  all of the characters were deleted, and false
+   * if they were not (because dot ran into the end of the buffer).
+   */
+  static bool
+	ldelete(int n, bool kflag = false);
+
+  /**
+   * Append this line to the buffer. Handcraft the EOL on the end.
+	 * @param [in] bp buffer.
+	 * @param [in] text points to a string to append.
+   */
+  static void
+  append(BUFFER* bp, const EMCHAR* text);
+
  private:
+  /*
+   * Delete  a newline.  Join the current line with the next line.
+   * If  the  next  line is the magic header line always return true;
+   * merging  the last line with the header line can be thought of
+   * as  always  being a successful operation,  even if nothing is
+   * done,  and  this  makes  the  kill buffer work "right".  Easy
+   * cases  can  be  done  by  shuffling  data around.  Hard cases
+   * require  that  lines be moved about in memory.
+	 * Called by "ldelete" only.
+	 * @return false on error and true if all looks ok. 
+   */
+	static bool delnewline();
+
   EMCHAR* l_text; // A bunch of characters.
   EDLINE* l_fp;   // Link to the next line
   EDLINE* l_bp;   // Link to the previous line
