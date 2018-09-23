@@ -522,7 +522,7 @@ Editor::engine() {
       auto mflag = false;
       n = 4;
       WDGwrite(ECSTR("Arg: 4"));
-      while (((c=getkey())>='0' && c<='9') || c==(Ctrl|'U')) {
+      while (((c = getkey()) >= '0' && c<= '9') || c == (Ctrl|'U')) {
         if (c == (Ctrl|'U')) {
           n *= 4;
         } else {
@@ -643,13 +643,13 @@ execute(int c, int n) {
 
     auto emode(curbp->editMode());
 
-    if ((c=='}') &&
+    if ((c == '}') &&
         (emode == EDITMODE::CMODE      ||
          emode == EDITMODE::CPPMODE    ||
          emode == EDITMODE::CSHARPMODE ||
          emode == EDITMODE::PERLMODE   ||
          emode == EDITMODE::JAVAMODE)) {
-      status   = (unindent(c) ? T : NIL);
+      status = (unindent(c) ? T : NIL);
       Editor::_lastflag = Editor::_thisflag;
       return status;
     }

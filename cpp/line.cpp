@@ -130,6 +130,77 @@ EDLINE::free(EDLINE*& lp) {
   dispose(lp);
 }
 
+void
+EDLINE::swap(EDLINE* lp2) {
+  if (this != curbp->lastline()) {
+    lp2->l_fp        = this->l_fp;
+    this->l_fp->l_bp = lp2;
+    this->l_fp       = lp2;
+  } else {
+    lp2->l_fp = curbp->firstline();
+  }
+
+  this->l_bp      = lp2->back();
+  lp2->l_bp->l_fp = this;
+  lp2->l_bp       = this;
+}
+
+void
+EDLINE::remove(EDLINE* line) {
+  this->l_fp  = line->l_fp;
+  line->l_fp->l_bp = this;
+  EDLINE::dispose(line);
+}
+
+/*
+ * Return  the  position  of  last  character in the line 'line'
+ * expanding tabs to the current tab_display value.
+ */
+
+int
+EDLINE::position() const noexcept {
+  auto str  = this->text();
+  auto lmax = this->length();
+  int  col  = 0;
+
+  for (int i = 0; i < lmax; i++) {
+    if (*str++ == '\t') {
+      do {
+        ++col;
+      } while (col % opt::tab_display);
+    } else {
+      ++col;
+    }
+  }
+
+  return col;
+}
+
+/*
+ * Returns  the  left  margin  of  a  given line up to the 'max'
+ * position. Tabs are expanded to spaces.
+ */
+
+int
+EDLINE::leftmargin() const noexcept {
+  int  ncol = 0;
+  auto max  = this->length();
+
+  for (auto buf(this->text()); max-- > 0 && separatorp(*buf); ++buf) {
+    if (*buf == '\t') {
+      do {
+        ++ncol;
+      } while (ncol % opt::tab_display);
+    } else {
+      if (!self_insert(*buf)) {
+        ++ncol;
+      }
+      ++ncol;
+    }
+  }
+  return ncol;
+}
+
 /*
  * This  routine  gets  called  when  a  character is changed in
  * place  in the current buffer.  It updates all of the required
@@ -364,28 +435,6 @@ lreplace(int c, int n) {
 
   lchange(WINSCR::WFHARD);
   return true;
-}
-
-void
-EDLINE::swap(EDLINE* lp2) {
-  if (this != curbp->lastline()) {
-    lp2->l_fp        = this->l_fp;
-    this->l_fp->l_bp = lp2;
-    this->l_fp       = lp2;
-  } else {
-    lp2->l_fp = curbp->firstline();
-  }
-
-  this->l_bp      = lp2->back();
-  lp2->l_bp->l_fp = this;
-  lp2->l_bp       = this;
-}
-
-void
-EDLINE::remove(EDLINE* line) {
-  this->l_fp  = line->l_fp;
-  line->l_fp->l_bp = this;
-  EDLINE::dispose(line);
 }
 
 /*
@@ -663,55 +712,6 @@ addline(BUFFER* bp, const EMCHAR* text) {
   }
 
   return true;
-}
-
-/*
- * Return  the  position  of  last  character in the line 'line'
- * expanding tabs to the current tab_display value.
- */
-
-int
-EDLINE::position() const noexcept {
-  auto str  = this->text();
-  auto lmax = this->length();
-  int  col  = 0;
-
-  for (int i = 0; i < lmax; i++) {
-    if (*str++ == '\t') {
-      do {
-        ++col;
-      } while (col % opt::tab_display);
-    } else {
-      ++col;
-    }
-  }
-
-  return col;
-}
-
-/*
- * Returns  the  left  margin  of  a  given line up to the 'max'
- * position. Tabs are expanded to spaces.
- */
-
-int
-EDLINE::leftmargin() const noexcept {
-  int  ncol = 0;
-  auto max  = this->length();
-
-  for (auto buf(this->text()); max-- > 0 && separatorp(*buf); ++buf) {
-    if (*buf == '\t') {
-      do {
-        ++ncol;
-      } while (ncol % opt::tab_display);
-    } else {
-      if (!self_insert(*buf)) {
-        ++ncol;
-      }
-      ++ncol;
-    }
-  }
-  return ncol;
 }
 
 /*

@@ -1223,10 +1223,9 @@ class Completion {
   Callback _fn;
 };
 
-/*
- *	display.c
+/**
+ * Class that handles display.
  */
-
 class DISPLAY {
  public:
   enum class Mode {
@@ -1245,8 +1244,8 @@ class DISPLAY {
   void tidy() const noexcept;
   const EMCHAR* text(int y) const noexcept;
   void update(DISPLAY::Mode mode = Mode::DELTA);
-  void statputc(int n, int c);
-  void modeline(WINSCR* wp);
+  void statputc(int n, int c) const noexcept;
+  void modeline(const WINSCR* wp) noexcept;
   static void garbaged() { _sgarbf = Sync::GARBAGE; }
   static void synchronized() { _sgarbf = Sync::SYNCHRONIZED; }
   static void exposed() { _sgarbf = Sync::EXPOSE; }
@@ -1258,12 +1257,13 @@ class DISPLAY {
 
  private:
   void refresh(WINSCR* wp);
+  static void computecursor();
+  static void updateline(int row, EMCHAR* vline, EMCHAR* pline);
 };
 
-/*
- *	Header for mouse driver (if any).
+/**
+ * Class for mouse driver (if any).
  */
-
 class MEvent {
  public:
   static constexpr auto SHIFTBUTTON = 0x10;

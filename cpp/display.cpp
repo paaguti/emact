@@ -29,9 +29,6 @@ static  char rcsid[] = "$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp 
 
 #include "emacs.h"
 
-static void computecursor();
-static void updateline(int row, EMCHAR* vline, EMCHAR* pline);
-
 Terminal* tt{nullptr};
 
 bool          DISPLAY::_mouse{false}; // Mouse flag
@@ -42,10 +39,9 @@ DISPLAY::Sync DISPLAY::_sgarbf{DISPLAY::Sync::GARBAGE};
 
 extern const EMCHAR* version;           /* Current version              */
 
-/*
- *VIDEO structure used by redisplay.
+/**
+ * VIDEO structure used by redisplay.
  */
-
 class VIDEO {
  public:
   bool    changed; // Flags
@@ -67,6 +63,7 @@ class VIDEO {
   EMCHAR get(int n) {
     return text[n];
   }
+
   void putc(int n, EMCHAR c) {
     text[n] = c;
   }
@@ -145,9 +142,6 @@ VIDEO** VIDEO::pscreen{nullptr};
 #define FOOTCHAR        '-'
 #define VERSION_LENGTH  6       /* the six letters  'E' 'm' 'A' 'C' 'T' ':' */
 
-long    current_row;                   /* Current row text position    */
-long    current_col;                   /* Current col text position    */
-
 /*
  * Initialize the data structures used by the display code.  The edge
  * vectors used to access the screens are set up.  The operating
@@ -221,48 +215,48 @@ DISPLAY::tidy() const noexcept {
 }
 
 void
-DISPLAY::statputc(int n, int c) {
+DISPLAY::statputc(int n, int c) const noexcept {
   if (n < TTYncol) {
     VIDEO::vscreen[TTYnrow]->putc(n, (EMCHAR)c);
     VIDEO::vscreen[TTYnrow]->changed = true;
   }
 }
 
-static void
-computecursor() {
+void
+DISPLAY::computecursor() {
   const auto* lp = curwp->topline();
-  DISPLAY::_currow = curwp->toprow();
+  _currow = curwp->toprow();
   
   const auto& dot(curwp->getDot());
   const auto clp(dot.line());
   const auto cbo(dot.pos());
 
   while (lp != clp) {
-    ++DISPLAY::_currow;
+    ++_currow;
     lp = lp->forw();
   }
   
-  DISPLAY::_curcol = 0;
+  _curcol = 0;
   
   for (int i(0); i < cbo; ++i) {
     auto c = lp->get(i);
     if (c == '\t') {
       do {
-        ++DISPLAY::_curcol;
-      } while (DISPLAY::_curcol % opt::tab_display);
+        ++_curcol;
+      } while (_curcol % opt::tab_display);
     } else {
       if (!opt::set_show_graphic && !self_insert(c)) {
-        ++DISPLAY::_curcol;
+        ++_curcol;
       }
-      ++DISPLAY::_curcol;
+      ++_curcol;
     }
   }
   
-  if (DISPLAY::_curcol >= TTYncol) {
-    DISPLAY::_curcol = TTYncol - 1;
+  if (_curcol >= TTYncol) {
+    _curcol = TTYncol - 1;
   }
   
-  DISPLAY::_curchar = VIDEO::vscreen[DISPLAY::_currow]->get(DISPLAY::_curcol);
+  _curchar = VIDEO::vscreen[_currow]->get(_curcol);
 }
 
 /*
@@ -395,9 +389,9 @@ DISPLAY::update(DISPLAY::Mode mode) {
    */
   
   if (mode == Mode::MINIBUF) {
-    DISPLAY::_curcol = mlcursor(); // minibuf cursor position.
-    DISPLAY::_currow = TTYnrow;
-    DISPLAY::_curchar = ' ';
+    _curcol = mlcursor(); // minibuf cursor position.
+    _currow = TTYnrow;
+    _curchar = ' ';
   } else {
     computecursor();
   }
@@ -452,7 +446,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
    * buffers
    */
   
-  TTYmove(DISPLAY::_currow, DISPLAY::_curcol);
+  TTYmove(_currow, _curcol);
   TTYflush();
 }
 
@@ -462,8 +456,8 @@ DISPLAY::update(DISPLAY::Mode mode) {
  * variables.
  */
 
-static void
-updateline(int row, EMCHAR* nline, EMCHAR* pline) {
+void
+DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 #if defined(_UNICODE)
   int     stflag;
 #if defined(_POSIX_C_SOURCE)
@@ -596,7 +590,7 @@ updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 }
 
 void
-DISPLAY::modeline(WINSCR* wp) {
+DISPLAY::modeline(const WINSCR* wp) noexcept {
   EMCHAR  buf[8];
   int     i;
   
@@ -718,10 +712,8 @@ DISPLAY::modeline(WINSCR* wp) {
     modeputs(buf);
     
     if (curlen == 0L) {
-      current_row = maxlen;
       modeputs(ECSTR("(100%)"));
     } else {
-      current_row = curlen;
       auto average = (int)((curlen * 100) / maxlen);
       modeputc('(');
       modeputc((EMCHAR)(average / 10 + (int)'0'));
