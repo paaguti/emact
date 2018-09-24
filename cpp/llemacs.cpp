@@ -88,7 +88,7 @@ llembol(EMCHAR* buf) {
 int
 llemeol(EMCHAR *buf, int n) {
 
-  while (n-- && linsert(*buf++) == T) {
+  while (n-- && EDLINE::linsert(*buf++) == T) {
     continue;
   }
 

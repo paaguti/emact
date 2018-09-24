@@ -393,7 +393,7 @@ diredcmd(int c) {
       lp->put(0, 'D');
     }
 
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
     (void)forwline();
 
     curbp->setReadonly(true);
@@ -505,7 +505,7 @@ diredcmd(int c) {
     if (backline() == T && gotobol() == T && lp->get(0) == 'D') {
       curbp->setReadonly(false);
       curwp->line()->put(0, ' ');
-      lchange(WINSCR::WFEDIT);
+      BUFFER::change(WINSCR::WFEDIT);
       curbp->setReadonly(true);
       curbp->setChanged(false);
     }

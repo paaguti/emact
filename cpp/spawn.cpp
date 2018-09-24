@@ -158,7 +158,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         display->update();
         break;
       default:
-        (void)linsert(c);
+        (void)EDLINE::linsert(c);
       }
     }
 
@@ -470,7 +470,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin((EMCHAR*)SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
   }
 
   TTYrawmode();
@@ -556,7 +556,7 @@ sed() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
   }
 
   TTYrawmode();
@@ -621,7 +621,7 @@ perl() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin((EMCHAR*)SHELLTEMP);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
   }
 
   TTYrawmode();

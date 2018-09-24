@@ -186,9 +186,6 @@ CMD	justonespace();
  *	line.c
  */
 
-void	lchange(int flag);
-bool	linsert(int c, int n = 1);
-bool	lreplace(int c, int n = 1);
 CMD	notmodified();
 CMD	ltwiddle();
 CMD	instoggle();

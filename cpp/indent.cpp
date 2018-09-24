@@ -54,11 +54,11 @@ nexttab(int col) {
       curbp->editMode() == EDITMODE::CSHARPMODE ||
       curbp->editMode() == EDITMODE::LISPMODE   ||
       curbp->editMode() == EDITMODE::JAVAMODE) {
-    return linsert(' ', col);
+    return EDLINE::linsert(' ', col);
   }
 
-  if (((i = col / opt::tab_display) != 0 && linsert('\t', i) == false) ||
-      ((i = col % opt::tab_display) != 0 && linsert(' ', i) == false)) {
+  if (((i = col/opt::tab_display) != 0 && EDLINE::linsert('\t', i) == false) ||
+      ((i = col%opt::tab_display) != 0 && EDLINE::linsert(' ', i) == false)) {
     return false;
   } else {
     return true;
@@ -76,7 +76,7 @@ nextcindent() {
 
   auto llflag = (curwp->line() == curbp->lastline());
 
-  (void)linsert('}');
+  (void)EDLINE::linsert('}');
 
   const auto& dot(curwp->getDot());
   auto oclp = dot.line();
@@ -182,17 +182,17 @@ unindent(int c, bool f) {
   auto max(curwp->pos());
 
   if (max > 1 && curwp->line()->get(max - 1) == '\'') {
-    return linsert(c);
+    return EDLINE::linsert(c);
   }
 
-  if (linsert(c) != true || automatch(c, f) != true || backdel() != T) {
+  if (EDLINE::linsert(c) != true || automatch(c, f) != true || backdel() != T) {
     return false;
   }
 
   if ((indentp == curwp->line())
       && (max > 1)
       && curwp->line()->get(max - 1) != '{') {
-    return linsert(c);
+    return EDLINE::linsert(c);
   }
 
   while (curwp->pos() > 0) {
@@ -213,7 +213,7 @@ unindent(int c, bool f) {
     return false;
   }
 
-  return linsert(c);
+  return EDLINE::linsert(c);
 }
 
 /*
@@ -728,7 +728,7 @@ indent() {
     case '-' :
       if (i >= 2 && clp->get(i - 2) == ':') {
         if (EDLINE::newline()) {
-          return linsert('\t') ? T : NIL;
+          return EDLINE::linsert('\t') ? T : NIL;
         } else {
           return NIL;
         }
@@ -920,7 +920,7 @@ justonespace() {
     (void)backchar();
     if ((c = lgetdot()) != ' ' && c != '\t') {
       (void)forwchar();
-      (void)linsert(' ');
+      (void)EDLINE::linsert(' ');
       return T;
     }
   }
@@ -935,7 +935,7 @@ justonespace() {
     (void)forwchar();
   }
 
-  (void)linsert(' ');
+  (void)EDLINE::linsert(' ');
 
   while ((curwp->pos() < curwp->line()->length()) &&
          ((c = lgetdot()) == ' ' || c == '\t')) {

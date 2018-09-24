@@ -595,7 +595,7 @@ ansitooem() {
     NTansitooem(lp);
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   return T;
 }
@@ -612,7 +612,7 @@ oemtoansi() {
     NToemtoansi(lp);
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   return T;
 }
@@ -669,7 +669,7 @@ mactoansi() {
     }
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   return T;
 }
@@ -854,7 +854,7 @@ savetime() {
       (void)EDLINE::ldelete(datelen);
 
       for (auto j = 0; sdate[j]; ++j) {
-        (void)linsert(sdate[j]);
+        (void)EDLINE::linsert(sdate[j]);
       }
 
       if (!atline) {
@@ -1050,7 +1050,7 @@ fileinsert() {
        */
 
       for (int i = 0; i < nbytes; ++i) {
-        (void)linsert(line[i]);
+        (void)EDLINE::linsert(line[i]);
       }
 
       /*
@@ -1099,7 +1099,7 @@ fileinsert() {
   }
 
   curwp->setDot(dot);
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   return (res == FIOERR) ? NIL : T;
 }

@@ -199,6 +199,183 @@ EDLINE::leftmargin() const noexcept {
 }
 
 /*
+ * Insert  "n"  copies  of  the  character  "c"  at  the current
+ * location  of  dot.  In  the easy case all that happens is the
+ * text  is stored in the line.  In the hard case,  the line has
+ * to  be  reallocated.  When  the window list is updated,  take
+ * special care; I screwed it up once.  You always update dot in
+ * the  current  window.  You update mark,  and a dot in another
+ * window,  if  it  is  greater than the place where you did the
+ * insert. Return true if all is well, and false on errors.
+ */
+
+bool
+EDLINE::linsert(int c, int n) {
+  extern Point found;
+
+  if (curbp->readonly()) {
+    if (curbp->editMode() == EDITMODE::BUFFERMODE) {
+      return buffercmd(c) == T;
+    }
+
+    if (curbp->editMode() == EDITMODE::DIRED) {
+      return diredcmd(c) == T;
+    }
+  }
+
+  if (freadonly()) {
+    return false;
+  }
+
+  BUFFER::change(WINSCR::WFEDIT);
+
+  if (c > 0xFF && curbp->encoding() == ENCODING::EMASCII) {
+    curbp->setEncoding(ENCODING::EMUTF16);
+    BUFFER::updatemodes();
+  }
+
+  auto lp1 = curwp->line();
+  EDLINE* lp2;
+
+  if (lp1 == curbp->lastline()) {
+    /*
+     * At the end: special
+     */
+
+    if (curwp->pos() != 0) {
+      internalerror(ECSTR("pos() != 0"));
+      return false;
+    }
+
+    /*
+     * Insert a line of n characters c above lp1.
+     */
+    lp2 = lp1->insertBefore(n);
+
+    auto cp(lp2->text());
+
+    for (int i = 0; i < n; ++i) {
+      *cp++ = (EMCHAR)c;
+    }
+
+    curwp->setDot(lp2, n);
+    return true;
+  }
+
+  auto kflag = false; // in case of realloc
+  auto doto  = curwp->pos();
+
+  if ((lp1->length() + n) > lp1->size()) {
+    /*
+     * Hard: reallocate, lp2 is a strict copy of lp1.
+     * All links have been updated and lp1 must be deleted at the end.
+     */
+    lp2 = lp1->realloc(lp1->length() + n);
+
+    /*
+     *      Copy the rest of the line (space is left for insertion)
+     */
+    auto cp1 = lp1->text() + doto;
+    auto cp2 = lp2->text() + doto + n;
+    for (int i = doto; i < lp1->length(); ++i) {
+      *cp2++ = *cp1++;
+    }
+
+    kflag = true; // lp1 must be deleted
+  } else {
+    /*
+     *      Easy: in place
+     */
+
+    lp2 = lp1;                      /* Pretend new line     */
+
+    lp2->setLength(lp2->length() + n);
+
+    auto cp2 = lp1->last();
+    auto cp1 = cp2 - n;
+    while (cp1 - lp1->address(doto)) {
+      *--cp2 = *--cp1;
+    }
+  }
+
+  for (int i = 0; i < n; ++i) {
+    lp2->put(doto + i, c);
+  }
+
+  /*
+   * Update mark and found.
+   */
+
+  if (found.line() == lp1) {
+    found.setLine(lp2);
+    if (found.pos() > doto) {
+      found.setPos(found.pos() + n);
+    }
+  }
+
+  for (auto wp : WINSCR::list()) {
+    if (wp->topline() == lp1) {
+      wp->setTopline(lp2);
+    }
+
+    if (wp->line() == lp1) {
+      wp->setDotLine(lp2);
+      if ((wp == curwp) || (wp->pos() > doto)) {
+        wp->moveDotPos(n);
+      }
+    }
+
+    const auto& mark(wp->getMark());
+    if (mark.line() == lp1) {
+      if (mark.pos() > doto) {
+        wp->setMark(lp2, mark.pos() + n);
+      } else {
+        wp->setMark(lp2, mark.pos());
+      }
+    }
+  }
+
+  if (kflag) {
+    EDLINE::dispose(lp1); /* was a realloc */
+  }
+
+  return true;
+}
+
+/*
+ * Replace "n"  copies  of  the character  "c"  at  the  current
+ * location  of dot.  In the easy case all that happens  is  the
+ * text is replaced in the line. In the hard case, at the end of
+ * the line, the routine EDLINE::linsert is call  with n  equal  to  the
+ * number of characters alredy replaced.
+ */
+
+bool
+EDLINE::lreplace(int c, int n) {
+  if (freadonly()) {
+    return false;
+  }
+
+  const auto& dot(curwp->getDot());
+  auto dotp(dot.line());
+  auto doto(dot.pos());
+
+  for (auto i(0); i < n; ++i) {
+    if (doto == dot.line()->length()) {
+      curwp->setDotPos(doto);
+      return EDLINE::linsert(c, n - i);
+    } else {
+      dotp->put(doto++, c);
+    }
+  }
+
+  curwp->setDot(dotp, doto);
+
+  BUFFER::change(WINSCR::WFHARD);
+  return true;
+}
+
+/*
  * This   function  deletes  "n"  bytes,  starting  at  dot.  It
  * understands how do deal with end of lines,  etc. It returns T
  * if  all of the characters were deleted,  and NIL if they were
@@ -226,14 +403,14 @@ EDLINE::ldelete(int n, bool kflag) {
       chunk = n;
     }
     if (chunk == 0) {              /* End of line, merge.  */
-      lchange(WINSCR::WFHARD);
+      BUFFER::change(WINSCR::WFHARD);
       if (!EDLINE::delnewline() || (kflag && !kinsert('\n'))) {
         return false;
       }
       --n;
       continue;
     }
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
     auto cp1 = dot.line()->address(dot.pos());     /* Scrunch text.        */
     auto cp2 = cp1 + chunk;
     if (kflag) {            /* Kill?                */
@@ -408,7 +585,7 @@ EDLINE::newline() noexcept {
     return false;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   /*
    * Get the address and offset of "."
@@ -469,35 +646,7 @@ EDLINE::newline() noexcept {
 }
 
 /*
- * This  routine  gets  called  when  a  character is changed in
- * place  in the current buffer.  It updates all of the required
- * flags  in  the  buffer  and  window system.  The flag used is
- * passed  as  an  argument; if the buffer is being displayed in
- * more  than  1 window we change EDIT to HARD.  Set MODE if the
- * mode line needs to be updated (the "*" has to be set).
- */
-
-void
-lchange(int flag) {
-  if (curbp->count() != 1) {
-    /* Ensure hard. */
-    flag = WINSCR::WFHARD;
-  }
-
-  if (!curbp->isChanged()) {    /* First change, so     */
-    flag |= WINSCR::WFMODE;     /* update mode lines.   */
-    curbp->setChanged(true);
-  }
-
-  for (auto wp : WINSCR::list()) {
-    if (wp->buffer() == curbp) {
-      wp->setFlags(flag);
-    }
-  }
-}
-
-/*
- * Reverse  the  effects  of lchange for the current buffer.  It
+ * Reverse  the  effects  of BUFFER::change for the current buffer.  It
  * updates  all  of  the required flags in the buffer and window
  * system.  If  the  buffer  is being displayed in more than one
  * window  we  change  EDIT  to HARD.  Set MODE if the mode line
@@ -526,183 +675,6 @@ notmodified() {
 }
 
 /*
- * Insert  "n"  copies  of  the  character  "c"  at  the current
- * location  of  dot.  In  the easy case all that happens is the
- * text  is stored in the line.  In the hard case,  the line has
- * to  be  reallocated.  When  the window list is updated,  take
- * special care; I screwed it up once.  You always update dot in
- * the  current  window.  You update mark,  and a dot in another
- * window,  if  it  is  greater than the place where you did the
- * insert. Return true if all is well, and false on errors.
- */
-
-bool
-linsert(int c, int n) {
-  extern Point found;
-
-  if (curbp->readonly()) {
-    if (curbp->editMode() == EDITMODE::BUFFERMODE) {
-      return buffercmd(c) == T;
-    }
-
-    if (curbp->editMode() == EDITMODE::DIRED) {
-      return diredcmd(c) == T;
-    }
-  }
-
-  if (freadonly()) {
-    return false;
-  }
-
-  lchange(WINSCR::WFEDIT);
-
-  if (c > 0xFF && curbp->encoding() == ENCODING::EMASCII) {
-    curbp->setEncoding(ENCODING::EMUTF16);
-    BUFFER::updatemodes();
-  }
-
-  auto lp1 = curwp->line();
-  EDLINE* lp2;
-
-  if (lp1 == curbp->lastline()) {
-    /*
-     * At the end: special
-     */
-
-    if (curwp->pos() != 0) {
-      internalerror(ECSTR("pos() != 0"));
-      return false;
-    }
-
-    /*
-     * Insert a line of n characters c above lp1.
-     */
-    lp2 = lp1->insertBefore(n);
-
-    auto cp(lp2->text());
-
-    for (int i = 0; i < n; ++i) {
-      *cp++ = (EMCHAR)c;
-    }
-
-    curwp->setDot(lp2, n);
-    return true;
-  }
-
-  auto kflag = false; // in case of realloc
-  auto doto  = curwp->pos();
-
-  if ((lp1->length() + n) > lp1->size()) {
-    /*
-     * Hard: reallocate, lp2 is a strict copy of lp1.
-     * All links have been updated and lp1 must be deleted at the end.
-     */
-    lp2 = lp1->realloc(lp1->length() + n);
-
-    /*
-     *      Copy the rest of the line (space is left for insertion)
-     */
-    auto cp1 = lp1->text() + doto;
-    auto cp2 = lp2->text() + doto + n;
-    for (int i = doto; i < lp1->length(); ++i) {
-      *cp2++ = *cp1++;
-    }
-
-    kflag = true; // lp1 must be deleted
-  } else {
-    /*
-     *      Easy: in place
-     */
-
-    lp2 = lp1;                      /* Pretend new line     */
-
-    lp2->setLength(lp2->length() + n);
-
-    auto cp2 = lp1->last();
-    auto cp1 = cp2 - n;
-    while (cp1 - lp1->address(doto)) {
-      *--cp2 = *--cp1;
-    }
-  }
-
-  for (int i = 0; i < n; ++i) {
-    lp2->put(doto + i, c);
-  }
-
-  /*
-   * Update mark and found.
-   */
-
-  if (found.line() == lp1) {
-    found.setLine(lp2);
-    if (found.pos() > doto) {
-      found.setPos(found.pos() + n);
-    }
-  }
-
-  for (auto wp : WINSCR::list()) {
-    if (wp->topline() == lp1) {
-      wp->setTopline(lp2);
-    }
-
-    if (wp->line() == lp1) {
-      wp->setDotLine(lp2);
-      if ((wp == curwp) || (wp->pos() > doto)) {
-        wp->moveDotPos(n);
-      }
-    }
-
-    const auto& mark(wp->getMark());
-    if (mark.line() == lp1) {
-      if (mark.pos() > doto) {
-        wp->setMark(lp2, mark.pos() + n);
-      } else {
-        wp->setMark(lp2, mark.pos());
-      }
-    }
-  }
-
-  if (kflag) {
-    EDLINE::dispose(lp1); /* was a realloc */
-  }
-
-  return true;
-}
-
-/*
- * Replace "n"  copies  of  the character  "c"  at  the  current
- * location  of dot.  In the easy case all that happens  is  the
- * text is replaced in the line. In the hard case, at the end of
- * the line, the routine linsert is call  with n  equal  to  the
- * number of characters alredy replaced.
- */
-
-bool
-lreplace(int c, int n) {
-  if (freadonly()) {
-    return false;
-  }
-
-  const auto& dot(curwp->getDot());
-  auto dotp(dot.line());
-  auto doto(dot.pos());
-
-  for (auto i(0); i < n; ++i) {
-    if (doto == dot.line()->length()) {
-      curwp->setDotPos(doto);
-      return linsert(c, n - i);
-    } else {
-      dotp->put(doto++, c);
-    }
-  }
-
-  curwp->setDot(dotp, doto);
-
-  lchange(WINSCR::WFHARD);
-  return true;
-}
-
-/*
  * This routine exchanges two lines in the current buffer at "."
  * position with the line above  if it exists.  First  and  last
  * line  can't  be exchanged by this routine  and, in that case,
@@ -722,7 +694,7 @@ ltwiddle() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   for (auto wp : WINSCR::list()) {
     if (wp->topline() == lp2) {

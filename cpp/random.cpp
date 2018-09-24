@@ -172,7 +172,7 @@ twiddle() {
     (void)forwchar();
   }
 
-  lchange(WINSCR::WFEDIT);
+  BUFFER::change(WINSCR::WFEDIT);
 
   return T;
 }
@@ -197,7 +197,7 @@ quotechar() {
     }
     return T;
   }
-  return linsert(c, n) ? T : NIL;
+  return EDLINE::linsert(c, n) ? T : NIL;
 }
 
 /*
@@ -250,9 +250,9 @@ tabexpand() {
   if (opt::tab_size == 8 &&
       curbp->editMode() != EDITMODE::JAVAMODE &&
       curbp->editMode() != EDITMODE::CSHARPMODE) {
-    res = linsert('\t');
+    res = EDLINE::linsert('\t');
   } else {
-    res = linsert(' ', opt::tab_size - (getccol() % opt::tab_size));
+    res = EDLINE::linsert(' ', opt::tab_size - (getccol() % opt::tab_size));
   }
 
   return res ? T : NIL;
@@ -272,7 +272,7 @@ openline() {
   for (auto i = 0; i < Editor::_repeat; i++) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
       for (auto j = 0; opt::fill_prefix[j]; j++) {
-        if (!linsert(opt::fill_prefix[j])) {
+        if (!EDLINE::linsert(opt::fill_prefix[j])) {
           return NIL;
         }
       }
@@ -451,7 +451,7 @@ backdel() {
        */
 
       do {
-        (void)linsert(' ');
+        (void)EDLINE::linsert(' ');
       } while (++pos % opt::tab_display);
     }
   }
@@ -524,7 +524,7 @@ yank() {
         if (!EDLINE::newline()) {
           return NIL;
         }
-      } else if (!linsert(c)) {
+      } else if (!EDLINE::linsert(c)) {
         return NIL;
       }
     }
@@ -658,7 +658,7 @@ addprefix() {
 
   if (!prefixlinep(dotp, len)) {
     for (auto i = 0; opt::fill_prefix[i]; i++) {
-      if (!linsert(opt::fill_prefix[i])) {
+      if (!EDLINE::linsert(opt::fill_prefix[i])) {
         return NIL;
       }
     }
@@ -707,7 +707,7 @@ fillparagraph() {
          && prefixlinep(curwp->line()->forw(), len)) {
     (void)gotoeol();
     (void)EDLINE::ldelete(1);
-    (void)linsert(' ');
+    (void)EDLINE::linsert(' ');
     (void)EDLINE::ldelete(len);
   }
 
@@ -885,7 +885,7 @@ justifycurline() {
       (void)forwchar();
       if ((curwp->pos() < (curwp->line()->length() - 1))
           && lgetdot() == ' ') {
-        (void)linsert(' ');
+        (void)EDLINE::linsert(' ');
       }
     } else {
       (void)forwchar();
@@ -931,7 +931,7 @@ justifycurline() {
         } while (curwp->pos() < curwp->line()->length());
 
         if (nbspace < maxspace) {
-          (void)linsert(' ');
+          (void)EDLINE::linsert(' ');
           justifyed = true;
         }
       } else {
@@ -1106,7 +1106,7 @@ counterinsert() {
   (void)emsprintf1(buf, &cntfmt[0], cntval);
 
   for (auto s = &buf[0]; *s; s++) {
-    (void)linsert(*s);
+    (void)EDLINE::linsert(*s);
   }
 
   return T;

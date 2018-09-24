@@ -40,7 +40,6 @@ extern void TTYopen();
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false}; // Edit flag
 
-static void    editloop();
 static bool    linenump(const EMCHAR* s);
 static int     getctl();
 static bool    latexinsert(int n, int c);
@@ -657,9 +656,9 @@ execute(int c, int n) {
     if (c > 0x7F && (opt::latex_mode || emode == EDITMODE::SGMLMODE)) {
       status = (latexinsert(Editor::_repeat, c) ? T : NIL);
     } else if (!opt::replace_mode) {
-      status = linsert(c, Editor::_repeat) ? T : NIL;
+      status = EDLINE::linsert(c, Editor::_repeat) ? T : NIL;
     } else {
-      status = lreplace(c, Editor::_repeat) ? T : NIL;
+      status = EDLINE::lreplace(c, Editor::_repeat) ? T : NIL;
     }
 
     Editor::_lastflag = Editor::_thisflag;
@@ -970,7 +969,7 @@ insertunicode() {
   buf[0] = (EMCHAR)c;
   buf[1] = '\000';
   WDGwrite(ECSTR("Unicode='%s', code(%d, 0x%x)"), buf, c, c);
-  linsert(c, Editor::_repeat);
+  EDLINE::linsert(c, Editor::_repeat);
   return T;
 }
 
@@ -982,7 +981,7 @@ CMD
 binaryfile() {
   curbp->setBinary(!curbp->binary());
 
-  lchange(WINSCR::WFEDIT);
+  BUFFER::change(WINSCR::WFEDIT);
   BUFFER::updatemodes();
   return T;
 }
@@ -996,7 +995,7 @@ utf8encoding() {
 #if defined(_UNICODE)
   curbp->setEncoding(ENCODING::EMUTF8);
 
-  lchange(WINSCR::WFEDIT);
+  BUFFER::change(WINSCR::WFEDIT);
   BUFFER::updatemodes();
 
   return T;
@@ -1015,7 +1014,7 @@ utf16encoding() {
 #if defined(_UNICODE)
   curbp->setEncoding(ENCODING::EMUTF16);
 
-  lchange(WINSCR::WFEDIT);
+  BUFFER::change(WINSCR::WFEDIT);
   BUFFER::updatemodes();
   return T;
 #else
@@ -1033,7 +1032,7 @@ systemencoding() {
 #if defined(_UNICODE)
   curbp->setEncoding(ENCODING::EMASCII);
 
-  lchange(WINSCR::WFEDIT);
+  BUFFER::change(WINSCR::WFEDIT);
   BUFFER::updatemodes();
   return T;
 #else
@@ -1247,13 +1246,13 @@ latexinsert(int n, int c) {
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
         while (n-- > 0) {
           for (auto p = convtab[i].sgml; *p; p++) {
-            (void)linsert(*p);
+            (void)EDLINE::linsert(*p);
           }
         }
       } else {
         while (n-- > 0) {
           for (auto p = convtab[i].latex; *p; p++) {
-            (void)linsert(*p);
+            (void)EDLINE::linsert(*p);
           }
         }
       }      
@@ -1261,7 +1260,7 @@ latexinsert(int n, int c) {
     }
   }
 
-  return linsert(c, n);
+  return EDLINE::linsert(c, n);
 }
 
 /*

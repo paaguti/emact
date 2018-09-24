@@ -305,7 +305,7 @@ replace(bool prompt) {
 
 /*
  * Substitute 'newstr'  string of 'length' characters at current
- * position in the buffer. Call lchange to ensure that redisplay
+ * position in the buffer. Call BUFFER::change to ensure that redisplay
  * is done in.
  */
 
@@ -323,12 +323,12 @@ subst(int length, const EMCHAR* newstr) {
     if (*newstr == '\n') {
       (void)EDLINE::newline();
     } else {
-      (void)linsert(*newstr);
+      (void)EDLINE::linsert(*newstr);
     }
   }
 
   curbp->setEditMode(obmode);
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 }
 
 /*
@@ -1036,7 +1036,7 @@ loop:
     curwp->setDot(clp, cbo);
 
     for (i = 0; buf[i] != '\000'; i++) {
-      if (!linsert(buf[i])) {
+      if (!EDLINE::linsert(buf[i])) {
         s = NIL;
         break;
       }
@@ -1077,7 +1077,7 @@ loop:
         curwp->setDot(clp, cbo);
 
         for (i = slen; tagbuf[i] != '\000'; i++) {
-          if (!linsert(tagbuf[i])) {
+          if (!EDLINE::linsert(tagbuf[i])) {
             break;
           }
         }

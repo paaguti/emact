@@ -294,6 +294,34 @@ BUFFER::discard() noexcept {
 }
 
 /*
+ * This  routine  gets  called  when  a  character is changed in
+ * place  in the current buffer.  It updates all of the required
+ * flags  in  the  buffer  and  window system.  The flag used is
+ * passed  as  an  argument; if the buffer is being displayed in
+ * more  than  1 window we change EDIT to HARD.  Set MODE if the
+ * mode line needs to be updated (the "*" has to be set).
+ */
+
+void
+BUFFER::change(int flag) {
+  if (curbp->count() != 1) {
+    /* Ensure hard. */
+    flag = WINSCR::WFHARD;
+  }
+
+  if (!curbp->isChanged()) {    /* First change, so     */
+    flag |= WINSCR::WFMODE;     /* update mode lines.   */
+    curbp->setChanged(true);
+  }
+
+  for (auto wp : WINSCR::list()) {
+    if (wp->buffer() == curbp) {
+      wp->setFlags(flag);
+    }
+  }
+}
+
+/*
  * Long integer to ascii conversion (right justified).
  */
 
@@ -709,7 +737,7 @@ buffercmd(int cmd) {
       curwp->line()->put(0, 'D');
     }
 
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
     (void)forwline();
 
     curbp->setReadonly(true);
@@ -734,7 +762,7 @@ buffercmd(int cmd) {
       curwp->line()->put(1, 'S');
     }
 
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
     (void)forwline();
 
     curbp->setReadonly(true);
@@ -761,7 +789,7 @@ buffercmd(int cmd) {
       curwp->line()->put(2, ' ');
     }
 
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -780,7 +808,7 @@ buffercmd(int cmd) {
       curwp->line()->put(2, '%');
     }
 
-    lchange(WINSCR::WFEDIT);
+    BUFFER::change(WINSCR::WFEDIT);
     (void)forwline();
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -803,7 +831,7 @@ buffercmd(int cmd) {
         curbp = bp;
         if (filesave() == T) {
           curwp->line()->put(1, ' ');
-          lchange(WINSCR::WFEDIT);
+          BUFFER::change(WINSCR::WFEDIT);
         }
         curbp = oldbp;
       }
@@ -824,7 +852,7 @@ buffercmd(int cmd) {
         if (bp->discard()) {
           (void)gotobol();
           (void)EDLINE::ldelete(curwp->line()->length() + 1);
-          lchange(WINSCR::WFEDIT);
+          BUFFER::change(WINSCR::WFEDIT);
           (void)backline();
           (void)gotobol();
         }
@@ -853,7 +881,7 @@ buffercmd(int cmd) {
         } else {
           curwp->line()->put(0, ' ');
         }
-        lchange(WINSCR::WFEDIT);
+        BUFFER::change(WINSCR::WFEDIT);
       }
       if (curwp->line()->get(1) == 'S') {
         if (bp->isChanged()) {
@@ -861,7 +889,7 @@ buffercmd(int cmd) {
         } else {
           curwp->line()->put(1, ' ');
         }
-        lchange(WINSCR::WFEDIT);
+        BUFFER::change(WINSCR::WFEDIT);
       }
       if (curwp->line()->get(2) == '%') {
         if (bp->readonly()) {
@@ -869,7 +897,7 @@ buffercmd(int cmd) {
         } else {
           curwp->line()->put(2, ' ');
         }
-        lchange(WINSCR::WFEDIT);
+        BUFFER::change(WINSCR::WFEDIT);
       }
       curbp->setReadonly(true);
       curbp->setChanged(false);

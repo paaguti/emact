@@ -456,6 +456,17 @@ class BUFFER {
   WINSCR*
   show() noexcept;
 
+  /*
+   * This routine gets called when a character is changed in place in
+   * the current buffer.  It updates all of the required flags in the
+   * buffer and window system. if the buffer is being displayed in
+   * more than 1 window we change EDIT to HARD.  Set MODE if the mode
+   * line needs to be updated (the "*" has to be set).
+   * @param [in] flag requested new flag.
+   */
+  static void
+  change(int flag);
+
   bool
   clear() noexcept;
 
@@ -875,6 +886,22 @@ class EDLINE {
   swap(EDLINE* line);
 
   /**
+   * Insert  "n"  copies  of  the  character  "c"  at  the current
+   * location  of  dot.  In  the easy case all that happens is the
+   * text  is stored in the line.  In the hard case,  the line has
+   * to  be  reallocated.  When  the window list is updated,  take
+   * special care; I screwed it up once.  You always update dot in
+   * the  current  window.  You update mark,  and a dot in another
+   * window,  if  it  is  greater than the place where you did the
+   * insert.
+   * @param [in] c character code to insert.
+   * @param [in] n number of character to insert (default 1).
+   * @return true if all is well, and false on errors.
+   */
+  static bool
+  linsert(int c, int n = 1);
+
+  /**
    * This function deletes "n" bytes, starting at dot.  It understands
    * how do deal with end of lines, etc.
    * @param [in] n number of character to delete.
@@ -884,6 +911,19 @@ class EDLINE {
    */
   static bool
 	ldelete(int n, bool kflag = false);
+
+  /**
+   * Replace "n" copies of the character "c" at the current location
+   * of dot.  In the easy case all that happens is the text is
+   * replaced in the line. In the hard case, at the end of the line,
+   * the routine EDLINE::linsert is call with n equal to the number of
+   * characters alredy replaced.
+   * @param [in] c character code to insert.
+   * @param [in] n number of character to replace (default 1).
+   * @return true if all is well, and false on errors.
+   */
+  static bool
+  lreplace(int c, int n = 1);
 
   /**
    * Append this line to the buffer. Handcraft the EOL on the end.

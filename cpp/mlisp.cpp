@@ -676,7 +676,7 @@ MLisp::eval(int expr, size_t depth) {
               s = endline();
               break;
             default:
-              s = linsert(*str) ? T : NIL;
+              s = EDLINE::linsert(*str) ? T : NIL;
             }
           }
         }
@@ -695,14 +695,14 @@ MLisp::eval(int expr, size_t depth) {
               break;
             case '\\':
               if (*(bufcmd + 1) != 'n') {
-                s = linsert(*bufcmd) ? T : NIL;
+                s = EDLINE::linsert(*bufcmd) ? T : NIL;
               } else {
                 ++bufcmd;
                 s = endline();
               }
               break;
             default:
-              s = linsert(*bufcmd) ? T : NIL;
+              s = EDLINE::linsert(*bufcmd) ? T : NIL;
             }
             ++bufcmd;
           }
@@ -808,7 +808,7 @@ MLisp::eval(int expr, size_t depth) {
       break;
     case SpecialForm::INSERTNAME:
       for (auto name = curbp->bufname(); *name && s == T; ++name) {
-        s = linsert(*name) ? T : NIL;
+        s = EDLINE::linsert(*name) ? T : NIL;
       }
       break;
     case SpecialForm::INSERTBASENAME:
@@ -816,7 +816,7 @@ MLisp::eval(int expr, size_t depth) {
         if (*name == '.') {
           break;
         } else {
-          s = linsert(*name) ? T : NIL;
+          s = EDLINE::linsert(*name) ? T : NIL;
         }
       }
       break;

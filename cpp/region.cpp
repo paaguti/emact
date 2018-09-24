@@ -204,7 +204,7 @@ copyregion() {
 /*
  * Lower  case region.  Zap all of the upper case characters  in
  * the  region  to lower case.  Use the region code to  set  the
- * limits. Scan the buffer, doing the changes. Call "lchange" to
+ * limits. Scan the buffer, doing the changes. Call "BUFFER::change" to
  * ensure  that redisplay is done in all buffers.  Bound to "C-X
  * C-L".
  */
@@ -221,7 +221,7 @@ lowerregion() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -259,7 +259,7 @@ fillregion() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -271,7 +271,7 @@ fillregion() {
     if ((size_t)dotline->length() < fillmax ||
         emstrncmp(dotline->text(), opt::fill_prefix, fillmax) != 0) {
       for (int i{0}; opt::fill_prefix[i]; ++i) {
-        (void)linsert(opt::fill_prefix[i]);
+        (void)EDLINE::linsert(opt::fill_prefix[i]);
       }
     }
     (void)forwline();
@@ -283,7 +283,7 @@ fillregion() {
 /*
  * Upper  case  region.  Zap all of the lower case characters in
  * the  region  to  upper  case.  Use the region code to set the
- * limits.  Scan the buffer,  doing the changes.  Call "lchange"
+ * limits.  Scan the buffer,  doing the changes.  Call "BUFFER::change"
  * to  ensure  that  redisplay is done in all buffers.  Bound to
  * "C-X C-L".
  */
@@ -300,7 +300,7 @@ upperregion() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -384,7 +384,7 @@ indentregion() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -412,13 +412,13 @@ shiftright() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
   auto s = true;
   do {
-    s = linsert('\t');
+    s = EDLINE::linsert('\t');
     curwp->setDot(curwp->line()->forw(), 0);
   } while (s && (--region._lines > 0));
 
@@ -443,7 +443,7 @@ shiftleft() {
     return NIL;
   }
 
-  lchange(WINSCR::WFHARD);
+  BUFFER::change(WINSCR::WFHARD);
 
   curwp->setDot(region._linep, 0);
 

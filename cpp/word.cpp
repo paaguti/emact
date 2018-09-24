@@ -194,7 +194,7 @@ upperword() {
       int c = lgetdot();
       if (isalpha(c) && islower(c)) {
         lputdot(toupper(c));
-        lchange(WINSCR::WFHARD);
+        BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
         return NIL;
@@ -229,7 +229,7 @@ lowerword() {
       int c = lgetdot();
       if (isalpha(c) && isupper(c)) {
         lputdot(tolower(c));
-        lchange(WINSCR::WFHARD);
+        BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
         return NIL;
@@ -266,7 +266,7 @@ capword() {
       int c = lgetdot();
       if (isalpha(c) && islower(c)) {
         lputdot(toupper(c));
-        lchange(WINSCR::WFHARD);
+        BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
         return NIL;
@@ -275,7 +275,7 @@ capword() {
         c = lgetdot();
         if (isalpha(c) && isupper(c)) {
           lputdot(tolower(c));
-          lchange(WINSCR::WFHARD);
+          BUFFER::change(WINSCR::WFHARD);
         }
         if (forwchar() == NIL) {
           return NIL;
@@ -410,7 +410,7 @@ wtwiddle() {
    */
 
   for (auto j(0); word1[j]; j++) {
-    (void)linsert(word1[j]);
+    (void)EDLINE::linsert(word1[j]);
   }
 
   /*
@@ -431,7 +431,7 @@ wtwiddle() {
   }
 
   for (auto j(0); word2[j]; ++j) {
-    (void)linsert(word2[j]);
+    (void)EDLINE::linsert(word2[j]);
   }
 
   return T;

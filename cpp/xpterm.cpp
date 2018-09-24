@@ -1488,7 +1488,7 @@ XpTerminal::xpshowlines(TCHAR* chBuf, int nLen) {
       (void)newline();
       break;
     default:
-      (void)linsert(c);
+      (void)EDLINE::linsert(c);
     }
   }
 }
