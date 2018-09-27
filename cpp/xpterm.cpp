@@ -975,7 +975,7 @@ xpquit() {
   if (opt::confirm_unsaved_buffer) {
     int ret;
 
-    if (anycb(ANYCB::CHECK) == NIL) {
+    if (!BUFFER::anycb(BUFFER::ANYCB::CHECK)) {
       (void)killemacs();
       return TRUE;
     }

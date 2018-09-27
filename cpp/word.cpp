@@ -40,7 +40,7 @@ inword() {
     return false;
   }
 
-  int c = lgetdot();
+  int c = curwp->getChar();
 
   /*
    * Check for alphanumeric or '$' or '_'
@@ -95,7 +95,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
   if ((forwword() == T) && (backword() == T)) {
     size_t i{0};
     while (inword() && i < (len - 1)) {
-      buf[i++] = lgetdot();
+      buf[i++] = curwp->getChar();
       if (forwchar() == NIL) {
         break;
       }
@@ -191,9 +191,9 @@ upperword() {
     }
 
     while (inword()) {
-      int c = lgetdot();
-      if (isalpha(c) && islower(c)) {
-        lputdot(toupper(c));
+      int c = curwp->getChar();
+      if (std::isalpha(c) && std::islower(c)) {
+        curwp->setChar(std::toupper(c));
         BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
@@ -226,9 +226,9 @@ lowerword() {
     }
 
     while (inword()) {
-      int c = lgetdot();
-      if (isalpha(c) && isupper(c)) {
-        lputdot(tolower(c));
+      int c = curwp->getChar();
+      if (std::isalpha(c) && std::isupper(c)) {
+        curwp->setChar(std::tolower(c));
         BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
@@ -263,18 +263,18 @@ capword() {
     }
 
     if (inword()) {
-      int c = lgetdot();
-      if (isalpha(c) && islower(c)) {
-        lputdot(toupper(c));
+      int c = curwp->getChar();
+      if (std::isalpha(c) && std::islower(c)) {
+        curwp->setChar(std::toupper(c));
         BUFFER::change(WINSCR::WFHARD);
       }
       if (forwchar() == NIL) {
         return NIL;
       }
       while (inword()) {
-        c = lgetdot();
-        if (isalpha(c) && isupper(c)) {
-          lputdot(tolower(c));
+        c = curwp->getChar();
+        if (std::isalpha(c) && std::isupper(c)) {
+          curwp->setChar(std::tolower(c));
           BUFFER::change(WINSCR::WFHARD);
         }
         if (forwchar() == NIL) {
@@ -375,7 +375,7 @@ wtwiddle() {
    */
 
   for (i = 0; inword() && i < NPAT - 1; i++) {
-    word1[i] = lgetdot();
+    word1[i] = curwp->getChar();
     (void)forwdel();
   }
   word1[i] = '\0';
@@ -395,7 +395,7 @@ wtwiddle() {
    */
 
   for (i = 0; inword() && i < NPAT - 1; i++) {
-    word2[i] = lgetdot();
+    word2[i] = curwp->getChar();
     (void)forwdel();
   }
 

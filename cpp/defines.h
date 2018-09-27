@@ -46,7 +46,6 @@ CMD	swapmark();
  *	buffer.c
  */
 
-CMD	anycb(ANYCB flag);
 CMD	buffercmd(int c);
 CMD	usebuffer();
 CMD	killbuffer();
@@ -66,10 +65,6 @@ int	emmbclen(int c);
  *	emacs.c
  */
 
-/*
-int	EMCDECL main(int argc, char *argv[]);
-*/
-CMD	execute(int c, int n);
 int	getkey();
 bool	separatorp(int c);
 bool	charp(int c);

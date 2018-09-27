@@ -342,9 +342,6 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 
 #include "objects.h"
 
-#define lgetdot()  curwp->line()->get(curwp->pos())
-#define lputdot(c) curwp->line()->put(curwp->pos(), c)
-
 #define TTYncol               tt->t_ncol
 #define TTYnrow               tt->t_nrow
 #define TTYinit               tt->t_init

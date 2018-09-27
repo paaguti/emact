@@ -763,7 +763,7 @@ tabindent() {
 
   const auto& dot(curwp->getDot());
 
-  if (dot.pos() != dot.line()->length() && lgetdot() == '}') {
+  if (dot.pos() != dot.line()->length() && curwp->getChar() == '}') {
     (void)forwdel();
     (void)unindent('}', false);
     (void)backchar();
@@ -831,7 +831,7 @@ backtoindent() {
   (void)gotobol();
   const auto len(curwp->line()->length());
   for (int i{0}; i < len; ++i) {
-    if (separatorp(lgetdot())) {
+    if (separatorp(curwp->getChar())) {
       (void)forwchar();
     } else {
       break;
@@ -918,7 +918,7 @@ justonespace() {
      *      At the end, back one char.
      */
     (void)backchar();
-    if ((c = lgetdot()) != ' ' && c != '\t') {
+    if ((c = curwp->getChar()) != ' ' && c != '\t') {
       (void)forwchar();
       (void)EDLINE::linsert(' ');
       return T;
@@ -929,16 +929,16 @@ justonespace() {
     if (backchar() == NIL) {
       break;
     }
-  } while (curwp->pos() >= 0 && ((c = lgetdot()) == ' ' || c == '\t'));
+  } while (curwp->pos() >= 0 && ((c = curwp->getChar()) == ' ' || c == '\t'));
 
-  if ((c = lgetdot()) != ' ' && c != '\t') {
+  if ((c = curwp->getChar()) != ' ' && c != '\t') {
     (void)forwchar();
   }
 
   (void)EDLINE::linsert(' ');
 
   while ((curwp->pos() < curwp->line()->length()) &&
-         ((c = lgetdot()) == ' ' || c == '\t')) {
+         ((c = curwp->getChar()) == ' ' || c == '\t')) {
     (void)forwdel();
   }
 

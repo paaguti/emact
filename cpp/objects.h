@@ -99,16 +99,6 @@ enum class EDITMODE {
   SHELLMODE
 };
 
-/**
- * Enum for anycb function
- */
-enum class ANYCB {
-  /** Prompt for any unsaved buf */
-  PROMPT = 0x0000,
-  /** Check only unsaved buffers */
-  CHECK  = 0x0001
-};
-
 class BUFFER;
 class EDLINE;
 class Point;
@@ -355,6 +345,12 @@ class WINSCR {
     return _dot.line();
   }
 
+  inline EMCHAR
+  getChar() const;
+
+  inline void
+  setChar(int c);
+
   /**
    * helper. Equivalent to getDot().pos()
    */
@@ -429,6 +425,16 @@ class WINSCR {
 
 class BUFFER {
  public:
+  /**
+   * Enum for anycb function
+   */
+  enum class ANYCB {
+    /** Prompt for any unsaved buf */
+    PROMPT = 0x0000,
+    /** Check only unsaved buffers */
+    CHECK  = 0x0001
+  };
+
   static constexpr size_t NBUFN{16}; // # of bytes, buffer name
 
   /**
@@ -455,6 +461,15 @@ class BUFFER {
    */
   WINSCR*
   show() noexcept;
+
+  /**
+   * Look through the list of buffers. Buffers that hold magic
+   * internal stuff are not considered; who cares if the list of
+   * buffer names is hacked.
+   * @return true if there are any changed buffers, false otherwise.
+   */
+  static bool
+  anycb(ANYCB flag);
 
   /*
    * This routine gets called when a character is changed in place in
@@ -1461,6 +1476,18 @@ class Editor {
   void
   engine();
 
+  /*
+   * This is the general command execution routine. It handles the
+   * fake binding of all the keys to "self-insert". It also clears
+   * out  the  "_thisflag"  word,  and arranges to move it  to  the
+   * "_lastflag",  so that the next command can look at it.
+   * @param [in] c code to execute
+   * @param [in] n repeat count
+   * @return the status of command.
+   */
+  static CMD
+  execute(int c, int n = 1);
+
   static const EMCHAR*
   getName() {
     return _name;
@@ -1471,6 +1498,12 @@ class Editor {
   searchBuffer() noexcept {
     return &_search[0];
   }
+
+  /*
+   * Read in a key. Do the standard keyboard preprocessing.
+   */
+  static int
+  getkey();
 
   static std::vector<MACTAB>&
   getMacros() {
@@ -1521,4 +1554,15 @@ class Editor {
   static EMCHAR _search[NPAT];
 
 };
+
+EMCHAR
+WINSCR::getChar() const {
+  return _dot.line()->get(_dot.pos());
+}
+
+void
+WINSCR::setChar(int c) {
+  _dot.line()->put(_dot.pos(), c);
+}
+
 #endif /* __OBJECTS_H */

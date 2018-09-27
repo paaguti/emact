@@ -94,7 +94,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   { Ctrl|'Z',      spawncli,       ECSTR("suspend-emacs")               },
   { Ctrl|']',      completeword,   ECSTR("dabbrev-expand")              },
   { Ctrl|'_',      undo,           ECSTR("undo")                        },
-  { CTLX|METACH,   again,          ECSTR("Editor::_repeat-last-command")         },
+  { CTLX|METACH,   again,          ECSTR("repeat-last-command")         },
   { CTLX|Ctrl|'B', listbuffers,    ECSTR("list-buffers")                },
   { CTLX|Ctrl|'C', exitemacs,      ECSTR("save-buffers-kill-emacs")     },
   { CTLX|Ctrl|'D', changedir,      ECSTR("cd")                          },
@@ -206,7 +206,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   { META|'{',      backparagraph,  ECSTR("backward-paragraph")          },
   { META|'}',      forwparagraph,  ECSTR("forward-paragraph")           },
   { META|'~',      notmodified,    ECSTR("not-modified")                },
-  { META|0x7F,     delbword,       ECSTR("backward-kill-word")          },
+  { META|BACKDEL,  delbword,       ECSTR("backward-kill-word")          },
   { CXDR|'$',      counterinsert,  ECSTR("counter-insert")              },
   { CXDR|'+',      counterincr,    ECSTR("counter-incr")                },
   { CXDR|'-',      counterdecr,    ECSTR("counter-decr")                },
@@ -564,20 +564,20 @@ Editor::engine() {
       clast = c;
       nlast = n;
     }
-    (void)execute(c, n);
+    (void)Editor::execute(c, n);
   }
 }
 
 /*
  * This is the general command execution routine. It handles the
  * fake binding of all the keys to "self-insert". It also clears
- * out  the  "Editor::_thisflag"  word,  and arranges to move it  to  the
- * "Editor::_lastflag",  so that the next command can look at it.  Return
+ * out  the  "_thisflag"  word,  and arranges to move it  to  the
+ * "_lastflag",  so that the next command can look at it.  Return
  * the status of command.
  */
 
 CMD
-execute(int c, int n) {
+Editor::execute(int c, int n) {
   CMD status;
 
   Editor::_repeat = n;
@@ -690,17 +690,12 @@ execute(int c, int n) {
   return NIL;
 }
 
-static CMD
-again() {
-  return execute(clast, nlast);
-}
-
 /*
  * Read in a key. Do the standard keyboard preprocessing.
  */
 
 int
-getkey() {
+Editor::getkey() {
   static constexpr auto CTLXCH(0x18);         // Ctrl-X prefix
   static constexpr auto CTLCCH(0x03);         // Ctrl-C prefix
   static constexpr auto CSICODE(0x8F);        // 8 bits version of ESC [
@@ -765,6 +760,11 @@ getkey() {
   return c;
 }
 
+static CMD
+again() {
+  return Editor::execute(clast, nlast);
+}
+
 CMD
 emacsversion() {
 #if defined(_UNICODE)
@@ -796,9 +796,9 @@ static int
 getctl() {
   auto c = TTYgetc();
 
-  if (c == METACH) {
+  if (c == METACH || c == BACKDEL) {
     return c;
-  } else if (c >= 0x00 && c <= 0x1F) {
+  } else if (std::iscntrl(c)) {
     return (Ctrl|(c + '@'));
   }
 
@@ -832,7 +832,7 @@ CMD
 exitemacs() {
   static EMCHAR* msg = ECSTR("Modified buffers exist; exit anymawy? ");
 
-  auto res = anycb(ANYCB::PROMPT);
+  auto res = BUFFER::anycb(BUFFER::ANYCB::PROMPT) ? T : NIL;
 
   if (res == ABORT) {
     return NIL;
@@ -918,7 +918,7 @@ ctlxe() {
       } else {
         an = 1;
       }
-    } while (c != (CTLX|')') && (s = execute(c, an)) == T);
+    } while (c != (CTLX|')') && (s = Editor::execute(c, an)) == T);
     kbdm.stopPlaying();
 
     Editor::_repeat = save;
@@ -1188,7 +1188,7 @@ linenump(const EMCHAR* s) {
     s++;
   }
 
-  while (*s && isdigit((int)*s)) {
+  while (*s && std::isdigit((int)*s)) {
     s++;
   }
 

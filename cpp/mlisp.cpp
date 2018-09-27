@@ -840,7 +840,7 @@ MLisp::eval(int expr, size_t depth) {
     default:
       {
         auto sv = Editor::_repeat;
-        s = execute(c, n);
+        s = Editor::execute(c, n);
         Editor::_repeat = sv;
       }
     }

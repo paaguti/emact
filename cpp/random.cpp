@@ -667,7 +667,7 @@ addprefix() {
   curwp->setDotPos(len);
 
   while ((curwp->pos() < curwp->line()->length())
-         && lgetdot() == ' ') {
+         && curwp->getChar() == ' ') {
     (void)EDLINE::ldelete(1);
   }
 
@@ -718,7 +718,7 @@ fillparagraph() {
   curwp->setDotPos(0);
   while (curwp->pos() < curwp->line()->length()) {
     bool nbspace;
-    if (lgetdot() == ' ') {
+    if (curwp->getChar() == ' ') {
       nbspace = true;
     } else {
       nbspace = false;
@@ -728,7 +728,7 @@ fillparagraph() {
 
     if (nbspace) {
       while (curwp->pos() < curwp->line()->length()) {
-        if (lgetdot() != ' ') {
+        if (curwp->getChar() != ' ') {
           break;
         }
         (void)EDLINE::ldelete(1);
@@ -879,12 +879,12 @@ justifycurline() {
    */
 
   while (curwp->pos() < curwp->line()->length()) {
-    EMCHAR c = lgetdot();
+    EMCHAR c = curwp->getChar();
 
     if (c == '.' || c == ',') {
       (void)forwchar();
       if ((curwp->pos() < (curwp->line()->length() - 1))
-          && lgetdot() == ' ') {
+          && curwp->getChar() == ' ') {
         (void)EDLINE::linsert(' ');
       }
     } else {
@@ -919,11 +919,11 @@ justifycurline() {
     }
 
     while (curwp->pos() < curwp->line()->length()) {
-      if (lgetdot() == ' ') {
+      if (curwp->getChar() == ' ') {
         int nbspace = 0;
  
         do {
-          if (lgetdot() != ' ') {
+          if (curwp->getChar() != ' ') {
             break;
           }
           (void)forwchar();
@@ -1053,7 +1053,7 @@ justifycomment() {
 
   auto len(curwp->line()->length());
   while (curwp->pos() < len) {
-    auto c = lgetdot();
+    auto c = curwp->getChar();
 
     int i;
     for (i = 0; skip[i]; i++) {

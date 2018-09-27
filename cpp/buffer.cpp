@@ -322,6 +322,98 @@ BUFFER::change(int flag) {
 }
 
 /*
+ * Look through the list of buffers.  Returns true if there are any
+ * changed buffers.  Buffers that hold magic internal stuff are not
+ * considered; who cares if the list of buffer names is hacked. Return
+ * false if no buffers have been changed.
+ */
+bool
+BUFFER::anycb(ANYCB flag) {
+  static constexpr auto ANYHLP =
+    ECSTR("y = save, n = skip, ! = save all, . = save and exit, q = exit");
+
+  bool res = false;
+  auto alert = false;
+  auto saveall = false;
+
+  for (auto bp : BUFFER::list()) {
+    if (!bp->isChanged()) {
+      continue;
+    }
+
+#if defined(_IGNORE_SCRATCH)
+    if (emstrcmp(bp->bufname(), BUF_SCRATCH) == 0) {
+      continue;
+    }
+#endif
+
+    if (flag == ANYCB::CHECK) {
+      return true;
+    }
+
+    if ((flag == ANYCB::PROMPT) || opt::confirm_unsaved_buffer) {
+      EMCHAR buf[NFILEN];
+      auto valid = false;
+
+      if (saveall) {
+        savebname(bp->bufname());
+        continue;
+      }
+
+      if (!alert) {
+        alert = true; /* one beep only the first time */
+        TTYbeep();
+      }
+
+      while (!valid) {
+        (void)emstrcpy(buf, ECSTR("Save File "));
+        (void)emstrcat(buf, bp->filename());
+        (void)emstrcat(buf, ECSTR(" ? (y, n, !, ., q)"));
+
+        WDGwrite(ECSTR("%s"), buf);
+        switch (TTYgetc()) {
+        case 0x07:
+          (void)ctrlg();
+          WDGmessage(ECSTR("Quit"));
+          return true;
+        case ' ' :
+        case 'y' :
+        case 'Y' :
+          valid = true;
+          savebname(bp->bufname());
+          break;
+        case 'n' :
+        case 'N' :
+          valid = true;
+          res = true;
+          break;
+        case '!' :
+          valid = true;
+          savebname(bp->bufname());
+          saveall = true;
+          break;
+        case '.' :
+          savebname(bp->bufname());
+          return res;
+        case 'q' :
+        case 'Q' :
+        case 0x1B:
+          return res;
+        default  :
+          (void)ctrlg();
+          WDGwrite(ANYHLP);
+          waitmatch(5);
+        }
+      }
+    } else {
+      return true;
+    }
+  }
+
+  return res;
+}
+
+/*
  * Long integer to ascii conversion (right justified).
  */
 
@@ -470,13 +562,6 @@ makelist(BUFFER *blp) {
   return true;
 }
 
-/*
- * Look through the list of buffers.  Returns true if there are any
- * changed buffers.  Buffers that hold magic internal stuff are not
- * considered; who cares if the list of buffer names is hacked. Return
- * false if no buffers have been changed.
- */
-
 static bool
 savebname(const EMCHAR* bname) {
   BUFFER* newbp;
@@ -493,92 +578,6 @@ savebname(const EMCHAR* bname) {
   }
 
   curbp = oldbp;
-
-  return res;
-}
-
-CMD
-anycb(ANYCB flag) {
-  static constexpr auto ANYHLP =
-    ECSTR("y = save, n = skip, ! = save all, . = save and exit, q = exit");
-
-  CMD res = NIL;
-  auto alert = false;
-  auto saveall = false;
-
-  for (auto bp : BUFFER::list()) {
-    if (!bp->isChanged()) {
-      continue;
-    }
-
-#if defined(_IGNORE_SCRATCH)
-    if (emstrcmp(bp->bufname(), BUF_SCRATCH) == 0) {
-      continue;
-    }
-#endif
-
-    if (flag == ANYCB::CHECK) {
-      return T;
-    }
-
-    if ((flag == ANYCB::PROMPT) || opt::confirm_unsaved_buffer) {
-      EMCHAR buf[NFILEN];
-      auto valid = false;
-
-      if (saveall) {
-        savebname(bp->bufname());
-        continue;
-      }
-
-      if (!alert) {
-        alert = true; /* one beep only the first time */
-        TTYbeep();
-      }
-
-      while (!valid) {
-        (void)emstrcpy(buf, ECSTR("Save File "));
-        (void)emstrcat(buf, bp->filename());
-        (void)emstrcat(buf, ECSTR(" ? (y, n, !, ., q)"));
-
-        WDGwrite(ECSTR("%s"), buf);
-        switch (TTYgetc()) {
-        case 0x07:
-          (void)ctrlg();
-          WDGmessage(ECSTR("Quit"));
-          return ABORT;
-        case ' ' :
-        case 'y' :
-        case 'Y' :
-          valid = true;
-          savebname(bp->bufname());
-          break;
-        case 'n' :
-        case 'N' :
-          valid = true;
-          res = T;
-          break;
-        case '!' :
-          valid = true;
-          savebname(bp->bufname());
-          saveall = true;
-          break;
-        case '.' :
-          savebname(bp->bufname());
-          return res;
-        case 'q' :
-        case 'Q' :
-        case 0x1B:
-          return res;
-        default  :
-          (void)ctrlg();
-          WDGwrite(ANYHLP);
-          waitmatch(5);
-        }
-      }
-    } else {
-      return T;
-    }
-  }
 
   return res;
 }

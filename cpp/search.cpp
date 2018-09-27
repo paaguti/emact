@@ -458,7 +458,7 @@ rmatchc(int patc, bool printflag) {
   default  : return false;
   }
 
-  if (lgetdot() == matchpat) {
+  if (curwp->getChar() == matchpat) {
     (void)forwchar();
   }
   
@@ -1007,7 +1007,7 @@ loop:
      */
 
     for (i = 0; inword(); ++i) {
-      buf[i] = lgetdot();
+      buf[i] = curwp->getChar();
       (void)forwchar();
     }
 

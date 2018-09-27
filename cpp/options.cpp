@@ -46,7 +46,7 @@ describekey() {
 
   WDGwrite(ECSTR("Apropos keyword: "));
 
-  if ((c = getkey()) == (Ctrl|'M')) {
+  if ((c = Editor::getkey()) == (Ctrl|'M')) {
     return help();
   }
 

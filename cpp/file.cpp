@@ -1178,7 +1178,7 @@ filesave() {
 
 CMD
 savesomebuffers() {
-  return anycb(ANYCB::PROMPT);
+  return BUFFER::anycb(BUFFER::ANYCB::PROMPT) ? T : NIL;
 }
 
 /*
