@@ -59,7 +59,7 @@ cmpchars(int bc, int pc) {
      */
     return bc == pc;
   } else {
-    return tolower(bc) == tolower(pc);
+    return std::tolower(bc) == std::tolower(pc);
   }
 }
 

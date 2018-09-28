@@ -406,13 +406,13 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
   EMCHAR i = '2';
 
   /*
-   *      Point to the last char of pathname.
+   * Point to the last char of pathname.
    */
 
   auto cp1 = fname + emstrlen(fname) - 1;
 
   /*
-   *      Find the file name component.
+   * Find the file name component.
    */
 
 #if defined(_WIN32)
@@ -450,13 +450,21 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
        */
       cp2--;
     }
-    if (i > '9') {
-      i = '@';
+
+    if (i++ > '9') {
+      i = 'A';
     }
+
+    for (auto c : { (EMCHAR)'<', (EMCHAR)i, (EMCHAR)'>', (EMCHAR)0 }) {
+      *cp2 = c;
+    }
+
+#if 0
     *cp2       = '<';
     *(cp2 + 1) = i++;
     *(cp2 + 2) = '>';
     *(cp2 + 3) = '\000';
+#endif
   }
 }
 

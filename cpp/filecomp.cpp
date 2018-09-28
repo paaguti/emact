@@ -34,8 +34,6 @@ fileaccept(const EMCHAR* prompt, EMCHAR* file) {
   return filematch(prompt, file);
 }
 
-#if defined(_DIRECTORY)
-
 #if     defined(_WIN32)
 #define cmpname(x, y, n)      emstrnicmp(x, y, n)
 #else
@@ -53,14 +51,14 @@ static EMCHAR*
 caseconvert(EMCHAR* s) {
 #if defined(_WIN32)
   auto p = s;
-  bool lowercase = false;
-  bool uppercase = false;
-  bool nodot = true;
+  auto lowercase{false};
+  auto uppercase{false};
+  auto nodot{true};
   int c;
 
   while ((c = (int)*p++) != 0) {
-    if (isalpha(c)) {
-      if (isupper(c)) {
+    if (std::isalpha(c)) {
+      if (std::isupper(c)) {
         uppercase = true;
       } else {
         lowercase = true;
@@ -137,7 +135,7 @@ loop:
         }
       }
 
-      p--;
+      --p;
 
       /* ignore some extension */
 
@@ -236,15 +234,15 @@ loop:
 
 static void
 getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch) {
-  EMCHAR* r = nullptr;
-  int     i;
-  int     j;
 
   fname = normalize(fname, SLASH);
   (void)emstrcpy(dmatch, fname);
   (void)emstrcpy(fmatch, fname);
 
-  for (i = 0, j = 0; *fname; i++, fname++) {
+  const EMCHAR* r{nullptr};
+  int j{0};
+
+  for (int i = 0; *fname; ++i, ++fname) {
     if ((*fname == '/') || (*fname == ':')) {
       r = fname + 1;
       j = i;
@@ -253,9 +251,9 @@ getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch) {
   
   if (r != nullptr) {
     (void)emstrcpy(fmatch, r);
-    dmatch[++j] = '\0';
+    dmatch[++j] = '\000';
   } else {
-    dmatch[0]   = '\0';
+    dmatch[0] = '\000';
   }
 }
 
@@ -285,17 +283,15 @@ dired() {
 
 bool
 diredbuffer(const EMCHAR* fname) {
-  DIR*    dirp;
-  ENTRY*  dp;
-  BUFFER* bp;
   EMCHAR  buf[NFILEN];
   EMCHAR  bname[BUFFER::NBUFN];
-  bool    rootp  = false;
 
   fname = normalize(const_cast<EMCHAR*>(fname), NOSLASH);
   makename((EMCHAR*)&bname[0], fname);
 
-  if ((bp = BUFFER::find(bname, true, EDITMODE::DIRED)) == nullptr) {
+  auto bp(BUFFER::find(bname, true, EDITMODE::DIRED));
+
+  if (bp == nullptr) {
     return false;
   }
 
@@ -309,11 +305,10 @@ diredbuffer(const EMCHAR* fname) {
     return false;
   }
 
-  if (fname[emstrlen(fname) - 1] == '/') {
-    rootp = true;
-  }
+  const bool rootp{fname[emstrlen(fname) - 1] == '/'};
 
-  if ((dirp = emopendir(fname)) == nullptr) {
+  DIR* dirp{emopendir(fname)};
+  if (dirp == nullptr) {
     WDGwrite(ECSTR("Can't open directory: %s"), fname);
     return false;
   }
@@ -328,7 +323,7 @@ diredbuffer(const EMCHAR* fname) {
   int nfiles = 0;
 
   try {
-    while ((dp = readdir(dirp)) != nullptr) {
+    for (auto dp = readdir(dirp); dp != nullptr; dp = readdir(dirp)) {
       (void)emstrcpy(buf, mark);
       (void)emstrcat(buf, fname);
       if (!rootp) {
@@ -337,7 +332,6 @@ diredbuffer(const EMCHAR* fname) {
       (void)emstrcat(buf, caseconvert(emgetdirentry(dp)));
     
       EDLINE::append(bp, buf);
-
       ++nfiles;
     }
 	} catch(...) {
@@ -459,7 +453,7 @@ diredcmd(int c) {
 
     return T;
   case 'R' :
-    p = s= &newname[0];
+    p = s = &newname[0];
     (void)emstrcpy(newname, pfname);
 
     while (*s) {
@@ -514,28 +508,3 @@ diredcmd(int c) {
     return ctrlg();
   }
 }
-
-#else
-
-EMCHAR*
-filematch(EMCHAR* prompt, EMCHAR* file) {
-  WDGerror(ECSTR("No file match in this version."));
-  return nullptr;
-}
-
-bool
-diredbuffer(EMCHAR* fname) {
-  WDGerror(ECSTR("No DIRED in this version."));
-  return false;
-}
-
-CMD
-dired() {
-  return ctrlg();
-}
-
-CMD
-diredcmd(int c) {
-  return ctrlg();
-}
-#endif

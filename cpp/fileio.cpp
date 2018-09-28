@@ -480,8 +480,8 @@ ffullname(EMCHAR* rname, const EMCHAR* fname) {
    */
 
   if (s && (emstrlen(s) >= 2) && s[1] == ':') {
-    if (isalpha((int)s[0]) && islower((int)s[0])) {
-      s[0] = (TCHAR)toupper((int)s[0]);
+    if (std::isalpha((int)s[0]) && std::islower((int)s[0])) {
+      s[0] = (TCHAR)std::toupper((int)s[0]);
     }
   }
 

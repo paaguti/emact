@@ -863,8 +863,8 @@ X11Terminal::getEvent() {
          */
 
         if (_ctrl) {
-          if (islower(keychar)) {
-            _char = toupper(keychar);
+          if (std::islower(keychar)) {
+            _char = std::toupper(keychar);
           }
           _char -= '@';
         } else {
@@ -877,8 +877,8 @@ X11Terminal::getEvent() {
       }
 
       if (_meta) {
-        if (isalpha(_char)) {
-          _char = (int)(META|toupper(_char));
+        if (std::isalpha(_char)) {
+          _char = (int)(META|std::toupper(_char));
         } else {
           _char = (int)(META|_char);
         }

@@ -1431,9 +1431,11 @@ system(const TCHAR* s) {
   };
 
   internal = FALSE;
-  for (slwr = const_cast<TCHAR*>(s); *slwr && !isspace((int)*slwr); slwr++) {
-    if (isupper((int)*slwr)) {
-      *slwr = (TCHAR)tolower((int)*slwr);
+  for (slwr = const_cast<TCHAR*>(s);
+       *slwr && !std::isspace((int)*slwr);
+       ++slwr) {
+    if (std::isupper((int)*slwr)) {
+      *slwr = (TCHAR)std::tolower((int)*slwr);
     }
   }
 

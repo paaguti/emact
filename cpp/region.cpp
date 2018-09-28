@@ -232,8 +232,8 @@ lowerregion() {
       loffs = 0;
     } else {
       int c = linep->get(loffs);
-      if (isalpha(c) && isupper(c)) {
-        linep->put(loffs, tolower(c));
+      if (std::isalpha(c) && std::isupper(c)) {
+        linep->put(loffs, std::tolower(c));
       }
       ++loffs;
     }
@@ -311,8 +311,8 @@ upperregion() {
       loffs = 0;
     } else {
       int c = linep->get(loffs);
-      if (isalpha(c) && islower(c)) {
-        linep->put(loffs, toupper(c));
+      if (std::isalpha(c) && std::islower(c)) {
+        linep->put(loffs, std::toupper(c));
       }
       ++loffs;
     }
