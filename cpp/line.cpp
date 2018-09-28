@@ -35,7 +35,6 @@ static char rcsid[] = "$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $";
  * nonsense.
  */
 
-#include <sstream>
 #include "emacs.h"
 
 /*
@@ -144,7 +143,7 @@ EDLINE::swap(EDLINE* lp2) {
 
 void
 EDLINE::remove(EDLINE* line) {
-  this->l_fp  = line->l_fp;
+  this->l_fp = line->l_fp;
   line->l_fp->l_bp = this;
   EDLINE::dispose(line);
 }
@@ -361,7 +360,7 @@ EDLINE::lreplace(int c, int n) {
   auto doto(dot.pos());
 
   for (auto i(0); i < n; ++i) {
-    if (doto == dot.line()->length()) {
+    if (doto == dotp->length()) {
       curwp->setDotPos(doto);
       return EDLINE::linsert(c, n - i);
     } else {

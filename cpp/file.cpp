@@ -72,11 +72,10 @@ freadonly() {
 static EMCHAR*
 getbufdir() {
   static EMCHAR curd[NFILEN];
-  EMCHAR lastch;
 
   if (curbp->unbound()) {
     (void)ffullname(curd, ECSTR("."));
-    lastch = curd[emstrlen(curd) - 1];
+    auto lastch = curd[emstrlen(curd) - 1];
     if (!(lastch == '\\' || lastch == '/')) {
       (void)emstrcat(curd, ECSTR("/"));
     }
@@ -403,8 +402,6 @@ updir(EMCHAR* fname, int slashflag) {
 
 void
 makename(EMCHAR* bname, const EMCHAR* fname) {
-  EMCHAR i = '2';
-
   /*
    * Point to the last char of pathname.
    */
@@ -426,7 +423,7 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
 #endif
 
   /*
-   *      Copy the file name into buffer name.
+   * Copy the file name into buffer name.
    */
 
   auto cp2 = bname;
@@ -440,31 +437,26 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
    * add version number such as name<2>.
    */
 
+  char i = '2';
   while (BUFFER::find(bname, false) != nullptr) {
     /*
      * Buffer name already exists, append <X> and try again
      */
-    while (cp2 >= (bname + BUFFER::NBUFN - 4)) {
+    auto tmp(cp2);
+    while (tmp >= (bname + BUFFER::NBUFN - 4)) {
       /*
        * find the end of bname minus 4 chars for <?>
        */
-      cp2--;
+      tmp--;
     }
 
-    if (i++ > '9') {
+    if (i == ('9' + 1)) {
       i = 'A';
     }
 
-    for (auto c : { (EMCHAR)'<', (EMCHAR)i, (EMCHAR)'>', (EMCHAR)0 }) {
-      *cp2 = c;
+    for (auto c : std::array<char, 4>{ '<', i, '>', 0 }) {
+      *tmp++ = static_cast<EMCHAR>(c);
     }
-
-#if 0
-    *cp2       = '<';
-    *(cp2 + 1) = i++;
-    *(cp2 + 2) = '>';
-    *(cp2 + 3) = '\000';
-#endif
   }
 }
 

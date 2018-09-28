@@ -72,6 +72,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <sstream>
 #include <list>
 #include <array>
 #include <limits>
