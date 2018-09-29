@@ -781,7 +781,7 @@ XpTerminal::get() {
   this->cshow(false);
 
   if (opt::mouse_avoidance_mode) {
-    if ((aChar != MEVT) && (++_strokes % opt::mouse_avoidance_nudge)==0) {
+    if ((aChar != MEVT) && (++_strokes % opt::mouse_avoidance_nudge) == 0) {
       /*
        * every 3 strokes, move mouse to the bottom
        */
@@ -895,7 +895,7 @@ XpTerminal::xpsetfontsize(int size) {
 
   (void)std::memset((char *)&lf, 0, sizeof(lf));
   lf.lfPitchAndFamily = FIXED_PITCH | FF_MODERN;
-  lf.lfHeight         = -MulDiv(size,GetDeviceCaps(_dc,LOGPIXELSY),72);
+  lf.lfHeight         = -MulDiv(size, GetDeviceCaps(_dc, LOGPIXELSY), 72);
   lf.lfWeight         = FW_BOLD;
   lf.lfOutPrecision   = OUT_DEFAULT_PRECIS;
   lf.lfClipPrecision  = CLIP_DEFAULT_PRECIS;
@@ -1124,7 +1124,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     XpTerminal::_char = XpTerminal::xpdecodechar((int)wParam);
     break;
   case WM_CHAR :
-    if (CTRLP && ((int)wParam)==' ') {
+    if (CTRLP && ((int)wParam) == ' ') {
       /* CTRL-SPACE: it's a mark set */
       XpTerminal::_char = 0;
     } else {
@@ -1158,7 +1158,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     break;
   case WM_DROPFILES: {
     TCHAR szDragFile[NFILEN];
-    DragQueryFile((HDROP)wParam, 0, (TCHAR *)&szDragFile[0],NFILEN);
+    DragQueryFile((HDROP)wParam, 0, (TCHAR *)&szDragFile[0], NFILEN);
     (void)newfile(szDragFile);
     display->update();
     break;
@@ -1519,7 +1519,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
   /* Set up members of STARTUPINFO structure. */
 
   if (opt::pipe_process) {
-    if (!CreatePipe(&hChildStdoutRd,&hChildStdoutWr,&saAttr,0)) {
+    if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0)) {
       XpTerminal::xpprinterror(_T("Stdout pipe creation failed\n"), FALSE);
       return FALSE;
     }
@@ -1595,7 +1595,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
     for (;;) {
       dwRead = 0;
       if (tt->check() != true) {
-        if (!TerminateProcess(piProcInfo.hProcess,0)) {
+        if (!TerminateProcess(piProcInfo.hProcess, 0)) {
           XpTerminal::xpprinterror(_T("TerminateProcess fails"), FALSE);
           nRetCode = FALSE;
         }
@@ -1608,13 +1608,14 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
                           &dwRead,
                           nullptr);
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
       if (bSuccess && dwRead > 0) {
         int     k;
         TCHAR   tchBuf[NLINE + 1];
         char *  s = (char *)chBuf;
-        for (k = 0; k < (int)dwRead && k < NLINE; ++k)
+        for (k = 0; k < (int)dwRead && k < NLINE; ++k) {
           tchBuf[k] = (TCHAR)s[k];
+        }
         tchBuf[k] = (EMCHAR)'\000';
 
         xpshowlines(tchBuf, k);
@@ -1646,7 +1647,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
 
   /* Release handles */
   CloseHandle(piProcInfo.hProcess);
-  CloseHandle(piProcInfo.hThread );
+  CloseHandle(piProcInfo.hThread);
 
   return nRetCode;
 }
@@ -1842,7 +1843,9 @@ xpprint() {
 
   auto Status = 0; // printing status
 
-  for (auto clp = curbp->firstline(); clp!=curbp->lastline(); clp=clp->forw()) {
+  for (auto clp = curbp->firstline();
+       clp != curbp->lastline();
+       clp = clp->forw()) {
     TCHAR buf[NLINE + XPLINENBSIZE];
     if (CurrentLine == 1) {
       StartPage(hPr);

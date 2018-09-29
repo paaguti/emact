@@ -1,5 +1,5 @@
 #if !defined(lint)
-static  char rcsid[] = "$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $";
+static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
 #endif
 
 /*
@@ -525,7 +525,7 @@ lispindent() {
           indento = ++i;
         }
 
-        if (indento>0 && indentp->get(indento)=='(') {
+        if ((indento > 0) && (indentp->get(indento) == '(')) {
           /*
            * case:  " ... ((...)"
            * indent here ->_
@@ -794,7 +794,7 @@ indentline() {
     return NIL;
   }
 
-  while (n-- && gotobol()==T && tabindent()==T && forwline()==T) {
+  while (n-- && (gotobol() == T) && (tabindent() == T) && (forwline() == T)) {
     continue;
   }
 

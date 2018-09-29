@@ -1,5 +1,5 @@
-#if     !defined(lint)
-static  char rcsid[] = "$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $";
+#if !defined(lint)
+static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
 #endif
 
 /*
@@ -86,14 +86,14 @@ showcpos() {
   if (cac < 32) {
     WDGwrite(ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
              nbl, col, DISPLAY::_currow, cac, cac,
-             (nch==0) ? 0 : (int)((100*nbc)/nch));
+             (nch == 0) ? 0 : (int)((100 * nbc) / nch));
   } else {
     EMCHAR buf[2];
     buf[0] = (EMCHAR)cac;
     buf[1] = '\000';
     WDGwrite(ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
              nbl, col, DISPLAY::_currow, buf, cac, cac,
-             (nch==0)?0:(int)((100*nbc)/nch));
+             (nch == 0) ? 0 : (int)((100*nbc)/nch));
   }
 
   return T;
@@ -380,7 +380,8 @@ deblank() {
   }
 
   int nld = 0;
-  for (lp2 = lp1; (lp2=lp2->forw())!=curbp->lastline()&& lp2->length()==0;) {
+  for (lp2 = lp1;
+       (lp2 = lp2->forw()) != curbp->lastline() && lp2->length() == 0;) {
     ++nld;
   }
 

@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static  char rcsid[] = "$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $";
+static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -312,7 +312,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
       int    nb;
 
       if (i >= nbuf) {
-        WDGwrite(ECSTR("File has line longer than %d chars."),i);
+        WDGwrite(ECSTR("File has line longer than %d chars."), i);
         return FIOERR;
       }
 
@@ -353,7 +353,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
         continue;
       }
       if (i >= nbuf) {
-        WDGwrite(ECSTR("File has line longer than %d chars."),i);
+        WDGwrite(ECSTR("File has line longer than %d chars."), i);
         return FIOERR;
       } else {
         buf[i++] = (EMCHAR)c;
@@ -363,7 +363,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
   default:
     while ((c = std::fgetc(ffp)) != EOF && c != '\n') {
       if (i >= nbuf) {
-        WDGwrite(ECSTR("File has line longer than %d chars."),i);
+        WDGwrite(ECSTR("File has line longer than %d chars."), i);
         return FIOERR;
       } else {
         buf[i++] = (EMCHAR)c;
@@ -373,7 +373,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
 #else
   while ((c = std::fgetc(ffp)) != EMEOF && c != '\n') {
     if (i >= nbuf) {
-      WDGwrite(ECSTR("File has line longer than %d chars."),i);
+      WDGwrite(ECSTR("File has line longer than %d chars."), i);
       return FIOERR;
     } else {
       buf[i++] = (EMCHAR)c;

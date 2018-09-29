@@ -242,9 +242,9 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         buf[cpos] = '\000';
         (void)updir(buf, SLASH);
         cpos = emstrlen(buf);
-        if (cpos==0 || (cpos==2 && buf[1] == ':')) {
+        if ((cpos == 0) || ((cpos == 2) && (buf[1] == ':'))) {
           buf[cpos++] = '/';
-          buf[cpos  ] = '\000';
+          buf[cpos] = '\000';
         }
         mlwrite(ECSTR("%s%s"), prompt, buf);
       }

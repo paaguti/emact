@@ -116,14 +116,13 @@ loop:
     (void)emstrcat(pmatch, name);
     if (ffstat(pmatch, &stb) == 0 &&
         (S_ISREG(stb.st_mode) || S_ISDIR(stb.st_mode)) &&
-        (len == 0 || !cmpname(name, fmatch,(size_t)len))) {
+        (len == 0 || !cmpname(name, fmatch, (size_t)len))) {
       auto isdir = S_ISDIR(stb.st_mode);
       EMCHAR* p;
       EMCHAR* s;
       EMCHAR* fmt;
 
-      if (!emstrcmp(name,ECSTR(".")) ||
-          !emstrcmp(name,ECSTR(".."))) {
+      if (!emstrcmp(name, ECSTR(".")) || !emstrcmp(name, ECSTR(".."))) {
         continue;
       }
 

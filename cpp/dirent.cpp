@@ -276,7 +276,7 @@ readdir(DIR* dp) {
       );
 #endif
 #if             defined(_WINDOWS_SOURCE)
-    dp->status = (FindNextFile(dp->dd_hfind,&dp->dd_resbuf)!=TRUE);
+    dp->status = (FindNextFile(dp->dd_hfind, &dp->dd_resbuf) != TRUE);
 #endif
 #if             defined(MSDOS)
     dp->status = _dos_findnext(&dp->dd_resbuf);
@@ -290,7 +290,7 @@ readdir(DIR* dp) {
 #if     defined(_WINDOWS_SOURCE) && defined(_OEM_CONVERT)
   (void)CharToOem(dp->dd_resbuf.filename, dent->d_name);
 #else
-  (void)_pstrcpy(&dent->d_name[0],(_char_t *)&dp->dd_resbuf.filename[0]);
+  (void)_pstrcpy(&dent->d_name[0], (_char_t *)&dp->dd_resbuf.filename[0]);
 #endif
 
 #if     !defined(_WINDOWS_SOURCE) || defined(_LOWERCASE)
@@ -507,7 +507,7 @@ list(_char_t* d) {
       int      isdir = S_ISDIR(stb.st_mode);
       _char_t* cdir  = isdir ? _STR("/") : _STR("");
 
-      if (!strcmp(dp->d_name,_STR(".")) || !strcmp(dp->d_name,_STR(".."))) {
+      if (!strcmp(dp->d_name, _STR(".")) || !strcmp(dp->d_name, _STR(".."))) {
         continue;
       }
 
