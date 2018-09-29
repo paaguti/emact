@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -429,7 +429,9 @@ backdel() {
   auto dotp(dot.line());
   auto doto(dot.pos());
 
-  if (curbp->editMode() != EDITMODE::FUNDAMENTAL && Editor::_repeat == 1 && doto > 0) {
+  if ((curbp->editMode() != EDITMODE::FUNDAMENTAL)
+      && (Editor::_repeat == 1)
+      && (doto > 0)) {
     /*
      * Try to delete past a tab, expand tab before deleting.
      */
@@ -517,7 +519,7 @@ yank() {
   WDGclippaste();
 
   while (n--) {
-    int     c;
+    int c;
 
     for (auto i = 0; (c = kremove(i)) >= 0; ++i) {
       if (c == '\n') {
@@ -890,7 +892,7 @@ justifycurline() {
     } else {
       (void)forwchar();
     }
-    
+
     if (curwp->line()->position() >= fillmax) {
       return T;
     }
@@ -921,7 +923,7 @@ justifycurline() {
     while (curwp->pos() < curwp->line()->length()) {
       if (curwp->getChar() == ' ') {
         int nbspace = 0;
- 
+
         do {
           if (curwp->getChar() != ' ') {
             break;

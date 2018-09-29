@@ -20,7 +20,7 @@ static const char rcsid[] = "$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien
  */
 
 /*
- * charutil.c :
+ * charutil.cpp :
  *
  * It implements low level character functions.
  */
@@ -48,7 +48,7 @@ static const char rcsid[] = "$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien
 int
 emwctomb(char* mbchar, EMCHAR wchar) {
   int ulen = 0;        /* return value for UTF8 size */
-  unsigned long uchar = (unsigned long)wchar;
+  size_t uchar = static_cast<size_t>(wchar);
 
   if (mbchar == nullptr) {
     return ulen;
@@ -369,4 +369,4 @@ static const unsigned char embytesForUTF8[256] = {
 int
 emmbclen(int c) {
   return (int)embytesForUTF8[c & 0xFF];
-} 
+}

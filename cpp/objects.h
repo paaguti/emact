@@ -25,6 +25,8 @@
 #include <vector>
 #include <list>
 #include <array>
+#include <algorithm>
+#include <string>
 #include <limits>
 #include <memory>
 
@@ -158,7 +160,7 @@ class Point final {
   pos() const noexcept {
     return _pos;
   }
-  
+
  private:
   EDLINE* _line{nullptr};
   int     _pos{0};
@@ -186,7 +188,7 @@ class WINSCR {
    * Create a new WINSCR object and put its pointer on top of an internal list.
    * @param [in] bp buffer associated to this window.
    */
-  WINSCR(BUFFER* bp) noexcept;
+  explicit WINSCR(BUFFER* bp) noexcept;
 
   /**
    * destroy window and uncontitionally removes its pointer
@@ -508,7 +510,7 @@ class BUFFER {
   incr() noexcept {
     ++_count;
   }
-  
+
   void
   decr() noexcept {
     --_count;
@@ -934,7 +936,7 @@ class EDLINE {
    * if they were not (because dot ran into the end of the buffer).
    */
   static bool
-	ldelete(int n, bool kflag = false);
+  ldelete(int n, bool kflag = false);
 
   /**
    * Replace "n" copies of the character "c" at the current location
@@ -951,8 +953,8 @@ class EDLINE {
 
   /**
    * Append this line to the buffer. Handcraft the EOL on the end.
-	 * @param [in] bp buffer.
-	 * @param [in] text points to a string to append.
+   * @param [in] bp buffer.
+   * @param [in] text points to a string to append.
    */
   static void
   append(BUFFER* bp, const EMCHAR* text);
@@ -966,10 +968,10 @@ class EDLINE {
    * done,  and  this  makes  the  kill buffer work "right".  Easy
    * cases  can  be  done  by  shuffling  data around.  Hard cases
    * require  that  lines be moved about in memory.
-	 * Called by "ldelete" only.
-	 * @return false on error and true if all looks ok. 
+   * Called by "ldelete" only.
+   * @return false on error and true if all looks ok. 
    */
-	static bool delnewline();
+  static bool delnewline();
 
   EMCHAR* l_text; // A bunch of characters.
   EDLINE* l_fp;   // Link to the next line
@@ -1256,7 +1258,7 @@ class MACTAB {
     m_name  = cmdName;
     m_index = indx;
   }
-      
+
   const EMCHAR*
   name() const noexcept {
     return m_name;
@@ -1500,7 +1502,7 @@ class Editor {
   static const EMCHAR*
   getName() {
     return _name;
-  };
+  }
 
  public:
   static EMCHAR*
@@ -1541,7 +1543,7 @@ class Editor {
                  }
                  auto res = new EMCHAR[len + 1];
 
-                 for (int i = 0; i < (int)len; ++i) {
+                 for (int i = 0; i < static_cast<int>(len); ++i) {
                    res[i] = (EMCHAR)str[i];
                  }
                  res[len] = '\000';
@@ -1561,7 +1563,6 @@ class Editor {
 
   static const EMCHAR* _name;
   static EMCHAR _search[NPAT];
-
 };
 
 EMCHAR

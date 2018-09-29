@@ -30,13 +30,13 @@ std::list<WINSCR*> WINSCR::_wlist;
 
 WINSCR::WINSCR(BUFFER* bp) noexcept
   : _ntrows{TTYnrow - 1} {
-	if (_wlist.empty()) {
+  if (_wlist.empty()) {
     curwp = this;
     _wlist.push_front(this);
-	}
-	if (bp != nullptr) {
-		connect(bp, false);
-	}
+  }
+  if (bp != nullptr) {
+    connect(bp, false);
+  }
 }
 
 WINSCR::~WINSCR() {
@@ -239,7 +239,7 @@ nextwind() {
  */
 
 CMD
-prevwind() { 
+prevwind() {
   auto prev(curwp->up());
 
   if (prev == nullptr) {
@@ -355,7 +355,7 @@ onlywind() {
 
   auto lp = curwp->_toplinep;
 
-  for (int i = curwp->toprow(); i!=0 && lp->back()!=curbp->lastline(); --i) {
+  for (int i{curwp->toprow()}; i != 0 && lp->back() != curbp->lastline(); --i) {
     lp = lp->back();
   }
 
@@ -440,7 +440,7 @@ splitwind() {
                               curwp);
     if (insertIt != WINSCR::list().end()) {
       WINSCR::list().insert(++insertIt, wp);
-    }        
+    }
 
     wp->_toprow = curwp->toprow() + ntru + 1;
     wp->_ntrows = ntrl;
@@ -611,7 +611,7 @@ findwind() {
         auto resizep = NIL;
         if (wx == (TTYncol - 4) || wx == (TTYncol-3)) {
           (void)forwpage();
-        } else if (wx==(TTYncol-7) || wx==(TTYncol-6)) {
+        } else if (wx == (TTYncol - 7) || wx == (TTYncol - 6)) {
           (void)backpage();
         } else {
           switch (mevent.button) {

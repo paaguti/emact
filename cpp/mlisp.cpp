@@ -1,5 +1,5 @@
 #if !defined(lint)
-static  char rcsid[] = "$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $";
+static auto rcsid = "$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $";
 #endif
 
 /*
@@ -72,8 +72,9 @@ class MLisp {
   static int     getcode(const EMCHAR* s, int* indx);
   static void    readerror(const EMCHAR* msg, const EMCHAR* arg);
   static void    fillmacro(int key);
-  static void    fillmacro(SpecialForm sf) {
-    fillmacro(static_cast<int>(sf));
+  template<typename T>
+  static void    fillmacro(T arg) {
+    fillmacro(static_cast<int>(arg));
   }
   static int     lispgetc(FILE* fd);
 
@@ -81,7 +82,7 @@ class MLisp {
   static constexpr int MAXKBD{1024};
   static std::array<int, MAXKBD> _macrotab;
   static FILE* _mfile;
-  static EMCHAR _library[NPAT]; // Library Path
+  static EMCHAR _library[NPAT];  // Library Path
 
  private:
   static constexpr size_t ARGLEN{64};
@@ -288,7 +289,7 @@ MLisp::getfun() {
         fillmacro(SpecialForm::REPEAT);
         word = getword();
         while (*word) {
-          fillmacro((int)(*word++ - '0'));
+          fillmacro(*word++ - '0');
         }
         fillmacro(-1);
         lpar++;
@@ -307,10 +308,11 @@ MLisp::getfun() {
         continue;
       }
     }
-    if (c == ';')
+    if (c == ';') {
       while (nextchar() != '\n') {
         continue;
       }
+    }
   }
 
   {
@@ -711,7 +713,7 @@ MLisp::eval(int expr, size_t depth) {
       break;
     case SpecialForm::LOADMACRO:
       {
-        EMCHAR* file = (EMCHAR*)emstrcpy(string, _library);
+        auto file = emstrcpy(string, _library);
         bufcmd++;
         for (i = emstrlen(file); *bufcmd; ++i) {
           file[i] = (EMCHAR)(*bufcmd++ & MAX_EMCHAR);
@@ -934,7 +936,7 @@ mlcustomize() {
     (void)updir(MLisp::_library, SLASH);
   }
 
-  makename((EMCHAR*)&base[0], Editor::getName());
+  makename(base, Editor::getName());
 
   for (p = base; *p; p++) {
     if (*p == '.') {

@@ -197,7 +197,7 @@ replace(bool prompt) {
   if (freadonly()) {
     return false;
   }
-  
+
   /*
    * compute the line number of curwp->dotp. Since this pointer
    * may change in a substitution we can't save it as the usual
@@ -298,7 +298,7 @@ replace(bool prompt) {
   if (c == 'q') {
     return false;
   }
-  
+
   WDGwrite(ECSTR("Replaced %d occurence(s)"), replaced);
   return true;
 }
@@ -356,7 +356,7 @@ quotep(const EDLINE* l, int i) {
   if (i < 1) {
     return false;
   }
-  
+
   int c;
 
   if ((c = l->get(i - 1)) == '\'' &&
@@ -461,7 +461,7 @@ rmatchc(int patc, bool printflag) {
   if (curwp->getChar() == matchpat) {
     (void)forwchar();
   }
-  
+
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
@@ -505,7 +505,7 @@ rmatchc(int patc, bool printflag) {
   if (printflag) {
     WDGmessage(NOMATCH);
   }
-  
+
   return false;
 }
 
@@ -524,7 +524,7 @@ lmatchc(int patc, bool printflag) {
   if (quotep(clp, indx) || instringp(clp, indx)) {
     return false;
   }
-  
+
   EMCHAR matchpat;
   switch (patc) {
   case '>' : matchpat = '<'; break;
@@ -541,7 +541,7 @@ lmatchc(int patc, bool printflag) {
   if (mode == EDITMODE::LISPMODE && (cbo > lastlisp(clp) + 1)) {
     return false;
   }
-  
+
   for (;;) {
     while (cbo < 0 ||
            ((mode == EDITMODE::CMODE      ||
@@ -587,7 +587,7 @@ lmatchc(int patc, bool printflag) {
     if (quotep(clp, cbo+1) || (c == '"' && (strp = !strp) != false) || strp) {
       continue;
     }
-    
+
     if (c == patc) {
       nbmatch++;
       continue;
@@ -611,22 +611,22 @@ saveindent(EDLINE *clp, int cbo) {
   indentp = clp;
 
   switch (curbp->editMode()) {
-  case EDITMODE::LISPMODE	:
+  case EDITMODE::LISPMODE:
     indento = cbo;
     break;
-  case EDITMODE::CMODE	:
-	case EDITMODE::CPPMODE:
-	case EDITMODE::CSHARPMODE:
-	case EDITMODE::PERLMODE:
-	case EDITMODE::JAVAMODE:
-	case EDITMODE::FORTRANMODE:
-	case EDITMODE::SHELLMODE:
-	case EDITMODE::PROLOGMODE:
+  case EDITMODE::CMODE:
+  case EDITMODE::CPPMODE:
+  case EDITMODE::CSHARPMODE:
+  case EDITMODE::PERLMODE:
+  case EDITMODE::JAVAMODE:
+  case EDITMODE::FORTRANMODE:
+  case EDITMODE::SHELLMODE:
+  case EDITMODE::PROLOGMODE:
     indento = clp->leftmargin();
     break;
-	default:
+  default:
     indento = 0;
-	}
+  }
 }
 
 /*
@@ -663,7 +663,7 @@ automatch(int c, bool f) {
     }
   }
 
-  curwp->setDot(dot); // reposition
+  curwp->setDot(dot);  // reposition
   curwp->setFlags(WINSCR::WFMOVE);
 
   if (mlp != nullptr) {
@@ -807,7 +807,7 @@ getdefinition() {
   if (curbp->editMode() == EDITMODE::FUNDAMENTAL) {
     return NIL;
   }
-  
+
   (void)emstrcpy(save, Editor::searchBuffer());
   *Editor::searchBuffer() = '\000';
 
@@ -816,7 +816,7 @@ getdefinition() {
   if ((s = readpattern(ECSTR("Search-definition: "))) != T) {
     return s;
   }
-  
+
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
@@ -868,7 +868,6 @@ getdefinition() {
 
   WDGmessage(ECSTR("Not found"));
   return NIL;
-
 }
 
 /*
@@ -941,7 +940,7 @@ completeword() {
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
-  
+
   lasto = cbo;
 
   /*
@@ -1081,7 +1080,7 @@ loop:
             break;
           }
         }
-        
+
         (void)emstrcpy(Editor::searchBuffer(), save);
         return T;
       }
@@ -1191,7 +1190,7 @@ comparewindows() {
       lo2 = 0;
     } else {
       while ((lo1 < lp1->length()) &&
-             (lo2 < lp2->length()) && // BUG?? lo1 or lo2??
+             (lo2 < lp2->length()) &&
              (lp1->get(lo1) == lp2->get(lo2))) {
         lo1++;
         lo2++;
@@ -1236,7 +1235,7 @@ comparewindows() {
   } else {
     WDGmessage(ECSTR("no change."));
   }
- 
+
   return T;
 }
 

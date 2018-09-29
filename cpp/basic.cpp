@@ -1,5 +1,5 @@
 #if     !defined( lint )
-static  char rcsid[] = "$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $";
+static auto rcsid = "$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $";
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $"
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -137,7 +137,7 @@ gotoeob() {
 CMD
 gotoline() {
   int n = Editor::_repeat;
-        
+
   if (n <= 1) {
     EMCHAR buf[20];
     if (mlreply(ECSTR("Goto line: "), buf, 20) == ABORT) {
@@ -349,7 +349,7 @@ swapmark() {
     WDGmessage(ECSTR("No mark set in this buffer!"));
     return NIL;
   }
-  
+
   const auto& dot = curwp->getDot();
 
   curwp->setDot(mark);

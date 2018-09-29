@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static  char rcsid[] = "$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $";
+static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $"
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -249,7 +249,7 @@ spawncli() {
     (void)ffsystem(ECSTR("xterm"));
   } else {
     auto cp = ffgetenv(ECSTR("SHELL"));
-    (void)ffsystem((cp!=nullptr) ? cp : ECSTR("sh"));
+    (void)ffsystem((cp != nullptr) ? cp : ECSTR("sh"));
   }
 
   redrawscreen();
@@ -419,12 +419,12 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   EMCHAR  cdir[NLINE];
   EMCHAR  gdir[NLINE];
   EMCHAR  oldfname[NFILEN];
-  int     option= 0;
+  int     option = 0;
   CMD     s;
 
-  (void)ffgetcwd(cdir, NLINE-1);
+  (void)ffgetcwd(cdir, NLINE - 1);
   (void)emstrcpy(gdir, curbp->filename());
-  (void)updir( gdir, NOSLASH);
+  (void)updir(gdir, NOSLASH);
 
   (void)emstrcpy(&oldfname[0], curbp->filename());
 
@@ -432,11 +432,11 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
     (void)ffchdir(gdir);
   }
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
 
-  writeout((EMCHAR*)SHELLTEMP);
+  writeout(SHELLTEMP);
 
   (void)emstrcpy(info, ECSTR("Run "));
   (void)emstrcat(info, prog);
@@ -468,18 +468,18 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   }
 
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
-    (void)readin((EMCHAR*)SHELLRESULT);
+    (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
     BUFFER::change(WINSCR::WFEDIT);
   }
 
   TTYrawmode();
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
-  if (ffaccess((EMCHAR*)SHELLRESULT) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLRESULT);
+  if (ffaccess(SHELLRESULT) == FIOSUC) {
+    (void)ffremove(SHELLRESULT);
   }
 
   (void)ffchdir(cdir);
@@ -502,7 +502,7 @@ sed() {
   EMCHAR  cdir[NLINE];
   EMCHAR  gdir[NLINE];
   EMCHAR  oldfname[NFILEN];
-  int     option= 0;
+  int     option = 0;
   CMD     s;
 
   if (curbp->encoding() != ENCODING::EMASCII) {
@@ -520,11 +520,11 @@ sed() {
     (void)ffchdir(gdir);
   }
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
 
-  writeout((EMCHAR*)SHELLTEMP);
+  writeout(SHELLTEMP);
 
   prompt[0] = '\000';
 
@@ -561,12 +561,12 @@ sed() {
 
   TTYrawmode();
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
 
-  if (ffaccess((EMCHAR*)SHELLRESULT) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLRESULT);
+  if (ffaccess(SHELLRESULT) == FIOSUC) {
+    (void)ffremove(SHELLRESULT);
   }
 
   (void)ffchdir(cdir);
@@ -603,11 +603,11 @@ perl() {
     (void)ffchdir(gdir);
   }
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
 
-  writeout((EMCHAR*)SHELLTEMP);
+  writeout(SHELLTEMP);
 
   prompt[0] = '\000';
 
@@ -619,19 +619,19 @@ perl() {
   (void)emsprintf3(buf, PERLFMT1, PERLPROG, prompt, SHELLTEMP);
 
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
-    (void)readin((EMCHAR*)SHELLTEMP);
+    (void)readin(SHELLTEMP);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
     BUFFER::change(WINSCR::WFEDIT);
   }
 
   TTYrawmode();
 
-  if (ffaccess((EMCHAR*)SHELLTEMP) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLTEMP);
+  if (ffaccess(SHELLTEMP) == FIOSUC) {
+    (void)ffremove(SHELLTEMP);
   }
 
-  if (ffaccess((EMCHAR*)SHELLRESULT) == FIOSUC) {
-    (void)ffremove((EMCHAR*)SHELLRESULT);
+  if (ffaccess(SHELLRESULT) == FIOSUC) {
+    (void)ffremove(SHELLRESULT);
   }
 
   (void)ffchdir(cdir);

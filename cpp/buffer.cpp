@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static  char rcsid[] = "$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $";
+static auto rcsid("$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -40,7 +40,7 @@ static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
 #define BUFFER_DEBUG    1
 
 EDLINE*
-BUFFER::firstline()	{
+BUFFER::firstline() {
   return _linep->forw();
 }
 
@@ -48,7 +48,6 @@ BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
   : _emode{mode},
     _flag{bflag},
     _binary{opt::binary_mode} {
-    
   auto lp(EDLINE::alloc());
 
   setDot(lp, 0);
@@ -197,8 +196,8 @@ BUFFER::clear() noexcept {
     EDLINE::free(lp);
   }
 
-  setDot(_linep, 0); // Fix "."
-  setMark(nullptr, 0); // Invalidate "mark"
+  setDot(_linep, 0);    // Fix "."
+  setMark(nullptr, 0);  // Invalidate "mark"
 
   return true;
 }
@@ -441,7 +440,7 @@ static bool
 makelist(BUFFER *blp) {
   EMCHAR* cp1;
   EMCHAR* cp2;
-  long    nbytes;
+  size_t  nbytes;
   int     c;
   EMCHAR  len[6+1];
   EMCHAR  line[NLINE];
@@ -521,7 +520,7 @@ makelist(BUFFER *blp) {
     }
 
     while (cp1 - &line[5 + 1 + 6 + 1 + BUFFER::NBUFN + 1]) {
-      *cp1++ = ' ';           
+      *cp1++ = ' ';
     }
 
     switch (bp->editMode()) {
@@ -693,7 +692,7 @@ getbpcmd(EMCHAR* buf) {
 
 CMD
 buffercmd(int cmd) {
-  EMCHAR  buf[NPAT];  
+  EMCHAR  buf[NPAT];
   BUFFER  *bp;
   int     asked = 0;
 

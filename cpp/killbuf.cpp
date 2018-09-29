@@ -71,7 +71,7 @@ kinsert(int c) {
 
 int
 kremove(int n) {
-  if (n >= (int)kvect.size()) {
+  if (n >= static_cast<int>(kvect.size())) {
     return -1;
   } else {
     return kvect[n];

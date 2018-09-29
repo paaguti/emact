@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static char rcsid[] = "$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $";
+static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static char rcsid[] = "$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $"
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -21,15 +21,15 @@ static char rcsid[] = "$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $"
 
 /*
  * The  routines in this file deal with the region,  that  magic
- * space between "." and mark. Some functions are commands. Some 
+ * space between "." and mark. Some functions are commands. Some
  * functions are just for internal use.
  */
 
 #include "emacs.h"
 
 /*
- * The starting position of a region, and the size of the region 
- * in  characters,  is kept in a region structure.   Used by the 
+ * The starting position of a region, and the size of the region
+ * in  characters,  is kept in a region structure.   Used by the
  * region commands.
  */
 
@@ -346,7 +346,7 @@ writeregion() {
   if (fd == nullptr) {
     return NIL;
   }
-        
+
   auto linep = region._linep;                 /* Current line.        */
   auto loffs = region._offset;                /* Current offset.      */
 
@@ -375,7 +375,7 @@ CMD
 indentregion() {
   REGION region;
   auto s = T;
-        
+
   if (freadonly()) {
     return NIL;
   }
@@ -403,7 +403,7 @@ indentregion() {
 CMD
 shiftright() {
   REGION region;
-        
+
   if (freadonly()) {
     return NIL;
   }
@@ -423,7 +423,6 @@ shiftright() {
   } while (s && (--region._lines > 0));
 
   return T;
-
 }
 
 /*
@@ -434,7 +433,7 @@ shiftright() {
 CMD
 shiftleft() {
   REGION region;
-        
+
   if (freadonly()) {
     return NIL;
   }

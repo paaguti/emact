@@ -1,5 +1,5 @@
 #if !defined(lint)
-static  char rcsid[] = "$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $";
+static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp 
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -76,7 +76,7 @@ describekey() {
   }
 
   return NIL;
-}      
+}
 
 /*
  * Get the printable keyname of a command.
@@ -84,7 +84,6 @@ describekey() {
 
 static void
 getkeyname(int key, EMCHAR* buf) {
-
   buf[0] = '\0';
 
   if (key & CXDR) {
@@ -124,7 +123,7 @@ help() {
   bp->setChanged(false);
 
   /* Blow old text away */
-  if (!bp->clear()){
+  if (!bp->clear()) {
     return NIL;
   }
 
@@ -237,14 +236,13 @@ static  int     index_type;
 
 static EMCHAR*
 varmatch(const EMCHAR* prompt, EMCHAR* buf) {
-  int     i;
-  size_t  len = (size_t)emstrlen(buf);
-  
+  size_t len(emstrlen(buf));
+
   /*
    *      Search first for an exact match
    */
 
-  for (i = 0; i < (int)VARTAB::vartab.size(); ++i) {
+  for (int i = 0; i < (int)VARTAB::vartab.size(); ++i) {
     if (emstrcmp(VARname(i), buf) == 0) {
       VARindex   = i;
       index_type = INDEX_VARIABLE;
@@ -252,7 +250,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
     }
   }
 
-  i = 0;
+  int i = 0;
   for (const auto& ktp : Editor::_keytab) {
     if (emstrcmp(ktp.name(), buf) == 0) {
       VARindex   = i;
@@ -337,12 +335,12 @@ setvar() {
     return NIL;
   }
 
-  varmatch(ECSTR(": match "), buf); /* just to return the INDEX */
+  varmatch(ECSTR(": match "), buf);  /* just to return the INDEX */
 
   switch (index_type) {
   case INDEX_FUNCTION :
     Editor::_thisflag = CFUNSET;
-    status  = Editor::_keytab[VARindex](); // execute command
+    status  = Editor::_keytab[VARindex]();  // execute command
     Editor::_lastflag = Editor::_thisflag;
     return status;
   case INDEX_VARIABLE :
@@ -455,7 +453,7 @@ internalfindtag(int tagnext) {
     if (emstrncmp(tagline, tagname, (size_t)taglen) == 0) {
       auto str = tagline;
 
-      (void)std::fclose(tagfd);                  
+      (void)std::fclose(tagfd);
 
       tagfound = tagno;
 
@@ -524,8 +522,8 @@ internalfindtag(int tagnext) {
   } else {
     WDGwrite(ECSTR("No more tags containing %s"), tagname);
   }
-  return NIL;
 
+  return NIL;
 }
 
 /*
@@ -558,14 +556,14 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
 
   taglen = (size_t)emstrlen(tagname);
 
-  for (int tagno = 0; ffgets(tagline,NLINE,tagfd) != nullptr; tagno++) {
+  for (int tagno = 0; ffgets(tagline, NLINE, tagfd) != nullptr; ++tagno) {
     if (tagno <= tagnext) {
       continue;
     }
     if ((mode == EDITMODE::LISPMODE)
         ? (emstrnicmp(tagline, tagname, taglen) == 0)
-        : (emstrncmp( tagline, tagname, taglen) == 0)) {
-      (void)std::fclose(tagfd);                  
+        : (emstrncmp(tagline, tagname, taglen) == 0)) {
+      (void)std::fclose(tagfd);
 
       tagfound = tagno;
 
@@ -576,7 +574,7 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
       for (auto s = tagline; *s != ' '; ++s) {
         *tagcomp++ = *s;
       }
-      
+
       *tagcomp = '\000';
 
       return tagnext = tagno;
@@ -685,7 +683,7 @@ printcmd(int c, BUFFER* bp) {
       printmacro(nullptr, bp);
     }
   }
-}       
+}
 
 /*
  * Uncompile  the  current  keyboard macro in Lisp code into the
