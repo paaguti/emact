@@ -644,6 +644,38 @@ EDLINE::newline() noexcept {
   return true;
 }
 
+/**
+ * This  routine,  given a pointer to a EDLINE, and the  current
+ * cursor  goal column,  return the best choice for the  offset.
+ * The offset is returned.  Used by "C-N" and "C-P".
+ * @param [in] goal current goal (generally Editing::_curcol).
+ */
+int
+EDLINE::getgoal(int goal) const noexcept {
+  for (auto dbo(0), col(0); dbo != this->length(); ++dbo) {
+    auto c = this->get(dbo);
+    auto newcol = col;
+    if (c == '\t') {
+      do {
+        ++newcol;
+      } while (newcol % opt::tab_display);
+    } else {
+      if (!self_insert(c)) {
+        ++newcol;
+      }
+      ++newcol;
+    }
+
+    if (newcol > goal) {
+      return dbo;
+    }
+
+    col = newcol;
+  }
+
+  return this->length();
+}
+
 /*
  * Reverse  the  effects  of BUFFER::change for the current buffer.  It
  * updates  all  of  the required flags in the buffer and window

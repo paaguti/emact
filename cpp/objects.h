@@ -883,7 +883,16 @@ class EDLINE {
   void
   remove(EDLINE* line);
 
-   /**
+  /**
+   * This  routine,  given a pointer to a EDLINE, and the  current
+   * cursor  goal column,  return the best choice for the  offset.
+   * The offset is returned.  Used by "C-N" and "C-P".
+   * @param [in] goal current goal (generally Editing::_curcol).
+   */
+  int
+  getgoal(int goal) const noexcept;
+
+  /**
    * Insert a newline into the buffer at the current location of dot in
    * the current window.  The funny ass-backwards way it does things is
    * not a botch; it just makes the last line in the file not a special

@@ -117,7 +117,7 @@ getccol() {
         ++col;
       } while (col % opt::tab_display);
     } else {
-      if (c < 0x20 || c == 0x7F) {
+      if (!self_insert(c)) {
         ++col;
       }
       ++col;

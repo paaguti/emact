@@ -29,8 +29,6 @@ static  char rcsid[] = "$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $"
 
 #include "emacs.h"
 
-static int getgoal(const EDLINE* dlp);
-
 /*
  * Move the cursor to the beginning of the current line.
  */
@@ -189,7 +187,7 @@ forwline() {
     dlp = dlp->forw();
   }
 
-  curwp->setDot(dlp, getgoal(dlp));
+  curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
   curwp->setFlags(WINSCR::WFMOVE);
 
   return T;
@@ -222,46 +220,10 @@ backline() {
     dlp = dlp->back();
   }
 
-  curwp->setDot(dlp, getgoal(dlp));
+  curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
   curwp->setFlags(WINSCR::WFMOVE);
 
   return T;
-}
-
-/*
- * This  routine,  given a pointer to a EDLINE, and the  current
- * cursor  goal column,  return the best choice for the  offset.
- * The offset is returned.  Used by "C-N" and "C-P".
- */
-
-static int
-getgoal(const EDLINE* dlp) {
-  int col = 0;
-  int dbo = 0;
-
-  while (dbo != dlp->length()) {
-    auto c = dlp->get(dbo);
-    auto newcol = col;
-    if (c == '\t') {
-      do {
-        ++newcol;
-      } while (newcol % opt::tab_display);
-    } else {
-      if (!self_insert(c)) {
-        ++newcol;
-      }
-      ++newcol;
-    }
-
-    if (newcol > Editor::_curgoal) {
-      break;
-    }
-
-    col = newcol;
-    ++dbo;
-  }
-
-  return dbo;
 }
 
 /*
