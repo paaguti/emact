@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static  char rcsid[] = "$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $";
+static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 #endif
 
 /*
@@ -7,12 +7,12 @@ static  char rcsid[] = "$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp 
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -31,7 +31,7 @@ static  char rcsid[] = "$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp 
 
 Terminal* tt{nullptr};
 
-bool          DISPLAY::_mouse{false}; // Mouse flag
+bool          DISPLAY::_mouse{false};  // Mouse flag
 int           DISPLAY::_currow{0};
 int           DISPLAY::_curcol{0};
 EMCHAR        DISPLAY::_curchar;
@@ -44,8 +44,8 @@ extern const EMCHAR* version;           /* Current version              */
  */
 class VIDEO {
  public:
-  bool    changed; // Flags
-  EMCHAR* text;    // Screen data.
+  bool    changed;  // Flags
+  EMCHAR* text;     // Screen data.
 
  public:
   explicit VIDEO(size_t size) {
@@ -79,7 +79,7 @@ class VIDEO {
   static void
   vtputc(int c) {
     auto vp(VIDEO::vscreen[VIDEO::row]);
-  
+
     if (VIDEO::col >= TTYncol) {
       vp->putc(TTYncol - 1, '\\');
     } else if (c == '\t') {
@@ -116,13 +116,11 @@ class VIDEO {
   static void
   vteeol() {
     auto vp(VIDEO::vscreen[VIDEO::row]);
-  
+
     while (VIDEO::col < TTYncol) {
       vp->putc(VIDEO::col++, ' ');
     }
   }
-
-  static constexpr const short CHANGED = 0x0001; /* Changed. */
 
   static bool    ok;         /* VT ready to run */
   static int     row;        /* Row location of SW cursor    */
@@ -140,7 +138,7 @@ VIDEO** VIDEO::pscreen{nullptr};
 #define OFFSET          2
 #define GRIPCHAR        '#'
 #define FOOTCHAR        '-'
-#define VERSION_LENGTH  6       /* the six letters  'E' 'm' 'A' 'C' 'T' ':' */
+#define VERSION_LENGTH  6    /* the six letters  'E' 'm' 'A' 'C' 'T' ':' */
 
 /*
  * Initialize the data structures used by the display code.  The edge
@@ -159,9 +157,9 @@ DISPLAY::DISPLAY() {
     VIDEO::vscreen[i] = new VIDEO(TTYncol + 1);
     VIDEO::pscreen[i] = new VIDEO(TTYncol + 1);
   }
-  
+
   VIDEO::ok = true;
-  
+
   mlerase();
 }
 
@@ -169,15 +167,15 @@ DISPLAY::~DISPLAY() {
   if (VIDEO::vscreen == nullptr || VIDEO::pscreen == nullptr) {
     return;
   }
-  
+
   for (int i(0); i <= TTYnrow; ++i) {
     delete VIDEO::vscreen[i];
     delete VIDEO::pscreen[i];
   }
-  
+
   delete VIDEO::vscreen;
   delete VIDEO::pscreen;
-  
+
   VIDEO::ok = false;
 }
 
@@ -226,7 +224,7 @@ void
 DISPLAY::computecursor() {
   const auto* lp = curwp->topline();
   _currow = curwp->toprow();
-  
+
   const auto& dot(curwp->getDot());
   const auto clp(dot.line());
   const auto cbo(dot.pos());
@@ -235,9 +233,9 @@ DISPLAY::computecursor() {
     ++_currow;
     lp = lp->forw();
   }
-  
+
   _curcol = 0;
-  
+
   for (int i(0); i < cbo; ++i) {
     auto c = lp->get(i);
     if (c == '\t') {
@@ -251,11 +249,11 @@ DISPLAY::computecursor() {
       ++_curcol;
     }
   }
-  
+
   if (_curcol >= TTYncol) {
     _curcol = TTYncol - 1;
   }
-  
+
   _curchar = VIDEO::vscreen[_currow]->get(_curcol);
 }
 
@@ -274,11 +272,11 @@ DISPLAY::refresh(WINSCR* wp) {
   bool    out = false;
   int     i;
   int     j;
-  
+
   /*
    * If not force reframe, check the framing.
    */
-  
+
   if ((wp->getFlags() & WINSCR::WFFORCE) == 0) {
     lp = wp->topline();
     for (i = 0; i < wp->rows(); ++i) {
@@ -294,13 +292,13 @@ DISPLAY::refresh(WINSCR* wp) {
       lp = lp->forw();
     }
   }
-  
+
   /*
    * Not acceptable, better compute a new value for the line at the
    * top of the window. Then set the "WINSCR::WFHARD" flag to force full
    * redraw.
    */
-  
+
   if (out == false) {
     if ((i = wp->force()) > 0) {
       if (--i >= wp->rows()) {
@@ -311,22 +309,22 @@ DISPLAY::refresh(WINSCR* wp) {
     } else {
       i = wp->rows() / 2;
     }
-    
+
     lp = wp->line();
     while (i-- && lp->back() != wp->buffer()->lastline()) {
       lp = lp->back();
     }
-    
+
     wp->setTopline(lp);
     wp->setFlags(WINSCR::WFHARD);   /* Force full.  */
   }
-  
+
   /*
    * Try to use reduced update.  Mode line update has its own special
    * flag. The fast update is used if the only thing to do is within
    * the line editing.
    */
-  
+
   lp = wp->topline();
   i  = (int)wp->toprow();
   if ((wp->getFlags() & ~WINSCR::WFMODE) == WINSCR::WFEDIT) {
@@ -357,7 +355,7 @@ DISPLAY::refresh(WINSCR* wp) {
       ++i;
     }
   }
-  
+
   display->modeline(wp);
   wp->setFlags(WINSCR::WFCLEAR);
 }
@@ -365,7 +363,7 @@ DISPLAY::refresh(WINSCR* wp) {
 void
 DISPLAY::update(DISPLAY::Mode mode) {
   static BUFFER* oldbp{nullptr};
-  
+
   if (mode == Mode::REFRESH) {
     DISPLAY::garbaged();
   }
@@ -373,7 +371,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
   if (!VIDEO::ok) {
     return;
   }
-  
+
   for (auto wp : WINSCR::list()) {
     /*
      * Look at any window with update flags set on.
@@ -382,26 +380,26 @@ DISPLAY::update(DISPLAY::Mode mode) {
       refresh(wp);
     }
   }
-  
+
   /*
    * Always recompute the row and column number of the hardware
    * cursor.  This is the only update for simple moves.
    */
-  
+
   if (mode == Mode::MINIBUF) {
-    _curcol = mlcursor(); // minibuf cursor position.
+    _curcol = mlcursor();  // minibuf cursor position.
     _currow = TTYnrow;
     _curchar = ' ';
   } else {
     computecursor();
   }
-  
+
   /*
    * Special hacking if the screen is garbage.  Clear the hardware
    * screen, and update your copy to agree with it.  Set all the
    * virtual screen change bits, to force a full update.
    */
-  
+
   if (_sgarbf != Sync::SYNCHRONIZED) {
     for (int i = 0; i <= TTYnrow; ++i) {
       VIDEO::vscreen[i]->changed = true;
@@ -416,13 +414,13 @@ DISPLAY::update(DISPLAY::Mode mode) {
     }
     _sgarbf = Sync::SYNCHRONIZED;   /* Erase-page clears    */
   }
-  
+
   /*
    * Make sure that the physical and virtual displays agree.  Unlike
    * before, the updateline code is only called with a line that has
    * been updated for sure.
    */
-  
+
   for (int i = 0; i <= TTYnrow; ++i) {
     auto vp1(VIDEO::vscreen[i]);
     if (vp1->changed) {
@@ -431,21 +429,21 @@ DISPLAY::update(DISPLAY::Mode mode) {
       vp1->changed = false;
     }
   }
-  
+
   /*
    * Update the current buffer name when needed
    */
-  
+
   if (curbp != oldbp) {
     (void)WDGtitle(curbp->bufname(), curbp->filename());
     oldbp = curbp;
   }
-  
+
   /*
    * Finally, update the hardware cursor, char at cursor and flush out
    * buffers
    */
-  
+
   TTYmove(_currow, _curcol);
   TTYflush();
 }
@@ -467,12 +465,12 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 #else
   auto outbuf = nline;
 #endif
-  
+
   (void)pline;
-  
+
   stflag = (emstrncmp(nline + OFFSET, version, VERSION_LENGTH) == 0);
   TTYmove(row, 0);
-  
+
   if (stflag) {
     TTYinverse();
     TTYputs(outbuf, TTYncol);
@@ -488,18 +486,18 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
   EMCHAR* cp5;
   int     count;
   int     stflag;
-  
+
   stflag = (emstrncmp(cp1+OFFSET, version, VERSION_LENGTH) == 0);
-  
+
   /*
    * Compute the left match.
    */
-  
+
   while (cp1 != (nline + TTYncol) && cp1[0] == cp2[0]) {
     ++cp1;
     ++cp2;
   }
-  
+
   if (cp1 == (nline + TTYncol)) {
     /*
      * Easy  an update is made outside the visible bounds
@@ -514,15 +512,15 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
      */
     return;
   }
-  
+
   /*
    * Compute right match and flag non blank changes
    */
-  
+
   auto nbflag = false;
   cp3 = nline + TTYncol;
   cp4 = pline + TTYncol;
-  
+
   while (cp3[-1] == cp4[-1]) {
     --cp3;
     --cp4;
@@ -530,48 +528,48 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
       nbflag = true;      /* in right match.      */
     }
   }
-  
+
   cp5 = cp3;
-  
+
   if (!nbflag) {
     /*
      * Can we perform an erase to EOL ?
      */
-    
+
     while ((cp5 - cp1) && (cp5[-1] == ' ')) {
       --cp5;
     }
-    
+
     /*
      * Usefull only if erase is fewer characters.
      */
-    
+
     if ((cp3 - cp5) <= 3) {
       cp5 = cp3;
     }
   }
-  
+
   /*
    * Go to start of line.
    */
-  
+
   TTYmove(row, (int)(cp1 - nline));
-  
+
   if (stflag) {
     TTYinverse();
   }
-  
+
   if ((count = (int)(cp5 - cp1)) > 0) {
     /*
      * Display changes and update old line.
      */
     TTYputs(cp1, count);
-    
+
     while (count--) {
       *cp2++ = *cp1++;
     }
   }
-  
+
   if (cp5 != cp3) {
     /*
      * Erase and update old line.
@@ -581,7 +579,7 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
       *cp2++ = *cp1++;
     }
   }
-  
+
   if (stflag) {
     TTYmove(row + 1, 0);
     TTYnormal();
@@ -593,7 +591,7 @@ void
 DISPLAY::modeline(const WINSCR* wp) noexcept {
   EMCHAR  buf[8];
   int     i;
-  
+
   auto pos = 0; /* Number of chars    */
 
   auto modeputc = [&pos](int c) {
@@ -615,7 +613,7 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
   modeputc(FOOTCHAR);
   modeputc(' ');
   modeputs(version);
-  
+
   auto bp = wp->buffer();
 
   switch (bp->editMode()) {
@@ -635,11 +633,11 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
   case EDITMODE::SHELLMODE   : modeputs(ECSTR(" (Shell"));       break;
   default                    : modeputs(ECSTR(" (Fundamental")); break;
   }
-  
+
   if (opt::replace_mode) {
     modeputs(ECSTR(" Ovwrt"));
   }
-  
+
   if (opt::auto_fill_mode) {
     modeputs(ECSTR(" Fill"));
   }
@@ -659,58 +657,58 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
   default:
     break;
   }
-  
+
   modeputs(ECSTR(") "));
-  
+
   if (bp->readonly()) {
     /*
      * "%" if readonly.
      */
     modeputc('%');
   }
-  
+
   if (bp->isChanged()) {
     /*
      * "*" if changed.
      */
     modeputc('*');
   }
-  
+
   modeputs(bp->bufname());
-  
+
   if (opt::line_number_mode) {
     EMCHAR num[32];  // enough for a 64bit integer.
-    
+
     auto maxlen = 1L;
     auto curlen = 0L;
-    
+
     for (auto lp(bp->firstline()); lp != bp->lastline(); lp = lp->forw()) {
       if (lp == curwp->line()) {
         curlen = maxlen;
       }
       maxlen++;
     }
-    
+
     modeputs(ECSTR(" - L"));
-    
+
     if (curlen != 0) {
       (void)emsprintf1(num, ECSTR("%ld "), curlen);
     } else {
       (void)emsprintf1(num, ECSTR("%ld "), maxlen);
     }
- 
+
     /*
      * take care of UNICODE
      */
-    
+
     for (i = 0; num[i] != '\000'; ++i) {
       buf[i] = (EMCHAR)num[i];
     }
-    
+
     buf[i] = '\000';
-    
+
     modeputs(buf);
-    
+
     if (curlen == 0L) {
       modeputs(ECSTR("(100%)"));
     } else {
@@ -722,34 +720,34 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
       modeputc(')');
     }
   }
-  
+
 #if defined(_DISPLAY_FILENAME)
   if (bp->filename()) {
     /*
      *      Complete file name with PATH.
      */
-    
+
     modeputs(ECSTR(" - "));
     modeputs(bp->filename());
   }
-  
+
   modeputc(' ');
 #endif
-  
+
   if (_mouse) {
     while (pos < (TTYncol - 8)) {
       modeputc(' ');
     }
-    
+
     VIDEO::col = pos = TTYncol - 8;
-    
+
     modeputs(ECSTR(" Up Dn "));
     modeputc((int)GRIPCHAR);
   } else {
     while (pos < (TTYncol - 1)) {
       modeputc(' ');
     }
-    
+
     VIDEO::col = TTYncol - 1;
     modeputc((int)FOOTCHAR);
   }
