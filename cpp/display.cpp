@@ -75,23 +75,23 @@ class VIDEO {
    * the  virtual  terminal  buffers.  Only  column  overflow   is
    * checked.
    */
-
+  template<typename T>
   static void
-  vtputc(int c) {
+  vtputc(T c) {
     auto vp(VIDEO::vscreen[VIDEO::row]);
 
     if (VIDEO::col >= TTYncol) {
       vp->putc(TTYncol - 1, '\\');
     } else if (c == '\t') {
       do {
-        VIDEO::vtputc((int)' ');
+        VIDEO::vtputc(' ');
       } while ((VIDEO::col % opt::tab_display) && VIDEO::col < TTYncol);
     } else if (!self_insert(c)) {
       if (opt::set_show_graphic || (DISPLAY::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
       } else {
-        VIDEO::vtputc((int)'^');
-        VIDEO::vtputc((int)c ^ 0x40);
+        VIDEO::vtputc('^');
+        VIDEO::vtputc(c ^ 0x40);
       }
     } else {
       vp->putc(VIDEO::col++, (EMCHAR)c);
@@ -326,7 +326,7 @@ DISPLAY::refresh(WINSCR* wp) {
    */
 
   lp = wp->topline();
-  i  = (int)wp->toprow();
+  i  = wp->toprow();
   if ((wp->getFlags() & ~WINSCR::WFMODE) == WINSCR::WFEDIT) {
     j = wp->rows() + i;
     while ((lp != wp->line()) && (j > i)) {
@@ -337,17 +337,17 @@ DISPLAY::refresh(WINSCR* wp) {
       VIDEO::vscreen[i]->changed = true;
       VIDEO::vtmove(i, 0);
       for (j = 0; j < lp->length(); ++j) {
-        VIDEO::vtputc((int)lp->get(j));
+        VIDEO::vtputc(lp->get(j));
       }
       VIDEO::vteeol();
     }
   } else if ((wp->getFlags() & (WINSCR::WFEDIT|WINSCR::WFHARD)) != 0) {
-    while (i < ((int)wp->toprow() + (int)wp->rows())) {
+    while (i < (wp->toprow() + wp->rows())) {
       VIDEO::vscreen[i]->changed = true;
       VIDEO::vtmove(i, 0);
       if (lp != wp->buffer()->lastline()) {
         for (j = 0; j < lp->length(); ++j) {
-          VIDEO::vtputc((int)lp->get(j));
+          VIDEO::vtputc(lp->get(j));
         }
         lp = lp->forw();
       }
@@ -553,13 +553,13 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
    * Go to start of line.
    */
 
-  TTYmove(row, (int)(cp1 - nline));
+  TTYmove(row, (cp1 - nline));
 
   if (stflag) {
     TTYinverse();
   }
 
-  if ((count = (int)(cp5 - cp1)) > 0) {
+  if ((count = (cp5 - cp1)) > 0) {
     /*
      * Display changes and update old line.
      */
@@ -595,20 +595,20 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
   auto pos = 0; /* Number of chars    */
 
   auto modeputc = [&pos](int c) {
-    VIDEO::vtputc((int)c);
+    VIDEO::vtputc(c);
     ++pos;
   };
 
   auto modeputs = [&pos](const EMCHAR* text) {
     while (*text != 0) {
-      VIDEO::vtputc((int)*text++);
+      VIDEO::vtputc(*text++);
       ++pos;
     }
   };
 
-  auto row = (int)wp->toprow() + (int)wp->rows(); /* Location.          */
-  VIDEO::vscreen[row]->changed = true;              /* Redraw next time.  */
-  VIDEO::vtmove(row, 0);                            /* Seek to right line.*/
+  auto row = wp->toprow() + wp->rows();  /* Location.          */
+  VIDEO::vscreen[row]->changed = true;   /* Redraw next time.  */
+  VIDEO::vtmove(row, 0);                 /* Seek to right line.*/
 
   modeputc(FOOTCHAR);
   modeputc(' ');
@@ -712,10 +712,10 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
     if (curlen == 0L) {
       modeputs(ECSTR("(100%)"));
     } else {
-      auto average = (int)((curlen * 100) / maxlen);
+      auto average = ((curlen * 100) / maxlen);
       modeputc('(');
-      modeputc((EMCHAR)(average / 10 + (int)'0'));
-      modeputc((EMCHAR)(average % 10 + (int)'0'));
+      modeputc((EMCHAR)(average / 10 + '0'));
+      modeputc((EMCHAR)(average % 10 + '0'));
       modeputc('%');
       modeputc(')');
     }
@@ -742,13 +742,13 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
     VIDEO::col = pos = TTYncol - 8;
 
     modeputs(ECSTR(" Up Dn "));
-    modeputc((int)GRIPCHAR);
+    modeputc(GRIPCHAR);
   } else {
     while (pos < (TTYncol - 1)) {
       modeputc(' ');
     }
 
     VIDEO::col = TTYncol - 1;
-    modeputc((int)FOOTCHAR);
+    modeputc(FOOTCHAR);
   }
 }

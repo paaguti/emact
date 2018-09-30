@@ -84,7 +84,7 @@ getbufdir() {
     (void)updir(curd, SLASH);
   }
 
-  return (EMCHAR*)&curd[0];
+  return &curd[0];
 }
 
 /*
@@ -504,7 +504,7 @@ writeout(const EMCHAR* fname) {
     }
 
     if (c == '.') {
-      p = (EMCHAR*)&bak[s];
+      p = &bak[s];
       if (emstrcmp(p, ECSTR(".BAK")) == 0 ||
           emstrcmp(p, ECSTR(".bak")) == 0 ||
           emstrcmp(p, ECSTR(".Bak")) == 0) {
@@ -774,9 +774,9 @@ getautomode(const EMCHAR* sp) {
   } while (*sp++);
 
   if (trail) {
-    int size = (int) (sizeof(modtable)/sizeof(modtable[0]));
+    auto size = (sizeof(modtable) / sizeof(modtable[0]));
 
-    for (int i = 0; i < size; i++) {
+    for (decltype(size) i{0}; i < size; ++i) {
       if ((emstrcmp(trail, modtable[i].ext) == 0)) {
         return modtable[i].mode;
       }
@@ -965,8 +965,8 @@ filealternate() {
     return NIL;
   }
 
-  makename((EMCHAR*)&bname[0], ofname);
-  curbp->setBuffer((EMCHAR*)&bname[0]);
+  makename(&bname[0], ofname);
+  curbp->setBuffer(&bname[0]);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
 
@@ -1140,7 +1140,7 @@ filewrite() {
   if (writeout(ofname)) {
     EMCHAR bname[BUFFER::NBUFN];
 
-    makename((EMCHAR*)&bname[0], ofname);
+    makename(&bname[0], ofname);
     (void)emstrcpy(curbp->bufname(), bname);
     (void)emstrcpy(curbp->filename(), ofname);
     (void)ffullname(curbp->filename(), ofname);

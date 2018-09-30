@@ -231,26 +231,29 @@ help() {
 #define INDEX_FUNCTION          1
 #define INDEX_VARIABLE          2
 
-static  int     VARindex;
-static  int     index_type;
+static int VARindex;
+static int index_type;
 
 static EMCHAR*
 varmatch(const EMCHAR* prompt, EMCHAR* buf) {
   size_t len(emstrlen(buf));
+  decltype(VARindex) i{0};
 
   /*
-   *      Search first for an exact match
+   * Search first for an exact match
    */
 
-  for (int i = 0; i < (int)VARTAB::vartab.size(); ++i) {
-    if (emstrcmp(VARname(i), buf) == 0) {
-      VARindex   = i;
+  i = 0;
+  for (const auto& var : VARTAB::vartab) {
+    if (emstrcmp(var.name(), buf) == 0) {
+      VARindex = i;
       index_type = INDEX_VARIABLE;
-      return VARname(i);
+      return var.name();
     }
+    ++i;
   }
 
-  int i = 0;
+  i = 0;
   for (const auto& ktp : Editor::_keytab) {
     if (emstrcmp(ktp.name(), buf) == 0) {
       VARindex   = i;
@@ -264,10 +267,11 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
    * Try to match with the help of the user.
    */
 
-  for (i = 0; i < (int)VARTAB::vartab.size(); i++) {
-    if (len == 0 || emstrncmp(VARname(i), buf, len) == 0) {
-      if (len != (size_t)emstrlen(VARname(i))) {
-        WDGupdate(prompt, VARname(i));
+  i = 0;
+  for (const auto& var : VARTAB::vartab) {
+    if (len == 0 || emstrncmp(var.name(), buf, len) == 0) {
+      if (len != emstrlen(var.name())) {
+        WDGupdate(prompt, var.name());
         switch (TTYgetc()) {
         case 0x07:
           WDGwrite(ECSTR("Quit"));
@@ -276,23 +280,23 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
         case 0x0A:
         case 'y' :
         case 'Y' :
-          VARindex   = i;
+          VARindex = i;
           index_type = INDEX_VARIABLE;
-          return VARname(i);
+          return var.name();
         default:
           continue;
         }
       } else {
-        VARindex   = i;
+        VARindex = i;
         index_type = INDEX_VARIABLE;
-        return VARname(i);
+        return var.name();
       }
     }
+    ++i;
   }
 
-  i = -1;
+  i = 0;
   for (const auto& ktp : Editor::_keytab) {
-    ++i;
     if (len == 0 || emstrncmp(ktp.name(), buf, len) == 0) {
       if (len != (size_t)emstrlen(ktp.name())) {
         WDGupdate(prompt, const_cast<EMCHAR*>(ktp.name()));
@@ -309,10 +313,11 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
           continue;
         }
       }
-      VARindex   = i;
+      VARindex = i;
       index_type = INDEX_FUNCTION;
       return const_cast<EMCHAR*>(ktp.name());
     }
+    ++i;
   }
 
   WDGwrite(ECSTR("Not found."));
@@ -675,7 +680,7 @@ printcmd(int c, BUFFER* bp) {
       instringp = true;
     }
 
-    if (c == (int)'\\' || c == (int)'"') {
+    if (c == '\\' || c == '"') {
       (void)emstrcat(macline, ECSTR("\\"));
     }
     (void)emstrcat(macline, ch);

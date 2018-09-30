@@ -44,9 +44,9 @@ static int mbcursor{0};
 static void
 mlclearentry(EMCHAR* buf, int cpos) {
   while (cpos > 0 && mbcursor > 0) {
-    display->statputc(--mbcursor, (int)' ');
+    display->statputc(--mbcursor, ' ');
     if (buf[--cpos] < (EMCHAR)0x20) {
-      display->statputc(--mbcursor, (int)' ');
+      display->statputc(--mbcursor, ' ');
     }
   }
 }
@@ -61,7 +61,7 @@ mlerase() {
   mbcursor = 0;
 
   while (mbcursor < TTYncol) {
-    display->statputc(mbcursor++, (int)' ');
+    display->statputc(mbcursor++, ' ');
   }
 
 #if defined(_WIN32)
@@ -191,9 +191,9 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     switch (c) {
     case 0x03:      /* Ctrl-C */
       while (cpos > 0) {
-        display->statputc(--mbcursor, (int)' ');
+        display->statputc(--mbcursor, ' ');
         if ((unsigned int)buf[--cpos] < 0x20) {
-          display->statputc(--mbcursor, (int)' ');
+          display->statputc(--mbcursor, ' ');
         }
       }
       cpos = 0;
@@ -231,9 +231,9 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     case 0x08:      /* Backspace, erase     */
     case Ctrl|'H':
       if (cpos != 0) {
-        display->statputc(--mbcursor, (int)' ');
+        display->statputc(--mbcursor, ' ');
         if ((unsigned int)buf[--cpos] < 0x20) {
-          display->statputc(--mbcursor, (int)' ');
+          display->statputc(--mbcursor, ' ');
         }
       }
       break;
@@ -265,7 +265,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 
         buf[cpos++] = (EMCHAR)c;
         if (c < ' ') {
-          display->statputc(mbcursor++, (int)'^');
+          display->statputc(mbcursor++, '^');
           c ^= 0x40;
         }
         display->statputc(mbcursor++, c);
@@ -351,7 +351,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       if (cpos < (nbuf - 1)) {
         buf[cpos++] = (EMCHAR)c;
         if (c < ' ') {
-          display->statputc(mbcursor++, (int)'^');
+          display->statputc(mbcursor++, '^');
           c ^= 0x40;
         }
         display->statputc(mbcursor++, c);
@@ -401,7 +401,7 @@ mlwrite(const EMCHAR* fmt, ...) {
 
   while ((c = *fmt++) != 0) {
     if (c != '%') {
-      display->statputc(mbcursor++, (int)c);
+      display->statputc(mbcursor++, c);
     } else {
       switch (c = *fmt++) {
       case 'd':
@@ -431,13 +431,13 @@ mlwrite(const EMCHAR* fmt, ...) {
         mlputs(ap, emstrlen(ap));
         break;
       default:
-        display->statputc(mbcursor++, (int)c);
+        display->statputc(mbcursor++, c);
       }
     }
   }
 
   for (auto i(mbcursor); i < TTYncol; ++i) {
-    display->statputc(i, (int)' ');
+    display->statputc(i, ' ');
   }
 
   display->update(DISPLAY::Mode::MINIBUF);
@@ -454,10 +454,10 @@ static void
 mlputs(const EMCHAR* s, int size) {
   while (size--) {
     if ((unsigned int)*s < (unsigned int)' ') {
-      display->statputc(mbcursor++, (int)'^');
-      display->statputc(mbcursor++, (int)'@' + (int)*s++);
+      display->statputc(mbcursor++, '^');
+      display->statputc(mbcursor++, '@' + *s++);
     } else {
-      display->statputc(mbcursor++, (int)*s++);
+      display->statputc(mbcursor++, *s++);
     }
   }
 }
@@ -477,14 +477,14 @@ mlputi(int i, int r) {
 
   if (i < 0) {
     i = -i;
-    display->statputc(mbcursor++, (int)'-');
+    display->statputc(mbcursor++, '-');
   }
 
   if ((q = i / r) != 0) {
     mlputi(q, r);
   }
 
-  display->statputc(mbcursor++, (int)hexdigits[(int)(i % r)]);
+  display->statputc(mbcursor++, hexdigits[i % r]);
 }
 
 /*

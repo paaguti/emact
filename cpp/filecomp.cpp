@@ -54,16 +54,15 @@ caseconvert(EMCHAR* s) {
   auto lowercase{false};
   auto uppercase{false};
   auto nodot{true};
-  int c;
 
-  while ((c = (int)*p++) != 0) {
+  for (auto c = *p; *p != 0; ++p) {
     if (std::isalpha(c)) {
       if (std::isupper(c)) {
         uppercase = true;
       } else {
         lowercase = true;
       }
-    } else if (c == (int)'.') {
+    } else if (c == '.') {
       nodot = false;
     }
   }
@@ -105,7 +104,7 @@ loop:
   dirp = emopendir(*dmatch ? dmatch : ECSTR("."));
 
   if (!dirp) {
-    WDGwrite(ECSTR("No such directory: %s"), (EMCHAR*)dmatch);
+    WDGwrite(ECSTR("No such directory: %s"), dmatch);
     return nullptr;
   }
 
@@ -285,7 +284,7 @@ diredbuffer(const EMCHAR* fname) {
   EMCHAR  bname[BUFFER::NBUFN];
 
   fname = normalize(const_cast<EMCHAR*>(fname), NOSLASH);
-  makename((EMCHAR*)&bname[0], fname);
+  makename(&bname[0], fname);
 
   auto bp(BUFFER::find(bname, true, EDITMODE::DIRED));
 
@@ -314,7 +313,7 @@ diredbuffer(const EMCHAR* fname) {
   EMCHAR mark[DIREDMARK + 1];
 
   for (int i = 0; i < DIREDMARK; ++i) {
-    mark[i] = (EMCHAR)' ';
+    mark[i] = ' ';
   }
   mark[DIREDMARK] = '\000';
 
