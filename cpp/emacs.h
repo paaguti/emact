@@ -1,5 +1,5 @@
 /*
- * static char rcsid[] = "$Id: emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $";
+ * static auto rcsid("$Id: emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $");
  */
 
 /*

@@ -1,5 +1,5 @@
 #if     !defined( lint )
-static  char rcsid[] = "$Id: killbuf.cpp,v 1.3 2018/08/28 12:03:54 jullien Exp $";
+static auto rcsid("$Id: killbuf.cpp,v 1.3 2018/08/28 12:03:54 jullien Exp $");
 #endif
 
 /*

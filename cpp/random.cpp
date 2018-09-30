@@ -84,16 +84,18 @@ showcpos() {
   cac &= MAX_EMCHAR;
 
   if (cac < 32) {
-    WDGwrite(ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
-             nbl, col, DISPLAY::_currow, cac, cac,
-             (nch == 0) ? 0 : (int)((100 * nbc) / nch));
+    WDGwrite(
+      ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
+      nbl, col, DISPLAY::_currow, cac, cac,
+      (nch == 0) ? 0 : (int)((100 * nbc) / nch));
   } else {
     EMCHAR buf[2];
     buf[0] = (EMCHAR)cac;
     buf[1] = '\000';
-    WDGwrite(ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
-             nbl, col, DISPLAY::_currow, buf, cac, cac,
-             (nch == 0) ? 0 : (int)((100*nbc)/nch));
+    WDGwrite(
+      ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
+      nbl, col, DISPLAY::_currow, buf, cac, cac,
+      (nch == 0) ? 0 : (int)((100 * nbc)/ nch));
   }
 
   return T;

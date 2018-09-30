@@ -1,5 +1,5 @@
 #if !defined(lint)
-static char rcsid[] = "$Id: file.cpp,v 1.37 2018/09/09 07:21:09 jullien Exp $";
+static auto rcsid("$Id: file.cpp,v 1.37 2018/09/09 07:21:09 jullien Exp $");
 #endif
 
 /*

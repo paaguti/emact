@@ -1,5 +1,5 @@
 /*
- * static char rcsid[] = "$Id: xpterm.h,v 1.1 2018/07/29 13:16:38 jullien Exp $";
+ * static auto rcsid("$Id: xpterm.h,v 1.1 2018/07/29 13:16:38 jullien Exp $");
  */
 
 #define IDM_FILE		100

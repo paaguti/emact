@@ -1,5 +1,5 @@
 #if     !defined(lint)
-static  char rcsid[] = "$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $";
+static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
 #endif
 
 #if defined(_WIN32) && !defined(_WINDOWS_SOURCE)
@@ -400,7 +400,8 @@ seekdir(DIR* dirp, long loc) {
 union   REGS            sys_regs;
 static  unsigned  int   odp_off;
 
-#if     defined(M_I86CM) || defined(M_I86LM) || defined(M_I86HM) || defined(__COMPACT__) || defined(__MEDIUM__) || defined(__LARGE__)
+#if  defined(M_I86CM) || defined(M_I86LM) || defined(M_I86HM) \
+  || defined(__COMPACT__) || defined(__MEDIUM__) || defined(__LARGE__)
 
 static  unsigned  int   odp_seg;
 struct  SREGS   seg_regs;

@@ -1,5 +1,5 @@
 /*
- static char rcsid[] = "$Id: config.h.in,v 1.7 2018/09/07 17:57:09 jullien Exp $";
+ static auto rcsid("$Id: config.h.in,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  */
 
 /* Define if you have not a working X11.  */

@@ -1,5 +1,5 @@
 /*
- * static char rcsid[] = "$Id: version.h,v 1.4 2018/08/15 05:46:17 jullien Exp $";
+ * static auto rcsid("$Id: version.h,v 1.4 2018/08/15 05:46:17 jullien Exp $");
  */
 
 /*

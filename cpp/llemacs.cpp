@@ -1,5 +1,5 @@
-#if     !defined( lint ) && defined( _EMACSLIB )
-static  char rcsid[] = "$Id: llemacs.cpp,v 1.12 2018/09/04 05:13:08 jullien Exp $";
+#if !defined( lint ) && defined( _EMACSLIB )
+static auto rcsid("$Id: llemacs.cpp,v 1.12 2018/09/04 05:13:08 jullien Exp $");
 #endif
 
 /*
