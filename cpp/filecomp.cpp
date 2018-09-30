@@ -138,17 +138,17 @@ loop:
 
       /* ignore some extension */
 
-      if (!emstrcmp(s, ECSTR(".o")    ) ||
-          !emstrcmp(s, ECSTR(".obj")  ) ||
-          !emstrcmp(s, ECSTR(".com")  ) ||
+      if (!emstrcmp(s, ECSTR(".o")) ||
+          !emstrcmp(s, ECSTR(".obj")) ||
+          !emstrcmp(s, ECSTR(".com")) ||
           !emstrcmp(s, ECSTR(".class")) ||
-          !emstrcmp(s, ECSTR(".exe")  ) ||
-          !emstrcmp(s, ECSTR(".dll")  ) ||
-          !emstrcmp(s, ECSTR(".lap")  ) ||
-          !emstrcmp(s, ECSTR(".a")    ) ||
-          !emstrcmp(s, ECSTR(".old")  ) ||
-          !emstrcmp(s, ECSTR(".BAK")  ) ||
-          !emstrcmp(s, ECSTR(".bak")  )) {
+          !emstrcmp(s, ECSTR(".exe")) ||
+          !emstrcmp(s, ECSTR(".dll")) ||
+          !emstrcmp(s, ECSTR(".lap")) ||
+          !emstrcmp(s, ECSTR(".a")) ||
+          !emstrcmp(s, ECSTR(".old")) ||
+          !emstrcmp(s, ECSTR(".BAK")) ||
+          !emstrcmp(s, ECSTR(".bak"))) {
         continue;
       }
 

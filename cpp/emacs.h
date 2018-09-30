@@ -307,7 +307,7 @@ static constexpr auto CFKILL(1 << 1);  // Last command was a kill
 static constexpr auto CFMMOV(1 << 2);  // Last command needs mouse move
 static constexpr auto CFFSRC(1 << 3);  // Last command was C-S
 static constexpr auto CFBSRC(1 << 4);  // Last command was C-R
-static constexpr auto CFTAB( 1 << 5);  // Last command was TAB
+static constexpr auto CFTAB(1  << 5);  // Last command was TAB
 static constexpr auto CFCOMP(1 << 6);  // Last command was compare-win
 static constexpr auto CFCPLT(1 << 7);  // Last command was complete
 static constexpr auto CFFKEY(1 << 8);  // Last command was fn-key

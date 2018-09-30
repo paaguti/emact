@@ -1,4 +1,4 @@
-#if	!defined(lint)
+#if     !defined(lint)
 static auto rcsid("$Id: tinfo.cpp,v 1.3 2018/09/02 17:48:50 jullien Exp $");
 #endif
 
@@ -20,173 +20,152 @@ static auto rcsid("$Id: tinfo.cpp,v 1.3 2018/09/02 17:48:50 jullien Exp $");
  */
 
 /*
- *	The  routines  in  this  file  provide  support  for TERMINFO
- *	package.
+ * The routines in this file provide support for TERMINFO package.
  */
 
-#include	"emacs.h"
+#include "emacs.h"
 
-#if	defined( _TERMINFO )
+#if     defined( _TERMINFO )
 
-#include	<curses.h>
-#include	<term.h>
+#include <curses.h>
+#include <term.h>
 
-static	void	tinfomove(int row, int col);
-static	void 	tinfoeeol(void);
-static	void 	tinfoeeop(void);
-static	void	tinfoputs(EMCHAR *s, int n);
-static	void	tinfobeep(void);
-static	void	tinfoopen(void);
-static	void	tinfoclose(void);
-static	void	tinfosi(void);
-static	void	tinfoei(void);
-static	void	tinfocshow(int flag);
-static	int	tinfocheck(void);
-static	void	tinforawmode(void);
+static void tinfomove(int row, int col);
+static void tinfoeeol(void);
+static void tinfoeeop(void);
+static void tinfoputs(const EMCHAR* s, int n);
+static void tinfobeep(void);
+static void tinfoopen(void);
+static void tinfoclose(void);
+static void tinfosi(void);
+static void tinfoei(void);
+static void tinfocshow(int flag);
+static int  tinfocheck(void);
+static void tinforawmode(void);
 
-TERM	term = {
-	0,
-	0,
-	NIL,
-	tinfoopen,
-	tinfoclose,
-	ttgetc,
-	ttputc,
-	ttputs,
-	ttflush,
-	tinfomove,
-	tinfoeeol,
-	tinfoeeop,
-	tinfobeep,
-	tinfosi,
-	tinfoei,
-	tinfocshow,
-	tinfocheck,
-	tinforawmode
+TERM term = {
+  0,
+  0,
+  NIL,
+  tinfoopen,
+  tinfoclose,
+  ttgetc,
+  ttputc,
+  ttputs,
+  ttflush,
+  tinfomove,
+  tinfoeeol,
+  tinfoeeop,
+  tinfobeep,
+  tinfosi,
+  tinfoei,
+  tinfocshow,
+  tinfocheck,
+  tinforawmode
 };
 
-static	void
-tinfoopen()
-{
-	static int fts;
-	int	status;
+static void
+tinfoopen() {
+  static int fts;
+  int     status;
 
-	if( fts ) {
-		(void)putp( enter_ca_mode );
-#if	defined( COHERENT )
-		(void)fixterm();
-#else
-		(void)reset_prog_mode();
-#endif
-		return;
-	} else	fts++;
+  if (fts) {
+    (void)putp(enter_ca_mode);
+    (void)reset_prog_mode();
+    return;
+  } else  fts++;
 
-	setupterm( NULL, fileno( stdout ), &status );
+  setupterm(NULL, fileno(stdout), &status);
 
-	if( status != 1 ) {
-		(void)puts( "Terminfo setup failed\n" );
-		exit( 1 );
-	}
+  if (status != 1) {
+    (void)puts("Terminfo setup failed\n");
+    exit(1);
+  }
 
-	term.t_ncol = columns;
-	term.t_nrow = lines - 1;
+  term.t_ncol = columns;
+  term.t_nrow = lines - 1;
 
-	(void)putp( enter_ca_mode );
+  (void)putp(enter_ca_mode);
 
-	if( cursor_address == NULL ) {
-		(void)puts( "Cursor address is not set in terminfo\n" );
-		exit( 1 );
-	}
+  if (cursor_address == NULL) {
+    (void)puts("Cursor address is not set in terminfo\n");
+    exit(1);
+  }
 
-	if( clear_screen == NULL ) {
-		(void)puts( "Clear screen is not set in terminfo\n" );
-		exit( 1 );
-	}
+  if (clear_screen == NULL) {
+    (void)puts("Clear screen is not set in terminfo\n");
+    exit(1);
+  }
 
-	if( clr_eol == NULL ) {
-		(void)puts( "Clear to end of line is not set in terminfo\n" );
-		exit( 1 );
-	}
+  if (clr_eol == NULL) {
+    (void)puts("Clear to end of line is not set in terminfo\n");
+    exit(1);
+  }
 
-	ttopen();
-	TTYinit = NIL;
+  ttopen();
+  TTYinit = NIL;
 }
 
-static	void
-tinfoclose()
-{
-#if	defined( COHERENT )
-	(void)resetterm();
-#else
-	(void)reset_shell_mode();
-#endif
-	(void)putp( exit_ca_mode );
-	TTYinit = NIL;
+static void
+tinfoclose() {
+  (void)reset_shell_mode();
+  (void)putp(exit_ca_mode);
+  TTYinit = NIL;
 }
 
-static	void
-tinfomove( int row, int col )
-{
-	(void)putp( tparm( cursor_address, row, col ) );
+static void
+tinfomove(int row, int col) {
+  (void)putp(tparm(cursor_address, row, col));
 }
 
-static	void
-tinfoeeol()
-{
-	(void)putp( clr_eol );
+static void
+tinfoeeol() {
+  (void)putp(clr_eol);
 }
 
 /*
- *	Clear screen.
+ * Clear screen.
  */
 
-static	void
-tinfoeeop()
-{
-	(void)putp( clear_screen );
+static void
+tinfoeeop() {
+  (void)putp(clear_screen);
 }
 
-static	void
-tinfobeep()
-{
-	(void)putp( bell );
+static void
+tinfobeep() {
+  (void)putp(bell);
 }
 
-static	void
-tinfosi()
-{
-	(void)putp( enter_standout_mode );
+static void
+tinfosi() {
+  (void)putp(enter_standout_mode);
 }
 
-static	void
-tinfoei()
-{
-	(void)putp( exit_standout_mode );
+static void
+tinfoei() {
+  (void)putp(exit_standout_mode);
 }
 
-static	void
-tinfoputs( EMCHAR *s, int n )
-{
-	while (n-- > 0)
-		(void)putchar( *s++ );
+static void
+tinfoputs(const EMCHAR *s, int n) {
+  while (n-- > 0) {
+    (void)putchar(*s++);
+  }
 }
 
-static	void
-tinfocshow( flag )
-int	flag;
-{
-	(void)ttflush();
+static void
+tinfocshow(int flag) {
+  (void)ttflush();
 }
 
-static	int
-tinfocheck()
-{
-	return( 0 );
+static int
+tinfocheck() {
+  return 0;
 }
 
-static	void
-tinforawmode()
-{
+static void
+tinforawmode() {
 }
 
 #endif

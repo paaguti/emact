@@ -354,7 +354,7 @@ closedir(DIR* dp) {
     SysCloseDir(dp->dd_hfind);
   }
 
-  free(dp->dd_path );
+  free(dp->dd_path);
   free(dp->dd_direct);
   free(dp);
 

@@ -97,9 +97,9 @@ _declspec(allocate(".shared")) TCHAR  xpshared[XP_EMACS_MAXPATH];
  * User color definitions
  */
 
-static constexpr auto XPCOLOR_BLACK     = RGB(  0,   0,   0);
-static constexpr auto XPCOLOR_BLUE      = RGB(  0,   0, 128);
-static constexpr auto XPCOLOR_GREEN     = RGB(  0, 255,   0);
+static constexpr auto XPCOLOR_BLACK     = RGB(0,     0,   0);
+static constexpr auto XPCOLOR_BLUE      = RGB(0,     0, 128);
+static constexpr auto XPCOLOR_GREEN     = RGB(0,   255,   0);
 static constexpr auto XPCOLOR_CYAN      = RGB(128, 255, 255);
 static constexpr auto XPCOLOR_RED       = RGB(255,   0,   0);
 static constexpr auto XPCOLOR_MAGENTA   = RGB(255,   0, 255);
@@ -112,8 +112,8 @@ static constexpr auto XPCOLOR_WHITE     = RGB(255, 255, 255);
 
 static constexpr auto XPCOLOR_GRAY      = RGB(128, 128, 128);
 static constexpr auto XPCOLOR_LIGHTGRAY = RGB(192, 192, 192);
-static constexpr auto XPCOLOR_DARK_CYAN = RGB( 96, 192, 192);
-static constexpr auto XPCOLOR_DARK_BLUE = RGB(  0,  36,  86);
+static constexpr auto XPCOLOR_DARK_CYAN = RGB(96,  192, 192);
+static constexpr auto XPCOLOR_DARK_BLUE = RGB(0,   36,  86);
 
 /*
  * Other constants
@@ -1978,7 +1978,7 @@ _tWinMain(HINSTANCE hInstance,
     for (i = 0; i < n; ++i) {
       argv[argc] = (TCHAR *)s[i];
       if (_tcscmp(argv[argc], _T("-noshare")) == 0 ||
-          _tcscmp(argv[argc], _T("-ns")     ) == 0) {
+          _tcscmp(argv[argc], _T("-ns")) == 0) {
         share = false;
         continue;
       }
@@ -2020,7 +2020,7 @@ _tWinMain(HINSTANCE hInstance,
     }
 
     if (_tcscmp(argv[argc], _T("-noshare")) == 0 ||
-        _tcscmp(argv[argc], _T("-ns")     ) == 0) {
+        _tcscmp(argv[argc], _T("-ns")) == 0) {
       share = false;
       argv[argc] = (TCHAR *)nullptr;
     } else {

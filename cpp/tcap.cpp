@@ -106,14 +106,14 @@ tcapopen(void) {
   char    *p;
 
   if ((terminal = getenv("TERM")) == NULL) {
-    (void)puts( "TERM variable not defined" );
-    exit( 1 );
+    (void)puts("TERM variable not defined");
+    exit(1);
   }
 
   if ((tgetent(tcbuf, terminal)) != 1) {
     (void)puts("Unknown terminal type");
     (void)puts(terminal);
-    exit( 1 );
+    exit(1);
   } else {
     p = tcbuf;
   }
@@ -132,12 +132,12 @@ tcapopen(void) {
 
   if (CD == NULL || CM == NULL || CE == NULL) {
     (void)puts("Incomplete termcap entry\n");
-    exit( 1 );
+    exit(1);
   }
 
-  if (p >= &tcbuf[ TCAPSLEN ]) {
+  if (p >= &tcbuf[TCAPSLEN]) {
     (void)puts("Terminal description too big!\n");
-    exit( 1 );
+    exit(1);
   }
 
   TTYnrow = tgetnum("li") - 1;

@@ -375,7 +375,7 @@ X11Terminal::X11Terminal() {
 
   if (X11debug) {
     (void)std::printf("Depth       = %i\r\n", depth);
-    (void)std::printf("X11geometry = %s\r\n", X11geometry );
+    (void)std::printf("X11geometry = %s\r\n", X11geometry);
     (void)std::printf("X11name[0]  = %s\r\n", X11name[0]);
     (void)std::printf("X11name[1]  = %s\r\n", X11name[1]);
     (void)std::printf("X11name[2]  = %s\r\n", X11name[2]);
@@ -1094,13 +1094,13 @@ X11emacs(int argc, char* argv[]) {
     if (opt[0] == '-') {
       (void)std::printf("Usage: %s\n", argv[0]);
       (void)std::printf("\t[-background <background-color>]\n");
-      (void)std::printf("\t[-border     <border-color>]\n"    );
-      (void)std::printf("\t[-display    <disaply-name>]\n"    );
+      (void)std::printf("\t[-border     <border-color>]\n");
+      (void)std::printf("\t[-display    <disaply-name>]\n");
       (void)std::printf("\t[-foreground <foreground-color>]\n");
-      (void)std::printf("\t[-font       <font-name>]\n"       );
+      (void)std::printf("\t[-font       <font-name>]\n");
       (void)std::printf("\t[-geometry   <initial-position>]\n");
-      (void)std::printf("\t[-terminal]\n"                     );
-      (void)std::printf("\t[-debug]\n"                        );
+      (void)std::printf("\t[-terminal]\n");
+      (void)std::printf("\t[-debug]\n");
       return 1;
     }
     break;
