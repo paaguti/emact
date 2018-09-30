@@ -132,7 +132,7 @@ expand(const EMCHAR* argv) {
     return insert(argv);
   }
 
-  if (_dos_findfirst((char *)argv, _A_NORMAL, &findbuf) != 0) {
+  if (_dos_findfirst((char*)argv, _A_NORMAL, &findbuf) != 0) {
     /* must be a "no match", go back with error */
     return 0;
   }

@@ -236,7 +236,7 @@ static int index_type;
 
 static EMCHAR*
 varmatch(const EMCHAR* prompt, EMCHAR* buf) {
-  size_t len(emstrlen(buf));
+  int len(emstrlen(buf));
   decltype(VARindex) i{0};
 
   /*
@@ -298,7 +298,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
   i = 0;
   for (const auto& ktp : Editor::_keytab) {
     if (len == 0 || emstrncmp(ktp.name(), buf, len) == 0) {
-      if (len != (size_t)emstrlen(ktp.name())) {
+      if (len != emstrlen(ktp.name())) {
         WDGupdate(prompt, const_cast<EMCHAR*>(ktp.name()));
         switch (TTYgetc()) {
         case 0x07:

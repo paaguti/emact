@@ -556,7 +556,7 @@ EDLINE::append(BUFFER* bp, const EMCHAR* text) {
   auto cur(bp->lastline());
   auto line(cur->insertBefore(ntext));
 
-  for (int i = 0; i < ntext; ++i) {
+  for (size_t i{0}; i < ntext; ++i) {
     line->put(i, text[i]);
   }
 
