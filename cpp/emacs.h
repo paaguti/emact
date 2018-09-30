@@ -379,12 +379,6 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define WDGclippaste()        (*widget.w_clippaste)()
 #define WDGprint()            (*widget.w_print)()
 
-#define VARstring(i)          VARTAB::vartab[i].string()
-#define VARintp(i)            VARTAB::vartab[i].intp()
-#define VARboolp(i)           VARTAB::vartab[i].boolp()
-#define VARname(i)            VARTAB::vartab[i].name()
-#define VARtype(i)            VARTAB::vartab[i].type()
-
 static inline bool
 self_insert(int c) {
   return (((unsigned int)c & MAX_EMCHAR) >= 0x20 && c != 0x7F);

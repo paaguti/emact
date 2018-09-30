@@ -340,43 +340,47 @@ setvar() {
     return NIL;
   }
 
-  varmatch(ECSTR(": match "), buf);  /* just to return the INDEX */
+  varmatch(ECSTR(": match "), buf);  /* just to compute the INDEX */
 
   switch (index_type) {
-  case INDEX_FUNCTION :
+  case INDEX_FUNCTION:
     Editor::_thisflag = CFUNSET;
     status  = Editor::_keytab[VARindex]();  // execute command
     Editor::_lastflag = Editor::_thisflag;
     return status;
-  case INDEX_VARIABLE :
-    switch (VARtype(VARindex)) {
-    case BOOLVAL :
+  case INDEX_VARIABLE:
+    {
+      auto& var(VARTAB::vartab[VARindex]);
+
+      switch (var.type()) {
+      case BOOLVAL :
       {
-        auto p = VARboolp(VARindex);
+        auto p = var.boolp();
         *p = !*p;
         WDGwrite(ECSTR("%s set to %s"),
-                 VARname(VARindex),
+                 var.name(),
                  (*p ? ECSTR("T") : ECSTR("NIL")));
       }
       break;
-    case FIXVAL : {
-      {
-        EMCHAR newval[NPAT];
-        auto p = VARintp(VARindex);
-        (void)emsprintf2(buf, ECSTR("%s (%d) > "), VARname(VARindex), *p);
-        (void)mlreply(buf, newval, 16);
-        *p = emstrtoi(newval);
+      case FIXVAL: {
+        {
+          EMCHAR newval[NPAT];
+          auto p = var.intp();
+          (void)emsprintf2(buf, ECSTR("%s (%d) > "), var.name(), *p);
+          (void)mlreply(buf, newval, 16);
+          *p = emstrtoi(newval);
+        }
+        break;
       }
-      break;
+      default:
+        (void)emstrcpy(buf, var.name());
+        (void)emstrcat(buf, ECSTR(" \""));
+        (void)emstrcat(buf, var.string());
+        (void)emstrcat(buf, ECSTR("\" > "));
+        (void)mlreply(buf, var.string(), var.size());
+        break;
+      }
     }
-    default :
-      (void)emstrcpy(buf, VARname(VARindex));
-      (void)emstrcat(buf, ECSTR(" \""));
-      (void)emstrcat(buf, VARstring(VARindex));
-      (void)emstrcat(buf, ECSTR("\" > "));
-      (void)mlreply(buf, VARstring(VARindex), VARtype(VARindex));
-    }
-    break;
   }
 
   for (auto wp : WINSCR::list()) {

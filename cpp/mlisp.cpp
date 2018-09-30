@@ -361,31 +361,36 @@ MLisp::fillcommand(SpecialForm key) {
 
   switch (key) {
   case SpecialForm::SETQ:
-    for (i = 0; i < (int)VARTAB::vartab.size(); i++) {
-      if (VARname(i) && !emstrcmp(VARname(i), word)) {
-        break;
+    {
+      i = 0;
+      for (const auto& var : VARTAB::vartab) {
+        if (var.name() && !emstrcmp(var.name(), word)) {
+          break;
+        }
+        ++i;
       }
-    }
 
-    if (i >= (int)VARTAB::vartab.size()) {
-      readerror(ECSTR("Unknown variable. "), word);
-    }
+      if (i >= (int)VARTAB::vartab.size()) {
+        readerror(ECSTR("Unknown variable. "), word);
+      }
 
-    fillmacro(i);
-    word = getword();
-    if (VARtype(i) == BOOLVAL) {
-      if (!emstrcmp(word, ECSTR("nil"))) {
+      auto& var(VARTAB::vartab[i]);
+
+      fillmacro(i);
+      word = getword();
+      if (var.type() == BOOLVAL) {
+        if (!emstrcmp(word, ECSTR("nil"))) {
+          fillmacro(0);
+        } else {
+          fillmacro(1);
+        }
         fillmacro(0);
-      } else {
-        fillmacro(1);
+        return;
+      } else if (var.type() == FIXVAL) {
+        fillmacro(std::strtoll((char *)word, nullptr, 0) & 0xff);
+        fillmacro(0);
+        return;
       }
-      fillmacro(0);
-      return;
-    }
-    if (VARtype(i) == FIXVAL) {
-      fillmacro(std::strtoll((char *)word, nullptr, 0) & 0xff);
-      fillmacro(0);
-      return;
     }
     break;
   case SpecialForm::BINDTOKEY:
@@ -752,32 +757,36 @@ MLisp::eval(int expr, size_t depth) {
       ++bufcmd;
       continue;
     case SpecialForm::SETQ:
-      bufcmd++;
-      c = *bufcmd++;
+      {
+        bufcmd++;
+        c = *bufcmd++;
+        auto& var(VARTAB::vartab[c]);
 
-      switch (VARtype(c)) {
-      case BOOLVAL:
-        {
-          auto p = VARboolp(c);
-          *p = (*bufcmd++ ? true : false);
-        }
-        break;
-      case FIXVAL:
-        {
-          auto p = VARintp(c);
-          *p = *bufcmd++;
-        }
-        break;
-      default:
-        {
-          auto p = VARstring(c);
-          while (*bufcmd) {
-            *p++ = (EMCHAR)(*bufcmd++ & MAX_EMCHAR);
+        switch (var.type()) {
+        case BOOLVAL:
+          {
+            auto p = var.boolp();
+            *p = (*bufcmd++ ? true : false);
           }
-          *p = '\0';
+          break;
+        case FIXVAL:
+          {
+            auto p = var.intp();
+            *p = *bufcmd++;
+          }
+          break;
+        default:
+          {
+            auto p = var.string();
+            while (*bufcmd) {
+              *p++ = (EMCHAR)(*bufcmd++ & MAX_EMCHAR);
+            }
+            *p = '\0';
+          }
         }
+
+        s = T;
       }
-      s = T;
       break;
     case SpecialForm::BINDTOKEY:
       bufcmd++;

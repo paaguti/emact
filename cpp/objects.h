@@ -1200,10 +1200,11 @@ class VARTAB {
   }
 
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* varName, int)
+  constexpr VARTAB(T& val, EMCHAR* varName, int size)
   : f_val{&val},
     f_name{varName},
-    f_type{STRING} {
+    f_type{STRING},
+    f_size{static_cast<size_t>(size)} {
   }
 
   EMCHAR*
@@ -1231,19 +1232,19 @@ class VARTAB {
     return f_type;
   }
 
+  size_t
+  size() const noexcept {
+    return f_size;
+  }
+
   static std::vector<VARTAB> vartab;
 
  private:
   void*   f_val;                 // Flag address
   EMCHAR* f_name;                // Flag name
-  EMVAR   f_type;                // Type/length of the variable
+  EMVAR   f_type;                // Type of the variable
+  size_t  f_size{0};             // Size of the variable
 };
-
-#define VARstring(i)  VARTAB::vartab[i].string()
-#define VARintp(i)    VARTAB::vartab[i].intp()
-#define VARboolp(i)   VARTAB::vartab[i].boolp()
-#define VARname(i)    VARTAB::vartab[i].name()
-#define VARtype(i)    VARTAB::vartab[i].type()
 
 class MLisp;
 class MACTAB {
