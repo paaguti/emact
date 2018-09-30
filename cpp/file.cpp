@@ -165,7 +165,7 @@ bool
 readin(const EMCHAR* fname) {
   int    f;
   int    nline;
-  long   nchar;
+  int    nchar;
   int    nbytes;
   EMCHAR line[MAXLINE];
 
@@ -198,7 +198,7 @@ readin(const EMCHAR* fname) {
   default:
     WDGmessage(ECSTR("Reading file ..."));
     nline = 0;
-    nchar = 0L;
+    nchar = 0;
 
     while ((f = ffgetline(line, MAXLINE, &nbytes)) == FIOSUC || f == FIOWNL) {
       auto lp1(curbp->lastline()->insertBefore(nbytes));

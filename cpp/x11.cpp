@@ -138,7 +138,7 @@ class X11Terminal final : public Terminal {
   GC             _gcstd;
   GC             _gcinv;
 
-  std::array<unsigned long, MAXCOLOR> _color;
+  std::array<unsigned long, MAXCOLOR> _color; // NOLINT(runtime/int)
   int            _row;
   int            _col;
   int            _x;
@@ -289,7 +289,7 @@ X11Terminal::nearestcolor(Display* dpy, const char* name, XColor* rgb) {
     delete[] ctable;
 
     if (!XAllocColor(dpy, cmap, &subcolor)) {
-      subcolor.pixel = (unsigned long)bestmatch;
+      subcolor.pixel = (unsigned long)bestmatch;  // NOLINT(runtime/int)
     }
 
     *rgb = subcolor;
@@ -386,7 +386,7 @@ X11Terminal::X11Terminal() {
   }
 
   if (depth > 1) {
-    static unsigned long X11pixelcolors[8];
+    static unsigned long X11pixelcolors[8];  // NOLINT(runtime/int)
 
     /*
      *      Read standard color scheme
@@ -638,8 +638,8 @@ X11Terminal::getEvent() {
       auto region = XCreateRegion();
 
       do {
-        clip.x      = (short)event.xexpose.x;
-        clip.y      = (short)event.xexpose.y;
+        clip.x      = (short)event.xexpose.x;  // NOLINT(runtime/int)
+        clip.y      = (short)event.xexpose.y;  // NOLINT(runtime/int)
         clip.width  = (unsigned short)event.xexpose.width;
         clip.height = (unsigned short)event.xexpose.height;
         XUnionRectWithRegion(&clip, region, region);

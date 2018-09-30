@@ -1148,7 +1148,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     XpTerminal::_char = MEVT;
     break;
   case WM_MOUSEWHEEL :
-    if ((short)HIWORD(wParam) < 0) { /* zDelta */
+    if (((std::int16_t)HIWORD(wParam)) < 0) { /* zDelta */
       (void)forwpage();
     } else {
       (void)backpage();

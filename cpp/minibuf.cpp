@@ -27,7 +27,7 @@ static auto rcsid("$Id: minibuf.cpp,v 1.20 2018/09/09 07:21:10 jullien Exp $");
 #include "emacs.h"
 
 static  void    mlputs(const EMCHAR* s, int size);
-static  void    mlputl(long i, int r);
+static  void    mlputi(int i, int r);
 static  void    mlclearentry(EMCHAR* buf, int cpos);
 
 bool mpresf{false};  // true if message in last line.
@@ -405,24 +405,24 @@ mlwrite(const EMCHAR* fmt, ...) {
     } else {
       switch (c = *fmt++) {
       case 'd':
-        mlputl((long)va_arg(var, int), 10);
+        mlputi(va_arg(var, int), 10);
         break;
       case 'l':
-        mlputl(va_arg(var, long), 10);
+        mlputi((int)va_arg(var, long), 10);  // NOLINT(runtime/int)
         if (*fmt == 'd') {
           fmt++;
         }
         break;
       case 'x':
-        mlputl((long)va_arg(var, int), 16);
+        mlputi(va_arg(var, int), 16);
         break;
       case 'L':
         {
           auto lp = (EDLINE *)va_arg(var, EDLINE *);
-          if (lp->length() < (short)(TTYncol-1)) {
+          if (lp->length() < (TTYncol - 1)) {
             mlputs(lp->text(), lp->length());
           } else {
-            mlputs(lp->text(), TTYncol-1);
+            mlputs(lp->text(), TTYncol - 1);
           }
         }
         break;
@@ -468,8 +468,8 @@ mlputs(const EMCHAR* s, int size) {
  */
 
 static void
-mlputl(long i, int r) {
-  long    q;
+mlputi(int i, int r) {
+  int q;
   static EMCHAR hexdigits[] = {
     '0', '1', '2', '3', '4', '5', '6', '7',
     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
@@ -481,7 +481,7 @@ mlputl(long i, int r) {
   }
 
   if ((q = i / r) != 0) {
-    mlputl(q, r);
+    mlputi(q, r);
   }
 
   display->statputc(mbcursor++, (int)hexdigits[(int)(i % r)]);

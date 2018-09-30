@@ -47,12 +47,12 @@ static int justmode{JUSTFULL};          /* Justification mode           */
 
 CMD
 showcpos() {
-  long nch = 0;
-  int  cbo = 0;
-  int  cac = MAX_EMCHAR;
-  int  nbl = 1;
-  int  col = getccol();
-  long nbc = 0L;
+  int nch = 0;
+  int cbo = 0;
+  int cac = MAX_EMCHAR;
+  int nbl = 1;
+  int col = getccol();
+  int nbc = 0;
 
   for (auto clp = curbp->firstline();;) {
     const auto& dot(curwp->getDot());
