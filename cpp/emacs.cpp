@@ -175,7 +175,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   { META|'&',       global,          ECSTR("replace-string")              },
   { META|'(',       matchlpar,       ECSTR("match-left-parenthesis")      },
   { META|')',       matchrpar,       ECSTR("match-right-parenthesis")     },
-  { META|', ',      tagsloopcont,    ECSTR("tags-loop-continue")          },
+  { META|',',       tagsloopcont,    ECSTR("tags-loop-continue")          },
   { META|'.',       findtag,         ECSTR("find-tag")                    },
   { META|'>',       gotoeob,         ECSTR("end-of-buffer")               },
   { META|'<',       gotobob,         ECSTR("beginning-of-buffer")         },

@@ -62,7 +62,7 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
 #endif
 
 #if defined(COLOR_PAIR)
-static constexpr const decltype(COLOR_BLAC) _colortable[] = {
+static constexpr const decltype(COLOR_BLACK) _colortable[] = {
   COLOR_BLACK,
   COLOR_BLUE,
   COLOR_GREEN,
