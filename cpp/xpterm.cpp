@@ -145,7 +145,7 @@ static void   xpprint();
 static HDC     xpgetprinterdc();
 
 #if     defined(_UNICODE)
-static EMCHAR  xpunicodegen(); // For tests
+static EMCHAR  xpunicodegen();  // For tests
 #endif
 
 /*
@@ -346,7 +346,6 @@ XpTerminal::xpsettextattrib() {
 
 void
 XpTerminal::xpchangefont(int font) {
-
   if (_openp && display->running()) {
     delete display;
     xpsetfontsize(font);
@@ -377,17 +376,17 @@ XpTerminal::XpTerminal() {
 
   tt = this;
 
-//#if !defined(DEBUG_ON_CONSOLE)
+// #if !defined(DEBUG_ON_CONSOLE)
   (void)AttachConsole(ATTACH_PARENT_PROCESS);
   (void)std::freopen("CON", "w", stdout);
-//#endif
+// #endif
 
   /*
    * Set the Insert key of the keyboard to untoggle
    */
 
   {
-    BYTE bKeyState[256]; /* MS says 256, so 256! */
+    BYTE bKeyState[256];  /* MS says 256, so 256! */
 
     (void)GetKeyboardState((LPBYTE)&bKeyState);
     bKeyState[VK_INSERT] &= ~(-1);
@@ -1568,8 +1567,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
     nullptr,       /* use parent's environment           */
     nullptr,       /* use parent's current directory     */
     &siStartInfo,  /* STARTUPINFO pointer                */
-    &piProcInfo    /* receives PROCESS_INFORMATION       */
-    );
+    &piProcInfo);  /* receives PROCESS_INFORMATION       */
 
   if (bSuccess != TRUE) {
     CloseHandle(hOutputFile);
@@ -1841,7 +1839,7 @@ xpprint() {
    * page if necessary.
    */
 
-  auto Status = 0; // printing status
+  auto Status = 0;  // printing status
 
   for (auto clp = curbp->firstline();
        clp != curbp->lastline();
@@ -1868,7 +1866,7 @@ xpprint() {
 
     (void)emsprintf1(buf, _T("%05d : "), LineNumber++);
 
-    int len; // length of the current line.
+    int len;  // length of the current line.
     if (clp->length() >= NLINE) {
       len = NLINE - 1;
     } else {
@@ -1908,7 +1906,6 @@ xpprint() {
   (void)SelectObject(hPr, hOldFont);
   DeleteObject(hfPr);
   DeleteDC(hPr);
-
 }
 
 #if defined(_UNICODE)
@@ -1932,7 +1929,7 @@ xpunicodegen() {
   static int pos = 0;
 
   if (fib[pos] == 0 || GetAsyncKeyState(VK_SHIFT)) {
-    pos = 0; // rotate
+    pos = 0;  // rotate
   }
 
   return fib[pos++];

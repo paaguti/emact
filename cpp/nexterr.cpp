@@ -28,7 +28,7 @@ static auto rcsid("$Id: nexterr.cpp,v 1.13 2018/09/02 14:37:58 jullien Exp $");
 
 static bool geterror(EDLINE* found);
 
-static bool errflag{false}; // Error flag
+static bool errflag{false};  // Error flag
 static int errlinenum{0};
 static EMCHAR errfname[NFILEN];
 

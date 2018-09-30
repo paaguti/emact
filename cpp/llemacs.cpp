@@ -66,7 +66,7 @@ llemacs(EMCHAR* file) {
  */
 
 int
-llembol(EMCHAR* buf) {
+llembol(const EMCHAR* buf) {
   int i;
 
   if (curline == curbp->lastline()) {
@@ -86,8 +86,7 @@ llembol(EMCHAR* buf) {
  */
 
 int
-llemeol(EMCHAR *buf, int n) {
-
+llemeol(const EMCHAR *buf, int n) {
   while (n-- && EDLINE::linsert(*buf++) == T) {
     continue;
   }

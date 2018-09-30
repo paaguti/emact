@@ -73,7 +73,9 @@ tinfoopen() {
     (void)putp(enter_ca_mode);
     (void)reset_prog_mode();
     return;
-  } else  fts++;
+  } else {
+    ++fts;
+  }
 
   setupterm(NULL, fileno(stdout), &status);
 

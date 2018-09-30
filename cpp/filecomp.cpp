@@ -1,4 +1,4 @@
-#if     !defined(lint)
+#if !defined(lint)
 static auto rcsid("$Id: filecomp.cpp,v 1.19 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
@@ -7,12 +7,12 @@ static auto rcsid("$Id: filecomp.cpp,v 1.19 2018/09/09 07:21:10 jullien Exp $");
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -233,7 +233,6 @@ loop:
 
 static void
 getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch) {
-
   fname = normalize(fname, SLASH);
   (void)emstrcpy(dmatch, fname);
   (void)emstrcpy(fmatch, fname);
@@ -247,7 +246,7 @@ getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch) {
       j = i;
     }
   }
-  
+
   if (r != nullptr) {
     (void)emstrcpy(fmatch, r);
     dmatch[++j] = '\000';
@@ -329,14 +328,14 @@ diredbuffer(const EMCHAR* fname) {
         (void)emstrcat(buf, ECSTR("/"));
       }
       (void)emstrcat(buf, caseconvert(emgetdirentry(dp)));
-    
+
       EDLINE::append(bp, buf);
       ++nfiles;
     }
-	} catch(...) {
+  } catch(...) {
     (void)closedir(dirp);
     return false;
-	}
+  }
 
   (void)closedir(dirp);
   (void)curwp->connect(bp);
@@ -429,7 +428,6 @@ diredcmd(int c) {
           (void)EDLINE::ldelete(curwp->line()->length() + 1);
           (void)backline();
         }
-
       }
     } while (curwp->line() != curbp->lastline() && forwline() == T);
 
@@ -474,7 +472,7 @@ diredcmd(int c) {
       }
 
       complete = filematch;
-    
+
       if (WDGedit(prompt, newname, NFILEN) != T) {
         return NIL;
       }

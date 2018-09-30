@@ -120,7 +120,7 @@ class CursesTerminal final : public Terminal {
   void
   rawmode() override;
 
-private:
+ private:
   void setmode();
   void getmode();
 
@@ -184,7 +184,7 @@ CursesTerminal::getmode() {
 
 void
 CursesTerminal::setmode() {
-#if defined(_POSIX_C_SOURCE) 
+#if defined(_POSIX_C_SOURCE)
   (void)::tcsetattr(1, TCSANOW, &_ostate);
   std::printf("Exit ...\n");
   std::fgetc(stdin);

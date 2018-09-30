@@ -1,4 +1,4 @@
-#if	!defined( lint )
+#if !defined(lint)
 static auto rcsid("$Id: version.cpp,v 1.3 2018/08/12 08:07:51 jullien Exp $");
 #endif
 
@@ -23,12 +23,12 @@ static auto rcsid("$Id: version.cpp,v 1.3 2018/08/12 08:07:51 jullien Exp $");
  * version.c :
  *
  * Set  the  version  name,  the revision number and the licence
- * name  of  the  Emacs  you  are  using.  Please,	never  change
+ * name  of  the  Emacs  you  are  using.  Please, never  change
  * those variables yourself.
  */
 
-#include	"version.h"
-#include	"emacs.h"
+#include "version.h"
+#include "emacs.h"
 
 const EMCHAR* licence{ECSTR("Christian Jullien")};
 const EMCHAR* version{VERSION};

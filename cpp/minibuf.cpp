@@ -30,7 +30,7 @@ static  void    mlputs(const EMCHAR* s, int size);
 static  void    mlputl(long i, int r);
 static  void    mlclearentry(EMCHAR* buf, int cpos);
 
-bool mpresf{false}; // true if message in last line.
+bool mpresf{false};  // true if message in last line.
 
 Completion complete;
 

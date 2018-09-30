@@ -138,7 +138,7 @@ static  UCOUNT  count;
 
 struct _find_t {
   unsigned char    reserved[21];          /* DOS use (find next)    */
-  unsigned char    attrib;                /* attribute found        */ 
+  unsigned char    attrib;                /* attribute found        */
   unsigned short   wr_time;               /* file's time            */
   unsigned short   wr_date;               /* file's last write      */
   long             size;                  /* size of current file   */
@@ -272,8 +272,7 @@ readdir(DIR* dp) {
       dp->dd_hfind,
       &dp->dd_resbuf,
       (ULONG)sizeof(dp->dd_resbuf),
-      &count
-      );
+      &count);
 #endif
 #if             defined(_WINDOWS_SOURCE)
     dp->status = (FindNextFile(dp->dd_hfind, &dp->dd_resbuf) != TRUE);
@@ -329,8 +328,7 @@ rewinddir(DIR* dp) {
     &dp->dd_resbuf,
     (ULONG)sizeof(dp->dd_resbuf),
     (PULONG)&count,
-    (ULONG)FIL_STANDARD
-    );
+    (ULONG)FIL_STANDARD);
 
   if (_osmode == DOS_MODE) {
     dp->dd_hfind = HDIR_SYSTEM;     /* real mode */

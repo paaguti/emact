@@ -7,12 +7,12 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -328,7 +328,7 @@ X11Terminal::X11Terminal() {
   static auto DEFAULTFNT("fixed");
   static auto DEFAULTGEO("80x30+0+0");
 #else
-  //static auto DEFAULTFNT("8x13");
+  // static auto DEFAULTFNT("8x13");
   static auto DEFAULTFNT("10x20");
   static auto DEFAULTGEO("80x30+0+0");
 #endif
@@ -352,12 +352,12 @@ X11Terminal::X11Terminal() {
    * two following tests allways match.
    */
 
-  if (((X11name[1] = X11background) == nullptr) && 
+  if (((X11name[1] = X11background) == nullptr) &&
       ((X11name[1] = XGetDefault(_dpy, X11argv[0], "background")) == nullptr)) {
     X11name[1] = ((depth > 4) ? DEFAULTBGD8 : DEFAULTBGD4);
   }
 
-  if (((X11name[2] = X11foreground) == nullptr) && 
+  if (((X11name[2] = X11foreground) == nullptr) &&
       ((X11name[2] = XGetDefault(_dpy, X11argv[0], "foreground")) == nullptr)) {
     X11name[2] = ((depth > 4) ? DEFAULTFGD8 : DEFAULTFGD4);
   }
@@ -986,7 +986,6 @@ X11Terminal::check() {
   }
 
   return false;
-
 }
 
 void
@@ -1041,7 +1040,7 @@ X11title(EMCHAR* buf, EMCHAR* fname) {
       ascii[i] = (char)title[i];
     }
     ascii[i] = 0;
-    XStoreName(X11Terminal::X11dpy, X11Terminal::X11win, ascii); 
+    XStoreName(X11Terminal::X11dpy, X11Terminal::X11win, ascii);
   }
 
   return buf;

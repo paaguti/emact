@@ -787,7 +787,7 @@ splitlinetofill() {
 
   const auto& dot(curwp->getDot());
   const auto dotp(dot.line());
-  const auto lmax(dotp->length()); // max position
+  const auto lmax(dotp->length());  // max position
   for (int i = 0; i < lmax; i++) {
     auto c(dotp->get(i));
 

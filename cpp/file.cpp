@@ -26,7 +26,7 @@ static auto rcsid("$Id: file.cpp,v 1.37 2018/09/09 07:21:09 jullien Exp $");
 
 #include "emacs.h"
 
-static bool    frdflag{false}; // flag for freadonly
+static bool    frdflag{false};  // flag for freadonly
 static void    savetime();
 static EMCHAR* getbufdir();
 
@@ -1019,7 +1019,7 @@ fileinsert() {
     return NIL;
   }
 
-  auto bp = curbp; // Cheap.
+  auto bp = curbp;  // Cheap.
   bp->setChanged(false);
 
   auto widep(ENCODING::EMASCII);
@@ -1064,11 +1064,10 @@ fileinsert() {
       lp2 = curwp->line();
       curwp->setMark(dot);
     } else {
-        /*
-       * A   previous   line   has   already   been
-       * inserted. lp2 points to this line.
+      /*
+       * A previous line has already been inserted. lp2 points to this
+       * line.
        */
- 
       auto next = lp2->forw();
       auto lp1  = next->insertBefore(nbytes);
 

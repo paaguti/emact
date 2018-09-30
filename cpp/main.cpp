@@ -214,7 +214,7 @@ main(int argc, char *argv[]) {
      * never called but pretends glob is actually used to
      * prevent compiler warning.
      */
-    glob(&argc, &((EMCHAR**)argv));
+    glob(&argc, nullptr);
   }
 #endif
 #endif

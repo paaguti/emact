@@ -127,13 +127,15 @@ nextcindent() {
       if (lmatchc('}', false)) {
         if (curwp->line() == indentp) {
           curwp->setDotLine(curwp->line()->back());
-        } else while (curwp->line() != indentp) {
+        } else {
+          while (curwp->line() != indentp) {
             curwp->setDotLine(curwp->line()->back());
             if (curwp->line() == llp) {
               WDGmessage(ECSTR("Indent error"));
               break;
             }
           }
+        }
         clp = curwp->line();
         continue;
       } else {
@@ -581,7 +583,8 @@ lispindent() {
         break;
       }
     }
-  } else for (int i = max, j = 0; i >= 0; i--) {
+  } else {
+    for (int i = max, j = 0; i >= 0; i--) {
       if ((c = indentp->get(i)) == ')') {
         j++;
         continue;
@@ -606,6 +609,7 @@ lispindent() {
         indento = i;
       }
     }
+  }
 
   int j = 0;
   for (int i = 0; i < indento; ++i) {

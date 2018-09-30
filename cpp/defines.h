@@ -200,8 +200,8 @@ const std::pair<const EMCHAR*, size_t> kget();
 
 #if	defined( _EMACSLIB )
 int	llemacs(EMCHAR* file);
-int	llembol(EMCHAR* buf);
-int	llemeol(EMCHAR* buf,int n);
+int	llembol(const EMCHAR* buf);
+int	llemeol(const EMCHAR* buf,int n);
 CMD	lispevalbuffer();
 CMD	evalfunction();
 #endif
