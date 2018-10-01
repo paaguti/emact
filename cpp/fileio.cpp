@@ -1,4 +1,4 @@
-#if     !defined(lint)
+#if     !defined(lINT)
 static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
@@ -25,11 +25,11 @@ static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
  * here. A better message writing scheme should be used.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 
-static FILE*    ffp;    /* File pointer, all functions. */
+static FILE*    ffp;    /* File poINTer, all functions. */
 static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
 
 /*
@@ -42,14 +42,14 @@ static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
 /*
  * Given a file name, testfilemode checks if this file should be
  * opened  in  binary mode (i.e.  without \n -> \r\n conversion)
- * or  as  standard text mode.  The pointer binmode is filled on
+ * or  as  standard text mode.  The poINTer binmode is filled on
  * output  with the appropriate value.  This code is called only
  * on DOS boxes where conversions could apply. It also checks if
  * UTF-8 is specified in the MAX_SENSE first bytes.
  */
 
 static ENCODING
-emfindencoding(const char* mem, int max) {
+emfindencoding(const char* mem, INT max) {
 #if defined(_UNICODE)
   for (int i = 0; i < max; ++i) {
     if (!(mem[i] == 'u' || mem[i] == 'U')) {

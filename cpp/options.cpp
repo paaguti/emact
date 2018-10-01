@@ -23,7 +23,7 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
  * Display a small help screen. Bound to M-?.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 static void    getkeyname(int key, EMCHAR *buf);
 static EMCHAR* varmatch(const EMCHAR* prompt, EMCHAR* buf);

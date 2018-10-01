@@ -1,5 +1,5 @@
 /*
- * static auto rcsid("$Id: emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $");
+ * static auto rcsid("$Id: ./emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $");
  */
 
 /*
@@ -79,7 +79,7 @@
 #include <memory>
 
 #if defined(HAVE_CONFIG_H)
-#include "config.h"
+#include "./config.h"
 #if !defined(X_DISPLAY_MISSING)
 #define _X11
 #endif
@@ -339,7 +339,7 @@ static constexpr auto BUF_SCRATCH(ECSTR("*scratch*"));
 
 static constexpr auto BFCHG(0x01);         // Changed since last write
 
-#include "objects.h"
+#include "./objects.h"
 
 #define TTYncol               tt->t_ncol
 #define TTYnrow               tt->t_nrow
@@ -447,5 +447,5 @@ extern Terminal*  tt;                  // Emact terminal
 extern WIDGET     widget;              // Widgets tools
 extern WINSCR*    curwp;               // Current window
 
-#include "defines.h"
+#include "./defines.h"
 #endif

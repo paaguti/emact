@@ -25,7 +25,7 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
  * here, for sure.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 static int  getccol();
 static CMD  addprefix();

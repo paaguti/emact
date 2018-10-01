@@ -23,7 +23,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
  * The routines in this file provide support for X11.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #if     defined(_X11) && !defined(X_DISPLAY_MISSING)
 #include <X11/Xlib.h>
@@ -35,7 +35,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 #include <array>
 #include <string>
 
-#include "x11.ico"
+#include "./x11.ico"
 
 static void    X11clipcopy();
 static void    X11clippaste();

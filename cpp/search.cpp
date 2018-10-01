@@ -25,7 +25,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
  * in the search strings.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 #include <chrono>
 #include <thread>
 
@@ -189,10 +189,11 @@ bfindstring() {
 
 static bool
 replace(bool prompt) {
+  static EMCHAR opat[NPAT]{};
+  static EMCHAR npat[NPAT]{};
+
   int     replaced;
   int     c = 0;
-  EMCHAR  opat[NPAT];
-  EMCHAR  npat[NPAT];
 
   if (freadonly()) {
     return false;

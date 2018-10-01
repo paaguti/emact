@@ -25,7 +25,7 @@ static auto rcsid("$Id: termio.cpp,v 1.3 2018/09/02 17:48:50 jullien Exp $");
  * buffered fashion on the display. All operating systems.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #include <termios.h>
 

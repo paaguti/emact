@@ -24,7 +24,7 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
  * running a command interpreter.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #if     defined(_POSIX_C_SOURCE)
 #define SEDPROG         ECSTR("sed")

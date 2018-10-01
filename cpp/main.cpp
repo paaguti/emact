@@ -26,7 +26,7 @@ static auto rcsid("$Id: main.cpp,v 1.9 2018/09/09 07:21:10 jullien Exp $");
  * compiler).
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #if defined(_WIN32)
 

@@ -24,7 +24,7 @@ static auto rcsid("$Id: word.cpp,v 1.9 2018/09/02 14:06:50 jullien Exp $");
  * at a time. There are all sorts of word mode commands.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 /*
  * Return  T  if  the  character  at  dot is a character that is

@@ -25,7 +25,7 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
  * functions are just for internal use.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 /*
  * The starting position of a region, and the size of the region

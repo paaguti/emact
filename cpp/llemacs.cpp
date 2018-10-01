@@ -21,7 +21,7 @@ static auto rcsid("$Id: llemacs.cpp,v 1.12 2018/09/04 05:13:08 jullien Exp $");
 
 #if defined( _EMACSLIB )
 
-#include "emacs.h"
+#include "./emacs.h"
 
 /*
  * The functions in this file implement commands that perform

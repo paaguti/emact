@@ -176,7 +176,7 @@ static  void    restore(void);
 #define SysCloseDir(hdir)       FindClose(hdir);
 #endif  /* _WIN32 || _WIN64 */
 
-#include        "dirent.h"
+#include        "./dirent.h"
 
 struct _dirdesc {
   /*
@@ -470,7 +470,7 @@ restore() {
 #include        <stdlib.h>
 #include        <sys/types.h>
 #include        <sys/stat.h>
-#include        "dirent.h"
+#include        "./dirent.h"
 
 #if     !defined(S_ISDIR)
 #define S_ISDIR(mode)           (((mode) & S_IFMT) == S_IFDIR)

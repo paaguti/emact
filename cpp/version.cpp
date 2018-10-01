@@ -27,8 +27,8 @@ static auto rcsid("$Id: version.cpp,v 1.3 2018/08/12 08:07:51 jullien Exp $");
  * those variables yourself.
  */
 
-#include "version.h"
-#include "emacs.h"
+#include "./version.h"
+#include "./emacs.h"
 
 const EMCHAR* licence{ECSTR("Christian Jullien")};
 const EMCHAR* version{VERSION};

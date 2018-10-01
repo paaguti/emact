@@ -27,7 +27,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
  * line in the window and invalidate the framing, are hard.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 /*
  * Move the cursor to the beginning of the current line.

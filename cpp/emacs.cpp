@@ -32,8 +32,8 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
  */
 
 #define _CRT_SECURE_NO_WARNINGS
-#include "emacs.h"
-#include "build.h"
+#include "./emacs.h"
+#include "./build.h"
 
 extern void TTYopen();
 

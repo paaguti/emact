@@ -25,7 +25,7 @@ static auto rcsid("$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $");
  * they set hints for the display system.
  */
 
-#include        "emacs.h"
+#include        "./emacs.h"
 
 static EMCHAR* bufmatch(const EMCHAR* prompt, EMCHAR* buffer);
 static BUFFER* getbpcmd(EMCHAR* buf);

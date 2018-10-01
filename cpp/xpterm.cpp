@@ -46,8 +46,8 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 
 #include <windows.h>
 #include <tchar.h>
-#include "emacs.h"
-#include "xpterm.h"
+#include "./emacs.h"
+#include "./xpterm.h"
 
 #if     defined(_UNICODE)
 #define system  _wsystem
@@ -1223,7 +1223,7 @@ XpTerminal::xpmousebottom() {
 
 static  void
 xphelp(HWND hwnd) {
-  WinHelp(hwnd, _T("emacs.hlp"), HELP_INDEX, 0L);
+  WinHelp(hwnd, _T("./emacs.hlp"), HELP_INDEX, 0L);
 }
 
 static TCHAR*

@@ -24,7 +24,7 @@ static auto rcsid("$Id: minibuf.cpp,v 1.20 2018/09/09 07:21:10 jullien Exp $");
  * one-line display at the bottom of the screen.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 static  void    mlputs(const EMCHAR* s, int size);
 static  void    mlputi(int i, int r);
@@ -207,8 +207,8 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     case 0x0A:      /* LineFeed             */
     case 0x12:      /* C-R, Back Search     */
     case 0x13:      /* C-S, Search          */
+      editflg = T;
       if ((c != 0x0D) && (c != 0x0A)) {
-        editflg = T;
         if (!(Editor::_thisflag & (CFFSRC | CFBSRC))) {
           continue;
         }
@@ -515,8 +515,8 @@ mlchange(const EMCHAR* msgo,
          EMCHAR* opat,
          EMCHAR* npat,
          int len) {
-  if ((mlreply(msgo, opat, len) == T)) {
-    return (mlreply(msgn, npat, len) != ABORT) ? T : NIL;
+  if ((mledit(msgo, opat, len) == T)) {
+    return (mledit(msgn, npat, len) != ABORT) ? T : NIL;
   } else {
     return NIL;
   }

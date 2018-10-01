@@ -23,7 +23,7 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
  * The routines in this file provide support for CURSES package.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #if !defined(_X11_ONLY) && defined(_CURSES)
 

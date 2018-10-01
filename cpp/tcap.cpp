@@ -23,7 +23,7 @@ static auto rcsid("$Id: tcap.cpp,v 1.1 2018/07/29 13:16:38 jullien Exp $");
  * The routines in this file provide support for TERMCAP package.
  */
 
-#include  "emacs.h"
+#include  "./emacs.h"
 
 #if     defined( _TERMCAP )
 

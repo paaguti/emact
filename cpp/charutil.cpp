@@ -25,7 +25,7 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  * It implements low level character functions.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 /*
  * Convert a wide character to the corresponding multibyte character.

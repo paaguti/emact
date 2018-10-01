@@ -23,7 +23,7 @@ static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
  * This file manage the indentation rules of C & Lisp languages.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 static EDLINE* nextcindent();
 static bool    nexttab(int col);

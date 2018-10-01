@@ -23,7 +23,7 @@ static auto rcsid("$Id: tinfo.cpp,v 1.3 2018/09/02 17:48:50 jullien Exp $");
  * The routines in this file provide support for TERMINFO package.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 #if     defined( _TERMINFO )
 

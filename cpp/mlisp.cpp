@@ -27,7 +27,7 @@ static auto rcsid("$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $");
 
 #if defined(_MLISP)
 
-#include "emacs.h"
+#include "./emacs.h"
 #include <array>
 
 class MLisp {

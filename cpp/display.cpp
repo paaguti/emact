@@ -27,7 +27,7 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
  * the commands.
  */
 
-#include "emacs.h"
+#include "./emacs.h"
 
 Terminal* tt{nullptr};
 
