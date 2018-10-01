@@ -231,43 +231,41 @@ help() {
 #define INDEX_FUNCTION          1
 #define INDEX_VARIABLE          2
 
-static int VARindex;
+static int index_found;
 static int index_type;
 
 static EMCHAR*
 varmatch(const EMCHAR* prompt, EMCHAR* buf) {
   int len(emstrlen(buf));
-  decltype(VARindex) i{0};
 
   /*
    * Search first for an exact match
    */
 
-  i = 0;
+  index_found = 0;
+  index_type  = INDEX_VARIABLE;
   for (const auto& var : VARTAB::vartab) {
     if (emstrcmp(var.name(), buf) == 0) {
-      VARindex = i;
-      index_type = INDEX_VARIABLE;
       return var.name();
     }
-    ++i;
+    ++index_found;
   }
 
-  i = 0;
+  index_found = 0;
+  index_type  = INDEX_FUNCTION;
   for (const auto& ktp : Editor::_keytab) {
     if (emstrcmp(ktp.name(), buf) == 0) {
-      VARindex   = i;
-      index_type = INDEX_FUNCTION;
       return const_cast<EMCHAR*>(ktp.name());
     }
-    ++i;
+    ++index_found;
   }
 
   /*
    * Try to match with the help of the user.
    */
 
-  i = 0;
+  index_found = 0;
+  index_type  = INDEX_VARIABLE;
   for (const auto& var : VARTAB::vartab) {
     if (len == 0 || emstrncmp(var.name(), buf, len) == 0) {
       if (len != emstrlen(var.name())) {
@@ -280,22 +278,19 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
         case 0x0A:
         case 'y' :
         case 'Y' :
-          VARindex = i;
-          index_type = INDEX_VARIABLE;
           return var.name();
         default:
           continue;
         }
       } else {
-        VARindex = i;
-        index_type = INDEX_VARIABLE;
         return var.name();
       }
     }
-    ++i;
+    ++index_found;
   }
 
-  i = 0;
+  index_found = 0;
+  index_type  = INDEX_FUNCTION;
   for (const auto& ktp : Editor::_keytab) {
     if (len == 0 || emstrncmp(ktp.name(), buf, len) == 0) {
       if (len != emstrlen(ktp.name())) {
@@ -313,13 +308,12 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
           continue;
         }
       }
-      VARindex = i;
-      index_type = INDEX_FUNCTION;
       return const_cast<EMCHAR*>(ktp.name());
     }
-    ++i;
+    ++index_found;
   }
 
+  index_found = -1;
   WDGwrite(ECSTR("Not found."));
   return nullptr;
 }
@@ -345,12 +339,12 @@ setvar() {
   switch (index_type) {
   case INDEX_FUNCTION:
     Editor::_thisflag = CFUNSET;
-    status  = Editor::_keytab[VARindex]();  // execute command
+    status  = Editor::_keytab[index_found]();  // execute command
     Editor::_lastflag = Editor::_thisflag;
     return status;
   case INDEX_VARIABLE:
     {
-      auto& var(VARTAB::vartab[VARindex]);
+      auto& var(VARTAB::vartab[index_found]);
 
       switch (var.type()) {
       case BOOLVAL :
@@ -377,7 +371,7 @@ setvar() {
         (void)emstrcat(buf, ECSTR(" \""));
         (void)emstrcat(buf, var.string());
         (void)emstrcat(buf, ECSTR("\" > "));
-        (void)mlreply(buf, var.string(), var.size());
+        (void)mlreply(buf, var.string(), static_cast<int>(var.size()));
         break;
       }
     }

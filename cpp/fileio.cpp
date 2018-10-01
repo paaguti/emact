@@ -85,7 +85,7 @@ emfindencoding(const char* mem, int max) {
 
 static void
 testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8) {
-  ENCODING widep;
+  ENCODING widep = ENCODING::EMASCII;
   int      n;
 
   if (binmode == nullptr || utf8 == nullptr) {
@@ -521,15 +521,11 @@ ffullname(EMCHAR* rname, const EMCHAR* fname) {
 
 int
 ffaccess(const EMCHAR* fn) {
-#if defined(_DIRECTORY)
   if (emaccess(fn, F_OK) == 0) {
     return FIOSUC;
   } else {
     return FIOERR;
   }
-#else
-  return FIOSUC;
-#endif
 }
 
 /*
@@ -685,7 +681,6 @@ ffsystem(const EMCHAR* cmd) {
 bool
 ffchanged(const EMCHAR* fname, time_t* time) {
   *time = 0;
-#if defined(_DIRECTORY)
   EMSTAT mode;
 
   auto res = ffstat(fname, &mode);
@@ -706,9 +701,6 @@ ffchanged(const EMCHAR* fname, time_t* time) {
   } else {
     return false;
   }
-#else
-  return false;
-#endif
 }
 
 /*
@@ -768,7 +760,6 @@ ffsetaccess(const EMCHAR* fname, BUFFER* bp) {
 
 bool
 ffilevalid(const EMCHAR* fname) {
-#if defined(_DIRECTORY)
   if (ffaccess(fname) == FIOSUC) {
     return true;
   }
@@ -802,7 +793,6 @@ ffilevalid(const EMCHAR* fname) {
       return false;
     }
   }
-#endif  /* _DIRECTORY */
 
   return true;
 }
@@ -814,7 +804,6 @@ ffilevalid(const EMCHAR* fname) {
 
 bool
 ffdiredp(const EMCHAR* fname) {
-#if defined(_DIRECTORY)
   EMSTAT mode;
 
   if ((fname[1] == ':') && !fname[2]) {
@@ -827,6 +816,6 @@ ffdiredp(const EMCHAR* fname) {
       return true;
     }
   }
-#endif  /* _DIRECTORY */
+
   return false;
 }

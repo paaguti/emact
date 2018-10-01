@@ -553,13 +553,13 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
    * Go to start of line.
    */
 
-  TTYmove(row, (cp1 - nline));
+  TTYmove(row, static_cast<int>((cp1 - nline)));
 
   if (stflag) {
     TTYinverse();
   }
 
-  if ((count = (cp5 - cp1)) > 0) {
+  if ((count = static_cast<int>((cp5 - cp1))) > 0) {
     /*
      * Display changes and update old line.
      */

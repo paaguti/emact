@@ -68,21 +68,21 @@ static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
  *
  */
 
-#if     defined(_MSC_VER)
+#if defined(_MSC_VER)
 #define _CRT_SECURE_NO_DEPRECATE        1
 #define _CRT_NONSTDC_NO_DEPRECATE       1
 #endif
 
-#if     !defined(__EMACS_H) || defined(_DIRECTORY)
+#if !defined(__EMACS_H)
 
 /* LINTLIBRARY */
 
 #include        <stdio.h>
 #include        <string.h>
 #include        <stdlib.h>
-#if     !defined(_WIN32_WCE)
+#if !defined(_WIN32_WCE)
 #include        <io.h>
-#endif  /* _WIN32_WCE */
+#endif /* _WIN32_WCE */
 
 #if     defined(_OS2) && !defined(FINDHANDLE)
 #define I_STD   0x0000          /* Normal file - No restrictions */

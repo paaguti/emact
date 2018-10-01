@@ -3,7 +3,6 @@
 #
 # Optional flags :
 #
-#	-D_DIRECTORY	     to use with file completion
 #	-D_MLISP	     to use with user defined macros.
 #	-D_UNICODE	     to use with UNICODE characters.
 #	
@@ -48,7 +47,7 @@ CC		= cl -nologo
 AR		= lib
 ARFLAG		= -nologo
 SED		= emsed
-MFLAGS		= -D_WIN$(ARCH) -D_DIRECTORY -D_XPTERM $(UNICODE)
+MFLAGS		= -D_WIN$(ARCH) $(UNICODE)
 CFLAGS		= $(MFLAGS) -EHsc -MT -Gs -Od $(CPUFLAG) -Zi -W4 -WL -I. $(OLFLAGS)
 EMACSLIB	= emmt$(CHARLIB)$(ARCH).lib
 EMACSBIN	= emacsxp$(CHARLIB)-$(CPU)

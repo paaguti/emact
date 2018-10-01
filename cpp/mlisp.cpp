@@ -243,7 +243,7 @@ MLisp::getfun() {
 
   auto& macro(Editor::_macros[indx]);
 
-  macro.set(code, name, indx);
+  macro.set(code, name, static_cast<int>(indx));
 
   i = 0;
 
@@ -326,7 +326,7 @@ MLisp::getfun() {
   }
 
   if (pmain) {
-    (void)mlinternaleval(indx);
+    (void)mlinternaleval(static_cast<int>(indx));
     macro.m_code = static_cast<int>(SpecialForm::FREE);
     delete[] macro.m_exec;
   }

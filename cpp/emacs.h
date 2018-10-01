@@ -90,12 +90,10 @@
 #define _SPAWNED_PIPE
 #endif  /* _POSIX_C_SOURCE */
 
-#if defined(_DIRECTORY)
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
 typedef struct dirent ENTRY;
-#endif
 
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
@@ -277,7 +275,7 @@ static constexpr auto METACH(0x1B);         // M- prefix, Control-[, ESC
 #undef max
 #endif
 
-static constexpr auto MAX_EMCHAR(std::numeric_limits<EMCHAR>::max());
+static constexpr int MAX_EMCHAR(std::numeric_limits<EMCHAR>::max());
 
 #if defined(_UNICODE)
 #define _prefix(x)      ((x) << 16)
