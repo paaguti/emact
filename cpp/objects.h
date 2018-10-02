@@ -1536,7 +1536,7 @@ class Editor {
   template<typename T>
   EMCHAR**
   args(int argc, T* argv[]) {
-    auto p{new EMCHAR*[argc + 1]};
+    auto p(new EMCHAR*[argc + 1]);
     auto cvt = [](const T* str) -> EMCHAR* {
                  size_t len = 0;
                  while (str[len] != 0) {

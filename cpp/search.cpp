@@ -191,9 +191,7 @@ static bool
 replace(bool prompt) {
   static EMCHAR opat[NPAT]{};
   static EMCHAR npat[NPAT]{};
-
-  int     replaced;
-  int     c = 0;
+  int c = 0;
 
   if (freadonly()) {
     return false;
@@ -235,6 +233,7 @@ replace(bool prompt) {
 
   auto patl = emstrlen(opat);
 
+  int replaced;
   for (replaced = 0; ffindstring() && c != 'q' && c != '.';) {
     curwp->setDot(found);
     curwp->setFlags(WINSCR::WFHARD);

@@ -1,4 +1,4 @@
-#if     !defined(lINT)
+#if !defined(lint)
 static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 #endif
 
