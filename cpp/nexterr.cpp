@@ -66,7 +66,7 @@ geterror(EDLINE* line) {
     const auto eol(line->length());
     auto i = -1; /* '.' position in line */
 
-    for (j = 1; j < (eol - 1); j++) {
+    for (j = 1; j < (eol - 1); ++j) {
       c = line->get(j);
       if (c != '.') {
         continue;
@@ -180,6 +180,10 @@ nexterror() {
   auto bp(BUFFER::find(BUF_PROC));
 
   if (bp == nullptr) {
+    return NIL;
+  }
+
+  if (found.line() == nullptr) {
     return NIL;
   }
 

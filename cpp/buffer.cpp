@@ -670,7 +670,7 @@ usebuffer() {
 static BUFFER*
 getbpcmd(EMCHAR* buf) {
   /*
-   *      get buffer pointer, internally used by buffercmd
+   * get buffer pointer, internally used by buffercmd
    */
 
   int     j = BUFFERPOS;
@@ -681,7 +681,7 @@ getbpcmd(EMCHAR* buf) {
     return nullptr;
   }
 
-  for (i = 0; (c = curwp->line()->get(j++)) != ' '; i++) {
+  for (i = 0; (c = curwp->line()->get(j++)) != ' '; ++i) {
     buf[i] = c;
   }
 

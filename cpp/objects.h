@@ -1533,6 +1533,10 @@ class Editor {
  private:
   Editor(int argc, EMCHAR* argv[], bool);
 
+  /**
+   * Convert array of T* to array of EMCHAR*
+   * tparam T character type
+   */
   template<typename T>
   EMCHAR**
   args(int argc, T* argv[]) {

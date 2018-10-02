@@ -60,7 +60,7 @@ glob(int* argc, EMCHAR **argv[]) {
   newc  = 0;
   phead = nullptr;
 
-  for (int i = 0; i < *argc; i++) {
+  for (int i = 0; i < *argc; ++i) {
     /*
      * expand all arguments
      */

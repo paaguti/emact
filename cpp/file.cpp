@@ -372,7 +372,7 @@ updir(EMCHAR* fname, int slashflag) {
 
   fname = normalize(fname, NOSLASH);
 
-  for (auto s = fname; *s != 0; s++) {
+  for (auto s = fname; *s != 0; ++s) {
     if (*s == ':') {
       p = s + 1;
     } else if ((*s == '/') && *(s+1)) {
@@ -492,7 +492,7 @@ writeout(const EMCHAR* fname) {
 
   (void)emstrcpy(&bak[0], &fname[0]);
 
-  for (s = 0; bak[s]; s++) {
+  for (s = 0; bak[s]; ++s) {
     EMCHAR c = bak[s];
 
     if (c == '/' || c == '\\') {
@@ -804,7 +804,7 @@ savetime() {
   auto maxl = lp->length();
   auto buf  = lp->text();
 
-  for (int i = 0; i < (maxl - 7); i++) {
+  for (int i = 0; i < (maxl - 7); ++i) {
     if (std::isdigit(buf[i + 0]) &&
         std::isdigit(buf[i + 1]) &&
         slashp(buf[i + 2]) &&

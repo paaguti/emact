@@ -1228,17 +1228,17 @@ latexinsert(int n, int c) {
     { 0x97, 0xF9, ECSTR("\\`u"),     ECSTR("&ugrave;") }
   };
 
-  for (int i = 0; i < (int)(sizeof(convtab) / sizeof(convtab[0])); i++) {
+  for (int i = 0; i < (int)(sizeof(convtab) / sizeof(convtab[0])); ++i) {
     if (c == (isoset ? convtab[i].iso8859 : convtab[i].oem)) {
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
         while (n-- > 0) {
-          for (auto p = convtab[i].sgml; *p; p++) {
+          for (auto p = convtab[i].sgml; *p; ++p) {
             (void)EDLINE::linsert(*p);
           }
         }
       } else {
         while (n-- > 0) {
-          for (auto p = convtab[i].latex; *p; p++) {
+          for (auto p = convtab[i].latex; *p; ++p) {
             (void)EDLINE::linsert(*p);
           }
         }

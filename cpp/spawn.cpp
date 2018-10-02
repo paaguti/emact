@@ -228,6 +228,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   if (flag == SYSCOMP_ERRORS) {
     (void)nexterror();
   }
+
   return status;
 }
 #endif
@@ -449,7 +450,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
     return NIL;
   }
 
-  for (auto i(0); prompt[i]; i++) {
+  for (auto i(0); prompt[i]; ++i) {
     if (prompt[i] == ' ' || prompt[i] == '\t') {
       continue;
     }
@@ -533,7 +534,7 @@ sed() {
     return NIL;
   }
 
-  for (auto i = 0; prompt[i]; i++) {
+  for (auto i = 0; prompt[i]; ++i) {
     if (prompt[i] == ' ' || prompt[i] == '\t') {
       continue;
     }
@@ -759,7 +760,7 @@ javacompile() {
 
   base = curbp->filename();
 
-  for (auto fname = base; *fname; fname++) {
+  for (auto fname = base; *fname != 0; ++fname) {
     if (*fname == '/' || *fname == '\\') {
       base = fname + 1;
     }
@@ -852,10 +853,10 @@ javaevalbuffer() {
   (void)emstrcat(buf, p);
 
   /*
-   *      Remove extension.
+   * Remove extension.
    */
 
-  for (p = buf; *p; p++) {
+  for (p = buf; *p != 0; ++p) {
     if (*p == '.') {
       d = p;
     }
@@ -866,7 +867,7 @@ javaevalbuffer() {
   }
 
   /*
-   *      Compile the file first, then execute
+   * Compile the file first, then execute
    */
 
   s = javacompile();

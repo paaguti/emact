@@ -127,7 +127,7 @@ loop:
 
       /* find extension */
 
-      for (s = p = name; *p; p++) {
+      for (s = p = name; *p; ++p) {
         if (*p == '.') {
           s = p;
         }

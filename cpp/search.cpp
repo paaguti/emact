@@ -89,7 +89,7 @@ ffindstring() {
       auto tlp = clp;
       auto tbo = cbo;
       EMCHAR* s;
-      for (s = &Editor::searchBuffer()[1]; *s != 0; s++) {
+      for (s = &Editor::searchBuffer()[1]; *s != 0; ++s) {
         if (tlp == curbp->lastline()) {
           return false;
         }
@@ -1017,7 +1017,7 @@ loop:
      *      current match has not already rejected.
      */
 
-    for (k = 0; k < rejectnb; k++)
+    for (k = 0; k < rejectnb; ++k)
       if ((i == reject[k].size) && emstrcmp(buf, reject[k].startw) == 0) {
         if (find == ffindstring) {
           found.setPos(found.pos() + slen);
@@ -1029,12 +1029,12 @@ loop:
       }
 
     /*
-     *      Reset current dot position and add completion
+     * Reset current dot position and add completion
      */
 
     curwp->setDot(clp, cbo);
 
-    for (i = 0; buf[i] != '\000'; i++) {
+    for (i = 0; buf[i] != '\000'; ++i) {
       if (!EDLINE::linsert(buf[i])) {
         s = NIL;
         break;
@@ -1075,7 +1075,7 @@ loop:
 
         curwp->setDot(clp, cbo);
 
-        for (i = slen; tagbuf[i] != '\000'; i++) {
+        for (i = slen; tagbuf[i] != '\000'; ++i) {
           if (!EDLINE::linsert(tagbuf[i])) {
             break;
           }

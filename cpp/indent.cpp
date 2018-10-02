@@ -283,7 +283,7 @@ cindent() {
   switch (clp->get(i - 1)) {
   case '{' :
     n = clp->length() - 6;
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; ++i) {
       if (clp->get(i) == 's' && !emstrncmp(clp->text()+i, ECSTR("switch"), 6)) {
         break;
       }
@@ -476,7 +476,7 @@ lispindent() {
   } else if (indentp->get(max) == ')' && lmatchc(')')) {
     max = lastlisp(indentp);
 
-    for (int i = 0; i <= max; i++) {
+    for (int i = 0; i <= max; ++i) {
       if ((c = indentp->get(i)) == '(') {
         if (indento == i) {
           /*

@@ -159,7 +159,7 @@ EDLINE::position() const noexcept {
   auto lmax = this->length();
   int  col  = 0;
 
-  for (int i = 0; i < lmax; i++) {
+  for (int i = 0; i < lmax; ++i) {
     if (*str++ == '\t') {
       do {
         ++col;

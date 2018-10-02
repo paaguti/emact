@@ -374,7 +374,7 @@ wtwiddle() {
    * delete right word first and store it in 'word1'
    */
 
-  for (i = 0; inword() && i < NPAT - 1; i++) {
+  for (i = 0; inword() && i < NPAT - 1; ++i) {
     word1[i] = curwp->getChar();
     (void)forwdel();
   }
@@ -394,7 +394,7 @@ wtwiddle() {
    * then delete left word and store it in 'word2'
    */
 
-  for (i = 0; inword() && i < NPAT - 1; i++) {
+  for (i = 0; inword() && i < NPAT - 1; ++i) {
     word2[i] = curwp->getChar();
     (void)forwdel();
   }
@@ -409,7 +409,7 @@ wtwiddle() {
    *      ^    @
    */
 
-  for (auto j(0); word1[j]; j++) {
+  for (auto j(0); word1[j]; ++j) {
     (void)EDLINE::linsert(word1[j]);
   }
 

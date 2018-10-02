@@ -73,7 +73,7 @@ llembol(const EMCHAR* buf) {
     return -1;
   }
 
-  for (i = 0; i < curline->length(); i++) {
+  for (i = 0; i < curline->length(); ++i) {
     buf[i] = curline->get(i);
   }
 

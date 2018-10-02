@@ -271,9 +271,9 @@ tabexpand() {
 
 CMD
 openline() {
-  for (auto i = 0; i < Editor::_repeat; i++) {
+  for (auto i = 0; i < Editor::_repeat; ++i) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
-      for (auto j = 0; opt::fill_prefix[j]; j++) {
+      for (auto j = 0; opt::fill_prefix[j]; ++j) {
         if (!EDLINE::linsert(opt::fill_prefix[j])) {
           return NIL;
         }
@@ -636,7 +636,7 @@ setfillprefix() {
   const auto doto(dot.pos());
 
   int i;
-  for (i = 0; i < doto; i++) {
+  for (i = 0; i < doto; ++i) {
     opt::fill_prefix[i] = dotp->get(i);
   }
 
@@ -662,7 +662,7 @@ addprefix() {
   curwp->setDotPos(0);
 
   if (!prefixlinep(dotp, len)) {
-    for (auto i = 0; opt::fill_prefix[i]; i++) {
+    for (auto i = 0; opt::fill_prefix[i]; ++i) {
       if (!EDLINE::linsert(opt::fill_prefix[i])) {
         return NIL;
       }
@@ -788,7 +788,7 @@ splitlinetofill() {
   const auto& dot(curwp->getDot());
   const auto dotp(dot.line());
   const auto lmax(dotp->length());  // max position
-  for (int i = 0; i < lmax; i++) {
+  for (int i = 0; i < lmax; ++i) {
     auto c(dotp->get(i));
 
     if (c == '\t') {
@@ -1061,7 +1061,7 @@ justifycomment() {
     auto c = curwp->getChar();
 
     int i;
-    for (i = 0; skip[i]; i++) {
+    for (i = 0; skip[i]; ++i) {
       if (c == skip[i]) {
         break;
       }
@@ -1110,7 +1110,7 @@ counterinsert() {
 
   (void)emsprintf1(buf, &cntfmt[0], cntval);
 
-  for (auto s = &buf[0]; *s; s++) {
+  for (auto s = &buf[0]; *s; ++s) {
     (void)EDLINE::linsert(*s);
   }
 

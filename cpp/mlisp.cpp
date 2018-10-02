@@ -947,7 +947,7 @@ mlcustomize() {
 
   makename(base, Editor::getName());
 
-  for (p = base; *p; p++) {
+  for (p = base; *p; ++p) {
     if (*p == '.') {
       *p = '\000';
       break;

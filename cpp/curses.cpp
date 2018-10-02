@@ -156,7 +156,7 @@ CursesTerminal::rawmode() {
    * in non canonical mode.
    */
 
-  for (int i = 0; i < NCCS; i++) {
+  for (int i = 0; i < NCCS; ++i) {
     switch (i) {
     case VQUIT:
       break;

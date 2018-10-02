@@ -673,7 +673,7 @@ xpposfrompoint(int x, int y) {
 #if     defined(_UNICODE)
   auto lpString = display->text(y);
 
-  for (int i = 0; i < TTYncol; i++) {
+  for (int i = 0; i < TTYncol; ++i) {
     SIZE size;
     GetTextExtentPoint32(XpTerminal::_dc, lpString, i, &size);
     if (size.cx > (x * XpTerminal::_charwidth)) {
@@ -1440,7 +1440,7 @@ system(const TCHAR* s) {
 
   slwr = (TCHAR*)s;
 
-  for (int i = 0; szDosCmd[i]; i++) {
+  for (int i = 0; szDosCmd[i]; ++i) {
     if (_tcsncmp(s, szDosCmd[i], _tcslen(szDosCmd[i])) == 0) {
       internal = TRUE;
       break;
