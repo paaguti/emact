@@ -1,4 +1,4 @@
-#if     !defined(lint)
+#if !defined(lint)
 static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #endif
 

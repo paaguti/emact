@@ -61,7 +61,7 @@ int    Editor::_thisflag{CFUNSET};    // Flags, this command
 int    Editor::_lastflag{CFUNSET};    // Flags, last command
 EMCHAR Editor::_search[NPAT];         // Internal search buffer
 std::vector<MACTAB> Editor::_macros;  // User macros table
-
+Point  Editor::_found;                // Position of last search
 /*
  * Command table.  This table is *roughly* in ASCII order, left
  * to right across the characters of the command.

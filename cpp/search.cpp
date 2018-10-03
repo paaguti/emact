@@ -36,8 +36,6 @@ extern int     indento;
 extern EDLINE* indentp;
 extern int     commento;
 
-Point found;
-
 static bool replace(bool prompt);
 static bool quotep(const EDLINE* l, int i);
 static bool instringp(const EDLINE* clp, int cbo);
@@ -64,9 +62,9 @@ cmpchars(int bc, int pc) {
 }
 
 /*
- * Internal search forward. The string to be search is in 'pat'.
- * This function, set global variable found_p and found_o to the
- * the position of next match.
+ * Internal search forward. The string to be search is in 'pat'.  This
+ * function, set global variable found to the the position of next
+ * match.
  */
 
 bool
@@ -107,7 +105,7 @@ ffindstring() {
         }
       }
       if (*s == 0) {
-        found.set(tlp, tbo);
+        Editor::_found.set(tlp, tbo);
         return true;
       }
     }
@@ -118,8 +116,8 @@ ffindstring() {
 
 /*
  * Internal search backward. The string to be search is in 'pat'.
- * This function, set global variable found_p and found_o to the
- * the position of next match.
+ * This function, set global variable found to the the position of
+ * next match.
  */
 
 static bool
@@ -176,7 +174,7 @@ bfindstring() {
       }
 
       if (pp == &Editor::searchBuffer()[0]) {
-        found.set(tlp, tbo);
+        Editor::_found.set(tlp, tbo);
         return true;
       }
     }
@@ -235,7 +233,7 @@ replace(bool prompt) {
 
   int replaced;
   for (replaced = 0; ffindstring() && c != 'q' && c != '.';) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
     curwp->setFlags(WINSCR::WFHARD);
 
     if (!prompt) {
@@ -718,7 +716,7 @@ forwsearch() {
   }
 
   if (ffindstring()) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
     curwp->setFlags(WINSCR::WFMOVE);
     return T;
   } else {
@@ -759,7 +757,7 @@ backsearch() {
   }
 
   if (bfindstring()) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
     curwp->setFlags(WINSCR::WFMOVE);
     return T;
   } else {
@@ -825,7 +823,7 @@ getdefinition() {
   curwp->setDot(curbp->firstline(), 0);
 
   while (ffindstring()) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
     switch (curbp->editMode()) {
     case EDITMODE::ASMODE:
     case EDITMODE::CMODE:
@@ -836,7 +834,7 @@ getdefinition() {
     case EDITMODE::FORTRANMODE:
     case EDITMODE::PROLOGMODE:
     case EDITMODE::SHELLMODE:
-      if (found.pos() == len) {
+      if (Editor::_found.pos() == len) {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)backline();
@@ -849,7 +847,7 @@ getdefinition() {
           backword() == NIL ||
           backchar() == NIL ||
           curwp->pos() != 0 || curwp->line()->get(0) != '(') {
-        curwp->setDot(found);
+        curwp->setDot(Editor::_found);
       } else {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
@@ -960,7 +958,7 @@ completeword() {
 
 loop:
   if (Editor::_lastflag & CFCPLT) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
   }
 
   while ((res = find()) == true) {
@@ -976,15 +974,16 @@ loop:
        * point  on  the left most character of
        * the match.
        */
-      found.setPos(found.pos() - slen);
+      Editor::_found.setPos(Editor::_found.pos() - slen);
     }
-    if (found.pos() > 0) {
-      curwp->setDot(found.line(), found.pos() - 1);
+
+    if (Editor::_found.pos() > 0) {
+      curwp->setDot(Editor::_found.line(), Editor::_found.pos() - 1);
       if (inword()) {
         /* match the middle of a word */
         if (find == ffindstring) {
-          found.setPos(found.pos() + slen);
-          curwp->setDotPos(found.pos());
+          Editor::_found.setPos(Editor::_found.pos() + slen);
+          curwp->setDotPos(Editor::_found.pos());
         }
         continue;
       }
@@ -996,13 +995,14 @@ loop:
 
   if (res) {
     /*
-     * Set  current  dot  to  point on the left most character of the match.
+     * Set current dot to point on the left most character of the
+     * match.
      */
 
-    curwp->setDot(found.line(), found.pos() + slen);
+    curwp->setDot(Editor::_found.line(), Editor::_found.pos() + slen);
 
     /*
-     *      Copy new characters in a temporary buffer.
+     * Copy new characters in a temporary buffer.
      */
 
     for (i = 0; inword(); ++i) {
@@ -1020,10 +1020,10 @@ loop:
     for (k = 0; k < rejectnb; ++k)
       if ((i == reject[k].size) && emstrcmp(buf, reject[k].startw) == 0) {
         if (find == ffindstring) {
-          found.setPos(found.pos() + slen);
-          curwp->setDotPos(found.pos());
+          Editor::_found.setPos(Editor::_found.pos() + slen);
+          curwp->setDotPos(Editor::_found.pos());
         } else {
-          curwp->setDotPos(found.pos());
+          curwp->setDotPos(Editor::_found.pos());
         }
         goto loop;
       }
@@ -1048,9 +1048,9 @@ loop:
        * Start forward search from dot.
        */
 
-      found.set(clp, cbo);
+      Editor::_found.set(clp, cbo);
 
-      find    = ffindstring;
+      find = ffindstring;
       goto loop;
     } else {
       EMCHAR tagbuf[NLINE];

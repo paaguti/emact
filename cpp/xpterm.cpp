@@ -570,8 +570,6 @@ XpTerminal::xpfindreplace(bool replacep) {
 
 int
 XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
-  extern Point found;
-
   auto dwFlags   = lpfr->Flags;
   auto replaced  = 0;
   auto nFindFlag = true;
@@ -598,7 +596,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   }
 
   if ((dwFlags & FR_REPLACE) && nFindFlag) {
-    curwp->setDot(found);
+    curwp->setDot(Editor::_found);
     curwp->setFlags(WINSCR::WFHARD);
     subst((int)emstrlen(szFind), szReplace);
     replaced++;
@@ -613,7 +611,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
     do {
       int len = (int)emstrlen(szFind);
 
-      curwp->setDot(found);
+      curwp->setDot(Editor::_found);
       curwp->setFlags(WINSCR::WFHARD);
       subst(len, szReplace);
       replaced++;

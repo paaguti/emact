@@ -25,15 +25,14 @@ static auto rcsid("$Id: nexterr.cpp,v 1.13 2018/09/02 14:37:58 jullien Exp $");
 
 #include "./emacs.h"
 
-
-static bool geterror(EDLINE* found);
+static bool geterror();
 
 static bool errflag{false};  // Error flag
 static int errlinenum{0};
 static EMCHAR errfname[NFILEN];
 
 static bool
-geterror(EDLINE* line) {
+geterror() {
   int    j;
   int    c;
   int    start;
@@ -46,7 +45,7 @@ geterror(EDLINE* line) {
   for (;;) {
     errlinenum = 0;
 
-    if (ffindstring()) {
+    if (!ffindstring()) {
       if (errflag) {
         WDGmessage(ECSTR("no more errors"));
       } else {
@@ -56,11 +55,12 @@ geterror(EDLINE* line) {
       return false;
     }
 
+    auto line = Editor::_found.line();
+
     curwp->setDot(line, 0);
 
     /*
-     *      search for last 'xx.yy'
-     *      (assumes a filename with extension)
+     * search for last 'xx.yy' (assumes a filename with extension)
      */
 
     const auto eol(line->length());
@@ -88,7 +88,7 @@ geterror(EDLINE* line) {
     }
 
     if (i == -1) {
-      continue;       /* found end of line */
+      continue;  // found end of line
     }
 
     /*
@@ -172,8 +172,6 @@ clearerr() {
 
 CMD
 nexterror() {
-  extern Point found;
-
   /*
    * find or create buffer if it does not exist.
    */
@@ -183,15 +181,11 @@ nexterror() {
     return NIL;
   }
 
-  if (found.line() == nullptr) {
-    return NIL;
-  }
-
   auto owp(curwp);
   auto wp(bp->show());
 
   wp->current();
-  auto err(geterror(found.line()));
+  auto err(geterror());
   owp->current();
 
   if (err) {
@@ -202,7 +196,7 @@ nexterror() {
       Editor::_repeat = errlinenum;
       (void)gotoline();
       Editor::_repeat = save;
-      WDGwrite(ECSTR("%L"), found.line());
+      WDGwrite(ECSTR("%L"), Editor::_found.line());
     }
   }
 

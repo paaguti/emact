@@ -604,8 +604,6 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
 
 bool
 MLisp::eval(int expr, size_t depth) {
-  extern Point found;
-
   EMCHAR  string[NPAT];
   int     c;
   int     i;
@@ -740,7 +738,7 @@ MLisp::eval(int expr, size_t depth) {
       s = T;
       while (n--) {
         if (ffindstring()) {
-          curwp->setDot(found);
+          curwp->setDot(Editor::_found);
           curwp->setFlags(WINSCR::WFMOVE);
         } else {
           s = NIL;

@@ -210,8 +210,6 @@ EDLINE::leftmargin() const noexcept {
 
 bool
 EDLINE::linsert(int c, int n) {
-  extern Point found;
-
   if (curbp->readonly()) {
     if (curbp->editMode() == EDITMODE::BUFFERMODE) {
       return buffercmd(c) == T;
@@ -305,10 +303,14 @@ EDLINE::linsert(int c, int n) {
    * Update mark and found.
    */
 
-  if (found.line() == lp1) {
-    found.setLine(lp2);
-    if (found.pos() > doto) {
-      found.setPos(found.pos() + n);
+  {
+    auto& found(Editor::_found);
+
+    if (found.line() == lp1) {
+      found.setLine(lp2);
+      if (found.pos() > doto) {
+        found.setPos(found.pos() + n);
+      }
     }
   }
 

@@ -1525,10 +1525,11 @@ class Editor {
   static std::vector<EditorCommand> _keytab;
   /* User macros table */
   static std::vector<MACTAB> _macros;
-  static int _thisflag;                   // Flags, this command
-  static int _lastflag;                   // Flags, last command
-  static int _repeat;                     // Repeat count
-  static int _curgoal;                    // Goal for C-P, C-N
+  static int _thisflag;  // Flags, this command
+  static int _lastflag;  // Flags, last command
+  static int _repeat;    // Repeat count
+  static int _curgoal;   // Goal for C-P, C-N
+  static Point _found;   // Position of last search
 
  private:
   Editor(int argc, EMCHAR* argv[], bool);
