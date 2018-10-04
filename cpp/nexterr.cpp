@@ -42,10 +42,11 @@ geterror() {
   (void)emstrcpy(save, Editor::searchBuffer());
   (void)emstrcpy(Editor::searchBuffer(), ECSTR(":"));
 
+  EDLINE* line{nullptr};
   for (;;) {
     errlinenum = 0;
 
-    if (!ffindstring()) {
+    if (!ffindstring() || Editor::_found.line() == line) {
       if (errflag) {
         WDGmessage(ECSTR("no more errors"));
       } else {
@@ -55,7 +56,7 @@ geterror() {
       return false;
     }
 
-    auto line = Editor::_found.line();
+    line = Editor::_found.line();
 
     curwp->setDot(line, 0);
 

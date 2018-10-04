@@ -24,6 +24,7 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
  * running a command interpreter.
  */
 
+#include <thread>
 #include "./emacs.h"
 
 #if     defined(_POSIX_C_SOURCE)
@@ -105,7 +106,6 @@ bool
 syscompile(const EMCHAR* cmd, int flag) {
   auto owp = curwp;
   BUFFER* bp;
-  FILE*   fd;
   auto    status = false;
   int     out    = -1;
   int     err;
@@ -129,18 +129,18 @@ syscompile(const EMCHAR* cmd, int flag) {
 
 #if defined(_SPAWNED_PIPE)
   if (opt::pipe_process) {
-    EMCHAR  line[NLINE];
-    int     c;
+    EMCHAR line[NLINE];
 
     (void)emstrcpy(line, cmd);
     (void)emstrcat(line, ECSTR(" 2>&1"));
 
-    fd = empopen(&line[0], ECSTR("r"));
+    auto fd = empopen(&line[0], ECSTR("r"));
+
     if (fd == nullptr) {
       return false;
     }
 
-    while ((c = std::fgetc(fd)) != EOF) {
+    for (auto c = std::fgetc(fd); c != EOF; c = std::fgetc(fd)) {
       if (TTYcheck()) {
         TTYbeep();
         WDGmessage(ECSTR("Quit"));
@@ -168,8 +168,9 @@ syscompile(const EMCHAR* cmd, int flag) {
 #endif
     if (opt::compile_in_buffer) {
       static const auto procname(ECSTR("process.tmp"));
+      auto fd = ffopen(procname, ECSTR("w"));
 
-      if ((fd = ffopen(procname, ECSTR("w"))) == nullptr) {
+      if (fd == nullptr) {
         return false;
       }
 
