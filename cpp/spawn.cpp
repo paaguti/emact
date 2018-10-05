@@ -128,6 +128,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   wp->current();
 
   if (opt::pipe_process) {
+#if 1
     EMCHAR line[NLINE];
 
     (void)emstrcpy(line, cmd);
@@ -163,6 +164,68 @@ syscompile(const EMCHAR* cmd, int flag) {
 
     TTYrawmode();
     status = (pclose(fd) == 0);
+#else
+    EMCHAR  line[NLINE];
+    (void)emstrcpy(line, cmd);
+    (void)emstrcat(line, ECSTR(" 2>&1"));
+
+    auto proc = [&line](WINSCR* old) {
+      auto fd2 = empopen(&line[0], ECSTR("r"));
+      if (fd2 == nullptr) {
+        return false;
+      }
+
+      int c;
+
+      while ((c = std::fgetc(fd2)) != EOF) {
+        BUFFER* bproc;
+
+        /*
+         * find or create buffer it it does not exist.
+         */
+        if ((bproc = BUFFER::find(BUF_PROC)) == nullptr) {
+          return false;
+        }
+
+        auto wproc = bproc->show();
+
+        wproc->current();
+
+#if 0
+        if (TTYcheck()) {
+          TTYbeep();
+          WDGmessage(ECSTR("Quit"));
+          break;
+        }
+#endif
+        switch (c) {
+        case '\b' :
+          (void)backdel();
+          break;
+        case '\r' :
+          display->update();
+          break;
+        case '\n':
+          (void)newline();
+          display->update();
+          break;
+        default:
+          (void)EDLINE::linsert(c);
+        }
+        old->current();
+      }
+      TTYrawmode();
+      return true;
+    };
+
+    printf("Start..\n");
+    std::thread th{proc, owp};
+    printf("Joining..\n");
+    th.detach();
+    printf("Joined!\n");
+
+    status = true;
+#endif
   } else {
     if (opt::compile_in_buffer) {
       static const auto procname(ECSTR("process.tmp"));

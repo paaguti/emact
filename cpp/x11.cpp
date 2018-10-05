@@ -303,6 +303,7 @@ extern void makeCursesTerminal();
 #endif
 
 X11Terminal::X11Terminal() {
+  XInitThreads();
   if ((X11term == false) || (X11dpy = XOpenDisplay(X11display)) == nullptr) {
 #if !defined(_X11_ONLY)
     /*
