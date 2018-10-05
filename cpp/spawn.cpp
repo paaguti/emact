@@ -24,8 +24,8 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
  * running a command interpreter.
  */
 
-#include <thread>
 #include "./emacs.h"
+#include <thread>
 
 #if     defined(_POSIX_C_SOURCE)
 #define SEDPROG         ECSTR("sed")
@@ -127,7 +127,6 @@ syscompile(const EMCHAR* cmd, int flag) {
 
   wp->current();
 
-#if defined(_SPAWNED_PIPE)
   if (opt::pipe_process) {
     EMCHAR line[NLINE];
 
@@ -165,7 +164,6 @@ syscompile(const EMCHAR* cmd, int flag) {
     TTYrawmode();
     status = (pclose(fd) == 0);
   } else {
-#endif
     if (opt::compile_in_buffer) {
       static const auto procname(ECSTR("process.tmp"));
       auto fd = ffopen(procname, ECSTR("w"));
@@ -215,9 +213,7 @@ syscompile(const EMCHAR* cmd, int flag) {
       redrawscreen();
       return status;
     }
-#if defined(_SPAWNED_PIPE)
   }
-#endif
 
   (void)notmodified();
   (void)gotobob();
