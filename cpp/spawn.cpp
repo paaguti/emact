@@ -165,7 +165,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     TTYrawmode();
     status = (pclose(fd) == 0);
 #else
-    EMCHAR  line[NLINE];
+    EMCHAR line[NLINE];
     (void)emstrcpy(line, cmd);
     (void)emstrcat(line, ECSTR(" 2>&1"));
 

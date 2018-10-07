@@ -121,14 +121,32 @@ geterror() {
     }
 
     /*
-     * get the filename in errfname buffer
+     * get the filename in errfname buffer, ext is the last position of '.'
      */
 
+    auto ext = &errfname[0];
     for (j = 0; (start + j) < stop; ++j) {
       errfname[j] = line->get(start + j);
+      if (errfname[j] == '.') {
+        ext = &errfname[j];
+      }
     }
 
     errfname[j] = '\0';
+
+    /*
+     * ignore some extensions
+     */
+
+    if (!emstrcmp(ext, ECSTR(".o")) ||
+        !emstrcmp(ext, ECSTR(".obj")) ||
+        !emstrcmp(ext, ECSTR(".com")) ||
+        !emstrcmp(ext, ECSTR(".class")) ||
+        !emstrcmp(ext, ECSTR(".exe")) ||
+        !emstrcmp(ext, ECSTR(".dll")) ||
+        !emstrcmp(ext, ECSTR(".a"))) {
+      continue;
+    }
 
     /*
      * search for a number (assumes line number).

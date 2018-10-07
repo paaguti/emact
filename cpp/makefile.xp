@@ -7,9 +7,24 @@
 #	-D_UNICODE	     to use with UNICODE characters.
 #	
 
+# set CPU from $(CC) version found in path.
+!if [$(CC) 2>&1 | find "x86" > nul] == 0
+CPU		= i386
+!elseif [$(CC) 2>&1 | find "x64" > nul] == 0
+CPU		= AMD64
+!elseif [$(CC) 2>&1 | find "Itanium" > nul] == 0
+CPU		= IA64
+!elseif [$(CC) 2>&1 | find "ARM" > nul] == 0
+CPU		= ARM
+!else
+CPU		= i386
+!endif
+
+!message Compiling using $(CC) for $(CPU) cpu.
+
 #	Assumes that we have <install-dir>\openlisp
 
-LIBFILES	= defclass defstruc stderror flet pretty sort startup setf
+LIBFILES	=
 
 !if "$(CPU)" == "AMD64"
 CPUFLAG 	= -GS- -D_SECURE_SCL=0
@@ -19,8 +34,7 @@ HC		= if exist ..\hc\hcrtf ..\hc\hcrtf -xn
 LIBEXTRA	= # bufferoverflowU.lib
 !endif
 
-!if "$(CPU)" == "i386" || "$(CPU)" == ""
-CPU 	     	= i386
+!if "$(CPU)" == "i386"
 CPUFLAG 	= # -Wp64 # (G4=486, G5=Pentium, G6=PPro, G7=Pentium4)
 ARCH		= 32
 LDARCH		= x86
