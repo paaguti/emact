@@ -114,8 +114,6 @@ typedef struct dirent ENTRY;
  *      END OF INCLUDE SECTION
  */
 
-#define internalerror(msg)    emacserror(msg, __FILE__, __LINE__)
-
 #if !defined(_POSIX_C_SOURCE) && defined(S_IREAD)
 #define S_IWUSR S_IWRITE
 #define S_IRUSR S_IREAD
@@ -250,12 +248,6 @@ typedef struct stat     EMSTAT;
 
 #if !defined(PATH)
 #define PATH    ECSTR("/usr/local/emact/lib")
-#endif
-
-#if defined(_WIN32)
-#define CRSIZE  2
-#else
-#define CRSIZE  1
 #endif
 
 /*

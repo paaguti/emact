@@ -240,7 +240,7 @@ EDLINE::linsert(int c, int n) {
      */
 
     if (curwp->pos() != 0) {
-      internalerror(ECSTR("pos() != 0"));
+      Editor::error(__FILE__, __LINE__, ECSTR("pos() != 0"));
       return false;
     }
 

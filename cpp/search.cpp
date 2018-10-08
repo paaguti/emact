@@ -362,6 +362,7 @@ quotep(const EDLINE* l, int i) {
        curbp->editMode() == EDITMODE::CPPMODE    ||
        curbp->editMode() == EDITMODE::CSHARPMODE ||
        curbp->editMode() == EDITMODE::PERLMODE   ||
+       curbp->editMode() == EDITMODE::PYTHONMODE ||
        curbp->editMode() == EDITMODE::SHELLMODE  ||
        curbp->editMode() == EDITMODE::JAVAMODE)) {
     if (i >= 3 && (c = l->get(i - 3)) == '\'') {
@@ -546,6 +547,7 @@ lmatchc(int patc, bool printflag) {
              mode == EDITMODE::CPPMODE    ||
              mode == EDITMODE::CSHARPMODE ||
              mode == EDITMODE::PERLMODE   ||
+             mode == EDITMODE::PYTHONMODE ||
              mode == EDITMODE::JAVAMODE) &&
             commento != 0)) {
       clp = clp->back();
@@ -560,10 +562,11 @@ lmatchc(int patc, bool printflag) {
       case EDITMODE::CMODE:
       case EDITMODE::CPPMODE:
       case EDITMODE::CSHARPMODE:
-      case EDITMODE::PERLMODE:
-      case EDITMODE::JAVAMODE:
       case EDITMODE::FORTRANMODE:
+      case EDITMODE::JAVAMODE:
+      case EDITMODE::PERLMODE:
       case EDITMODE::PROLOGMODE:
+      case EDITMODE::PYTHONMODE:
       case EDITMODE::SHELLMODE:
         cbo = lastc(clp);
         break;
@@ -615,11 +618,12 @@ saveindent(EDLINE *clp, int cbo) {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
   case EDITMODE::CSHARPMODE:
-  case EDITMODE::PERLMODE:
-  case EDITMODE::JAVAMODE:
   case EDITMODE::FORTRANMODE:
-  case EDITMODE::SHELLMODE:
+  case EDITMODE::JAVAMODE:
+  case EDITMODE::PERLMODE:
   case EDITMODE::PROLOGMODE:
+  case EDITMODE::PYTHONMODE:
+  case EDITMODE::SHELLMODE:
     indento = clp->leftmargin();
     break;
   default:
@@ -829,10 +833,11 @@ getdefinition() {
     case EDITMODE::CMODE:
     case EDITMODE::CPPMODE:
     case EDITMODE::CSHARPMODE:
-    case EDITMODE::PERLMODE:
-    case EDITMODE::JAVAMODE:
     case EDITMODE::FORTRANMODE:
+    case EDITMODE::JAVAMODE:
+    case EDITMODE::PERLMODE:
     case EDITMODE::PROLOGMODE:
+    case EDITMODE::PYTHONMODE:
     case EDITMODE::SHELLMODE:
       if (Editor::_found.pos() == len) {
         curwp->setFlags(WINSCR::WFMOVE);

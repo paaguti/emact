@@ -97,6 +97,8 @@ enum class EDITMODE {
   PERLMODE,
   /** C# mode */
   CSHARPMODE,
+  /** Python mode */
+  PYTHONMODE,
   /** shell mode */
   SHELLMODE
 };
@@ -1521,6 +1523,15 @@ class Editor {
   getMacros() {
     return _macros;
   }
+
+  /**
+   * Display an internal error.
+   * @param [in] file file where error occurs.
+   * @param [in] line line where error occurs.
+   * @param [in] msg message of this error.
+   */
+  static void
+  error(const char* file, int line, const EMCHAR* msg);
 
   static std::vector<EditorCommand> _keytab;
   /* User macros table */

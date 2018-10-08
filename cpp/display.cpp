@@ -487,7 +487,7 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
   int     count;
   int     stflag;
 
-  stflag = (emstrncmp(cp1+OFFSET, version, VERSION_LENGTH) == 0);
+  stflag = (emstrncmp(cp1 + OFFSET, version, VERSION_LENGTH) == 0);
 
   /*
    * Compute the left match.
@@ -629,6 +629,7 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
   case EDITMODE::LISPMODE    : modeputs(ECSTR(" (Lisp"));        break;
   case EDITMODE::PASCALMODE  : modeputs(ECSTR(" (Pascal"));      break;
   case EDITMODE::PROLOGMODE  : modeputs(ECSTR(" (Prolog"));      break;
+  case EDITMODE::PYTHONMODE  : modeputs(ECSTR(" (Python"));      break;
   case EDITMODE::PERLMODE    : modeputs(ECSTR(" (Perl"));        break;
   case EDITMODE::SHELLMODE   : modeputs(ECSTR(" (Shell"));       break;
   default                    : modeputs(ECSTR(" (Fundamental")); break;

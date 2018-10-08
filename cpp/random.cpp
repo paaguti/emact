@@ -251,6 +251,7 @@ tabexpand() {
   bool res;
   if (opt::tab_size == 8 &&
       curbp->editMode() != EDITMODE::JAVAMODE &&
+      curbp->editMode() != EDITMODE::PYTHONMODE &&
       curbp->editMode() != EDITMODE::CSHARPMODE) {
     res = EDLINE::linsert('\t');
   } else {
@@ -304,14 +305,15 @@ endline() {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
   case EDITMODE::CSHARPMODE:
-  case EDITMODE::SGMLMODE:
-  case EDITMODE::JAVAMODE:
   case EDITMODE::FORTRANMODE:
-  case EDITMODE::PASCALMODE:
-  case EDITMODE::PROLOGMODE:
-  case EDITMODE::PERLMODE:
-  case EDITMODE::SHELLMODE:
+  case EDITMODE::JAVAMODE:
   case EDITMODE::LISPMODE:
+  case EDITMODE::PASCALMODE:
+  case EDITMODE::PERLMODE:
+  case EDITMODE::PROLOGMODE:
+  case EDITMODE::PYTHONMODE:
+  case EDITMODE::SGMLMODE:
+  case EDITMODE::SHELLMODE:
     return newlineindent();
   case EDITMODE::DIRED: {
     const auto dotp(curwp->line());

@@ -52,6 +52,7 @@ nexttab(int col) {
 
   if (curbp->editMode() == EDITMODE::SGMLMODE   ||
       curbp->editMode() == EDITMODE::CSHARPMODE ||
+      curbp->editMode() == EDITMODE::PYTHONMODE ||
       curbp->editMode() == EDITMODE::LISPMODE   ||
       curbp->editMode() == EDITMODE::JAVAMODE) {
     return EDLINE::linsert(' ', col);
@@ -67,7 +68,7 @@ nexttab(int col) {
 
 /*
  * Next  C  indent.  Compute  the  next  level of indentation in
- * CMODE, CPPMODE, CSHARPMODE, PERLMODE or JAVAMODE.
+ * CMODE, CPPMODE, CSHARPMODE, PERLMODE PYTHONMODE or JAVAMODE.
  */
 
 static EDLINE*
@@ -176,7 +177,7 @@ nextcindent() {
 
 /*
  * Delete one level of indentation in CMODE,  CPPMODE,  PERLMODE
- * CSHARPMODE, or JAVAMODE buffer.
+ * CSHARPMODE, PYTHONMODE or JAVAMODE buffer.
  */
 
 bool
@@ -704,8 +705,9 @@ indent() {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
   case EDITMODE::CSHARPMODE:
-  case EDITMODE::PERLMODE:
   case EDITMODE::JAVAMODE:
+  case EDITMODE::PERLMODE:
+  case EDITMODE::PYTHONMODE:
     return cindent() ? T : NIL;
   case EDITMODE::LISPMODE:
     return lispindent() ? T : NIL;
@@ -858,8 +860,9 @@ blispexpr() {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
   case EDITMODE::CSHARPMODE:
-  case EDITMODE::PERLMODE:
   case EDITMODE::JAVAMODE:
+  case EDITMODE::PERLMODE:
+  case EDITMODE::PYTHONMODE:
     c = '{';
     break;
   case EDITMODE::LISPMODE:
@@ -892,6 +895,7 @@ elispexpr() {
   case EDITMODE::CPPMODE:
   case EDITMODE::CSHARPMODE:
   case EDITMODE::PERLMODE:
+  case EDITMODE::PYTHONMODE:
   case EDITMODE::JAVAMODE:
     if (blispexpr() == T && matchrcur() == T) {
       return T;

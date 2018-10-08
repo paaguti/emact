@@ -80,7 +80,7 @@ BUFFER::validitycheck(const char* msg) {
     if (count != bp->count()) {
       printf("%s: wrong buffer computed count %d vs. bp->count %d\n",
              msg, count, bp->count());
-      internalerror(ECSTR("wrong buffer count"));
+      Editor::error(__FILE__, __LINE__, ECSTR("wrong buffer count"));
     }
   }
 #endif
@@ -532,11 +532,12 @@ makelist(BUFFER *blp) {
     case EDITMODE::DIRED       : cp2 = ECSTR("Dired       "); break;
     case EDITMODE::FORTRANMODE : cp2 = ECSTR("Fortran     "); break;
     case EDITMODE::JAVAMODE    : cp2 = ECSTR("Java        "); break;
-    case EDITMODE::SGMLMODE    : cp2 = ECSTR("SGML        "); break;
     case EDITMODE::LISPMODE    : cp2 = ECSTR("Lisp        "); break;
     case EDITMODE::PASCALMODE  : cp2 = ECSTR("Pascal      "); break;
     case EDITMODE::PROLOGMODE  : cp2 = ECSTR("Prolog      "); break;
+    case EDITMODE::PYTHONMODE  : cp2 = ECSTR("Python      "); break;
     case EDITMODE::PERLMODE    : cp2 = ECSTR("Perl        "); break;
+    case EDITMODE::SGMLMODE    : cp2 = ECSTR("SGML        "); break;
     case EDITMODE::SHELLMODE   : cp2 = ECSTR("Shell       "); break;
     default                    : cp2 = ECSTR("Fundamental ");
     }

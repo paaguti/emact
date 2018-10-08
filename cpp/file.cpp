@@ -30,6 +30,12 @@ static bool    frdflag{false};  // flag for freadonly
 static void    savetime();
 static EMCHAR* getbufdir();
 
+#if defined(_WIN32)
+static constexpr auto CRSIZE(2);
+#else
+static constexpr auto CRSIZE(1);
+#endif
+
 /*
  * Resset freadonly flag made before a command is executed.
  */
@@ -762,6 +768,7 @@ getautomode(const EMCHAR* sp) {
     { ECSTR(".p"),     EDITMODE::PASCALMODE  },
     { ECSTR(".f"),     EDITMODE::FORTRANMODE },
     { ECSTR(".for"),   EDITMODE::FORTRANMODE },
+    { ECSTR(".py"),    EDITMODE::PYTHONMODE  },
     { ECSTR(".sh"),    EDITMODE::SHELLMODE   },
   };
 

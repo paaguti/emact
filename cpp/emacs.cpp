@@ -240,6 +240,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   { UNBOUND,       printbuffer,     ECSTR("print-buffer")                },
   { UNBOUND,       perl,            ECSTR("perl")                        },
   { UNBOUND,       switchperl,      ECSTR("perl-mode")                   },
+  { UNBOUND,       switchpython,    ECSTR("python-mode")                 },
   { UNBOUND,       redrawscreen,    ECSTR("redraw-screen")               },
   { UNBOUND,       sed,             ECSTR("sed")                         },
   { UNBOUND,       setjustifyleft,  ECSTR("set-justification-left")      },
@@ -645,6 +646,7 @@ Editor::execute(int c, int n) {
         (emode == EDITMODE::CMODE      ||
          emode == EDITMODE::CPPMODE    ||
          emode == EDITMODE::CSHARPMODE ||
+         emode == EDITMODE::PYTHONMODE ||
          emode == EDITMODE::PERLMODE   ||
          emode == EDITMODE::JAVAMODE)) {
       status = (unindent(c) ? T : NIL);
@@ -1134,6 +1136,17 @@ switchprolog() {
 }
 
 /*
+ * Switch to Python mode. Active auto match-parentheses.
+ */
+
+CMD
+switchpython() {
+  curbp->setEditMode(EDITMODE::PYTHONMODE);
+  BUFFER::updatemodes();
+  return T;
+}
+
+/*
  * Switch to assembler mode.
  */
 
@@ -1187,13 +1200,9 @@ linenump(const EMCHAR* s) {
  */
 
 void
-emacserror(const EMCHAR* msg, const char *file, int n) {
+Editor::error(const char* file, int line, const EMCHAR* msg) {
   TTYbeep();
-  if (file != nullptr || n != 0) {
-    WDGwrite(ECSTR("Internal error '%s' file %s at line %d."), msg, file, n);
-  } else {
-    WDGwrite(ECSTR("Internal error '%s'."), msg);
-  }
+  WDGwrite(ECSTR("Internal error '%s' file %s at line %d."), msg, file, line);
   TTYgetc();
 }
 
