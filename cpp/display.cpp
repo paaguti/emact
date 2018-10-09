@@ -473,10 +473,10 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 
   if (stflag) {
     TTYinverse();
-    TTYputs(outbuf, TTYncol);
+    TTYputs((EMCHAR*)outbuf, TTYncol);  // this cast is suspicious
     TTYnormal();
   } else {
-    TTYputs(outbuf, TTYncol);
+    TTYputs((EMCHAR*)outbuf, TTYncol);
   }
 #else
   auto cp1 = nline;

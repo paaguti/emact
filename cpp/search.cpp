@@ -448,7 +448,6 @@ rmatchc(int patc, bool printflag) {
   const auto lisp = (curbp->editMode() == EDITMODE::LISPMODE);
   EMCHAR  matchpat;
   int     max;
-  int     c;
 
   switch (patc) {
   case '(' : matchpat = ')'; break;
@@ -472,6 +471,7 @@ rmatchc(int patc, bool printflag) {
   }
 
   while (clp != curbp->lastline()) {
+    EMCHAR c;
     if (cbo >= max) {
       clp = clp->forw();
       cbo = 0;
@@ -480,7 +480,7 @@ rmatchc(int patc, bool printflag) {
       } else {
         max = clp->length();
       }
-      c   = '\n';
+      c = '\n';
     } else {
       c = clp->get(cbo++);
     }
@@ -489,7 +489,7 @@ rmatchc(int patc, bool printflag) {
       continue;
     }
 
-    if (c == patc) {
+    if (c == (EMCHAR)patc) {
       nbmatch++;
       continue;
     }
@@ -589,7 +589,7 @@ lmatchc(int patc, bool printflag) {
       continue;
     }
 
-    if (c == patc) {
+    if (c == (EMCHAR)patc) {
       nbmatch++;
       continue;
     }

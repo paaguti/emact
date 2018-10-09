@@ -49,7 +49,7 @@ static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
  */
 
 static ENCODING
-emfindencoding(const char* mem, INT max) {
+emfindencoding(const char* mem, int max) {
 #if defined(_UNICODE)
   for (int i = 0; i < max; ++i) {
     if (!(mem[i] == 'u' || mem[i] == 'U')) {
@@ -348,7 +348,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
     }
     break;
   case ENCODING::EMUTF16:
-    while ((c = std::fgetwc(ffp)) != EMEOF && c != '\n') {
+    while ((c = std::fgetwc(ffp)) != (int)EMEOF && c != '\n') {
       if (c == '\r') {
         continue;
       }
@@ -371,7 +371,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
     }
   }
 #else
-  while ((c = std::fgetc(ffp)) != EMEOF && c != '\n') {
+  while ((c = std::fgetc(ffp)) != (int)EMEOF && c != '\n') {
     if (i >= nbuf) {
       WDGwrite(ECSTR("File has line longer than %d chars."), i);
       return FIOERR;
@@ -382,7 +382,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
 #endif
   buf[*len = i] = '\0';
 
-  if (c == ((ffunicode == ENCODING::EMUTF16) ? EMEOF : EOF)) {
+  if (c == ((ffunicode == ENCODING::EMUTF16) ? (int)EMEOF : EOF)) {
     if (ferror(ffp) != 0) {
       WDGerror(ECSTR("File read error"));
       return FIOERR;
