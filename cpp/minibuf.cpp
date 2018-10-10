@@ -512,9 +512,6 @@ CMD
 mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
   EMCHAR buf[NLINE];
 
-  (void)emstrncpy(buf, msg, NLINE);
-  (void)emstrncat(buf, ECSTR(": "), NLINE);
-
   if (*opat && *npat) {
     bool changed{false};
     /*
@@ -541,17 +538,22 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
         return s;
       }
     }
-  } else if (mledit(buf, opat, len) == T) {
-    /*
-     * First time.
-     */
-    (void)emstrncpy(buf, msg, NLINE);
-    (void)emstrncat(buf, ECSTR(" "), NLINE);
-    (void)emstrncat(buf, opat, NLINE);
-    (void)emstrncat(buf, ECSTR(" with: "), NLINE);
-    return (mledit(buf, npat, len) != ABORT) ? T : NIL;
   } else {
-    return NIL;
+    (void)emstrncpy(buf, msg, NLINE);
+    (void)emstrncat(buf, ECSTR(": "), NLINE);
+
+    if (mledit(buf, opat, len) == T) {
+      /*
+       * First time.
+       */
+      (void)emstrncpy(buf, msg, NLINE);
+      (void)emstrncat(buf, ECSTR(" "), NLINE);
+      (void)emstrncat(buf, opat, NLINE);
+      (void)emstrncat(buf, ECSTR(" with: "), NLINE);
+      return (mledit(buf, npat, len) != ABORT) ? T : NIL;
+    } else {
+      return NIL;
+    }
   }
 }
 
