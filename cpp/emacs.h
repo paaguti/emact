@@ -93,7 +93,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
-typedef struct dirent ENTRY;
+using ENTRY = struct dirent;
 
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
@@ -132,13 +132,12 @@ using mode_t = int;
 #include <cwchar>
 #include <cwctype>
 
-using EMCHAR = wchar_t;
-
 #if !defined(__linux__)
 #define stat    _stat
 #endif
 
-typedef struct stat  EMSTAT;
+using EMCHAR = wchar_t;
+using EMSTAT = struct stat;
 
 #define ECSTR(x)        (EMCHAR *)(L ## x)
 #define EMEOF           WEOF
@@ -174,7 +173,7 @@ typedef struct stat  EMSTAT;
 #define emstrtoi(s)               (int)std::wcstol(s, nullptr, 0)
 #else   /* _WIDECHARS */
 using EMCHAR = char;
-typedef struct stat     EMSTAT;
+using EMSTAT = struct stat;
 
 #define ECSTR(x)        (EMCHAR*)x
 #define EMEOF           EOF
@@ -358,7 +357,7 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define WDGtitle(b, f)        (*widget.w_title)(b, f)
 #define WDGasker(p, b, n)     (*widget.w_asker)(p, b, n)
 #define WDGedit( p, b, n)     (*widget.w_edit)( p, b, n)
-#define WDGchange(o,n,s,r,l)  (*widget.w_change)(o, n, s, r, l)
+#define WDGchange(m,s,r,l)    (*widget.w_change)(m, s, r, l)
 #define WDGplay(f)            (*widget.w_play)(f)
 #define WDGwait()             (*widget.w_wait)()
 #define WDGmessage(s)         (*widget.w_message)(s)

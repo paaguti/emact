@@ -1092,11 +1092,7 @@ class WIDGET {
   /*
    * CHANGE Widget
    */
-  CMD (*w_change)(const EMCHAR* os,
-                  const EMCHAR* ns,
-                  EMCHAR* op,
-                  EMCHAR* np,
-                  int n);
+  CMD (*w_change)(const EMCHAR* msg, EMCHAR* op, EMCHAR* np, int n);
   /*
    * PLAY Widget
    */

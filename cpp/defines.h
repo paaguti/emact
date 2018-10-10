@@ -221,7 +221,7 @@ bool    mlallowcomplete(bool flag);
 void    mlwrite(const EMCHAR* fmt, ...);
 void    mlerror(const EMCHAR* msg);
 EMCHAR* mltitle(EMCHAR* buffer,EMCHAR* fname);
-CMD     mlchange(const EMCHAR* msgo, const EMCHAR* msgn, EMCHAR* opat, EMCHAR* npat, int length);
+CMD     mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int length);
 void    mlplay(int flag);
 void    mlwait();
 void    mlmessage(const EMCHAR* msg);

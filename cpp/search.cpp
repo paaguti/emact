@@ -211,18 +211,15 @@ replace(bool prompt) {
   }
 
   {
-    const EMCHAR* msgo;
-    const EMCHAR* msgn;
+    const EMCHAR* msg;
 
     if (prompt) {
-      msgo = ECSTR("Query replace old string: ");
-      msgn = ECSTR("Query replace new string: ");
+      msg = ECSTR("Query replace");
     } else {
-      msgo = ECSTR("Replace old string: ");
-      msgn = ECSTR("Replace new string: ");
+      msg = ECSTR("Replace");
     }
 
-    if (WDGchange(msgo, msgn, (EMCHAR*)opat, (EMCHAR*)npat, NPAT) != T) {
+    if (WDGchange(msg, (EMCHAR*)opat, (EMCHAR*)npat, NPAT) != T) {
       return false;
     } else {
       (void)emstrcpy(Editor::searchBuffer(), opat);

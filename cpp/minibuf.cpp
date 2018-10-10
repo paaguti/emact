@@ -494,8 +494,7 @@ mlputi(int i, int r) {
 EMCHAR*
 mltitle(EMCHAR* s, EMCHAR* f) {
   /*
-   * The  next  two  lines  is  dummy code to remove warning on
-   * args not used.
+   * next lines is dummy code to remove warning on args not used.
    */
 
   if (s != f) {
@@ -506,17 +505,51 @@ mltitle(EMCHAR* s, EMCHAR* f) {
 }
 
 /*
- * Change selection
+ * Change selection. If opat and npat exist, propose the same selection again.
  */
 
 CMD
-mlchange(const EMCHAR* msgo,
-         const EMCHAR* msgn,
-         EMCHAR* opat,
-         EMCHAR* npat,
-         int len) {
-  if ((mledit(msgo, opat, len) == T)) {
-    return (mledit(msgn, npat, len) != ABORT) ? T : NIL;
+mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
+  EMCHAR buf[NLINE];
+
+  (void)emstrncpy(buf, msg, NLINE);
+  (void)emstrncat(buf, ECSTR(": "), NLINE);
+
+  if (*opat && *npat) {
+    bool changed{false};
+    /*
+     * Try with previous choice
+     */
+    for (;;) {
+      EMCHAR prev[NLINE];
+      (void)emstrncpy(prev, npat, NLINE);
+      (void)emstrncpy(buf, msg, NLINE);
+      (void)emstrncat(buf, ECSTR(" "), NLINE);
+      (void)emstrncat(buf, opat, NLINE);
+      (void)emstrncat(buf, ECSTR(" with: "), NLINE);
+      auto s = mledit(buf, npat, len);
+      switch (s) {
+      case T:
+        if (changed || emstrcmp(npat, prev) == 0) {
+          return s;
+        }
+        (void)emstrncpy(opat, npat, NLINE);
+        changed = true;
+        break;
+      case NIL:
+      case ABORT:
+        return s;
+      }
+    }
+  } else if (mledit(buf, opat, len) == T) {
+    /*
+     * First time.
+     */
+    (void)emstrncpy(buf, msg, NLINE);
+    (void)emstrncat(buf, ECSTR(" "), NLINE);
+    (void)emstrncat(buf, opat, NLINE);
+    (void)emstrncat(buf, ECSTR(" with: "), NLINE);
+    return (mledit(buf, npat, len) != ABORT) ? T : NIL;
   } else {
     return NIL;
   }
@@ -525,8 +558,8 @@ mlchange(const EMCHAR* msgo,
 void
 mlplay(int flag) {
   /*
-   * The  next  two  lines  is  dummy code to remove warning on
-   * args not used.
+   * The next two lines is dummy code to remove warning on args not
+   * used.
    */
 
   if (flag) {
