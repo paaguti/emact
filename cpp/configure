@@ -5158,6 +5158,7 @@ fi
 $as_echo_n "checking for ncursesw via pkg-config... " >&6; }
 
 
+
     if test -n "$_ax_cv_ncursesw_libs"; then
     pkg_cv__ax_cv_ncursesw_libs="$_ax_cv_ncursesw_libs"
  elif test -n "$PKG_CONFIG"; then
@@ -5555,6 +5556,7 @@ fi
 
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ncurses via pkg-config" >&5
 $as_echo_n "checking for ncurses via pkg-config... " >&6; }
+
 
 
     if test -n "$_ax_cv_ncurses_libs"; then
@@ -7680,7 +7682,8 @@ fi
 fi
 
 
-# echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
+echo "====== ac_cv_have_x=$have_x ======"
+echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
 
 # define X_DISPLAY_MISSING  if missing
 if test "xX_CFLAGS" != "x"
@@ -7722,7 +7725,7 @@ $as_echo "$ac_cv_sys_posix_termios" >&6; }
 #echo $ac_cv_sys_posix_termios
 # set the shell variable ac_cv_sys_posix_termios to yes (no otherwise).
 
-if test "x$X_LIBS" != "x"
+if test "x$have_x" = "xyes"
 then
   for i in $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS
   do

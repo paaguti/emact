@@ -153,20 +153,12 @@ fi
 
 AC_PATH_XTRA
 
-# echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
+#echo "====== ac_cv_have_x=$have_x ======"
+#echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
 
-# define X_DISPLAY_MISSING  if missing
-if test "xX_CFLAGS" != "x"
+if test "x$have_x" = "xyes"
 then
   CXXFLAGS="$CXXFLAGS $X_CFLAGS"
-fi
-
-AC_SYS_POSIX_TERMIOS
-#echo $ac_cv_sys_posix_termios
-# set the shell variable ac_cv_sys_posix_termios to yes (no otherwise).
-
-if test "x$X_LIBS" != "x"
-then
   for i in $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS
   do
     LIBS="$LIBS $i"
