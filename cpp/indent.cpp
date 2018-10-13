@@ -45,7 +45,7 @@ nexttab(int col) {
   int i;
 
   if (col < 0) {
-    TTYbeep();
+    term->beep();
     WDGmessage(ECSTR("nexttab invalid index"));
     return false;
   }

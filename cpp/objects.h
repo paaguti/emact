@@ -1047,12 +1047,24 @@ class Terminal {
   virtual void
   rawmode() {
   }
+  /* Number of rows. */
+  int
+  nrow() const noexcept {
+    return t_nrow;
+  }
+  /* Number of columns. */
+  int
+  ncol() const noexcept {
+    return t_ncol;
+  }
 
- public:
+ protected:
   /* Number of rows. */
   int t_nrow{0};
   /* Number of columns. */
   int t_ncol{0};
+
+ public:
   /* Scroll position. */
   int t_nscroll{0};
   /* Term initialized. */

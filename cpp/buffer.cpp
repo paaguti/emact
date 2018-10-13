@@ -265,7 +265,7 @@ BUFFER::discard() noexcept {
     /*
      * Only one buffer
      */
-    TTYbeep();
+    term->beep();
     WDGmessage(ECSTR("Only one buffer"));
     return false;
   }
@@ -361,7 +361,7 @@ BUFFER::anycb(ANYCB flag) {
 
       if (!alert) {
         alert = true; /* one beep only the first time */
-        TTYbeep();
+        term->beep();
       }
 
       while (!valid) {
@@ -370,7 +370,7 @@ BUFFER::anycb(ANYCB flag) {
         (void)emstrcat(buf, ECSTR(" ? (y, n, !, ., q)"));
 
         WDGwrite(ECSTR("%s"), buf);
-        switch (TTYgetc()) {
+        switch (term->get()) {
         case 0x07:
           (void)ctrlg();
           WDGmessage(ECSTR("Quit"));
@@ -509,9 +509,9 @@ makelist(BUFFER *blp) {
     *cp1++ = ' ';                   /* Gap.                 */
 
     if (cp1 != (&line[0] + BUFFERPOS)) {
-      TTYbeep();
+      term->beep();
       WDGwrite(ECSTR("#<BUFFERPOS: invalid constant>"));
-      TTYgetc();
+      term->get();
     }
 
     cp2 = bp->bufname();
@@ -593,7 +593,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
   for (auto bp : BUFFER::list()) {
     if (len == 0 || !emstrncmp(bp->bufname(), buffer, len)) {
       WDGupdate(prompt, bp->bufname());
-      switch (TTYgetc()) {
+      switch (term->get()) {
       case 0x07:
         complete.setStatus(Completion::Status::COMPLETE_ABORT);
         WDGwrite(ECSTR("Quit"));
@@ -608,7 +608,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
   }
 
   complete.setStatus(Completion::Status::COMPLETE_AGAIN);
-  TTYbeep();
+  term->beep();
   return buffer;
 }
 

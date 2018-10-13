@@ -1032,7 +1032,10 @@ X11title(EMCHAR* buf, EMCHAR* fname) {
   if (emstrcmp(buf, title) != 0) {
     char ascii[64];
     int  i;
-    (void)emsprintf3(title, ECSTR("%s (%dx%d)"), buf, TTYnrow, TTYncol);
+    (void)emsprintf3(title,
+                     ECSTR("%s (%dx%d)"),
+                     buf,
+                     term->nrow(), term->ncol());
     for (i = 0; title[i]; ++i) {
       ascii[i] = (char)title[i];
     }

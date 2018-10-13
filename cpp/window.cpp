@@ -29,7 +29,7 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
 std::list<WINSCR*> WINSCR::_wlist;
 
 WINSCR::WINSCR(BUFFER* bp) noexcept
-  : _ntrows{TTYnrow - 1} {
+  : _ntrows{term->nrow() - 1} {
   if (_wlist.empty()) {
     curwp = this;
     _wlist.push_front(this);
@@ -90,12 +90,12 @@ WINSCR::resize() noexcept {
     return false;
   }
 
-  head->_ntrows = (TTYnrow - 1);
+  head->_ntrows = (term->nrow() - 1);
   display->modeline(curwp);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
 
-  if (bp != nullptr && (TTYnrow >= 4)) {
+  if (bp != nullptr && (term->nrow() >= 4)) {
     auto wp = WINSCR::popup();
     if (wp == nullptr) {
       return false;
@@ -360,7 +360,7 @@ onlywind() {
   }
 
   curwp->_toprow   = 0;
-  curwp->_ntrows   = (TTYnrow - 1);
+  curwp->_ntrows   = (term->nrow() - 1);
   curwp->_toplinep = lp;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
   return T;
@@ -609,9 +609,9 @@ findwind() {
       lp = wp->topline();
       if ((top + nrow) == l) {
         auto resizep = NIL;
-        if (wx == (TTYncol - 4) || wx == (TTYncol-3)) {
+        if (wx == (term->ncol() - 4) || wx == (term->ncol()-3)) {
           (void)forwpage();
-        } else if (wx == (TTYncol - 7) || wx == (TTYncol - 6)) {
+        } else if (wx == (term->ncol() - 7) || wx == (term->ncol() - 6)) {
           (void)backpage();
         } else {
           switch (mevent.button) {

@@ -161,7 +161,7 @@ loop:
 
       WDGupdate(prompt, line);
 
-      switch ((newchar[0] = (EMCHAR)TTYgetc())) {
+      switch ((newchar[0] = (EMCHAR)term->get())) {
       case 0x03: /* Ctrl-C */
         (void)closedir(dirp);
         complete.setStatus(Completion::Status::COMPLETE_AGAIN);
@@ -174,7 +174,7 @@ loop:
         return nullptr;
       case 0x07: /* Ctrl-G */
         (void)closedir(dirp);
-        TTYbeep();
+        term->beep();
         WDGmessage(ECSTR("Quit"));
         complete.setStatus(Completion::Status::COMPLETE_ABORT);
         return nullptr;
@@ -213,7 +213,7 @@ loop:
           complete.setStatus(Completion::Status::COMPLETE_AGAIN);
           return pmatch;
         }
-        TTYbeep();
+        term->beep();
       }
     }
   }
@@ -221,7 +221,7 @@ loop:
   (void)closedir(dirp);
 
   complete.setStatus(Completion::Status::COMPLETE_AGAIN);
-  TTYbeep();
+  term->beep();
   return file;
 }
 

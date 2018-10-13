@@ -60,7 +60,7 @@ void
 mlerase() {
   mbcursor = 0;
 
-  while (mbcursor < TTYncol) {
+  while (mbcursor < term->ncol()) {
     display->statputc(mbcursor++, ' ');
   }
 
@@ -82,7 +82,7 @@ mlyn(const EMCHAR* prompt) {
   mlwrite(ECSTR("%s"), prompt);
 
   for (;;) {
-    switch (TTYgetc()) {
+    switch (term->get()) {
     case 0x07:
       (void)ctrlg();
       WDGmessage(ECSTR("Quit"));
@@ -184,9 +184,9 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   for (;;) {
     display->update(DISPLAY::Mode::MINIBUF);
 
-    TTYcshow(true);
-    c = TTYgetc();
-    TTYcshow(false);
+    term->cshow(true);
+    c = term->get();
+    term->cshow(false);
 
     switch (c) {
     case 0x03:      /* Ctrl-C */
@@ -275,7 +275,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       break;
     default:
       if (c == 0x11) { /* Quote next char */
-        c = TTYgetc();
+        c = term->get();
       }
 
       if ((complete == filematch) && (cpos > 0) && (c == ':')) {
@@ -378,7 +378,7 @@ mlreply(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 
 void
 mlerror(const EMCHAR* msg) {
-  TTYbeep();
+  term->beep();
   mlwrite(ECSTR("%s"), msg);
 }
 
@@ -419,10 +419,10 @@ mlwrite(const EMCHAR* fmt, ...) {
       case 'L':
         {
           auto lp = (EDLINE *)va_arg(var, EDLINE *);
-          if (lp->length() < (TTYncol - 1)) {
+          if (lp->length() < (term->ncol() - 1)) {
             mlputs(lp->text(), lp->length());
           } else {
-            mlputs(lp->text(), TTYncol - 1);
+            mlputs(lp->text(), term->ncol() - 1);
           }
         }
         break;
@@ -436,7 +436,7 @@ mlwrite(const EMCHAR* fmt, ...) {
     }
   }
 
-  for (auto i(mbcursor); i < TTYncol; ++i) {
+  for (auto i(mbcursor); i < term->ncol(); ++i) {
     display->statputc(i, ' ');
   }
 

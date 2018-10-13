@@ -59,7 +59,7 @@ EDLINE::alloc(int used) {
   auto lp  = reinterpret_cast<EDLINE*>(raw);
 
   if (lp == nullptr) {
-    TTYbeep();
+    term->beep();
     WDGerror(ECSTR("No memory left, file may be corrupted."));
     return nullptr;
   }

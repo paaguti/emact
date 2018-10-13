@@ -72,7 +72,7 @@ ttinsert(int c) {
 void
 ttinsert(const EMCHAR* s, int n) {
   while (n--) {
-    TTYputc((int)*s++);
+    term->insert((int)*s++);
   }
 }
 

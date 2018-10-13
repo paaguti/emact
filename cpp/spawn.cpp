@@ -79,7 +79,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   wp->current();
 
   if (ffsystem(cmd) != 0) {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("'%s' command fails !"), cmd);
     owp->current();
     return false;
@@ -139,8 +139,8 @@ syscompile(const EMCHAR* cmd, int flag) {
     }
 
     for (auto c = std::fgetc(fd); c != EOF; c = std::fgetc(fd)) {
-      if (TTYcheck()) {
-        TTYbeep();
+      if (term->check()) {
+        term->beep();
         WDGmessage(ECSTR("Quit"));
         break;
       }
@@ -160,7 +160,7 @@ syscompile(const EMCHAR* cmd, int flag) {
       }
     }
 
-    TTYrawmode();
+    term->rawmode();
     status = (pclose(fd) == 0);
 #else
     EMCHAR line[NLINE];
@@ -190,8 +190,8 @@ syscompile(const EMCHAR* cmd, int flag) {
         wproc->current();
 
 #if 0
-        if (TTYcheck()) {
-          TTYbeep();
+        if (term->check()) {
+          term->beep();
           WDGmessage(ECSTR("Quit"));
           break;
         }
@@ -212,7 +212,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         }
         old->current();
       }
-      TTYrawmode();
+      term->rawmode();
       return true;
     };
 
@@ -239,11 +239,11 @@ syscompile(const EMCHAR* cmd, int flag) {
           (out  = dup(fileno(stdout))) != -1 &&
           dup2(tmp1, fileno(stderr))   != -1 &&
           dup2(tmp1, fileno(stdout))   != -1) {
-        TTYrawmode(); /* open the duplicate out ^C */
+        term->rawmode(); /* open the duplicate out ^C */
         status = (ffsystem(cmd) == 0);
         (void)dup2(out, fileno(stdout));
         (void)dup2(err, fileno(stderr));
-        TTYrawmode(); /* close the duplicate out */
+        term->rawmode(); /* close the duplicate out */
         display->update(DISPLAY::Mode::REFRESH);
       }
 
@@ -268,9 +268,9 @@ syscompile(const EMCHAR* cmd, int flag) {
     } else {
       display->tidy();
       status = (ffsystem(cmd) == 0);
-      TTYopen();
+      term = Terminal::getInstance();
       WDGwrite(ECSTR("Strike any key to continue .. "));
-      TTYgetc();
+      term->get();
       redrawscreen();
       return status;
     }
@@ -312,7 +312,7 @@ spawncli() {
   }
 
   redrawscreen();
-  TTYopen();
+  term = Terminal::getInstance();
 #endif
   return T;
 }
@@ -342,7 +342,7 @@ spawn() {
   (void)std::fputs("Strike any key to continue .. ", stdout);
   (void)std::fgetc(stdin);
 
-  TTYopen();
+  term = Terminal::getInstance();
   mlerase();
   redrawscreen();
 #endif
@@ -532,7 +532,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
     BUFFER::change(WINSCR::WFEDIT);
   }
 
-  TTYrawmode();
+  term->rawmode();
 
   if (ffaccess(SHELLTEMP) == FIOSUC) {
     (void)ffremove(SHELLTEMP);
@@ -618,7 +618,7 @@ sed() {
     BUFFER::change(WINSCR::WFEDIT);
   }
 
-  TTYrawmode();
+  term->rawmode();
 
   if (ffaccess(SHELLTEMP) == FIOSUC) {
     (void)ffremove(SHELLTEMP);
@@ -683,7 +683,7 @@ perl() {
     BUFFER::change(WINSCR::WFEDIT);
   }
 
-  TTYrawmode();
+  term->rawmode();
 
   if (ffaccess(SHELLTEMP) == FIOSUC) {
     (void)ffremove(SHELLTEMP);
@@ -761,7 +761,7 @@ compilecurrent() {
   case EDITMODE::JAVAMODE:
     return javacompile();
   default:
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("Don't know how to compile %s"), curbp->filename());
   }
 
@@ -803,7 +803,7 @@ javacompile() {
   CMD     s;
 
   if (curbp->editMode() != EDITMODE::JAVAMODE) {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("not a java file !"));
     return NIL;
   }
@@ -881,7 +881,7 @@ javaevalbuffer() {
   CMD     s;
 
   if (curbp->editMode() != EDITMODE::JAVAMODE) {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("not a java file !"));
     return NIL;
   }
@@ -952,7 +952,7 @@ evalbuf() {
   case EDITMODE::JAVAMODE:
     return javaevalbuffer();
   default:
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("Cannot evaluate this buffer."));
   }
 

@@ -59,7 +59,7 @@ freadonly() {
   frdflag = true;
 
   if (curbp->readonly()) {
-    TTYbeep();
+    term->beep();
     WDGmessage(ECSTR("Buffer is readonly."));
     return true;
   }
@@ -1021,7 +1021,7 @@ fileinsert() {
   }
 
   if (ffdiredp(ofname)) {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("Can't insert directory!!"));
     return NIL;
   }

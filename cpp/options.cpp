@@ -270,7 +270,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
     if (len == 0 || emstrncmp(var.name(), buf, len) == 0) {
       if (len != emstrlen(var.name())) {
         WDGupdate(prompt, var.name());
-        switch (TTYgetc()) {
+        switch (term->get()) {
         case 0x07:
           WDGwrite(ECSTR("Quit"));
           return nullptr;
@@ -295,7 +295,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
     if (len == 0 || emstrncmp(ktp.name(), buf, len) == 0) {
       if (len != emstrlen(ktp.name())) {
         WDGupdate(prompt, const_cast<EMCHAR*>(ktp.name()));
-        switch (TTYgetc()) {
+        switch (term->get()) {
         case 0x07:
           WDGwrite(ECSTR("Quit"));
           return nullptr;
@@ -428,7 +428,7 @@ internalfindtag(int tagnext) {
 
   if (tagnext != 0) {
     if (tagname[0] == '\000') {
-      TTYbeep();
+      term->beep();
       WDGerror(ECSTR("No M-x find-tag in progress."));
       return NIL;
     }

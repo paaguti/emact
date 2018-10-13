@@ -332,9 +332,9 @@ XpTerminal::xpsettextattrib() {
     GetCharWidth32(_dc, (UINT)'M', (UINT)'M', &_charwidth);
   }
 
-  TTYncol = (int)(nParentWidth  / _charwidth);
-  TTYnrow = (int)(nParentHeight / _charheight) - 1;
-  TTYinit = true;
+  term->t_ncol = (int)(nParentWidth  / _charwidth);
+  term->t_nrow = (int)(nParentHeight / _charheight) - 1;
+  term->t_init = true;
 
   opt::line_number_mode = true;
 }
@@ -345,8 +345,8 @@ XpTerminal::xpchangefont(int font) {
     delete display;
     xpsetfontsize(font);
     xpsettextattrib();
-    if (TTYnrow <= 1) {
-      TTYnrow = 2;
+    if (term->t_nrow <= 1) {
+      term->t_nrow = 2;
     }
     display = new DISPLAY;
     (void)WINSCR::resize();
@@ -666,7 +666,7 @@ xpposfrompoint(int x, int y) {
 #if     defined(_UNICODE)
   auto lpString = display->text(y);
 
-  for (int i = 0; i < TTYncol; ++i) {
+  for (int i = 0; i < term->t_ncol; ++i) {
     SIZE size;
     GetTextExtentPoint32(XpTerminal::_dc, lpString, i, &size);
     if (size.cx > (x * XpTerminal::_charwidth)) {
@@ -1082,8 +1082,8 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         && !IsIconic(XpTerminal::_wnd)) {
       delete display;
       XpTerminal::xpsettextattrib();
-      if (TTYnrow <= 1) {
-        TTYnrow = 2;
+      if (term->t_nrow <= 1) {
+        term->t_nrow = 2;
       }
       display = new DISPLAY;
       (void)WINSCR::resize();
@@ -1232,7 +1232,7 @@ xptitle(TCHAR* buf, TCHAR* fname) {
   }
 
   if (_tcscmp(buf, title) != 0) {
-    (void)_stprintf(title, _T("%s (%dx%d)"), fname, TTYnrow, TTYncol);
+    (void)_stprintf(title, _T("%s (%dx%d)"), fname, term->t_nrow, term->t_ncol);
     SetWindowText(XpTerminal::_wnd, title);
   }
 

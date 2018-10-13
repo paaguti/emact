@@ -105,14 +105,14 @@ tinfoopen() {
   }
 
   ttopen();
-  TTYinit = NIL;
+  term->t_init = NIL;
 }
 
 static void
 tinfoclose() {
   (void)reset_shell_mode();
   (void)putp(exit_ca_mode);
-  TTYinit = NIL;
+  term->t_init = NIL;
 }
 
 static void

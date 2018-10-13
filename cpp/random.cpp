@@ -193,7 +193,7 @@ quotechar() {
   auto n = Editor::_repeat;
   int  c;
 
-  if ((c = TTYgetc()) == '\n') {
+  if ((c = term->get()) == '\n') {
     while (EDLINE::newline() && --n) {
       continue;
     }
@@ -1173,7 +1173,7 @@ counterformat() {
 
 CMD
 undo() {
-  TTYbeep();
+  term->beep();
   WDGwrite(ECSTR("'undo' not yet implemented ! Sorry."));
   return NIL;
 }

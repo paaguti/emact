@@ -332,25 +332,6 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 
 #include "./objects.h"
 
-#define TTYncol               term->t_ncol
-#define TTYnrow               term->t_nrow
-#define TTYinit               term->t_init
-#define TTYbeep()             term->beep()
-#define TTYopen()             term = Terminal::getInstance()
-#define TTYclose()            delete term;
-#define TTYmove(x, y)         term->move(x, y)
-#define TTYeol()              term->eeol()
-#define TTYeop()              term->eeop()
-#define TTYflush()            term->flush()
-#define TTYgetc()             term->get()
-#define TTYinverse()          term->si()
-#define TTYnormal()           term->ei()
-#define TTYputc(c)            term->insert(c)
-#define TTYputs(s, n)         term->insert(s, n)
-#define TTYcshow(f)           term->cshow(f)
-#define TTYcheck()            term->check()
-#define TTYrawmode()          term->rawmode()
-
 #define WDGyn(s)              (*widget.w_yn)(s)
 #define WDGyesno(s)           (*widget.w_yesno)(s)
 #define WDGconfirm(s)         (*widget.w_confirm)(s)

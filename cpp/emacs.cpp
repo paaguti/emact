@@ -424,7 +424,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
 
-    TTYopen();
+    term = Terminal::getInstance();
 
     /* First buffer */
     auto bp = BUFFER::find(BUF_SCRATCH, true, EDITMODE::LISPMODE);
@@ -481,7 +481,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
 
-    TTYopen();
+    term = Terminal::getInstance();
     display->update(DISPLAY::Mode::REFRESH);
     if (_argc > curarg) {
       (void)newfile(_argv[curarg]);
@@ -700,7 +700,7 @@ Editor::getkey() {
   static constexpr auto CSICODE(0x8F);        // 8 bits version of ESC [
   static constexpr auto SS3CODE(0x9B);        // Application mode of CSI
 
-  auto c = TTYgetc();
+  auto c = term->get();
 
   switch (c) {
 #if defined(_POSIX_C_SOURCE)
@@ -711,13 +711,13 @@ Editor::getkey() {
     }
 
     if (c == '[' || c == 'O') {
-      return SPCL | TTYgetc();
+      return SPCL | term->get();
     } else {
       return META | c;
     }
   case CSICODE :
   case SS3CODE :
-    return SPCL | TTYgetc();
+    return SPCL | term->get();
 #else
   case METACH :           /* M- is prefix         */
     WDGwrite(ECSTR("M-"));
@@ -781,7 +781,7 @@ emacsversion() {
 
 static int
 getctl() {
-  auto c = TTYgetc();
+  auto c = term->get();
 
   if (c == METACH || c == BACKDEL) {
     return c;
@@ -922,7 +922,7 @@ ctlxe() {
 
 CMD
 ctrlg() {
-  TTYbeep();
+  term->beep();
 
   if (kbdm.isRecording()) {
     kbdm.reset();
@@ -1199,9 +1199,9 @@ linenump(const EMCHAR* s) {
 
 void
 Editor::error(const char* file, int line, const EMCHAR* msg) {
-  TTYbeep();
+  term->beep();
   WDGwrite(ECSTR("Internal error '%s' file %s at line %d."), msg, file, line);
-  TTYgetc();
+  term->get();
 }
 
 /*

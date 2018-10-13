@@ -210,7 +210,7 @@ backline() {
   Editor::_thisflag |= CFCPCN;
   auto dlp  = curwp->line();
   if (dlp->back() == curbp->lastline()) {
-    TTYbeep();
+    term->beep();
     return NIL;
   }
 

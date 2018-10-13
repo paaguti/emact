@@ -80,12 +80,12 @@ class VIDEO {
   vtputc(T c) {
     auto vp(VIDEO::vscreen[VIDEO::row]);
 
-    if (VIDEO::col >= TTYncol) {
-      vp->putc(TTYncol - 1, '\\');
+    if (VIDEO::col >= term->ncol()) {
+      vp->putc(term->ncol() - 1, '\\');
     } else if (c == '\t') {
       do {
         VIDEO::vtputc(' ');
-      } while ((VIDEO::col % opt::tab_display) && VIDEO::col < TTYncol);
+      } while ((VIDEO::col % opt::tab_display) && VIDEO::col < term->ncol());
     } else if (!self_insert(c)) {
       if (opt::set_show_graphic || (DISPLAY::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
@@ -117,7 +117,7 @@ class VIDEO {
   vteeol() {
     auto vp(VIDEO::vscreen[VIDEO::row]);
 
-    while (VIDEO::col < TTYncol) {
+    while (VIDEO::col < term->ncol()) {
       vp->putc(VIDEO::col++, ' ');
     }
   }
@@ -150,12 +150,12 @@ VIDEO** VIDEO::pscreen{nullptr};
  */
 
 DISPLAY::DISPLAY() {
-  VIDEO::vscreen = new VIDEO*[TTYnrow + 1];
-  VIDEO::pscreen = new VIDEO*[TTYnrow + 1];
+  VIDEO::vscreen = new VIDEO*[term->nrow() + 1];
+  VIDEO::pscreen = new VIDEO*[term->nrow() + 1];
 
-  for (int i(0); i <= TTYnrow; ++i) {
-    VIDEO::vscreen[i] = new VIDEO(TTYncol + 1);
-    VIDEO::pscreen[i] = new VIDEO(TTYncol + 1);
+  for (int i(0); i <= term->nrow(); ++i) {
+    VIDEO::vscreen[i] = new VIDEO(term->ncol() + 1);
+    VIDEO::pscreen[i] = new VIDEO(term->ncol() + 1);
   }
 
   VIDEO::ok = true;
@@ -168,7 +168,7 @@ DISPLAY::~DISPLAY() {
     return;
   }
 
-  for (int i(0); i <= TTYnrow; ++i) {
+  for (int i(0); i <= term->nrow(); ++i) {
     delete VIDEO::vscreen[i];
     delete VIDEO::pscreen[i];
   }
@@ -206,17 +206,17 @@ DISPLAY::running() const noexcept {
 
 void
 DISPLAY::tidy() const noexcept {
-  TTYmove(0, 0);
-  TTYeop();
-  TTYflush();
-  TTYclose();
+  term->move(0, 0);
+  term->eeop();
+  term->flush();
+  delete term;;
 }
 
 void
 DISPLAY::statputc(int n, int c) const noexcept {
-  if (n < TTYncol) {
-    VIDEO::vscreen[TTYnrow]->putc(n, (EMCHAR)c);
-    VIDEO::vscreen[TTYnrow]->changed = true;
+  if (n < term->ncol()) {
+    VIDEO::vscreen[term->nrow()]->putc(n, (EMCHAR)c);
+    VIDEO::vscreen[term->nrow()]->changed = true;
   }
 }
 
@@ -250,8 +250,8 @@ DISPLAY::computecursor() {
     }
   }
 
-  if (_curcol >= TTYncol) {
-    _curcol = TTYncol - 1;
+  if (_curcol >= term->ncol()) {
+    _curcol = term->ncol() - 1;
   }
 
   _curchar = VIDEO::vscreen[_currow]->get(_curcol);
@@ -388,7 +388,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
 
   if (mode == Mode::MINIBUF) {
     _curcol = mlcursor();  // minibuf cursor position.
-    _currow = TTYnrow;
+    _currow = term->nrow();
     _curchar = ' ';
   } else {
     computecursor();
@@ -401,16 +401,16 @@ DISPLAY::update(DISPLAY::Mode mode) {
    */
 
   if (_sgarbf != Sync::SYNCHRONIZED) {
-    for (int i = 0; i <= TTYnrow; ++i) {
+    for (int i = 0; i <= term->nrow(); ++i) {
       VIDEO::vscreen[i]->changed = true;
       auto vp1(VIDEO::pscreen[i]);
-      for (int j = 0; j < TTYncol; ++j) {
+      for (int j = 0; j < term->ncol(); ++j) {
         vp1->putc(j, ' ');
       }
     }
     if (_sgarbf != Sync::EXPOSE) {
-      TTYmove(0, 0);
-      TTYeop();
+      term->move(0, 0);
+      term->eeop();
     }
     _sgarbf = Sync::SYNCHRONIZED;   /* Erase-page clears    */
   }
@@ -421,7 +421,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
    * been updated for sure.
    */
 
-  for (int i = 0; i <= TTYnrow; ++i) {
+  for (int i = 0; i <= term->nrow(); ++i) {
     auto vp1(VIDEO::vscreen[i]);
     if (vp1->changed) {
       auto vp2(VIDEO::pscreen[i]);
@@ -444,8 +444,8 @@ DISPLAY::update(DISPLAY::Mode mode) {
    * buffers
    */
 
-  TTYmove(_currow, _curcol);
-  TTYflush();
+  term->move(_currow, _curcol);
+  term->flush();
 }
 
 /*
@@ -469,14 +469,14 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
   (void)pline;
 
   stflag = (emstrncmp(nline + OFFSET, version, VERSION_LENGTH) == 0);
-  TTYmove(row, 0);
+  term->move(row, 0);
 
   if (stflag) {
-    TTYinverse();
-    TTYputs((EMCHAR*)outbuf, TTYncol);  // this cast is suspicious
-    TTYnormal();
+    term->si();
+    term->insert((EMCHAR*)outbuf, term->ncol());  // this cast is suspicious
+    term->ei();
   } else {
-    TTYputs((EMCHAR*)outbuf, TTYncol);
+    term->insert((EMCHAR*)outbuf, term->ncol());
   }
 #else
   auto cp1 = nline;
@@ -493,12 +493,12 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
    * Compute the left match.
    */
 
-  while (cp1 != (nline + TTYncol) && cp1[0] == cp2[0]) {
+  while (cp1 != (nline + term->ncol()) && cp1[0] == cp2[0]) {
     ++cp1;
     ++cp2;
   }
 
-  if (cp1 == (nline + TTYncol)) {
+  if (cp1 == (nline + term->ncol())) {
     /*
      * Easy  an update is made outside the visible bounds
      * of screen.  This can still happen,  even though we
@@ -518,8 +518,8 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
    */
 
   auto nbflag = false;
-  cp3 = nline + TTYncol;
-  cp4 = pline + TTYncol;
+  cp3 = nline + term->ncol();
+  cp4 = pline + term->ncol();
 
   while (cp3[-1] == cp4[-1]) {
     --cp3;
@@ -553,17 +553,17 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
    * Go to start of line.
    */
 
-  TTYmove(row, static_cast<int>((cp1 - nline)));
+  term->move(row, static_cast<int>((cp1 - nline)));
 
   if (stflag) {
-    TTYinverse();
+    term->si();
   }
 
   if ((count = static_cast<int>((cp5 - cp1))) > 0) {
     /*
      * Display changes and update old line.
      */
-    TTYputs(cp1, count);
+    term->insert(cp1, count);
 
     while (count--) {
       *cp2++ = *cp1++;
@@ -574,15 +574,15 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
     /*
      * Erase and update old line.
      */
-    TTYeol();
+    term->eeol();
     while (cp1 - cp3) {
       *cp2++ = *cp1++;
     }
   }
 
   if (stflag) {
-    TTYmove(row + 1, 0);
-    TTYnormal();
+    term->move(row + 1, 0);
+    term->ei();
   }
 #endif
 }
@@ -736,20 +736,20 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
 #endif
 
   if (_mouse) {
-    while (pos < (TTYncol - 8)) {
+    while (pos < (term->ncol() - 8)) {
       modeputc(' ');
     }
 
-    VIDEO::col = pos = TTYncol - 8;
+    VIDEO::col = pos = term->ncol() - 8;
 
     modeputs(ECSTR(" Up Dn "));
     modeputc(GRIPCHAR);
   } else {
-    while (pos < (TTYncol - 1)) {
+    while (pos < (term->ncol() - 1)) {
       modeputc(' ');
     }
 
-    VIDEO::col = TTYncol - 1;
+    VIDEO::col = term->ncol() - 1;
     modeputc(FOOTCHAR);
   }
 }

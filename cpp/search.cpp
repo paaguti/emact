@@ -240,7 +240,7 @@ replace(bool prompt) {
       WDGmessage(ECSTR("Query-Replace mode "));
       display->update();
       for (c = '?'; c == '?';) {
-        switch (c = TTYgetc()) {
+        switch (c = term->get()) {
         case '!' :
           subst(patl, (EMCHAR*)npat);
           replaced++;
@@ -409,7 +409,7 @@ mlmatch(const EDLINE* clp, int cbo) {
   auto s(clp->text());
   auto maxchar(clp->length());
 
-  while ((c = *s++) != '\000' && (i < TTYncol - 1) && (i < maxchar + j)) {
+  while ((c = *s++) != '\000' && (i < term->ncol() - 1) && (i < maxchar + j)) {
     if (count++ == cbo) {
       pos = i;
     }
@@ -434,8 +434,8 @@ mlmatch(const EDLINE* clp, int cbo) {
   WDGwrite(ECSTR("%s"), mlline);
 
   if (widget.w_write == mlwrite) {
-    TTYmove(TTYnrow, pos);
-    TTYflush();
+    term->move(term->nrow(), pos);
+    term->flush();
   }
 }
 
@@ -650,9 +650,9 @@ automatch(int c, bool f) {
     res = true;;
     if (upline <= crow) {
       display->update();
-      TTYcshow(true);
+      term->cshow(true);
       waitmatch(1);
-      TTYcshow(false);
+      term->cshow(false);
     } else {
       /*
        * get moved dot.
@@ -721,7 +721,7 @@ forwsearch() {
     curwp->setFlags(WINSCR::WFMOVE);
     return T;
   } else {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("Failing search: %s"), Editor::searchBuffer());
     Editor::_thisflag |= CFFAIL;
     return NIL;
@@ -762,7 +762,7 @@ backsearch() {
     curwp->setFlags(WINSCR::WFMOVE);
     return T;
   } else {
-    TTYbeep();
+    term->beep();
     WDGwrite(ECSTR("Failing search backward: %s"), Editor::searchBuffer());
     Editor::_thisflag |= CFFAIL;
     return NIL;
