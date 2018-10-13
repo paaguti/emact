@@ -692,6 +692,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -775,6 +776,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1027,6 +1029,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1164,7 +1175,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1317,6 +1328,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -5158,7 +5170,6 @@ fi
 $as_echo_n "checking for ncursesw via pkg-config... " >&6; }
 
 
-
     if test -n "$_ax_cv_ncursesw_libs"; then
     pkg_cv__ax_cv_ncursesw_libs="$_ax_cv_ncursesw_libs"
  elif test -n "$PKG_CONFIG"; then
@@ -5556,7 +5567,6 @@ fi
 
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ncurses via pkg-config" >&5
 $as_echo_n "checking for ncurses via pkg-config... " >&6; }
-
 
 
     if test -n "$_ax_cv_ncurses_libs"; then
@@ -7682,51 +7692,11 @@ fi
 fi
 
 
-echo "====== ac_cv_have_x=$have_x ======"
-echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
-
-# define X_DISPLAY_MISSING  if missing
-if test "xX_CFLAGS" != "x"
-then
-  CXXFLAGS="$CXXFLAGS $X_CFLAGS"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking POSIX termios" >&5
-$as_echo_n "checking POSIX termios... " >&6; }
-if ${ac_cv_sys_posix_termios+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <sys/types.h>
-#include <unistd.h>
-#include <termios.h>
-
-int
-main ()
-{
-/* SunOS 4.0.3 has termios.h but not the library calls.  */
-   tcgetattr(0, 0);
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_cxx_try_link "$LINENO"; then :
-  ac_cv_sys_posix_termios=yes
-else
-  ac_cv_sys_posix_termios=no
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sys_posix_termios" >&5
-$as_echo "$ac_cv_sys_posix_termios" >&6; }
-
-#echo $ac_cv_sys_posix_termios
-# set the shell variable ac_cv_sys_posix_termios to yes (no otherwise).
+#echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
 
 if test "x$have_x" = "xyes"
 then
+  CXXFLAGS="$CXXFLAGS $X_CFLAGS"
   for i in $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS
   do
     LIBS="$LIBS $i"
