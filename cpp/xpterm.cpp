@@ -298,11 +298,6 @@ COLORREF  XpTerminal::_colortable[8] = {
   XPCOLOR_WHITE
 };
 
-void
-TTYopen() {
-  term = new XpTerminal;
-}
-
 /*
  * Process message while waiting.
  */

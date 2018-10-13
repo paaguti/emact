@@ -997,9 +997,8 @@ class EDLINE {
 
 class Terminal {
  public:
+  /* Create a concrete terminal at the start. */
   static Terminal* getInstance();
-  /* Open terminal at the start. */
-  Terminal() {}
   /* Close terminal at end. */
   virtual ~Terminal() {}
   /* Get character from keyboard. */
@@ -1058,6 +1057,9 @@ class Terminal {
   int t_nscroll{0};
   /* Term initialized. */
   int t_init{false};
+
+  /* Open terminal at the start. */
+  Terminal() {}
 };
 
 class WIDGET {

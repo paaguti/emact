@@ -1125,20 +1125,6 @@ X11emacs(int argc, char* argv[]) {
   return 0;
 }
 
-void
-TTYopen() {
-  try {
-    term = new X11Terminal;
-  } catch (bool flag) {
-    if (flag) {
-      makeCursesTerminal();
-    } else {
-      (void)std::fprintf(stderr, "Can't open display.\n");
-      exit(0);
-    }
-  }
-}
-
 Terminal*
 makeX11Terminal() {
   return new X11Terminal;

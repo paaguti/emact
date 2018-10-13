@@ -336,6 +336,7 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define TTYnrow               term->t_nrow
 #define TTYinit               term->t_init
 #define TTYbeep()             term->beep()
+#define TTYopen()             term = Terminal::getInstance()
 #define TTYclose()            delete term;
 #define TTYmove(x, y)         term->move(x, y)
 #define TTYeol()              term->eeol()

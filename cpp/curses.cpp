@@ -406,13 +406,6 @@ CursesTerminal::check() {
   return false;
 }
 
-#if !defined(_X11)
-void
-TTYopen() {
-  term = new CursesTerminal;
-}
-#endif
-
 void
 makeCursesTerminal() {
   term = new CursesTerminal;

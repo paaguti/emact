@@ -35,8 +35,6 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./emacs.h"
 #include "./build.h"
 
-extern void TTYopen();
-
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false};  // Edit flag
 

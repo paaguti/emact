@@ -48,7 +48,7 @@ Terminal::getInstance() {
   for (auto f : { makeX11Terminal, makeCursesTerminal, makeXpTerminal }) {
     try {
       auto terminal = f();
-      if (term != nullptr) {
+      if (terminal != nullptr) {
         return terminal;
       }
     } catch(...) {

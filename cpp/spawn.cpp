@@ -49,9 +49,7 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #define PERLFMT1        ECSTR("%s %s %s")
 #endif
 
-extern void TTYopen();
-
-static  CMD     javaevalbuffer(void);
+static CMD javaevalbuffer();
 
 /*
  * Send  a  system  command.  Output is redirected to a filename
