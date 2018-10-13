@@ -97,6 +97,7 @@ KERNEL		= basic.obj	\
 		  region.obj	\
 		  search.obj	\
 		  spawn.obj	\
+		  terminal.obj	\
 		  unicode.obj	\
 		  version.obj	\
 		  window.obj	\

@@ -997,6 +997,7 @@ class EDLINE {
 
 class Terminal {
  public:
+  static Terminal* getInstance();
   /* Open terminal at the start. */
   Terminal() {}
   /* Close terminal at end. */

@@ -58,6 +58,7 @@ OBJECTS         = basic.$(O)     \
                   region.$(O)    \
                   search.$(O)    \
                   spawn.$(O)     \
+                  terminal.$(O)  \
                   unicode.$(O)   \
                   version.$(O)   \
                   window.$(O)    \

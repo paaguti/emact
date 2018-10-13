@@ -300,7 +300,7 @@ COLORREF  XpTerminal::_colortable[8] = {
 
 void
 TTYopen() {
-  tt = new XpTerminal;
+  term = new XpTerminal;
 }
 
 /*
@@ -374,7 +374,7 @@ XpTerminal::XpTerminal() {
     _T("TDB Files (*.tdb)\0*.tdb\0")
     _T("All Files (*.*)\0*.*\0");
 
-  tt = this;
+  term = this;
 
 // #if !defined(DEBUG_ON_CONSOLE)
   (void)AttachConsole(ATTACH_PARENT_PROCESS);
@@ -579,7 +579,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   Editor::_lastflag = CFFSRC;
   opt::case_sensitivity = (dwFlags & FR_MATCHCASE) != 0;
 
-  tt->cshow(false);
+  term->cshow(false);
   (void)emstrcpy(Editor::searchBuffer(), szFind);
 
   if (dwFlags & FR_DIALOGTERM) {
@@ -622,7 +622,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
   if (replaced) {
     WDGwrite(ECSTR("Replaced %d occurence(s)"), replaced);
   }
-  tt->cshow(true);
+  term->cshow(true);
   return 0;
 }
 
@@ -1107,7 +1107,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   case WM_QUERYENDSESSION :
     return xpquit();
   case WM_PAINT :
-    tt->cshow(FALSE);
+    term->cshow(FALSE);
     BeginPaint(hWnd, &ps);
     if (XpTerminal::_openp) {
       if (DISPLAY::_sgarbf != DISPLAY::Sync::GARBAGE) {
@@ -1590,7 +1590,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
     xpprocess_pending = true;
     for (;;) {
       dwRead = 0;
-      if (tt->check() != true) {
+      if (term->check() != true) {
         if (!TerminateProcess(piProcInfo.hProcess, 0)) {
           XpTerminal::xpprinterror(_T("TerminateProcess fails"), FALSE);
           nRetCode = FALSE;
@@ -2083,4 +2083,9 @@ _tWinMain(HINSTANCE hInstance,
   }
 
   return 0;
+}
+
+Terminal*
+makeXpTerminal() {
+  return new XpTerminal;
 }

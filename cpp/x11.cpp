@@ -25,7 +25,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 
 #include "./emacs.h"
 
-#if     defined(_X11) && !defined(X_DISPLAY_MISSING)
+#if defined(_X11) && !defined(X_DISPLAY_MISSING)
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
@@ -298,19 +298,15 @@ X11Terminal::nearestcolor(Display* dpy, const char* name, XColor* rgb) {
   return true;
 }
 
-#if !defined(_X11_ONLY)
 extern void makeCursesTerminal();
-#endif
 
 X11Terminal::X11Terminal() {
   XInitThreads();
   if ((X11term == false) || (X11dpy = XOpenDisplay(X11display)) == nullptr) {
-#if !defined(_X11_ONLY)
     /*
      *      Switch to curses term and try again.
      */
     throw true;
-#endif
   } else {
     _dpy = X11dpy;
   }
@@ -542,7 +538,7 @@ X11Terminal::X11Terminal() {
   this->t_nrow = (int)(_height / _hfnt - 1);
   this->t_ncol = (int)(_width  / _wfnt);
   this->t_init = true;
-  tt = this;
+  term = this;
 
   DISPLAY::_mouse = true;
 
@@ -722,10 +718,10 @@ X11Terminal::getEvent() {
     }
     break;
   case EnterNotify:
-    tt->cshow(true);
+    term->cshow(true);
     break;
   case LeaveNotify:
-    tt->cshow(false);
+    term->cshow(false);
     break;
   case KeyPress:
     nbkeys = XLookupString((XKeyEvent*)&event.xkey,
@@ -1123,7 +1119,7 @@ X11emacs(int argc, char* argv[]) {
    * call the real entry point
    */
 
-  Editor emacs(argcount, arglist);
+  Editor emacs{argcount, arglist};
   emacs.engine();
 
   return 0;
@@ -1132,7 +1128,7 @@ X11emacs(int argc, char* argv[]) {
 void
 TTYopen() {
   try {
-    tt = new X11Terminal;
+    term = new X11Terminal;
   } catch (bool flag) {
     if (flag) {
       makeCursesTerminal();
@@ -1141,5 +1137,10 @@ TTYopen() {
       exit(0);
     }
   }
+}
+
+Terminal*
+makeX11Terminal() {
+  return new X11Terminal;
 }
 #endif

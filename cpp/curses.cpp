@@ -25,7 +25,7 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
 
 #include "./emacs.h"
 
-#if !defined(_X11_ONLY) && defined(_CURSES)
+#if defined(_CURSES)
 
 #if defined(_POSIX_C_SOURCE) || defined(HAVE_TERMIOS_H)
 #include <termios.h>
@@ -58,7 +58,7 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
 #endif
 
 #if     defined(_X11)
-#define term    cursesterm
+//#define term    cursesterm
 #endif
 
 #if defined(COLOR_PAIR)
@@ -409,13 +409,12 @@ CursesTerminal::check() {
 #if !defined(_X11)
 void
 TTYopen() {
-  tt = new CursesTerminal;
+  term = new CursesTerminal;
 }
 #endif
 
 void
 makeCursesTerminal() {
-  tt = new CursesTerminal;
+  term = new CursesTerminal;
 }
-
-#endif /* _X11_ONLY */
+#endif

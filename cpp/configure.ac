@@ -153,7 +153,6 @@ fi
 
 AC_PATH_XTRA
 
-#echo "====== ac_cv_have_x=$have_x ======"
 #echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
 
 if test "x$have_x" = "xyes"

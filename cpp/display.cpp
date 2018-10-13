@@ -29,7 +29,7 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 
 #include "./emacs.h"
 
-Terminal* tt{nullptr};
+Terminal* term{nullptr};
 
 bool          DISPLAY::_mouse{false};  // Mouse flag
 int           DISPLAY::_currow{0};
