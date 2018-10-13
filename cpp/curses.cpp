@@ -406,8 +406,8 @@ CursesTerminal::check() {
   return false;
 }
 
-void
+Terminal*
 makeCursesTerminal() {
-  term = new CursesTerminal;
+  return new CursesTerminal;
 }
 #endif

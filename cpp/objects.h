@@ -1058,6 +1058,7 @@ class Terminal {
   /* Term initialized. */
   int t_init{false};
 
+ protected:
   /* Open terminal at the start. */
   Terminal() {}
 };
