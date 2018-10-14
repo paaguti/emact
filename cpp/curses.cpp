@@ -207,8 +207,8 @@ CursesTerminal::CursesTerminal() {
 #endif
 
 //  this->rawmode();
-  this->t_ncol = COLS;
-  this->t_nrow = LINES - 1;
+  this->setNbCols(COLS);
+  this->setNbRows(LINES - 1);
 
 #if defined(COLOR_PAIR)
   if (::start_color() == OK) {
@@ -234,7 +234,7 @@ CursesTerminal::CursesTerminal() {
   this->move(0, 0);
   this->eeop();
   this->flush();
-  this->t_init = true;
+  this->setInitialized();
 }
 
 CursesTerminal::~CursesTerminal() {

@@ -535,9 +535,9 @@ X11Terminal::X11Terminal() {
   _col = 0;
   _row = 0;
 
-  this->t_nrow = (int)(_height / _hfnt - 1);
-  this->t_ncol = (int)(_width  / _wfnt);
-  this->t_init = true;
+  this->setNbRows((int)(_height / _hfnt - 1));
+  this->setNbCols((int)(_width  / _wfnt));
+  this->setInitialized();
   term = this;
 
   DISPLAY::_mouse = true;
@@ -603,7 +603,7 @@ X11Terminal::get() {
      * every N (default = 5) strokes, move mouse to the bottom
      */
 
-    this->movecursor(this->t_ncol + 1, this->t_nrow + 1);
+    this->movecursor(this->getNbCols() + 1, this->getNbRows() + 1);
   }
 
   return _char;
@@ -654,7 +654,7 @@ X11Terminal::getEvent() {
     XSetClipRectangles(_dpy, _gcstd, 0, 0, &clip, 1, Unsorted);
     break;
   case ConfigureNotify:
-    if (this->t_init &&
+    if (this->isInitialized() &&
         _width  == (unsigned int)event.xconfigure.width &&
         _height == (unsigned int)event.xconfigure.height) {
       /*
@@ -669,11 +669,8 @@ X11Terminal::getEvent() {
 
     _width  = (unsigned int)event.xconfigure.width;
     _height = (unsigned int)event.xconfigure.height;
-    t_ncol  = event.xconfigure.width  / _wfnt;
-    t_nrow  = event.xconfigure.height / _hfnt - 1;
-    if (t_nrow <= 1) {
-      t_nrow = 2;
-    }
+    this->setNbCols(event.xconfigure.width  / _wfnt);
+    this->setNbRows(event.xconfigure.height / _hfnt - 1);
 
     if (X11expose) {
       display = new DISPLAY;
@@ -897,7 +894,7 @@ X11Terminal::insert(int c) {
 
   switch (ascii) {
   case '\n' :
-    if (_row < this->t_nrow) {
+    if (_row < this->getNbRows()) {
       _row++;
       _col = 0;
     }
@@ -1034,7 +1031,7 @@ X11title(EMCHAR* buf, EMCHAR* fname) {
     (void)emsprintf3(title,
                      ECSTR("%s (%dx%d)"),
                      buf,
-                     term->nrow(), term->ncol());
+                     term->getNbRows(), term->getNbCols());
     for (i = 0; title[i]; ++i) {
       ascii[i] = (char)title[i];
     }

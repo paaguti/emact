@@ -409,7 +409,7 @@ mlmatch(const EDLINE* clp, int cbo) {
   auto s(clp->text());
   auto maxchar(clp->length());
 
-  while ((c = *s++) != '\000' && (i < term->ncol() - 1) && (i < maxchar + j)) {
+  while ((c = *s++) != '\000' && (i < term->getNbCols() - 1) && (i < maxchar + j)) {
     if (count++ == cbo) {
       pos = i;
     }
@@ -434,7 +434,7 @@ mlmatch(const EDLINE* clp, int cbo) {
   WDGwrite(ECSTR("%s"), mlline);
 
   if (widget.w_write == mlwrite) {
-    term->move(term->nrow(), pos);
+    term->move(term->getNbRows(), pos);
     term->flush();
   }
 }

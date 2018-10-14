@@ -1051,12 +1051,12 @@ class Terminal {
   }
   /* Number of rows. */
   int
-  nrow() const noexcept {
+  getNbRows() const noexcept {
     return t_nrow;
   }
   /* Number of columns. */
   int
-  ncol() const noexcept {
+  getNbCols() const noexcept {
     return t_ncol;
   }
 
@@ -1064,12 +1064,37 @@ class Terminal {
   /* Open terminal at the start. */
   Terminal() = default;
 
+  void
+  setNbRows(int rows) noexcept {
+    if (rows <= 1) {
+      t_nrow = 2;
+    } else {
+      t_nrow = rows;
+    }
+  }
+
+  bool
+  isInitialized() const noexcept {
+    return t_init;
+  }
+
+  void
+  setInitialized() noexcept {
+    t_init = true;
+  }
+
+  void
+  setNbCols(int cols) noexcept {
+    t_ncol = cols;
+  }
+
+ private:
+  /* Term initialized. */
+  int t_init{false};
   /* Number of rows. */
   int t_nrow{0};
   /* Number of columns. */
   int t_ncol{0};
-  /* Term initialized. */
-  int t_init{false};
 };
 
 class WIDGET {
@@ -1085,23 +1110,23 @@ class WIDGET {
   /*
    * CONFIRM Widge
    */
-  CMD (*w_confirm)(const EMCHAR *s);
+  CMD (*w_confirm)(const EMCHAR* s);
   /*
    * ERROR Widget
    */
-  void (*w_error)(const EMCHAR *s);
+  void (*w_error)(const EMCHAR* s);
   /*
    * TITLE Widget
    */
-  EMCHAR* (*w_title)(EMCHAR *b, EMCHAR *f);
+  EMCHAR* (*w_title)(EMCHAR* b, EMCHAR* f);
   /*
    * ASKER Widget
    */
-  CMD (*w_asker)(const EMCHAR *s, EMCHAR *b, int n);
+  CMD (*w_asker)(const EMCHAR* s, EMCHAR* b, int n);
   /*
    * EDITOR Widget
    */
-  CMD (*w_edit)(const EMCHAR* s, EMCHAR *b, int n);
+  CMD (*w_edit)(const EMCHAR* s, EMCHAR* b, int n);
   /*
    * CHANGE Widget
    */

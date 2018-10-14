@@ -60,7 +60,7 @@ void
 mlerase() {
   mbcursor = 0;
 
-  while (mbcursor < term->ncol()) {
+  while (mbcursor < term->getNbCols()) {
     display->statputc(mbcursor++, ' ');
   }
 
@@ -419,10 +419,10 @@ mlwrite(const EMCHAR* fmt, ...) {
       case 'L':
         {
           auto lp = (EDLINE *)va_arg(var, EDLINE *);
-          if (lp->length() < (term->ncol() - 1)) {
+          if (lp->length() < (term->getNbCols() - 1)) {
             mlputs(lp->text(), lp->length());
           } else {
-            mlputs(lp->text(), term->ncol() - 1);
+            mlputs(lp->text(), term->getNbCols() - 1);
           }
         }
         break;
@@ -436,7 +436,7 @@ mlwrite(const EMCHAR* fmt, ...) {
     }
   }
 
-  for (auto i(mbcursor); i < term->ncol(); ++i) {
+  for (auto i(mbcursor); i < term->getNbCols(); ++i) {
     display->statputc(i, ' ');
   }
 

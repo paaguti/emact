@@ -334,13 +334,9 @@ XpTerminal::xpsettextattrib() {
 
   auto xpterm = static_cast<XpTerminal*>(term);
 
-  xpterm->t_ncol = (int)(nParentWidth  / _charwidth);
-  xpterm->t_nrow = (int)(nParentHeight / _charheight) - 1;
-  xpterm->t_init = true;
-
-  if (xpterm->t_nrow <= 1) {
-    xpterm->t_nrow = 2;
-  }
+  xpterm->setNbCols((int)(nParentWidth  / _charwidth));
+  xpterm->setNbRows((int)(nParentHeight / _charheight) - 1);
+  xpterm->setInitialized();
 
   opt::line_number_mode = true;
 }
@@ -351,10 +347,6 @@ XpTerminal::xpchangefont(int font) {
     delete display;
     xpsetfontsize(font);
     xpsettextattrib();
-    auto xpterm = static_cast<XpTerminal*>(term);
-    if (xpterm->t_nrow <= 1) {
-      xpterm->t_nrow = 2;
-    }
     display = new DISPLAY;
     (void)WINSCR::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
@@ -665,7 +657,7 @@ XpTerminal::insert(int aChar) {
 }
 
 /*
- *      Find actual buffer position from mouse pointer.
+ * Find actual buffer position from mouse pointer.
  */
 
 static int
@@ -674,7 +666,7 @@ xpposfrompoint(int x, int y) {
   auto lpString = display->text(y);
   auto xpterm = static_cast<XpTerminal*>(term);
 
-  for (int i = 0; i < xpterm->ncol(); ++i) {
+  for (int i = 0; i < xpterm->getNbCols(); ++i) {
     SIZE size;
     GetTextExtentPoint32(XpTerminal::_dc, lpString, i, &size);
     if (size.cx > (x * XpTerminal::_charwidth)) {
@@ -740,7 +732,7 @@ XpTerminal::get() {
   MSG msg;
 
   /*
-   *      Check if a char is in clipboard
+   * Check if a char is in clipboard
    */
 
   if (_char != XP_NO_CHAR) {
@@ -748,7 +740,7 @@ XpTerminal::get() {
   }
 
   /*
-   *      Wait for a char (or a mouse event)
+   * Wait for a char (or a mouse event)
    */
 
   while (aChar == XP_NO_CHAR && _openp) {
@@ -807,7 +799,7 @@ XpTerminal::eeol() {
   rcClear.top    = _drawy * _charheight;
   rcClear.bottom = (_drawy + 1) * _charheight;
   rcClear.left   = XP_DRAW_X;
-  rcClear.right  = t_ncol * _charwidth;
+  rcClear.right  = this->getNbCols() * _charwidth;
 
   FillRect(_dc, (LPRECT)&rcClear, _brush);
 }
@@ -835,8 +827,7 @@ XpTerminal::flush() {
 void
 XpTerminal::beep() {
   /*
-   *      Beep(Frequecy, Duration).
-   *      Parameters are ignored on Windows 95.
+   * Beep(Frequecy, Duration).
    */
 
 #if defined(XP_EMACS_SOUND_CARD_BEEP)
@@ -886,7 +877,7 @@ XpTerminal::xpsetfontsize(int size) {
   LOGFONT lf;
 
   /*
-   *      Create a fixed font.
+   * Create a fixed font.
    */
 
   if (_font) {
@@ -940,7 +931,7 @@ XpTerminal::check() {
   MSG msg;
 
   /*
-   *      Process messages intended for the abort dialog box
+   * Process messages intended for the abort dialog box
    */
 
   while (PeekMessage(&msg, nullptr, FALSE, FALSE, TRUE)) {
@@ -1101,7 +1092,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     break;
   case WM_CREATE:
     /*
-     *      Create the objects
+     * Create the objects
      */
     break;
   case WM_CLOSE :
@@ -1242,8 +1233,8 @@ xptitle(TCHAR* buf, TCHAR* fname) {
     (void)_stprintf(title,
                     _T("%s (%dx%d)"),
                     fname,
-                    term->nrow(),
-                    term->ncol());
+                    term->getNbRows(),
+                    term->getNbCols());
     SetWindowText(XpTerminal::_wnd, title);
   }
 
@@ -1273,7 +1264,7 @@ xpcutcopy(WPARAM wParam) {
   }
 
   /*
-   *      Allocate memory and copy the string to it
+   * Allocate memory and copy the string to it
    */
 
   if ((hClipData = GlobalAlloc(AllocFlags, size)) == nullptr) {
@@ -1281,7 +1272,7 @@ xpcutcopy(WPARAM wParam) {
   }
 
   /*
-   *      Copy data
+   * Copy data
    */
 
   lpClipData = (LPTSTR)GlobalLock(hClipData);
@@ -1296,8 +1287,8 @@ xpcutcopy(WPARAM wParam) {
   GlobalUnlock(hClipData);
 
   /*
-   *      Clear the current contents of the clipboard, and set
-   *      the data handle to the new string.
+   * Clear the current contents of the clipboard, and set the data
+   * handle to the new string.
    */
 
   if (OpenClipboard(XpTerminal::_wnd) == 0) {
@@ -1414,7 +1405,7 @@ NToemtoansi(EDLINE* lp) {
 }
 
 /*
- *      Calling external command
+ * Calling external command
  */
 
 int
@@ -1604,9 +1595,9 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
 
 #if defined(_UNICODE)
       if (bSuccess && dwRead > 0) {
-        int     k;
-        TCHAR   tchBuf[NLINE + 1];
-        char *  s = (char *)chBuf;
+        int   k;
+        TCHAR tchBuf[NLINE + 1];
+        char* s = (char *)chBuf;
         for (k = 0; k < (int)dwRead && k < NLINE; ++k) {
           tchBuf[k] = (TCHAR)s[k];
         }
@@ -1647,7 +1638,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
 }
 
 /*
- *      Printing
+ * Printing
  */
 
 static HDC
@@ -1746,7 +1737,7 @@ xpprint() {
   emstrcpy(lfPr.lfFaceName, _T("Courier New"));
 
   /*
-   *  font used for printing
+   * font used for printing
    */
   auto hfPr = CreateFontIndirect(&lfPr);
 
@@ -1772,7 +1763,7 @@ xpprint() {
     DeleteDC(hPr);
   }
 
-  SetCursor(hSaveCursor);      /* Remove the hourglass */
+  SetCursor(hSaveCursor);  // Remove the hourglass
 
   /*
    * Get time in szTimeBuf and remove '\n'
