@@ -23,7 +23,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
  * xpterm.c : The routines in this file provide support for WINDOWS.
  */
 
-#if     !defined(STRICT)
+#if !defined(STRICT)
 #define STRICT          /* Strict type checking for Windows */
 #endif
 
@@ -35,11 +35,11 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 
 #define _WIN32_WINNT 0x0501
 
-#if     defined(_WIDECHARS)
-#if     !defined(_UNICODE)
+#if defined(_WIDECHARS)
+#if !defined(_UNICODE)
 #define _UNICODE
 #endif
-#if     !defined(UNICODE)
+#if !defined(UNICODE)
 #define UNICODE
 #endif
 #endif
@@ -49,7 +49,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include "./emacs.h"
 #include "./xpterm.h"
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
 #define system  _wsystem
 #endif
 
@@ -75,7 +75,7 @@ static constexpr auto XP_EMACS_MAXPATH(256);
 static HWND xpcurdlg{nullptr};  /* Current dialog box      */
 static bool xpprocess_pending{false};
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
 #define XP_DRAW_X       (_drawxpos)
 #define XP_DRAW_Y       (_drawy * _charheight)
 #else
@@ -144,7 +144,7 @@ static void   xpprint();
 
 static HDC     xpgetprinterdc();
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
 static EMCHAR  xpunicodegen();  // For tests
 #endif
 
@@ -332,9 +332,11 @@ XpTerminal::xpsettextattrib() {
     GetCharWidth32(_dc, (UINT)'M', (UINT)'M', &_charwidth);
   }
 
-  term->t_ncol = (int)(nParentWidth  / _charwidth);
-  term->t_nrow = (int)(nParentHeight / _charheight) - 1;
-  term->t_init = true;
+  auto xpterm = static_cast<XpTerminal*>(term);
+
+  xpterm->t_ncol = (int)(nParentWidth  / _charwidth);
+  xpterm->t_nrow = (int)(nParentHeight / _charheight) - 1;
+  xpterm->t_init = true;
 
   opt::line_number_mode = true;
 }
@@ -345,8 +347,9 @@ XpTerminal::xpchangefont(int font) {
     delete display;
     xpsetfontsize(font);
     xpsettextattrib();
-    if (term->t_nrow <= 1) {
-      term->t_nrow = 2;
+    auto xpterm = static_cast<XpTerminal*>(term);
+    if (xpterm->t_nrow <= 1) {
+      xpterm->t_nrow = 2;
     }
     display = new DISPLAY;
     (void)WINSCR::resize();
@@ -650,7 +653,7 @@ XpTerminal::insert(const TCHAR* szText, int nSize) {
 
 void
 XpTerminal::insert(int aChar) {
-  TCHAR   c[] = { (TCHAR)'?', (TCHAR)0 };
+  TCHAR c[] = { (TCHAR)'?', (TCHAR)0 };
 
   c[0] = (TCHAR)aChar;
 
@@ -663,10 +666,11 @@ XpTerminal::insert(int aChar) {
 
 static int
 xpposfrompoint(int x, int y) {
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
   auto lpString = display->text(y);
+  auto xpterm = static_cast<XpTerminal*>(term);
 
-  for (int i = 0; i < term->t_ncol; ++i) {
+  for (int i = 0; i < xpterm->ncol(); ++i) {
     SIZE size;
     GetTextExtentPoint32(XpTerminal::_dc, lpString, i, &size);
     if (size.cx > (x * XpTerminal::_charwidth)) {
@@ -680,7 +684,7 @@ xpposfrompoint(int x, int y) {
 
 void
 XpTerminal::move(int row, int col) {
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
   auto lpString(display->text(row));
   SIZE size;
 
@@ -718,7 +722,7 @@ XpTerminal::xpdecodechar(int c) {
   case VK_F7    : aChar = CTLX|'`'; break;
   case VK_F8    : aChar = CTLX|Ctrl|'S'; break;
   case VK_F9    : aChar = CTLX|'E'; break;
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
   case VK_F12   : aChar = xpunicodegen(); break;
 #endif
   }
@@ -831,7 +835,7 @@ XpTerminal::beep() {
    *      Parameters are ignored on Windows 95.
    */
 
-#if     defined(XP_EMACS_SOUND_CARD_BEEP)
+#if defined(XP_EMACS_SOUND_CARD_BEEP)
   MessageBeep((UINT)-1);
 #else
   Beep(0x333, 0x10);
@@ -874,7 +878,7 @@ XpTerminal::cshow(bool nFlag) {
 
 void
 XpTerminal::xpsetfontsize(int size) {
-#if     defined(XP_EMACS_CREATE_FONT)
+#if defined(XP_EMACS_CREATE_FONT)
   LOGFONT lf;
 
   /*
@@ -995,6 +999,8 @@ static LRESULT APIENTRY
 xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   PAINTSTRUCT ps;
 
+  auto xpterm = static_cast<XpTerminal*>(term);
+
   switch (message) {
   case WM_COMMAND:
     switch (wParam) {
@@ -1011,10 +1017,10 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     case IDM_QUIT:
       return xpquit();
     case IDM_STANDARDFONT:
-      XpTerminal::xpchangefont(XP_EMACS_STANDARD_FONT_SIZE);
+      xpterm->xpchangefont(XP_EMACS_STANDARD_FONT_SIZE);
       break;
     case IDM_ALTERNATEFONT:
-      XpTerminal::xpchangefont(XP_EMACS_ALTERNATE_FONT_SIZE);
+      xpterm->xpchangefont(XP_EMACS_ALTERNATE_FONT_SIZE);
       break;
     case IDM_UTF8ENCODING:
       utf8encoding();
@@ -1082,9 +1088,11 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         && !IsIconic(XpTerminal::_wnd)) {
       delete display;
       XpTerminal::xpsettextattrib();
-      if (term->t_nrow <= 1) {
-        term->t_nrow = 2;
+#if 0
+      if (xpterm->nrow() <= 1) {
+        xpterm->t_nrow = 2;
       }
+#endif
       display = new DISPLAY;
       (void)WINSCR::resize();
       display->update(DISPLAY::Mode::REFRESH);
@@ -1232,7 +1240,11 @@ xptitle(TCHAR* buf, TCHAR* fname) {
   }
 
   if (_tcscmp(buf, title) != 0) {
-    (void)_stprintf(title, _T("%s (%dx%d)"), fname, term->t_nrow, term->t_ncol);
+    (void)_stprintf(title,
+                    _T("%s (%dx%d)"),
+                    fname,
+                    term->nrow(),
+                    term->ncol());
     SetWindowText(XpTerminal::_wnd, title);
   }
 
@@ -1293,7 +1305,7 @@ xpcutcopy(WPARAM wParam) {
     WDGerror(_T("Can't open clipboard."));
   } else {
     EmptyClipboard();
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
     if (SetClipboardData(CF_UNICODETEXT, hClipData) == nullptr) {
       WDGerror(_T("Can't set UNICODE clipboard data."));
     }
@@ -1321,7 +1333,7 @@ xpclipcopy() {
 
 static void
 xpclippaste() {
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
   UINT fmt[] = { CF_UNICODETEXT, CF_OEMTEXT, CF_TEXT, CF_DSPTEXT };
 #else
   UINT fmt[] = { CF_OEMTEXT, CF_TEXT, CF_UNICODETEXT, CF_DSPTEXT };
@@ -1452,14 +1464,10 @@ system(const TCHAR* s) {
 
   ShowCursor(TRUE);
 
-#if     defined(XP_EMACS_OLD_EXEC)
-  res = (WinExec((TCHAR *)cmd, SW_SHOWNORMAL) > 31);
-#else
   res = XpTerminal::xpsystemspawn((TCHAR *)slwr);
   if (res == TRUE) {
     res = 0; /* unix system returns 0 on success */
   }
-#endif
 
   ShowCursor(FALSE);
   SetCursor(hCurOld);
@@ -1500,7 +1508,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
   TCHAR               buf[NFILEN + 1];
   BOOL                bSuccess;
   DWORD               nRetCode = TRUE;
-#if     defined(_GET_EXIT_CODE)
+#if defined(_GET_EXIT_CODE)
   DWORD               lpdwExitCode;
 #endif
 
@@ -1624,7 +1632,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
     xpprocess_pending = false;
     display->update();
   } else {
-#if     defined(_GET_EXIT_CODE)
+#if defined(_GET_EXIT_CODE)
     lpdwExitCode = STILL_ACTIVE;
     while (lpdwExitCode == STILL_ACTIVE && bSuccess == TRUE) {
       bSuccess = GetExitCodeProcess(piProcInfo.hProcess, &lpdwExitCode);
@@ -1958,7 +1966,7 @@ _tWinMain(HINSTANCE hInstance,
   const TCHAR* argv[64];
   int          argc = 0;
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
   argv[argc++] = XP_EMACS_APPNAME;
   if (lpCmdLine && *lpCmdLine) {
     int     n;

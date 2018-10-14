@@ -1000,7 +1000,9 @@ class Terminal {
   /* Create a concrete terminal at the start. */
   static Terminal* getInstance();
   /* Close terminal at end. */
-  virtual ~Terminal() {}
+  virtual ~Terminal() {
+    t_init = false;
+  }
   /* Get character from keyboard. */
   virtual int
   get() {
@@ -1059,20 +1061,15 @@ class Terminal {
   }
 
  protected:
+  /* Open terminal at the start. */
+  Terminal() = default;
+
   /* Number of rows. */
   int t_nrow{0};
   /* Number of columns. */
   int t_ncol{0};
-
- public:
-  /* Scroll position. */
-  int t_nscroll{0};
   /* Term initialized. */
   int t_init{false};
-
- protected:
-  /* Open terminal at the start. */
-  Terminal() {}
 };
 
 class WIDGET {

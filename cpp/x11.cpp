@@ -562,7 +562,6 @@ X11Terminal::~X11Terminal() {
   XFreeGC(_dpy, _gcinv);
   XDestroyWindow(_dpy, _win);
   XCloseDisplay(X11dpy);
-  t_init = false;
 }
 
 void

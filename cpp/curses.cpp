@@ -250,9 +250,6 @@ CursesTerminal::~CursesTerminal() {
 
   (void)::noraw();
   (void)::endwin();
-
-//  this->setmode();
-  this->t_init = false;
 }
 
 int
