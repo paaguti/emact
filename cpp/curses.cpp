@@ -247,10 +247,10 @@ CursesTerminal::~CursesTerminal() {
    */
 
   _color = 0;
-  (void)::wmove(stdscr,0, 0);
-  (void)::clear();
-  (void)::wmove(stdscr,0, 0);
-  (void)::refresh();
+  (void)::wmove(stdscr, 0, 0);
+  (void)::wclear(stdscr);
+  (void)::wmove(stdscr, 0, 0);
+  (void)::wrefresh(stdsrc);
 
   (void)::noraw();
   (void)::endwin();
@@ -307,12 +307,12 @@ void
 CursesTerminal::insert(int c) {
 #if defined(COLOR_PAIR)
   if (opt::monochrome_monitor) {
-    (void)::addch((chtype)c);
+    (void)::waddch(stdsrc, (chtype)c);
   } else {
-    (void)::addch((chtype)(c | _color));
+    (void)::waddch(stdsrc, (chtype)(c | _color));
   }
 #else
-  (void)::addch(c);
+  (void)::waddch(stdsrc, c);
 #endif
   ++_y;
 }
@@ -326,7 +326,7 @@ CursesTerminal::insert(const EMCHAR* s, int n) {
 
 void
 CursesTerminal::flush() {
-  (void)::refresh();
+  (void)::wrefresh(stdsrc);
 }
 
 void
@@ -340,11 +340,12 @@ CursesTerminal::move(int x, int y) {
 void
 CursesTerminal::eeol() {
 #if defined(_CURSES_CLEARS)
-  (void)clrtoeol();
+  (void)::wclrtoeol(stdsrc);
 #else   /* _CURSES_CLEARS */
   for (auto i = _y; i < COLS; ++i) {
+    // mvaddch combines move and addch!
     (void)::wmove(stdscr, _x, i);
-    (void)::addch((chtype)(' ' | _color));
+    (void)::waddch(stdsrc, (chtype)(' ' | _color));
   }
 #endif  /* _CURSES_CLEARS */
 }
@@ -352,7 +353,7 @@ CursesTerminal::eeol() {
 void
 CursesTerminal::eeop() {
 #if defined(_CURSES_CLEARS)
-  (void)clear();
+  (void)wclear(stdsrc);
 #else   /* _CURSES_CLEARS */
   for (int i = 0; i < LINES; ++i) {
     this->move(i, 0);
@@ -399,7 +400,7 @@ CursesTerminal::ei() {
 void
 CursesTerminal::cshow(bool flag) {
   (void)flag;
-  (void)::refresh();
+  (void)::wrefresh(stdsrc);
 }
 
 bool
