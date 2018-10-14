@@ -338,6 +338,10 @@ XpTerminal::xpsettextattrib() {
   xpterm->t_nrow = (int)(nParentHeight / _charheight) - 1;
   xpterm->t_init = true;
 
+  if (xpterm->t_nrow <= 1) {
+    xpterm->t_nrow = 2;
+  }
+
   opt::line_number_mode = true;
 }
 
@@ -1088,11 +1092,6 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         && !IsIconic(XpTerminal::_wnd)) {
       delete display;
       XpTerminal::xpsettextattrib();
-#if 0
-      if (xpterm->nrow() <= 1) {
-        xpterm->t_nrow = 2;
-      }
-#endif
       display = new DISPLAY;
       (void)WINSCR::resize();
       display->update(DISPLAY::Mode::REFRESH);
@@ -1601,11 +1600,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
         nRetCode = FALSE;
         break;
       }
-      bSuccess = ReadFile(hChildStdoutRd,
-                          chBuf,
-                          NLINE,
-                          &dwRead,
-                          nullptr);
+      bSuccess = ReadFile(hChildStdoutRd, chBuf, NLINE, &dwRead, nullptr);
 
 #if defined(_UNICODE)
       if (bSuccess && dwRead > 0) {
