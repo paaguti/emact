@@ -45,6 +45,10 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
 #  error "SysV or X/Open-compatible Curses header file required"
 #endif
 
+#if defined(move)
+#undef move
+#endif
+
 /*
  * not mandatory by POSIX
  */
@@ -243,9 +247,9 @@ CursesTerminal::~CursesTerminal() {
    */
 
   _color = 0;
-  (void)::move(0, 0);
+  (void)::wmove(stdscr,0, 0);
   (void)::clear();
-  (void)::move(0, 0);
+  (void)::wmove(stdscr,0, 0);
   (void)::refresh();
 
   (void)::noraw();
@@ -330,7 +334,7 @@ CursesTerminal::move(int x, int y) {
   _x = x;
   _y = y;
 
-  (void)::move(x, y);
+  (void)::wmove(stdscr, x, y);
 }
 
 void
@@ -339,7 +343,7 @@ CursesTerminal::eeol() {
   (void)clrtoeol();
 #else   /* _CURSES_CLEARS */
   for (auto i = _y; i < COLS; ++i) {
-    (void)::move(_x, i);
+    (void)::wmove(stdscr, _x, i);
     (void)::addch((chtype)(' ' | _color));
   }
 #endif  /* _CURSES_CLEARS */
