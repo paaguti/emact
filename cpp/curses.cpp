@@ -352,14 +352,7 @@ CursesTerminal::eeol() {
 
 void
 CursesTerminal::eeop() {
-#if defined(_CURSES_CLEARS)
-  (void)wclear(stdscr);
-#else   /* _CURSES_CLEARS */
-  for (int i = 0; i < LINES; ++i) {
-    this->move(i, 0);
-    this->eeol();
-  }
-#endif  /* _CURSES_CLEARS */
+  (void)::wclear(stdscr);
 }
 
 void
