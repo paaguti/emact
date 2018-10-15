@@ -1200,7 +1200,7 @@ class EditorCommand final {
   }
 
   void
-  unset() {
+  unset() noexcept {
     k_code = UNBOUND;
   }
 
@@ -1221,7 +1221,7 @@ class EditorCommand final {
 };
 
 enum EMVAR {
-  BOOLVAL = 0x0000,          // T or NIL type
+  BOOLVAL = 0x0000,          // Boolean type
   FIXVAL  = 0x0001,          // Integer type
   STRING  = 0x0002           // String type
 };

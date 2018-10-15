@@ -128,9 +128,9 @@ class CursesTerminal final : public Terminal {
   void setmode();
   void getmode();
 
-  int _x;        /* current X position (line) */
-  int _y;        /* current Y position (row)  */
-  int _color;    /* current color             */
+  int    _x;        // current X position (line)
+  int    _y;        // current Y position (row)
+  int    _color;    // current color
 
 #if defined(_POSIX_C_SOURCE) || defined(HAVE_TERMIOS_H)
   struct termios  _ostate;
@@ -260,7 +260,7 @@ int
 CursesTerminal::get() {
   static constexpr auto CTLZCH(0x1A);         // Ctrl-Z char
 
-  auto c = getch();
+  auto c = ::wgetch(stdscr);
 
   switch (c) {
 #if defined(KEY_HOME)
@@ -368,12 +368,12 @@ void
 CursesTerminal::si() {
 #if defined(COLOR_PAIR)
   if (opt::monochrome_monitor) {
-    (void)standout();
+    (void)::wattrset(stdscr, A_STANDOUT);
   } else {
-    (void)attrset((chtype)(_color = COLOR_PAIR(2)));
+    (void)::wattrset(stdscr, (chtype)(_color = COLOR_PAIR(2)));
   }
 #else
-  (void)standout();
+  (void)::wattrset(stdscr, A_STANDOUT);  // wstandout(stdscr);
 #endif
 }
 
@@ -381,12 +381,12 @@ void
 CursesTerminal::ei() {
 #if defined(COLOR_PAIR)
   if (opt::monochrome_monitor) {
-    (void)standend();
+    (void)::wattrset(stdscr, A_NORMAL);
   } else {
-    (void)attrset((chtype)(_color = COLOR_PAIR(1)));
+    (void)::wattrset(stdscr, (chtype)(_color = COLOR_PAIR(1)));
   }
 #else
-  (void)standend();
+  (void)::wattrset(stdscr, A_NORMAL);  // (void)wstandend(stdscr);
 #endif
 }
 

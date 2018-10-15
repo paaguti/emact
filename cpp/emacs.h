@@ -106,6 +106,12 @@ using ENTRY = struct dirent;
 #define pclose  _pclose
 #define chdir   _chdir
 #define getcwd  _getcwd
+#define stat    _stat
+#define S_IWUSR S_IWRITE
+#define S_IRUSR S_IREAD
+
+using mode_t = int;
+
 #define _SPAWNED_PIPE
 #define _DOSPATH
 #endif  /* _WIN32 */
@@ -113,12 +119,6 @@ using ENTRY = struct dirent;
 /*
  *      END OF INCLUDE SECTION
  */
-
-#if !defined(_POSIX_C_SOURCE) && defined(S_IREAD)
-#define S_IWUSR S_IWRITE
-#define S_IRUSR S_IREAD
-using mode_t = int;
-#endif
 
 #if !defined(S_ISDIR)
 #define S_ISDIR(mode)         (((mode) & S_IFMT) == S_IFDIR)
@@ -131,10 +131,6 @@ using mode_t = int;
 #if defined(_UNICODE)
 #include <cwchar>
 #include <cwctype>
-
-#if !defined(__linux__)
-#define stat    _stat
-#endif
 
 using EMCHAR = wchar_t;
 using EMSTAT = struct stat;
@@ -215,10 +211,6 @@ using EMSTAT = struct stat;
 
 #if defined(_POSIX_C_SOURCE) && !defined(SYSTEMNAME)
 #define SYSTEMNAME      ECSTR("Posix")
-#endif
-
-#if defined(_BSD) && !defined(SYSTEMNAME)
-#define SYSTEMNAME      ECSTR("BSD")
 #endif
 
 #if defined(unix) && !defined(SYSTEMNAME)
