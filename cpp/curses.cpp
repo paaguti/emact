@@ -368,12 +368,12 @@ void
 CursesTerminal::si() {
 #if defined(COLOR_PAIR)
   if (opt::monochrome_monitor) {
-    (void)::wattrset(stdscr, A_STANDOUT);
+    (void)wattrset(stdscr, A_STANDOUT);
   } else {
-    (void)::wattrset(stdscr, (chtype)(_color = COLOR_PAIR(2)));
+    (void)wattrset(stdscr, (chtype)(_color = COLOR_PAIR(2)));
   }
 #else
-  (void)::wattrset(stdscr, A_STANDOUT);  // wstandout(stdscr);
+  (void)wattrset(stdscr, A_STANDOUT);  // wstandout(stdscr);
 #endif
 }
 
@@ -381,12 +381,12 @@ void
 CursesTerminal::ei() {
 #if defined(COLOR_PAIR)
   if (opt::monochrome_monitor) {
-    (void)::wattrset(stdscr, A_NORMAL);
+    (void)wattrset(stdscr, A_NORMAL);
   } else {
-    (void)::wattrset(stdscr, (chtype)(_color = COLOR_PAIR(1)));
+    (void)wattrset(stdscr, (chtype)(_color = COLOR_PAIR(1)));
   }
 #else
-  (void)::wattrset(stdscr, A_NORMAL);  // (void)wstandend(stdscr);
+  (void)wattrset(stdscr, A_NORMAL);  // (void)wstandend(stdscr);
 #endif
 }
 

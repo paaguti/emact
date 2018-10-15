@@ -1236,11 +1236,11 @@ class VARTAB {
   }
 
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* varName, int size)
+  constexpr VARTAB(T& val, EMCHAR* varName, int strSize)
   : f_val{&val},
     f_name{varName},
     f_type{STRING},
-    f_size{static_cast<size_t>(size)} {
+    f_size{static_cast<size_t>(strSize)} {
   }
 
   EMCHAR*

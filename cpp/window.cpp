@@ -344,9 +344,13 @@ mvupwind() {
 
 CMD
 onlywind() {
-  for (auto wp : WINSCR::list()) {
-    if (wp != curwp) {
-      delete wp;
+  for (bool deleted{true}; deleted; deleted = false) {
+    for (auto wp : WINSCR::list()) {
+      if (wp != curwp) {
+        delete wp;
+        deleted = true;
+        break;
+      }
     }
   }
 
@@ -363,6 +367,7 @@ onlywind() {
   curwp->_ntrows   = (term->getNbRows() - 1);
   curwp->_toplinep = lp;
   curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+
   return T;
 }
 
