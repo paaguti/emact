@@ -400,7 +400,8 @@ class WINSCR {
   friend CMD delwind();
   friend CMD splitwind();
 
-  static std::list<WINSCR*>& list() noexcept {
+  static std::list<WINSCR*>&
+  list() noexcept {
     return _wlist;
   }
 

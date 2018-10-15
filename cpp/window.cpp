@@ -344,17 +344,37 @@ mvupwind() {
 
 CMD
 onlywind() {
-  for (bool deleted{true}; deleted; deleted = false) {
-    for (auto wp : WINSCR::list()) {
-      if (wp != curwp) {
-        delete wp;
-        deleted = true;
-        break;
-      }
-    }
+  if (WINSCR::list().size() == 1) {
+    return T;  // already a single WINSCR exists.
   }
 
-  WINSCR::list().erase(WINSCR::list().begin(), WINSCR::list().end());
+  /*
+   * keep curwp out of WINSCR list.
+   */
+  WINSCR::list().remove(curwp);
+
+  /*
+   * remove all other WINSCR still in list.
+   */
+
+#if 1
+  for (std::list<WINSCR*>::iterator it = WINSCR::list().begin();
+       it != WINSCR::list().end();) {
+    delete *it++;
+  }
+#else
+  for (bool loop{true}; loop; loop = false) {
+    for (auto wp : WINSCR::list()) {
+      delete wp;
+      loop = true;
+      break;
+    }
+  }
+#endif
+
+  /*
+   * push curwp in WINSCR list.
+   */
   WINSCR::list().push_front(curwp);
 
   auto lp = curwp->_toplinep;
