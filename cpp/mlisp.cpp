@@ -387,7 +387,7 @@ MLisp::fillcommand(SpecialForm key) {
         fillmacro(0);
         return;
       } else if (var.type() == FIXVAL) {
-        fillmacro(std::strtoll((char *)word, nullptr, 0) & 0xff);
+        fillmacro(std::strtol((char *)word, nullptr, 0) & 0xff);
         fillmacro(0);
         return;
       }

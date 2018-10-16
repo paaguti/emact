@@ -12,7 +12,9 @@ dnl   ---------
 dnl   armv7l-unknown-linux-gnueabi
 dnl   i686-pc-cygwin
 dnl   x86_64-apple-darwin17.7.0
+dnl   x86_64-pc-linux-gnu
 dnl   x86_64-unknown-cygwin
+dnl   x86_64-unknown-freebsd11.0
 
 # Process this file with autoconf to produce a configure script
 
