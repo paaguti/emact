@@ -18,6 +18,7 @@ infodir		= @infodir@
 
 CXX		= @CXX@
 AR		= @AR@
+MODEL		= @MODEL@
 VERSION		= @VERSION@
 O		= @OBJEXT@
 RANLIB		= @RANLIB@
@@ -74,11 +75,11 @@ all: $(OBJECTS) $(BINARIES) $(KRNLIB)
 libs: static-@STATIC_BUILD@
 
 ed$(EXE): $(OBJECTS)
-	@$(CXX) -o ed$(EXE) $(OBJECTS) $(LIBS)
+	@$(CXX) $(MODEL) -o ed$(EXE) $(OBJECTS) $(LIBS)
 
 .cpp.$(O): emacs.h
 	@echo $(X_LIBS) $*.cpp
-	@$(CXX) -c $(DEFS) $(CXXFLAGS) $(CXXWARN) $*.cpp
+	@$(CXX) $(MODEL) -c $(DEFS) $(CXXFLAGS) $(CXXWARN) $*.cpp
 
 shared-std:
 	@echo Making shared lib $(KRNSHARED)
@@ -96,7 +97,8 @@ $(KRNLIB): $(OBJECTS)
 	-@$(RANLIB) $(KRNLIB)
 
 $(KRNSHARED): $(OBJECT)
-	@$(CC) $(CXXFLAGS) -shared -Wl,-$(SONAME),$(KRNSHARED) -o $(KRNSHARED) \
+	@$(CC) $(CXXFLAGS) \
+	       -shared -Wl,-$(SONAME),$(KRNSHARED) -o $(KRNSHARED) \
 	       $(OBJECT)
 
 clean:

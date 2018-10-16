@@ -125,7 +125,7 @@ AC_OBJEXT
 dnl Optimization and Warnings options
 
 AX_CHECK_COMPILE_FLAG([-m64],
-                      [CXXFLAGS="$CXXFLAGS -m64"])
+                      [MODEL="-m64"])
 AX_CHECK_COMPILE_FLAG([-Wall],
                       [CXXFLAGS="$CXXFLAGS -Wall"])
 AX_CHECK_COMPILE_FLAG([-Wextra],
@@ -184,6 +184,7 @@ else
 fi
 
 AC_SUBST(NAME)
+AC_SUBST(MODEL)
 AC_SUBST(AEXT)
 AC_SUBST(AROPTS)
 AC_SUBST(CXXFLAGS)
