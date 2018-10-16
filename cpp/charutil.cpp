@@ -48,57 +48,57 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
 int
 emwctomb(char* mbchar, EMCHAR wchar) {
   int ulen = 0;        /* return value for UTF8 size */
-  size_t uchar = static_cast<size_t>(wchar);
+  size_t uChar = static_cast<size_t>(wchar);
 
   if (mbchar == nullptr) {
     return ulen;
   }
 
-  if (uchar <= 0x7F) {
+  if (uChar <= 0x7F) {
     /* ASCII chars no conversion needed */
-    *mbchar = (char)uchar;
+    *mbchar = (char)uChar;
     ulen    = 1;
-  } else if (uchar <= 0x07FF) {
+  } else if (uChar <= 0x07FF) {
     /* In the 2 byte utf-8 range */
-    *mbchar++ = (char)(0xC0 + (uchar / 0x40));
-    *mbchar   = (char)(0x80 + (uchar % 0x40));
+    *mbchar++ = (char)(0xC0 + (uChar / 0x40));
+    *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 2;
-  } else if (uchar <= 0xFFFF) {
+  } else if (uChar <= 0xFFFF) {
     /*
      * In  the  3  byte  utf-8 range.  The values
      * 0x0000FFFE,  0x0000FFFF  and  0x0000D800 -
      * 0x0000DFFF do not occur in UCS-4
      */
-    *mbchar++ = (char)(0xE0 + (uchar / 0x1000));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x40) % 0x40));
-    *mbchar   = (char)(0x80 + (uchar % 0x40));
+    *mbchar++ = (char)(0xE0 + (uChar / 0x1000));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x40) % 0x40));
+    *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 3;
-  } else if (uchar <= 0x1FFFFF) {
+  } else if (uChar <= 0x1FFFFF) {
     /* In the 4 byte utf-8 range */
-    *mbchar++ = (char)(0xF0 + (uchar / 0x040000));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x10000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x40) % 0x40));
-    *mbchar   = (char)(0x80 + (uchar % 0x40));
+    *mbchar++ = (char)(0xF0 + (uChar / 0x040000));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x10000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x40) % 0x40));
+    *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 4;
 #if (EMMB_LEN_MAX > 4)
-  } else if (uchar <= 0x03FFFFFF) {
+  } else if (uChar <= 0x03FFFFFF) {
     /* In the 5 byte utf-8 range */
-    *mbchar++ = (char)(0xF8 + (uchar / 0x01000000));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x040000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x1000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x40) % 0x40));
-    *mbchar   = (char)(0x80 + (uchar % 0x40));
+    *mbchar++ = (char)(0xF8 + (uChar / 0x01000000));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x040000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x1000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x40) % 0x40));
+    *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 5;
 #endif
 #if (EMMB_LEN_MAX > 5)
-  } else if (uchar <= 0x7FFFFFFF) {
+  } else if (uChar <= 0x7FFFFFFF) {
     /* In the 6 byte utf-8 range */
-    *mbchar++ = (char)(0xF8 + (uchar / 0x40000000));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x01000000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x040000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x1000) % 0x40));
-    *mbchar++ = (char)(0x80 + ((uchar / 0x40) % 0x40));
-    *mbchar   = (char)(0x80 + (uchar % 0x40));
+    *mbchar++ = (char)(0xF8 + (uChar / 0x40000000));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x01000000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x040000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x1000) % 0x40));
+    *mbchar++ = (char)(0x80 + ((uChar / 0x40) % 0x40));
+    *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 6;
 #endif
   } else {

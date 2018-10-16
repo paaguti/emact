@@ -510,7 +510,7 @@ mltitle(EMCHAR* s, EMCHAR* f) {
 
 CMD
 mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
-  EMCHAR buf[NLINE];
+  EMCHAR buf[NLINE + 1];
 
   if (*opat && *npat) {
     bool changed{false};
