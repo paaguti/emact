@@ -26,11 +26,21 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 #include "./emacs.h"
 
 #if defined(_X11) && !defined(X_DISPLAY_MISSING)
+
+#if defined(sun) && defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#endif /* __GNUC__ */
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
 #include <X11/cursorfont.h>
+
+#if defined(sun) && defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif /* __GNUC__ */
 
 #include <array>
 #include <string>
@@ -321,14 +331,9 @@ X11Terminal::X11Terminal() {
   static auto DEFAULTBGD4("Blue");
   static auto DEFAULTFGD4("Yellow");
 
-#if defined(__linux__) || defined(x__APPLE__)
-  static auto DEFAULTFNT("fixed");
-  static auto DEFAULTGEO("80x30+0+0");
-#else
   // static auto DEFAULTFNT("8x13");
   static auto DEFAULTFNT("10x20");
   static auto DEFAULTGEO("80x30+0+0");
-#endif
 
   if ((X11font == nullptr) &&
       ((X11font = XGetDefault(_dpy, X11argv[0], "font")) == nullptr)) {
@@ -781,15 +786,9 @@ X11Terminal::getEvent() {
     case XK_Insert:
       _char = META|'I';
       break;
-#if defined(sun) || defined(__linux__) || defined(__APPLE__)
     case XK_Delete:
       _char = Ctrl|'H';
       break;
-#else
-    case XK_Delete:
-      _char = Ctrl|'D';
-      break;
-#endif
     case XK_Prior:
       _char = META|'V';
       break;
