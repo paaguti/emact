@@ -75,6 +75,9 @@ bool
 WINSCR::resize() noexcept {
   BUFFER* bp{nullptr};
 
+  /*
+   * Search for the first buffer that may exist on another window.
+   */
   for (auto wp : _wlist) {
     if (wp != curwp) {
       bp = wp->buffer();
@@ -82,19 +85,29 @@ WINSCR::resize() noexcept {
     }
   }
 
+  /*
+   * Kill all windows except the current one.
+   */
   (void)onlywind();
 
-  auto head(_wlist.front());
+  auto head(_wlist.front());  // head should be the same as curwp
 
   if (head == nullptr) {
     return false;
   }
 
+  /*
+   * Update head and force a complete redraw.
+   */
   head->_ntrows = (term->getNbRows() - 1);
-  display->modeline(curwp);
+  display->modeline(head);
+  head->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
 
+  /*
+   * Try to create a second window connected to bp (if it exist).
+   */
   if (bp != nullptr && (term->getNbRows() >= 4)) {
     auto wp = WINSCR::popup();
     if (wp == nullptr) {

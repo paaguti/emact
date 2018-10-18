@@ -1085,12 +1085,6 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       XpTerminal::xpsettextattrib();
       display = new DISPLAY;
       (void)WINSCR::resize();
-      /*
-       * This loop should probably be done in WINSCR::resize() above call.
-       */
-      for (auto wp : WINSCR::list()) {
-        wp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
-      }
       display->update(DISPLAY::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
