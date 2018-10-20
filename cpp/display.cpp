@@ -600,9 +600,9 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
     ++pos;
   };
 
-  auto modeputs = [&pos](const EMCHAR* text) {
-    while (*text != 0) {
-      VIDEO::vtputc(*text++);
+  auto modeputs = [&pos](const EMCHAR* s) {
+    while (*s != 0) {
+      VIDEO::vtputc(*s++);
       ++pos;
     }
   };
