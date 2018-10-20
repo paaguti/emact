@@ -674,7 +674,7 @@ X11Terminal::getEvent() {
 
     _width  = (unsigned int)event.xconfigure.width;
     _height = (unsigned int)event.xconfigure.height;
-    this->setNbRows((_heigh / _hfnt) - 1);
+    this->setNbRows((_height / _hfnt) - 1);
     this->setNbCols(_width / _wfnt);
 
     if (X11expose) {

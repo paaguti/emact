@@ -9,6 +9,7 @@ dnl Tested on:
 dnl
 dnl   Port name
 dnl   ---------
+dnl   aarch64-unknown-linux-gnu
 dnl   armv7l-unknown-linux-gnueabi
 dnl   i686-pc-cygwin
 dnl   powerpc-ibm-aix7.1.3.0
