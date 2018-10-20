@@ -540,8 +540,8 @@ X11Terminal::X11Terminal() {
   _col = 0;
   _row = 0;
 
-  this->setNbRows((int)(_height / _hfnt - 1));
-  this->setNbCols((int)(_width  / _wfnt));
+  this->setNbRows((_height / _hfnt) - 1);
+  this->setNbCols(_width  / _wfnt);
   this->setInitialized();
   term = this;
 
@@ -674,8 +674,8 @@ X11Terminal::getEvent() {
 
     _width  = (unsigned int)event.xconfigure.width;
     _height = (unsigned int)event.xconfigure.height;
-    this->setNbCols(event.xconfigure.width  / _wfnt);
-    this->setNbRows(event.xconfigure.height / _hfnt - 1);
+    this->setNbRows((_heigh / _hfnt) - 1);
+    this->setNbCols(_width / _wfnt);
 
     if (X11expose) {
       display = new DISPLAY;
