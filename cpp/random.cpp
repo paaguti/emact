@@ -1110,7 +1110,7 @@ CMD
 counterinsert() {
   EMCHAR buf[NPAT];
 
-  (void)emsprintf1(buf, &cntfmt[0], cntval);
+  (void)emsprintf(buf, &cntfmt[0], cntval);
 
   for (auto s = &buf[0]; *s; ++s) {
     (void)EDLINE::linsert(*s);

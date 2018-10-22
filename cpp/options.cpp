@@ -204,7 +204,7 @@ help() {
     case FIXVAL :
       {
         auto p = vtp.intp();
-        (void)emsprintf1(num, ECSTR("%d"), *p);
+        (void)emsprintf(num, ECSTR("%d"), *p);
         (void)emstrcat(line, num);
       }
       break;
@@ -360,7 +360,7 @@ setvar() {
         {
           EMCHAR newval[NPAT];
           auto p = var.intp();
-          (void)emsprintf2(buf, ECSTR("%s (%d) > "), var.name(), *p);
+          (void)emsprintf(buf, ECSTR("%s (%d) > "), var.name(), *p);
           (void)mlreply(buf, newval, 16);
           *p = emstrtoi(newval);
         }
@@ -544,6 +544,27 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
   EMCHAR  tagfile[NFILEN];
   size_t  taglen;
 
+#if 0
+  auto isEqual([](const EMCHAR* s1, const EMCHAR* s2) -> bool {
+    while (*s1 != 0 && *s2 != 0) {
+      auto c1 = *s1++;
+      auto c2 = *s2++;
+      if (c1 != c2) {
+        if (c1 <= 0xFF && std::isacsii(c1)) {
+          c1 = std::tolower(c1);
+        }
+        if (c2 <= 0xFF && std::isacsii(c2)) {
+          c2 = std::tolower(c2);
+        }
+      }
+      if (c1 != c2) {
+        return false;
+      }
+    }
+    return (*s1 == 0 && *s2 == 0);
+  });
+#endif
+
   auto mode = curbp->editMode();
 
   (void)emstrcpy(tagdir, curbp->filename());
@@ -650,7 +671,7 @@ printcmd(int c, BUFFER* bp) {
 
   if (count > 1) {
     printmacro(nullptr, bp);
-    (void)emsprintf1(macline, ECSTR("   (repeat %d"), count);
+    (void)emsprintf(macline, ECSTR("   (repeat %d"), count);
   }
 
   for (const auto& macro : Editor::getMacros()) {

@@ -150,14 +150,8 @@ using EMSTAT = struct stat;
 #define emstrpbrk(s1,s2)          std::wcspbrk(s1, s2)
 #define emstrrchr(s1,c)           std::wcsrchr(s1, c)
 #define emstrlwr(s)               wcslwr(s)
-
 #define emfwide(fd,mode)          std::fwide(fd, mode)
-
-#define emsprintf1(b,f,x)         std::swprintf(b, sizeof(b), f, x)
-#define emsprintf2(b,f,x,y)       std::swprintf(b, sizeof(b), f, x, y)
-#define emsprintf3(b,f,x,y,z)     std::swprintf(b, sizeof(b), f, x, y, z)
-#define emsprintf4(b,f,x,y,z,u)   std::swprintf(b, sizeof(b), f, x, y, z, u)
-#define emsprintf5(b,f,x,y,z,u,v) std::swprintf(b, sizeof(b), f, x, y, z, u, v)
+#define emsprintf(buf, fmt, ...)  std::swprintf(buf,sizeof(buf),fmt,__VA_ARGS__)
 
 #if defined(_WINDOWS_SOURCE)
 #define emstrnicmp(s1,s2,n)       wcsnicmp(s1, s2, n)
@@ -185,12 +179,7 @@ using EMSTAT = struct stat;
 #define emstrpbrk(s1,s2)          std::strpbrk((char *)s1, (char *)s2)
 #define emstrrchr(s1,c)           std::strrchr((char *)s1, c)
 #define emstrlwr(s)               strlwr((char *)s)
-
-#define emsprintf1(b,f,a)         std::sprintf(b, f, a)
-#define emsprintf2(b,f,x,y)       std::sprintf(b, f, x, y)
-#define emsprintf3(b,f,x,y,z)     std::sprintf(b, f, x, y, z)
-#define emsprintf4(b,f,x,y,z,u)   std::sprintf(b, f, x, y, z, u)
-#define emsprintf5(b,f,x,y,z,u,v) std::sprintf(b, f, x, y, z, u, v)
+#define emsprintf(buf, fmt, ...)  std::snprintf(buf,sizeof(buf),fmt,__VA_ARGS__)
 
 #if defined(_WINDOWS_SOURCE)
 #define emstrnicmp(s1,s2,n)       strnicmp((char *)s1, (char *)s2, n)

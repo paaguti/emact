@@ -521,9 +521,9 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   }
 
   if (option) {
-    (void)emsprintf4(buf, SHELLFMT1, prog, prompt, SHELLTEMP, SHELLRESULT);
+    (void)emsprintf(buf, SHELLFMT1, prog, prompt, SHELLTEMP, SHELLRESULT);
   } else {
-    (void)emsprintf5(buf, SHELLFMT2, prog, def, prompt, SHELLTEMP, SHELLRESULT);
+    (void)emsprintf(buf, SHELLFMT2, prog, def, prompt, SHELLTEMP, SHELLRESULT);
   }
 
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
@@ -605,10 +605,10 @@ sed() {
   }
 
   if (option) {
-    (void)emsprintf4(buf, SEDFMT1,
+    (void)emsprintf(buf, SEDFMT1,
                      SEDPROG, prompt, SHELLTEMP, SHELLRESULT);
   } else {
-    (void)emsprintf4(buf, SEDFMT2,
+    (void)emsprintf(buf, SEDFMT2,
                         SEDPROG, prompt, SHELLTEMP, SHELLRESULT);
   }
 
@@ -675,7 +675,7 @@ perl() {
     return NIL;
   }
 
-  (void)emsprintf3(buf, PERLFMT1, PERLPROG, prompt, SHELLTEMP);
+  (void)emsprintf(buf, PERLFMT1, PERLPROG, prompt, SHELLTEMP);
 
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLTEMP);

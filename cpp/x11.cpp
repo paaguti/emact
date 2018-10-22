@@ -1027,7 +1027,7 @@ X11title(EMCHAR* buf, EMCHAR* fname) {
   if (emstrcmp(buf, title) != 0) {
     char ascii[64];
     int  i;
-    (void)emsprintf3(title,
+    (void)emsprintf(title,
                      ECSTR("%s (%dx%d)"),
                      buf,
                      term->getNbRows(), term->getNbCols());

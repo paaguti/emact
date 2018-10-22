@@ -851,7 +851,7 @@ savetime() {
       (void)std::time(&tb);
       nt = std::localtime(&tb);
 
-      (void)emsprintf3(sdate,
+      (void)emsprintf(sdate,
                        ECSTR("%04d/%02d/%02d"),
                        (nt->tm_year + 1900) % 10000,
                        (nt->tm_mon  + 1) % 100,

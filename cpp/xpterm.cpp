@@ -1834,7 +1834,7 @@ xpprint() {
     TCHAR buf[NLINE + XPLINENBSIZE];
     if (CurrentLine == 1) {
       StartPage(hPr);
-      (void)emsprintf3(buf,
+      (void)emsprintf(buf,
                        _T("Page #%00d, %s - %s"),
                        CurrentPage,
                        szTimeBuf,
@@ -1851,7 +1851,7 @@ xpprint() {
       LineTo(hPr, nPageWidth, LineSpace * 2);
     }
 
-    (void)emsprintf1(buf, _T("%05d : "), LineNumber++);
+    (void)emsprintf(buf, _T("%05d : "), LineNumber++);
 
     int len;  // length of the current line.
     if (clp->length() >= NLINE) {

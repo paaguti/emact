@@ -15,6 +15,7 @@ dnl   i686-pc-cygwin
 dnl   mips64el-unknown-linux-gnu
 dnl   powerpc-ibm-aix7.1.3.0
 dnl   sparc-sun-solaris2.10
+dnl   x86-64-unknown-openbsd6.4
 dnl   x86_64-apple-darwin17.7.0
 dnl   x86_64-pc-linux-gnu
 dnl   x86_64-unknown-cygwin

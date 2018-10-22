@@ -157,7 +157,7 @@ loop:
 
       fmt = (emunicode() ? ECSTR("%ls%ls") : ECSTR("%s%s"));
 
-      (void)emsprintf2(line, fmt, pmatch, (isdir ? ECSTR("/") : ECSTR("")));
+      (void)emsprintf(line, fmt, pmatch, (isdir ? ECSTR("/") : ECSTR("")));
 
       WDGupdate(prompt, line);
 

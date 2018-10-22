@@ -694,9 +694,9 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
     modeputs(ECSTR(" - L"));
 
     if (curlen != 0) {
-      (void)emsprintf1(num, ECSTR("%ld "), curlen);
+      (void)emsprintf(num, ECSTR("%ld "), curlen);
     } else {
-      (void)emsprintf1(num, ECSTR("%ld "), maxlen);
+      (void)emsprintf(num, ECSTR("%ld "), maxlen);
     }
 
     /*
