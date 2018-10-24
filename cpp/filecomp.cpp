@@ -35,9 +35,9 @@ fileaccept(const EMCHAR* prompt, EMCHAR* file) {
 }
 
 #if     defined(_WIN32)
-#define cmpname(x, y)      Editor::isEqual(x, y, true)
+#define cmpname(x, y, len)      Editor::isEqual(x, y, len, true)
 #else
-#define cmpname(x, y)      Editor::isEqual(x, y, false)
+#define cmpname(x, y, len)      Editor::isEqual(x, y, len, false)
 #endif
 
 /*
@@ -115,7 +115,7 @@ loop:
     (void)emstrcat(pmatch, name);
     if (ffstat(pmatch, &stb) == 0 &&
         (S_ISREG(stb.st_mode) || S_ISDIR(stb.st_mode)) &&
-        (len == 0 || !cmpname(name, fmatch))) {
+        (len == 0 || cmpname(name, fmatch, len))) {
       auto isdir = S_ISDIR(stb.st_mode);
       EMCHAR* p;
       EMCHAR* s;
