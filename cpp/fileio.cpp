@@ -32,6 +32,10 @@ static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 static FILE*    ffp;    /* File poINTer, all functions. */
 static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
 
+#if defined(_UNICODE)
+static constexpr EMCHAR EMBOM{0xfeff};   // BOM = 0xFEFF
+#endif
+
 /*
  * Open a file for reading.
  */

@@ -542,30 +542,7 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
   EMCHAR  tagline[NLINE];
   EMCHAR  tagdir[NFILEN];
   EMCHAR  tagfile[NFILEN];
-  size_t  taglen;
 
-#if 0
-  auto isEqual([](const EMCHAR* s1, const EMCHAR* s2) -> bool {
-    while (*s1 != 0 && *s2 != 0) {
-      auto c1 = *s1++;
-      auto c2 = *s2++;
-      if (c1 != c2) {
-        if (c1 <= 0xFF && std::isacsii(c1)) {
-          c1 = std::tolower(c1);
-        }
-        if (c2 <= 0xFF && std::isacsii(c2)) {
-          c2 = std::tolower(c2);
-        }
-      }
-      if (c1 != c2) {
-        return false;
-      }
-    }
-    return (*s1 == 0 && *s2 == 0);
-  });
-#endif
-
-  auto mode = curbp->editMode();
 
   (void)emstrcpy(tagdir, curbp->filename());
   (void)updir(tagdir, SLASH);
@@ -578,15 +555,14 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
     return 0;
   }
 
-  taglen = (size_t)emstrlen(tagname);
+  auto mode(curbp->editMode());
 
   for (int tagno = 0; ffgets(tagline, NLINE, tagfd) != nullptr; ++tagno) {
     if (tagno <= tagnext) {
       continue;
     }
-    if ((mode == EDITMODE::LISPMODE)
-        ? (emstrnicmp(tagline, tagname, taglen) == 0)
-        : (emstrncmp(tagline, tagname, taglen) == 0)) {
+
+    if (Editor::isEqual(tagline, tagname, mode == EDITMODE::LISPMODE)) {
       (void)std::fclose(tagfd);
 
       tagfound = tagno;

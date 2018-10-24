@@ -1543,6 +1543,30 @@ class Editor {
   }
 
  public:
+  static bool
+  isEqual(const EMCHAR* s1, const EMCHAR* s2, bool insensitive = false) {
+    if (!insensitive) {
+      return emstrcmp(s1, s2) == 0;
+    }
+
+    while (*s1 != 0 && *s2 != 0) {
+      int c1{*s1++};
+      int c2{*s2++};
+      if (c1 != c2) {
+        if (c1 <= 0xFF && std::isalpha(c1)) {
+          c1 = std::tolower(c1);
+        }
+        if (c2 <= 0xFF && std::isalpha(c2)) {
+          c2 = std::tolower(c2);
+        }
+      }
+      if (c1 != c2) {
+        return false;
+      }
+    }
+    return (*s1 == 0 && *s2 == 0);
+  }
+
   static EMCHAR*
   searchBuffer() noexcept {
     return &_search[0];
