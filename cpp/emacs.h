@@ -45,7 +45,7 @@
 #endif
 #endif
 
-#if (defined(UNICODE) || defined(_UNICODE)) && !defined(_WIDECHARS)
+#if defined(UNICODE) && !defined(_WIDECHARS)
 #define _WIDECHARS
 #endif
 
@@ -130,7 +130,7 @@ using mode_t = int;
 
 using EMSTAT = struct stat;
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 #include <cwchar>
 #include <cwctype>
 
@@ -235,7 +235,7 @@ static constexpr auto METACH(0x1B);         // M- prefix, Control-[, ESC
 
 static constexpr int MAX_EMCHAR(std::numeric_limits<EMCHAR>::max());
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 #define _prefix(x)      ((x) << 16)
 #else
 #define _prefix(x)      ((x) << 8)
@@ -312,7 +312,7 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 #define WDGmessage(s)         (*widget.w_message)(s)
 #define WDGwrite              (*widget.w_write)
 #define WDGadjust             (*widget.w_adjust)
-#define WDGupdate(p,b)        (*widget.w_update)(p, b)
+#define WDGupdate(p, b)       (*widget.w_update)(p, b)
 #define WDGclipcopy()         (*widget.w_clipcopy)()
 #define WDGclippaste()        (*widget.w_clippaste)()
 #define WDGprint()            (*widget.w_print)()

@@ -483,7 +483,7 @@ makelist(BUFFER *blp) {
     } else {
       *cp1++ = ' ';
     }
-#if defined(_UNICODE)
+#if defined(UNICODE)
     if (bp->encoding() == ENCODING::EMUTF16) {      /* "w" if UTF-16 mode   */
       *cp1++ = 'w';
     } else if (bp->encoding() == ENCODING::EMUTF8) {

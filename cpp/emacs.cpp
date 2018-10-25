@@ -979,7 +979,7 @@ binaryfile() {
 
 CMD
 utf8encoding() {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF8);
 
   BUFFER::change(WINSCR::WFEDIT);
@@ -998,7 +998,7 @@ utf8encoding() {
 
 CMD
 utf16encoding() {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF16);
 
   BUFFER::change(WINSCR::WFEDIT);
@@ -1016,7 +1016,7 @@ utf16encoding() {
 
 CMD
 systemencoding() {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMASCII);
 
   BUFFER::change(WINSCR::WFEDIT);

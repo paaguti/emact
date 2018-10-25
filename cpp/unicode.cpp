@@ -29,7 +29,7 @@ static auto rcsid("$Id: unicode.cpp,v 1.10 2018/09/09 07:21:10 jullien Exp $");
  * Convert 8bit string to UNICODE string.
  */
 
-#if     defined(_WIDECHARS) && defined(_WIN32)
+#if defined(_WIDECHARS) && defined(_WIN32)
 #define _WINDOWS_UNICODE
 #endif
 
@@ -45,7 +45,7 @@ static  EMCHAR  ubuf[EMMAXCHARCONV + 1];
  */
 int
 emunicode() {
-#if     defined(_WIDECHARS)
+#if defined(UNICODE)
   return 1;
 #else
   return 0;
@@ -54,7 +54,7 @@ emunicode() {
 
 int
 emremove(const EMCHAR* path) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wremove((EMCHAR*)path);
 #else
   return remove(emutoa(path, abuf, EMMAXCHARCONV));
@@ -63,7 +63,7 @@ emremove(const EMCHAR* path) {
 
 DIR*
 emopendir(const EMCHAR* path) {
-#if     defined(_WIN32)
+#if defined(_WIN32)
   /*
    *      opendir is UNICODE aware on Windows.
    */
@@ -91,7 +91,7 @@ emgetdirentry(ENTRY* entryp) {
 
 int
 emsystem(const EMCHAR* path) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wsystem(path);
 #else
   return system(emutoa(path, abuf, EMMAXCHARCONV));
@@ -100,7 +100,7 @@ emsystem(const EMCHAR* path) {
 
 int
 emchdir(const EMCHAR* path) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wchdir((EMCHAR*)path);
 #else
   return chdir(emutoa(path, abuf, EMMAXCHARCONV));
@@ -118,7 +118,7 @@ emstat(const EMCHAR* path, EMSTAT* buf) {
 
 int
 emaccess(const EMCHAR* path, int mode) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _waccess((EMCHAR*)path, mode);
 #else
   return access(emutoa(path, abuf, EMMAXCHARCONV), mode);
@@ -153,7 +153,7 @@ emchmod(const EMCHAR* path, mode_t mode) {
 
 int
 emrename(const EMCHAR* pathold, const EMCHAR* pathnew) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wrename((EMCHAR*)pathold, (EMCHAR*)pathnew);
 #else
   char    anew[EMMAXCHARCONV];
@@ -175,11 +175,11 @@ emfopen(const EMCHAR*path, const EMCHAR*mode) {
 #endif
 }
 
-#if     defined(_SPAWNED_PIPE)
+#if defined(_SPAWNED_PIPE)
 
 FILE*
 empopen(const EMCHAR* path, const EMCHAR* mode) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wpopen(path, mode);
 #else
   char    amode[8];
@@ -192,7 +192,7 @@ empopen(const EMCHAR* path, const EMCHAR* mode) {
 
 EMCHAR*
 emgetenv(const EMCHAR* path) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wgetenv((EMCHAR*)path);
 #else
   auto res = getenv(emutoa(path, abuf, EMMAXCHARCONV));
@@ -203,7 +203,7 @@ emgetenv(const EMCHAR* path) {
 
 EMCHAR*
 emgetcwd(EMCHAR* buffer, int len) {
-#if     defined(_WINDOWS_UNICODE)
+#if defined(_WINDOWS_UNICODE)
   return _wgetcwd(buffer, len);
 #else
   (void)getcwd(abuf, EMMAXCHARCONV);

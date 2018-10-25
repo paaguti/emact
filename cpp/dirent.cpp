@@ -1,18 +1,5 @@
-#if     !defined(lint)
+#if !defined(lint)
 static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
-#endif
-
-#if defined(_WIN32) && !defined(_WINDOWS_SOURCE)
-#define _WINDOWS_SOURCE
-#endif
-
-#if     defined(_WIDECHARS)
-#if     !defined(_UNICODE)
-#define _UNICODE
-#endif
-#if     !defined(UNICODE)
-#define UNICODE
-#endif
 #endif
 
 /*
@@ -31,6 +18,19 @@ static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
  * 02111-1307, USA.
  */
+
+#if defined(_WIN32) && !defined(_WINDOWS_SOURCE)
+#define _WINDOWS_SOURCE
+#endif
+
+#if defined(_WIDECHARS)
+#if !defined(_UNICODE)
+#define _UNICODE
+#endif
+#if !defined(UNICODE)
+#define UNICODE
+#endif
+#endif
 
 /*
  *      NAME
@@ -84,7 +84,7 @@ static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
 #include        <io.h>
 #endif /* _WIN32_WCE */
 
-#if     defined(_OS2) && !defined(FINDHANDLE)
+#if defined(_OS2) && !defined(FINDHANDLE)
 #define I_STD   0x0000          /* Normal file - No restrictions */
 #define I_RDO   0x0001          /* Read only file                */
 #define I_HID   0x0002          /* Hidden file                   */
@@ -98,7 +98,7 @@ static auto rcsid("$Id: dirent.cpp,v 1.4 2018/09/09 07:25:14 jullien Exp $");
 #define INCL_DOSMISC
 #define INCL_DOSFILEMGR
 #include        <os2.h>
-#if     !defined(INCL_16)
+#if !defined(INCL_16)
 typedef ULONG   UCOUNT;
 #else
 typedef USHORT  UCOUNT;
@@ -106,9 +106,9 @@ typedef USHORT  UCOUNT;
 static  UCOUNT  count;
 
 #define FINDHANDLE              unsigned int
-#if     defined(_OS2V1)
+#if defined(_OS2V1)
 #define FINDDATA                FILEFINDBUF
-#if     !defined(FIL_STANDARD)
+#if !defined(FIL_STANDARD)
 #define FIL_STANDARD            0L
 #endif
 #else
@@ -118,7 +118,7 @@ static  UCOUNT  count;
 #define SysCloseDir(hdir)       DosFindClose((HDIR)hdir);
 #endif  /* OS2 */
 
-#if     defined(MSDOS) && !defined(FINDHANDLE)
+#if defined(MSDOS) && !defined(FINDHANDLE)
 #include        <dos.h>
 
 #define I_STD   0x0000          /* Normal file - No restrictions */
@@ -131,8 +131,8 @@ static  UCOUNT  count;
 
 #define FINDATTRIB      I_STD|I_RDO|I_HID|I_DIR
 
-#if     defined(_NO_DOS_FIND)
-#if     defined(__SC__)
+#if defined(_NO_DOS_FIND)
+#if defined(__SC__)
 #pragma pack(1)
 #endif
 
@@ -147,7 +147,7 @@ struct _find_t {
 
 typedef struct _find_t DOSFINDBUF;
 
-#if     defined(__SC__)
+#if defined(__SC__)
 #pragma pack()
 #endif
 
@@ -193,7 +193,7 @@ struct _dirdesc {
   FINDDATA        dd_resbuf;              /* Find data              */
 };
 
-#if     defined(_UNICODE)
+#if defined(_UNICODE)
 #define _pstrcpy        wcscpy
 #define _pstrcat        wcscat
 #define _pstrlen        wcslen
@@ -206,10 +206,10 @@ struct _dirdesc {
 #endif
 
 #if     !defined(NAME_MAX)
-#if     defined(FILENAME_MAX)
+#if defined(FILENAME_MAX)
 #define NAME_MAX        FILENAME_MAX
 #else
-#if     defined(MSDOS)
+#if defined(MSDOS)
 #define NAME_MAX        13
 #else
 #define NAME_MAX        255
@@ -286,7 +286,7 @@ readdir(DIR* dp) {
     return (struct dirent *)NULL;
   }
 
-#if     defined(_WINDOWS_SOURCE) && defined(_OEM_CONVERT)
+#if defined(_WINDOWS_SOURCE) && defined(_OEM_CONVERT)
   (void)CharToOem(dp->dd_resbuf.filename, dent->d_name);
 #else
   (void)_pstrcpy(&dent->d_name[0], (_char_t *)&dp->dd_resbuf.filename[0]);
@@ -318,7 +318,7 @@ rewinddir(DIR* dp) {
     SysCloseDir(dp->dd_hfind);
   }
 
-#if     defined(_OS2)
+#if defined(_OS2)
   count        = 1;
   dp->dd_hfind = HDIR_CREATE;
   dp->status   = DosFindFirst(
@@ -334,11 +334,11 @@ rewinddir(DIR* dp) {
     dp->dd_hfind = HDIR_SYSTEM;     /* real mode */
   }
 #endif  /* _OS2 */
-#if     defined(_WINDOWS_SOURCE)
+#if defined(_WINDOWS_SOURCE)
   dp->dd_hfind = FindFirstFile((LPTSTR)&buf[0], &dp->dd_resbuf);
   dp->status   = (dp->dd_hfind == INVALID_HANDLE_VALUE);
 #endif  /* _WINDOWS_SOURCE */
-#if     defined(MSDOS)
+#if defined(MSDOS)
   dp->dd_hfind = 1;
   dp->status   = _dos_findfirst(buf, FINDATTRIB, &dp->dd_resbuf);
 #endif  /* MSDOS */
@@ -377,7 +377,7 @@ seekdir(DIR* dirp, long loc) {
 
 #endif
 
-#if     defined(MSDOS) && defined(_NO_DOS_FIND)
+#if defined(MSDOS) && defined(_NO_DOS_FIND)
 
 /*
  *      Old interface with int86 routines (obsolete).
@@ -465,7 +465,7 @@ restore() {
 #endif
 #endif
 
-#if     defined(_TESTDIR)
+#if defined(_TESTDIR)
 #include        <stdio.h>
 #include        <stdlib.h>
 #include        <sys/types.h>

@@ -49,7 +49,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include "./emacs.h"
 #include "./xpterm.h"
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 #define system  _wsystem
 #endif
 
@@ -75,7 +75,7 @@ static constexpr auto XP_EMACS_MAXPATH(256);
 static HWND xpcurdlg{nullptr};  /* Current dialog box      */
 static bool xpprocess_pending{false};
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 #define XP_DRAW_X       (_drawxpos)
 #define XP_DRAW_Y       (_drawy * _charheight)
 #else
@@ -144,7 +144,7 @@ static void   xpprint();
 
 static HDC     xpgetprinterdc();
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 static EMCHAR  xpunicodegen();  // For tests
 #endif
 
@@ -662,7 +662,7 @@ XpTerminal::insert(int aChar) {
 
 static int
 xpposfrompoint(int x, int y) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   auto lpString = display->text(y);
   auto xpterm = static_cast<XpTerminal*>(term);
 
@@ -680,7 +680,7 @@ xpposfrompoint(int x, int y) {
 
 void
 XpTerminal::move(int row, int col) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   auto lpString(display->text(row));
   SIZE size;
 
@@ -718,7 +718,7 @@ XpTerminal::xpdecodechar(int c) {
   case VK_F7    : aChar = CTLX|'`'; break;
   case VK_F8    : aChar = CTLX|Ctrl|'S'; break;
   case VK_F9    : aChar = CTLX|'E'; break;
-#if defined(_UNICODE)
+#if defined(UNICODE)
   case VK_F12   : aChar = xpunicodegen(); break;
 #endif
   }
@@ -1295,7 +1295,7 @@ xpcutcopy(WPARAM wParam) {
     WDGerror(_T("Can't open clipboard."));
   } else {
     EmptyClipboard();
-#if defined(_UNICODE)
+#if defined(UNICODE)
     if (SetClipboardData(CF_UNICODETEXT, hClipData) == nullptr) {
       WDGerror(_T("Can't set UNICODE clipboard data."));
     }
@@ -1323,7 +1323,7 @@ xpclipcopy() {
 
 static void
 xpclippaste() {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   UINT fmt[] = { CF_UNICODETEXT, CF_OEMTEXT, CF_TEXT, CF_DSPTEXT };
 #else
   UINT fmt[] = { CF_OEMTEXT, CF_TEXT, CF_UNICODETEXT, CF_DSPTEXT };
@@ -1386,7 +1386,7 @@ xpclippaste() {
 
 CMD
 NTansitooem(EDLINE* lp) {
-#if !defined(_UNICODE)
+#if !defined(UNICODE)
   CharToOemBuff(lp->text(), lp->text(), lp->length());
 #else
   (void)lp;
@@ -1396,7 +1396,7 @@ NTansitooem(EDLINE* lp) {
 
 CMD
 NToemtoansi(EDLINE* lp) {
-#if !defined(_UNICODE)
+#if !defined(UNICODE)
   OemToCharBuff(lp->text(), lp->text(), lp->length());
 #else
   (void)lp;
@@ -1593,7 +1593,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
       }
       bSuccess = ReadFile(hChildStdoutRd, chBuf, NLINE, &dwRead, nullptr);
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
       if (bSuccess && dwRead > 0) {
         int   k;
         TCHAR tchBuf[NLINE + 1];
@@ -1895,7 +1895,7 @@ xpprint() {
   DeleteDC(hPr);
 }
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 /*
  * UNICODE generator for tests.
  * Every call returns the next Japanese character that represents "fibonacci".
@@ -1952,7 +1952,7 @@ _tWinMain(HINSTANCE hInstance,
   const TCHAR* argv[64];
   int          argc = 0;
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
   argv[argc++] = XP_EMACS_APPNAME;
   if (lpCmdLine && *lpCmdLine) {
     int     n;

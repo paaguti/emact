@@ -160,10 +160,6 @@ insert(const EMCHAR* str) {
 
   (void)emstrcpy(s, str);
 
-#if !defined(_UNICODE) && defined(_WINCONSOLE)
-  CharToOemBuff(s, s, emstrlen(s));
-#endif
-
   if (phead == nullptr) {
     phead = nptr;
   } else {

@@ -32,7 +32,7 @@ static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 static FILE*    ffp;    /* File poINTer, all functions. */
 static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
 
-#if defined(_UNICODE)
+#if defined(UNICODE)
 static constexpr EMCHAR EMBOM{0xfeff};   // BOM = 0xFEFF
 #endif
 
@@ -40,7 +40,7 @@ static constexpr EMCHAR EMBOM{0xfeff};   // BOM = 0xFEFF
  * Open a file for reading.
  */
 
-#if defined(_WIN32) || defined(_UNICODE)
+#if defined(_WIN32) || defined(UNICODE)
 #define MAX_SENSE       256
 
 /*
@@ -54,7 +54,7 @@ static constexpr EMCHAR EMBOM{0xfeff};   // BOM = 0xFEFF
 
 static ENCODING
 emfindencoding(const char* mem, int max) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   for (int i = 0; i < max; ++i) {
     if (!(mem[i] == 'u' || mem[i] == 'U')) {
       continue;
@@ -246,7 +246,7 @@ ffclose() {
 
 int
 ffputline(const EMCHAR* buf, int nbuf) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   char wbuf[EMMB_LEN_MAX];
   int  conv;
   int  c;
@@ -307,7 +307,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
   int     status = FIOSUC;
 
   clearerr(ffp);
-#if     defined(_UNICODE)
+#if     defined(UNICODE)
   switch (ffunicode) {
   case ENCODING::EMUTF8:
     while ((c = std::fgetc(ffp)) != EOF && c != '\n') {
@@ -433,7 +433,7 @@ ffrename(const EMCHAR* oldfn, const EMCHAR* newfn) {
 
 EMCHAR*
 ffgets(EMCHAR* buf, int n, FILE *fd) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
   char data[MAXLINE];
   int  i;
 
@@ -539,7 +539,7 @@ ffaccess(const EMCHAR* fn) {
 void
 ffputbom(ENCODING widep) {
   if (widep == ENCODING::EMUTF16) {
-#if defined(_UNICODE)
+#if defined(UNICODE)
     std::fputwc(EMBOM, ffp);
 #else
     WDGwrite(ECSTR("BOM set without UNICODE"));
@@ -554,7 +554,7 @@ ffputbom(ENCODING widep) {
 FILE*
 ffopen(const EMCHAR* file, const EMCHAR* mode, ENCODING* widep) {
   FILE* fd;
-#if defined(_UNICODE)
+#if defined(UNICODE)
   int     c1 = 0;
   int     c2 = 0;
   auto w = ENCODING::EMASCII;
@@ -603,7 +603,7 @@ ffopen(const EMCHAR* file, const EMCHAR* mode, ENCODING* widep) {
     ffunicode = *widep;
     return fd;
   }
-#endif /* _UNICODE */
+#endif /* UNICODE */
 
   if (mode[0] == '\r') {
     *widep = ENCODING::EMASCII;

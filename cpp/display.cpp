@@ -457,8 +457,8 @@ DISPLAY::update(DISPLAY::Mode mode) {
 
 void
 DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
-#if defined(_UNICODE)
-  int     stflag;
+#if defined(UNICODE)
+  int stflag;
 #if defined(_POSIX_C_SOURCE)
   static constexpr size_t MAX_OUTPUT{1024};
   char outbuf[MAX_OUTPUT];
