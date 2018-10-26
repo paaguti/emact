@@ -141,14 +141,14 @@ using EMCHAR = wchar_t;
 
 static constexpr size_t EMMB_LEN_MAX{4};   // as required by RFC-3629
 
-#define emstrcat(s1,s2)           std::wcscat(s1, s2)
-#define emstrcpy(s1,s2)           std::wcscpy(s1, s2)
-#define emstrcmp(s1,s2)           std::wcscmp(s1, s2)
-#define emstrncat(s1,s2,n)        std::wcsncat(s1, s2, n)
-#define emstrncpy(s1,s2,n)        std::wcsncpy(s1, s2, n)
-#define emstrncmp(s1,s2,n)        std::wcsncmp(s1, s2, n)
-#define emstrpbrk(s1,s2)          std::wcspbrk(s1, s2)
-#define emstrrchr(s1,c)           std::wcsrchr(s1, c)
+#define emstrcat(s1, s2)          std::wcscat(s1, s2)
+#define emstrcpy(s1, s2)          std::wcscpy(s1, s2)
+#define emstrcmp(s1, s2)          std::wcscmp(s1, s2)
+#define emstrncat(s1, s2, n)      std::wcsncat(s1, s2, n)
+#define emstrncpy(s1, s2, n)      std::wcsncpy(s1, s2, n)
+#define emstrncmp(s1, s2, n)      std::wcsncmp(s1, s2, n)
+#define emstrpbrk(s1, s2)         std::wcspbrk(s1, s2)
+#define emstrrchr(s1, c)          std::wcsrchr(s1, c)
 #define emstrlwr(s)               wcslwr(s)
 #define emfwide(fd, mode)         std::fwide(fd, mode)
 #define emsprintf(buf, fmt, ...)  std::swprintf(buf,sizeof(buf),fmt,__VA_ARGS__)

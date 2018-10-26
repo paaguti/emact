@@ -29,7 +29,7 @@ static auto rcsid("$Id: unicode.cpp,v 1.10 2018/09/09 07:21:10 jullien Exp $");
  * Convert 8bit string to UNICODE string.
  */
 
-#if defined(_WIDECHARS) && defined(_WIN32)
+#if defined(UNICODE) && defined(_WIN32)
 #define _WINDOWS_UNICODE
 #endif
 

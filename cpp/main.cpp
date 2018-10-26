@@ -202,7 +202,7 @@ main(int argc, char *argv[]) {
 #else
 
 #if defined(_WIN32)
-#if !defined(_WIDECHARS)
+#if !defined(UNICODE)
   glob(&argc, &argv);
 #else
   if (argc == -1) {

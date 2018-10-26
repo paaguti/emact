@@ -27,15 +27,10 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #include "./emacs.h"
 #include <thread>
 
-#if     defined(_POSIX_C_SOURCE)
 #define SEDPROG         ECSTR("sed")
 #define GREPPROC        ECSTR("grep -n ")
-#else
-#define SEDPROG         ECSTR("emsed")
-#define GREPPROC        ECSTR("emgrep -n ")
-#endif
 
-#if     defined(_WIDECHARS)
+#if defined(UNICODE)
 #define SHELLFMT1       ECSTR("%ls %ls %ls > %ls")
 #define SHELLFMT2       ECSTR("%ls %ls \"%ls\" %ls > %ls")
 #define SEDFMT1         ECSTR("%ls %ls %ls > %ls")
