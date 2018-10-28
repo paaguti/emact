@@ -14,6 +14,7 @@ dnl   armv7l-unknown-linux-gnueabi
 dnl   i686-pc-cygwin
 dnl   mips64el-unknown-linux-gnu
 dnl   powerpc-ibm-aix7.1.3.0
+dnl   powerpc64le-unknown-linux-gnu
 dnl   sparc-sun-solaris2.10
 dnl   x86-64-unknown-openbsd6.4
 dnl   x86_64-apple-darwin17.7.0

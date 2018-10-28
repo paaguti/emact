@@ -20,28 +20,28 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
  */
 
 /*
- * The  routines  in  this  file  are  called to create a subjob
- * running a command interpreter.
+ * The routines in this file are called to create a subjob running a
+ * command interpreter.
  */
 
 #include "./emacs.h"
 #include <thread>
 
-#define SEDPROG         ECSTR("sed")
-#define GREPPROC        ECSTR("grep -n ")
+static const EMCHAR* SEDPROG{ECSTR("sed")};
+static const EMCHAR* GREPPROC{ECSTR("grep -n ")};
 
 #if defined(UNICODE)
-#define SHELLFMT1       ECSTR("%ls %ls %ls > %ls")
-#define SHELLFMT2       ECSTR("%ls %ls \"%ls\" %ls > %ls")
-#define SEDFMT1         ECSTR("%ls %ls %ls > %ls")
-#define SEDFMT2         ECSTR("%ls -e \"%ls\" %ls > %ls")
-#define PERLFMT1        ECSTR("%ls %ls %ls")
+static const EMCHAR* SHELLFMT1{ECSTR("%ls %ls %ls > %ls")};
+static const EMCHAR* SHELLFMT2{ECSTR("%ls %ls \"%ls\" %ls > %ls")};
+static const EMCHAR* SEDFMT1{ECSTR("%ls %ls %ls > %ls")};
+static const EMCHAR* SEDFMT2{ECSTR("%ls -e \"%ls\" %ls > %ls")};
+static const EMCHAR* PERLFMT1{ECSTR("%ls %ls %ls")};
 #else
-#define SHELLFMT1       ECSTR("%s %s %s > %s")
-#define SHELLFMT2       ECSTR("%s %s \"%s\" %s > %s")
-#define SEDFMT1         ECSTR("%s %s %s > %s")
-#define SEDFMT2         ECSTR("%s -e \"%s\" %s > %s")
-#define PERLFMT1        ECSTR("%s %s %s")
+static const EMCHAR* SHELLFMT1{ECSTR("%s %s %s > %s")};
+static const EMCHAR* SHELLFMT2{ECSTR("%s %s \"%s\" %s > %s")};
+static const EMCHAR* SEDFMT1{ECSTR("%s %s %s > %s")};
+static const EMCHAR* SEDFMT2{ECSTR("%s -e \"%s\" %s > %s")};
+static const EMCHAR* PERLFMT1{ECSTR("%s %s %s")};
 #endif
 
 static CMD javaevalbuffer();
@@ -406,7 +406,7 @@ man() {
 static CMD externalcommand(EMCHAR* cmdname, EMCHAR* cmdline);
 
 static CMD
-externalcommand(EMCHAR* cmdname, EMCHAR* cmdline) {
+externalcommand(EMCHAR* cmdname, const EMCHAR* cmdline) {
   EMCHAR  buf[NLINE];
   EMCHAR  prompt[NLINE];
   EMCHAR  info[NLINE];
