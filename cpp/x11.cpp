@@ -100,15 +100,28 @@ class X11Terminal final : public Terminal {
  public:
   void
   cursor(bool flag) {
-    char ascii{(char)DISPLAY::_curchar};
+#if defined(UNICODE)
+    EMCHAR code{DISPLAY::_curchar};
+
+    XwcDrawImageString(_dpy,
+                       _win,
+                       _fntset,
+                       (flag ? _gcinv : _gcstd),
+                       _col * _wfnt,
+                       _row * _hfnt + _fntinfo->ascent,
+                       &code,
+                       1);
+#else
+    char code{(char)DISPLAY::_curchar};
 
     XDrawImageString(_dpy,
                      _win,
                      (flag ? _gcinv : _gcstd),
                      _col * _wfnt,
                      _row * _hfnt + _fntinfo->ascent,
-                     &ascii,
+                     &code,
                      1);
+#endif
   }
 
  private:
@@ -145,6 +158,7 @@ class X11Terminal final : public Terminal {
   Display*       _dpy{nullptr};
   Window         _win;
   XFontStruct*   _fntinfo{nullptr};
+  XFontSet       _fntset;
   GC             _gcstd;
   GC             _gcinv;
 
@@ -450,6 +464,23 @@ X11Terminal::X11Terminal() {
     _wfnt = XTextWidth(_fntinfo, "_", 1);
     _hfnt = _fntinfo->ascent + _fntinfo->descent;
   }
+
+#if defined(UNICODE)
+  char* basename2 = (char *)malloc(strlen(X11font) + 3);
+  if (basename2) {
+    sprintf(basename2, "%s,*", X11font);
+  } else {
+    basename2 = (char*)X11font;
+  }
+  char** missing_charset_list_return;
+  int    missing_charset_count_return;
+  char*  def_string_return;
+  _fntset  = XCreateFontSet(_dpy,
+                            X11font,
+                            &missing_charset_list_return,
+                            &missing_charset_count_return,
+                            &def_string_return);
+#endif
 
   _x       = 0;
   _y       = 0;
@@ -889,9 +920,13 @@ X11Terminal::getEvent() {
 
 void
 X11Terminal::insert(int c) {
-  unsigned char ascii = (unsigned char)c;
+#if defined(UNICODE)
+  EMCHAR code = c;
+#else
+  unsigned char code = (unsigned char)c;
+#endif
 
-  switch (ascii) {
+  switch (code) {
   case '\n' :
     if (_row < this->getNbRows()) {
       _row++;
@@ -907,18 +942,40 @@ X11Terminal::insert(int c) {
     }
     break;
   default:
+#if defined(UNICODE)
+    XwcDrawImageString(_dpy,
+                       _win,
+                       _fntset,
+                       _gcstd,
+                       _col++ * _wfnt,
+                       _row   * _hfnt + _fntinfo->ascent,
+                       &code,
+                       1);
+#else
     XDrawImageString(_dpy,
                      _win,
                      _gcstd,
                      _col++ * _wfnt,
                      _row   * _hfnt + _fntinfo->ascent,
-                     (char*)&ascii,
+                     (char*)&code,
                      1);
+#endif
   }
 }
 
 void
 X11Terminal::insert(const EMCHAR* s, int n) {
+#if defined(UNICODE)
+    XwcDrawImageString(_dpy,
+                       _win,
+                       _fntset,
+                       _gcstd,
+                       _col * _wfnt,
+                       _row * _hfnt + _fntinfo->ascent,
+                       s,
+                       1);
+  _col += n;
+#else
   static constexpr size_t MAXLINESIZE{256};
   char ascii[MAXLINESIZE];
   emutoa(s, ascii, MAXLINESIZE);
@@ -931,6 +988,7 @@ X11Terminal::insert(const EMCHAR* s, int n) {
                    ascii,
                    n);
   _col += n;
+#endif
 }
 
 void

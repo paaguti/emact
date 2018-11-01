@@ -403,8 +403,6 @@ man() {
  * location (the current directory).
  */
 
-static CMD externalcommand(EMCHAR* cmdname, EMCHAR* cmdline);
-
 static CMD
 externalcommand(EMCHAR* cmdname, const EMCHAR* cmdline) {
   EMCHAR  buf[NLINE];

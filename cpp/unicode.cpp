@@ -33,6 +33,23 @@ static auto rcsid("$Id: unicode.cpp,v 1.10 2018/09/09 07:21:10 jullien Exp $");
 #define _WINDOWS_UNICODE
 #endif
 
+template<typename _InType, typename _OutType>
+_OutType*
+convstr(const _InType* in, _OutType* out, size_t max) {
+  if (in == nullptr) {
+    return nullptr;
+  }
+
+  size_t i;
+  for (i = 0; in[i] && i < max; ++i) {
+    out[i] = static_cast<_OutType>(in[i]);
+  }
+
+  out[i] = static_cast<_OutType>(0);
+
+  return out;
+}
+
 #if     !defined(_WINDOWS_UNICODE)
 #define EMMAXCHARCONV   1024
 
@@ -215,35 +232,14 @@ emgetcwd(EMCHAR* buffer, int len) {
 
 EMCHAR*
 ematou(const char* in, EMCHAR* out, int max) {
-  if (in == nullptr) {
-    return nullptr;
-  }
-
-  int i;
-
-  for (i = 0; in[i] && i < max; ++i) {
-    out[i] = (EMCHAR)in[i];
-  }
-  out[i] = '\000';
-
-  return out;
+  return convstr(in, out, max);
 }
 
 /*
  * Convert UNICODE string to 8bit string.
  */
 
-char *
+char*
 emutoa(const EMCHAR* in, char* out, int max) {
-  if (in == nullptr) {
-    return nullptr;
-  }
-
-  int i;
-  for (i = 0; in[i] && i < max; ++i) {
-    out[i] = (char)in[i];
-  }
-  out[i] = '\000';
-
-  return out;
+  return convstr(in, out, max);
 }
