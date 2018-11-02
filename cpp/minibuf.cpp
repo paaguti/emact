@@ -518,7 +518,7 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
      * Try with previous choice
      */
     for (;;) {
-      EMCHAR prev[NLINE];
+      EMCHAR prev[NLINE + 1];
       (void)emstrncpy(prev, npat, NLINE);
       (void)emstrncpy(buf, msg, NLINE);
       (void)emstrncat(buf, ECSTR(" "), NLINE);

@@ -766,11 +766,19 @@ again() {
 
 CMD
 emacsversion() {
+#if defined(UNICODE)
   WDGwrite(ECSTR("%s (%s / UNICODE - Build: %d) of %s - C. Jullien."),
            version,
            SYSTEMNAME,
            EMBUILD,
            ECSTR("" __DATE__));
+#else
+  WDGwrite(ECSTR("%s (%s / ASCII - Build: %d) of %s - C. Jullien."),
+           version,
+           SYSTEMNAME,
+           EMBUILD,
+           ECSTR("" __DATE__));
+#endif
 
   return T;
 }
