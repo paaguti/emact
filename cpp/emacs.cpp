@@ -47,9 +47,9 @@ extern const EMCHAR* version;   /* Current version              */
 
 static bool initflag = false;   /* Init flag                    */
 
-DISPLAY* display{nullptr};
-BUFFER*  curbp{nullptr};        /* Current buffer               */
-WINSCR*  curwp{nullptr};        /* Current window               */
+Display* display{nullptr};
+Buffer*  curbp{nullptr};        /* Current buffer               */
+Window*  curwp{nullptr};        /* Current window               */
 MEvent   mevent;                /* Mouse event (if any)         */
 Kbdm     kbdm;                  /* Keyboad Macro                */
 
@@ -58,7 +58,7 @@ int    Editor::_repeat{1};            // Repeat count
 int    Editor::_thisflag{CFUNSET};    // Flags, this command
 int    Editor::_lastflag{CFUNSET};    // Flags, last command
 EMCHAR Editor::_search[NPAT];         // Internal search buffer
-std::vector<MACTAB> Editor::_macros;  // User macros table
+std::vector<Macro> Editor::_macros;  // User macros table
 Point  Editor::_found;                // Position of last search
 /*
  * Command table.  This table is *roughly* in ASCII order, left
@@ -123,7 +123,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'L',
-     WINSCR::recenter,
+     Window::recenter,
      ECSTR("recenter")
   },
   {
@@ -173,7 +173,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'W',
-     REGION::killregion,
+     Region::killregion,
      ECSTR("kill-region")
   },
   {
@@ -203,7 +203,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'B',
-     BUFFER::listbuffers,
+     Buffer::listbuffers,
      ECSTR("list-buffers")
   },
   {
@@ -233,7 +233,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'L',
-     REGION::lowerregion,
+     Region::lowerregion,
      ECSTR("downcase-region")
   },
   {
@@ -243,7 +243,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'N',
-     WINSCR::mvdnwind,
+     Window::mvdnwind,
      ECSTR("scroll-one-line-down")
   },
   {
@@ -253,7 +253,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'P',
-     WINSCR::mvupwind,
+     Window::mvupwind,
      ECSTR("scroll-one-line-up")
   },
   {
@@ -273,12 +273,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'T',
-     EDLINE::ltwiddle,
+     Line::ltwiddle,
      ECSTR("transpose-lines")
   },
   {
      CTLX|Ctrl|'U',
-     REGION::upperregion,
+     Region::upperregion,
      ECSTR("upcase-region")
   },
   {
@@ -298,7 +298,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'Z',
-     WINSCR::shrinkwind,
+     Window::shrinkwind,
      ECSTR("shrink-window")
   },
   {
@@ -338,32 +338,32 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'0',
-     WINSCR::delwind,
+     Window::delwind,
      ECSTR("delete-window")
   },
   {
      CTLX|'1',
-     WINSCR::onlywind,
+     Window::onlywind,
      ECSTR("delete-other-window")
   },
   {
      CTLX|'2',
-     WINSCR::splitwind,
+     Window::splitwind,
      ECSTR("split-window-vertically")
   },
   {
      CTLX|'8',
-     WINSCR::adjust,
+     Window::adjust,
      ECSTR("adjust-to-80-columns")
   },
   {
      CTLX|'>',
-     REGION::shiftright,
+     Region::shiftright,
      ECSTR("shift-region-right")
   },
   {
      CTLX|'<',
-     REGION::shiftleft,
+     Region::shiftleft,
      ECSTR("shift-region-left")
   },
   {
@@ -378,7 +378,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'B',
-     BUFFER::usebuffer,
+     Buffer::usebuffer,
      ECSTR("use-buffers")
   },
   {
@@ -418,22 +418,22 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'K',
-     BUFFER::killbuffer,
+     Buffer::killbuffer,
      ECSTR("kill-buffer")
   },
   {
      CTLX|'N',
-     WINSCR::nextwind,
+     Window::nextwind,
      ECSTR("next-window")
   },
   {
      CTLX|'O',
-     WINSCR::prevwind,
+     Window::prevwind,
      ECSTR("other-window")
   },
   {
      CTLX|'P',
-     WINSCR::prevwind,
+     Window::prevwind,
      ECSTR("previous-window")
   },
   {
@@ -448,7 +448,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'T',
-     WINSCR::topwind,
+     Window::topwind,
      ECSTR("top-window")
   },
   {
@@ -458,12 +458,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'W',
-     REGION::writeregion,
+     Region::writeregion,
      ECSTR("write-region")
   },
   {
      CTLX|'Z',
-     WINSCR::enlargewind,
+     Window::enlargewind,
      ECSTR("enlarge-window")
   },
   {
@@ -473,7 +473,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'\\',
-     REGION::indentregion,
+     Region::indentregion,
      ECSTR("indent-region")
   },
   {
@@ -573,7 +573,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'!',
-     WINSCR::reposition,
+     Window::reposition,
      ECSTR("reposition")
   },
   {
@@ -668,7 +668,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'I',
-     EDLINE::instoggle,
+     Line::instoggle,
      ECSTR("toggle-insert")
   },
   {
@@ -723,7 +723,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'W',
-     REGION::copyregion,
+     Region::copyregion,
      ECSTR("kill-ring-save")
   },
   {
@@ -753,7 +753,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'~',
-     EDLINE::notmodified,
+     Line::notmodified,
      ECSTR("not-modified")
   },
   {
@@ -793,7 +793,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      MEVT,
-     WINSCR::findwind,
+     Window::findwind,
      ECSTR("find-window")
   },
 
@@ -833,7 +833,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     REGION::fillregion,
+     Region::fillregion,
      ECSTR("fill-region")
   },
   {
@@ -1019,7 +1019,7 @@ EMCHAR  helpfile3[NPAT];              // help file 3 (Alt-F11)
 EMCHAR  helpfile4[NPAT];              // help file 4 (Alt-F12)
 }  // namespace opt
 
-std::vector<VARTAB> VARTAB::vartab = {
+std::vector<Variable> Variable::vartab = {
   { opt::append_process_buffer,  ECSTR("append-process-buffer"),     BOOLVAL },
   { opt::as_arg,                 ECSTR("assembler-arguments"),       NPAT    },
   { opt::as_name,                ECSTR("assembler-name"),            NCMDN   },
@@ -1075,7 +1075,7 @@ std::vector<VARTAB> VARTAB::vartab = {
  * Fill widgets with default behavior
  */
 
-WIDGET widget = {
+Widget widget = {
   mlyn,
   mlyesno,
   mlconfirm,
@@ -1138,28 +1138,28 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     term = Terminal::getInstance();
 
     /* First buffer */
-    auto bp = BUFFER::find(BUF_SCRATCH, true, EDITMODE::LISPMODE);
+    auto bp = Buffer::find(BUF_SCRATCH, true, EDITMODE::LISPMODE);
 
     if (bp == nullptr) {
       exit(0);
     }
 
-    new WINSCR{bp};  // Allocated WINSCR is managed by an internal list.
+    new Window{bp};  // Allocated Window is managed by an internal list.
 
     kbdm.reset();
-    display = new DISPLAY;
+    display = new Display;
 
     if (_argc > curarg) {
       i++;
-      display->update(DISPLAY::Mode::REFRESH);
+      display->update(Display::Mode::REFRESH);
       (void)newfile(_argv[curarg++]);
     }
 
     if (_argc > curarg) {
       i++;
-      (void)WINSCR::splitwind();
+      (void)Window::splitwind();
       (void)newfile(_argv[curarg++]);
-      (void)WINSCR::prevwind();
+      (void)Window::prevwind();
     }
 
     while (_argc > curarg) {
@@ -1168,8 +1168,8 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     }
 
     if (i > 2) {
-      (void)BUFFER::listbuffers();
-      (void)WINSCR::prevwind();
+      (void)Buffer::listbuffers();
+      (void)Window::prevwind();
     }
 
     /*
@@ -1193,7 +1193,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     opt::foreground_color &= 0x07;
 
     term = Terminal::getInstance();
-    display->update(DISPLAY::Mode::REFRESH);
+    display->update(Display::Mode::REFRESH);
     if (_argc > curarg) {
       (void)newfile(_argv[curarg]);
     }
@@ -1366,9 +1366,9 @@ Editor::execute(int c, int n) {
     if (c > 0x7F && (opt::latex_mode || emode == EDITMODE::SGMLMODE)) {
       status = (latexinsert(Editor::_repeat, c) ? T : NIL);
     } else if (!opt::replace_mode) {
-      status = EDLINE::linsert(c, Editor::_repeat) ? T : NIL;
+      status = Line::linsert(c, Editor::_repeat) ? T : NIL;
     } else {
-      status = EDLINE::lreplace(c, Editor::_repeat) ? T : NIL;
+      status = Line::lreplace(c, Editor::_repeat) ? T : NIL;
     }
 
     Editor::_lastflag = Editor::_thisflag;
@@ -1538,7 +1538,7 @@ CMD
 Editor::exitemacs() {
   static EMCHAR* msg = ECSTR("Modified buffers exist; exit anymawy? ");
 
-  auto res = BUFFER::anycb(BUFFER::ANYCB::PROMPT) ? T : NIL;
+  auto res = Buffer::anycb(Buffer::ANYCB::PROMPT) ? T : NIL;
 
   if (res == ABORT) {
     return NIL;
@@ -1675,7 +1675,7 @@ Editor::insertunicode() {
   buf[0] = (EMCHAR)c;
   buf[1] = '\000';
   WDGwrite(ECSTR("Unicode='%s', code(%d, 0x%x)"), buf, c, c);
-  EDLINE::linsert(c, Editor::_repeat);
+  Line::linsert(c, Editor::_repeat);
   return T;
 }
 
@@ -1687,8 +1687,8 @@ CMD
 Editor::binaryfile() {
   curbp->setBinary(!curbp->binary());
 
-  BUFFER::change(WINSCR::WFEDIT);
-  BUFFER::updatemodes();
+  Buffer::change(Window::WFEDIT);
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1701,8 +1701,8 @@ Editor::utf8encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF8);
 
-  BUFFER::change(WINSCR::WFEDIT);
-  BUFFER::updatemodes();
+  Buffer::change(Window::WFEDIT);
+  Buffer::updatemodes();
 
   return T;
 #else
@@ -1720,8 +1720,8 @@ Editor::utf16encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF16);
 
-  BUFFER::change(WINSCR::WFEDIT);
-  BUFFER::updatemodes();
+  Buffer::change(Window::WFEDIT);
+  Buffer::updatemodes();
   return T;
 #else
   WDGwrite(ECSTR("This command requires an UNICODE enabled version."));
@@ -1738,8 +1738,8 @@ Editor::systemencoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMASCII);
 
-  BUFFER::change(WINSCR::WFEDIT);
-  BUFFER::updatemodes();
+  Buffer::change(Window::WFEDIT);
+  Buffer::updatemodes();
   return T;
 #else
   /*
@@ -1756,7 +1756,7 @@ Editor::systemencoding() {
 CMD
 Editor::switchfund() {
   curbp->setEditMode(EDITMODE::FUNDAMENTAL);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1767,7 +1767,7 @@ Editor::switchfund() {
 CMD
 Editor::switchcc() {
   curbp->setEditMode(EDITMODE::CMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1778,7 +1778,7 @@ Editor::switchcc() {
 CMD
 Editor::switchcpp() {
   curbp->setEditMode(EDITMODE::CPPMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1789,7 +1789,7 @@ Editor::switchcpp() {
 CMD
 Editor::switchjava() {
   curbp->setEditMode(EDITMODE::JAVAMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1800,7 +1800,7 @@ Editor::switchjava() {
 CMD
 Editor::switchfortran() {
   curbp->setEditMode(EDITMODE::FORTRANMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1811,7 +1811,7 @@ Editor::switchfortran() {
 CMD
 Editor::switchlisp() {
   curbp->setEditMode(EDITMODE::LISPMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1822,7 +1822,7 @@ Editor::switchlisp() {
 CMD
 Editor::switchperl() {
   curbp->setEditMode(EDITMODE::PERLMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1837,7 +1837,7 @@ Editor::switchsgml() {
   opt::auto_fill_mode = true;
   opt::latex_mode     = false;
 
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1848,7 +1848,7 @@ Editor::switchsgml() {
 CMD
 Editor::switchprolog() {
   curbp->setEditMode(EDITMODE::PROLOGMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1859,7 +1859,7 @@ Editor::switchprolog() {
 CMD
 Editor::switchpython() {
   curbp->setEditMode(EDITMODE::PYTHONMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1870,7 +1870,7 @@ Editor::switchpython() {
 CMD
 Editor::switchas() {
   curbp->setEditMode(EDITMODE::ASMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1881,7 +1881,7 @@ Editor::switchas() {
 CMD
 Editor::switchshell() {
   curbp->setEditMode(EDITMODE::SHELLMODE);
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -1959,13 +1959,13 @@ latexinsert(int n, int c) {
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
         while (n-- > 0) {
           for (auto p = convtab[i].sgml; *p; ++p) {
-            (void)EDLINE::linsert(*p);
+            (void)Line::linsert(*p);
           }
         }
       } else {
         while (n-- > 0) {
           for (auto p = convtab[i].latex; *p; ++p) {
-            (void)EDLINE::linsert(*p);
+            (void)Line::linsert(*p);
           }
         }
       }
@@ -1973,7 +1973,7 @@ latexinsert(int n, int c) {
     }
   }
 
-  return EDLINE::linsert(c, n);
+  return Line::linsert(c, n);
 }
 
 /*
@@ -1982,6 +1982,6 @@ latexinsert(int n, int c) {
 
 CMD
 Editor::redrawscreen() {
-  DISPLAY::garbaged();
+  Display::garbaged();
   return T;
 }

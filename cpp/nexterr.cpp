@@ -42,7 +42,7 @@ geterror() {
   (void)emstrcpy(save, Editor::searchBuffer());
   (void)emstrcpy(Editor::searchBuffer(), ECSTR(":"));
 
-  EDLINE* line{nullptr};
+  Line* line{nullptr};
   for (;;) {
     errlinenum = 0;
 
@@ -194,7 +194,7 @@ nexterror() {
   /*
    * find or create buffer if it does not exist.
    */
-  auto bp(BUFFER::find(BUF_PROC));
+  auto bp(Buffer::find(BUF_PROC));
 
   if (bp == nullptr) {
     return NIL;

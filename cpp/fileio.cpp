@@ -712,7 +712,7 @@ ffchanged(const EMCHAR* fname, time_t* time) {
  */
 
 bool
-ffsetaccess(const EMCHAR* fname, BUFFER* bp) {
+ffsetaccess(const EMCHAR* fname, Buffer* bp) {
   EMSTAT mode;
 
   bp->setReadonly(false);

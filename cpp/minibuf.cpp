@@ -182,7 +182,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   mlwrite(ECSTR("%s%s"), prompt, buf);
 
   for (;;) {
-    display->update(DISPLAY::Mode::MINIBUF);
+    display->update(Display::Mode::MINIBUF);
 
     term->cshow(true);
     c = term->get();
@@ -418,7 +418,7 @@ mlwrite(const EMCHAR* fmt, ...) {
         break;
       case 'L':
         {
-          auto lp = (EDLINE *)va_arg(var, EDLINE *);
+          auto lp = (Line *)va_arg(var, Line *);
           if (lp->length() < (term->getNbCols() - 1)) {
             mlputs(lp->text(), lp->length());
           } else {
@@ -440,7 +440,7 @@ mlwrite(const EMCHAR* fmt, ...) {
     display->statputc(i, ' ');
   }
 
-  display->update(DISPLAY::Mode::MINIBUF);
+  display->update(Display::Mode::MINIBUF);
   mpresf = true;
 
   va_end(var);

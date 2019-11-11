@@ -31,11 +31,11 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 
 Terminal* term{nullptr};
 
-bool          DISPLAY::_mouse{false};  // Mouse flag
-int           DISPLAY::_currow{0};
-int           DISPLAY::_curcol{0};
-EMCHAR        DISPLAY::_curchar;
-DISPLAY::Sync DISPLAY::_sgarbf{DISPLAY::Sync::GARBAGE};
+bool          Display::_mouse{false};  // Mouse flag
+int           Display::_currow{0};
+int           Display::_curcol{0};
+EMCHAR        Display::_curchar;
+Display::Sync Display::_sgarbf{Display::Sync::GARBAGE};
 
 extern const EMCHAR* version;           /* Current version              */
 
@@ -88,7 +88,7 @@ class VIDEO {
       } while ((VIDEO::col % opt::tab_display)
                && (VIDEO::col < term->getNbCols()));
     } else if (!self_insert(c)) {
-      if (opt::set_show_graphic || (DISPLAY::_mouse && (c == 24 || c == 25))) {
+      if (opt::set_show_graphic || (Display::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
       } else {
         VIDEO::vtputc('^');
@@ -150,7 +150,7 @@ VIDEO** VIDEO::pscreen{nullptr};
  * "update".
  */
 
-DISPLAY::DISPLAY() {
+Display::Display() {
   VIDEO::vscreen = new VIDEO*[term->getNbRows() + 1];
   VIDEO::pscreen = new VIDEO*[term->getNbRows() + 1];
 
@@ -164,7 +164,7 @@ DISPLAY::DISPLAY() {
   mlerase();
 }
 
-DISPLAY::~DISPLAY() {
+Display::~Display() {
   if (VIDEO::vscreen == nullptr || VIDEO::pscreen == nullptr) {
     return;
   }
@@ -185,7 +185,7 @@ DISPLAY::~DISPLAY() {
  */
 
 const EMCHAR*
-DISPLAY::text(int y) const noexcept {
+Display::text(int y) const noexcept {
   return VIDEO::vscreen[y]->text;
 }
 
@@ -194,7 +194,7 @@ DISPLAY::text(int y) const noexcept {
  */
 
 bool
-DISPLAY::running() const noexcept {
+Display::running() const noexcept {
   return VIDEO::ok;
 }
 
@@ -206,7 +206,7 @@ DISPLAY::running() const noexcept {
  */
 
 void
-DISPLAY::tidy() const noexcept {
+Display::tidy() const noexcept {
   term->move(0, 0);
   term->eeop();
   term->flush();
@@ -214,7 +214,7 @@ DISPLAY::tidy() const noexcept {
 }
 
 void
-DISPLAY::statputc(int n, int c) const noexcept {
+Display::statputc(int n, int c) const noexcept {
   if (n < term->getNbCols()) {
     VIDEO::vscreen[term->getNbRows()]->putc(n, (EMCHAR)c);
     VIDEO::vscreen[term->getNbRows()]->changed = true;
@@ -222,7 +222,7 @@ DISPLAY::statputc(int n, int c) const noexcept {
 }
 
 void
-DISPLAY::computecursor() {
+Display::computecursor() {
   const auto* lp = curwp->topline();
   _currow = curwp->toprow();
 
@@ -268,8 +268,8 @@ DISPLAY::computecursor() {
  */
 
 void
-DISPLAY::refresh(WINSCR* wp) {
-  EDLINE* lp;
+Display::refresh(Window* wp) {
+  Line* lp;
   bool    out = false;
   int     i;
   int     j;
@@ -278,7 +278,7 @@ DISPLAY::refresh(WINSCR* wp) {
    * If not force reframe, check the framing.
    */
 
-  if ((wp->getFlags() & WINSCR::WFFORCE) == 0) {
+  if ((wp->getFlags() & Window::WFFORCE) == 0) {
     lp = wp->topline();
     for (i = 0; i < wp->rows(); ++i) {
       if (lp == wp->line()) {
@@ -296,7 +296,7 @@ DISPLAY::refresh(WINSCR* wp) {
 
   /*
    * Not acceptable, better compute a new value for the line at the
-   * top of the window. Then set the "WINSCR::WFHARD" flag to force full
+   * top of the window. Then set the "Window::WFHARD" flag to force full
    * redraw.
    */
 
@@ -317,7 +317,7 @@ DISPLAY::refresh(WINSCR* wp) {
     }
 
     wp->setTopline(lp);
-    wp->setFlags(WINSCR::WFHARD);   /* Force full.  */
+    wp->setFlags(Window::WFHARD);   /* Force full.  */
   }
 
   /*
@@ -328,7 +328,7 @@ DISPLAY::refresh(WINSCR* wp) {
 
   lp = wp->topline();
   i  = wp->toprow();
-  if ((wp->getFlags() & ~WINSCR::WFMODE) == WINSCR::WFEDIT) {
+  if ((wp->getFlags() & ~Window::WFMODE) == Window::WFEDIT) {
     j = wp->rows() + i;
     while ((lp != wp->line()) && (j > i)) {
       ++i;
@@ -342,7 +342,7 @@ DISPLAY::refresh(WINSCR* wp) {
       }
       VIDEO::vteeol();
     }
-  } else if ((wp->getFlags() & (WINSCR::WFEDIT|WINSCR::WFHARD)) != 0) {
+  } else if ((wp->getFlags() & (Window::WFEDIT|Window::WFHARD)) != 0) {
     while (i < (wp->toprow() + wp->rows())) {
       VIDEO::vscreen[i]->changed = true;
       VIDEO::vtmove(i, 0);
@@ -358,22 +358,22 @@ DISPLAY::refresh(WINSCR* wp) {
   }
 
   display->modeline(wp);
-  wp->setFlags(WINSCR::WFCLEAR);
+  wp->setFlags(Window::WFCLEAR);
 }
 
 void
-DISPLAY::update(DISPLAY::Mode mode) {
-  static BUFFER* oldbp{nullptr};
+Display::update(Display::Mode mode) {
+  static Buffer* oldbp{nullptr};
 
   if (mode == Mode::REFRESH) {
-    DISPLAY::garbaged();
+    Display::garbaged();
   }
 
   if (!VIDEO::ok) {
     return;
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     /*
      * Look at any window with update flags set on.
      */
@@ -456,7 +456,7 @@ DISPLAY::update(DISPLAY::Mode mode) {
  */
 
 void
-DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
+Display::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 #if defined(UNICODE)
   int stflag;
 #if defined(_POSIX_C_SOURCE)
@@ -589,7 +589,7 @@ DISPLAY::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 }
 
 void
-DISPLAY::modeline(const WINSCR* wp) noexcept {
+Display::modeline(const Window* wp) noexcept {
   EMCHAR  buf[8];
   int     i;
 
@@ -619,7 +619,7 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
 
   switch (bp->editMode()) {
   case EDITMODE::ASMODE      : modeputs(ECSTR(" (Assembler"));   break;
-  case EDITMODE::BUFFERMODE  : modeputs(ECSTR(" (Buffer Menu")); break;
+  case EDITMODE::BufferMODE  : modeputs(ECSTR(" (Buffer Menu")); break;
   case EDITMODE::CMODE       : modeputs(ECSTR(" (C"));           break;
   case EDITMODE::CPPMODE     : modeputs(ECSTR(" (C++"));         break;
   case EDITMODE::CSHARPMODE  : modeputs(ECSTR(" (C#"));          break;
@@ -723,7 +723,7 @@ DISPLAY::modeline(const WINSCR* wp) noexcept {
     }
   }
 
-#if defined(_DISPLAY_FILENAME)
+#if defined(_Display_FILENAME)
   if (bp->filename()) {
     /*
      *      Complete file name with PATH.

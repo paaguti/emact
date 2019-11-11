@@ -110,7 +110,7 @@ newfile(const EMCHAR* filename) {
     return false;
   }
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     if (emstrcmp(bp->filename(), fname) == 0) {
       (void)curwp->connect(bp);
       auto lp = curwp->line();
@@ -129,7 +129,7 @@ newfile(const EMCHAR* filename) {
         bp->setChanged(false);   /* Don't complain! */
         return revertbuffer() == T;
       }
-      curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+      curwp->setFlags(Window::WFMODE|Window::WFHARD);
       WDGmessage(ECSTR("Old buffer"));
       return true;
     }
@@ -139,14 +139,14 @@ newfile(const EMCHAR* filename) {
     return diredbuffer(fname);
   }
 
-  EMCHAR bname[BUFFER::NBUFN];
+  EMCHAR bname[Buffer::NBUFN];
   makename(bname, fname);
 
   {
     /*
      * find or create buffer if it does not exist.
      */
-    auto bp = BUFFER::find(bname);
+    auto bp = Buffer::find(bname);
 
     if (bp == nullptr) {
       WDGerror(ECSTR("Cannot create buffer"));
@@ -241,13 +241,13 @@ readin(const EMCHAR* fname) {
 
   curbp->setEditMode(getautomode(fname));
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == curbp) {
       wp->setTopline(curbp->firstline());
       wp->setDot(curbp->firstline(), 0);
       wp->setMark(nullptr, 0);
       // update mode line and ensure hard!
-      wp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+      wp->setFlags(Window::WFMODE|Window::WFHARD);
     }
   }
 
@@ -433,7 +433,7 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
    */
 
   auto cp2 = bname;
-  while (cp2 != (bname + BUFFER::NBUFN - 1) && *cp1) {
+  while (cp2 != (bname + Buffer::NBUFN - 1) && *cp1) {
     *cp2++ = *cp1++;
   }
   *cp2 = 0;
@@ -444,12 +444,12 @@ makename(EMCHAR* bname, const EMCHAR* fname) {
    */
 
   char i = '2';
-  while (BUFFER::find(bname, false) != nullptr) {
+  while (Buffer::find(bname, false) != nullptr) {
     /*
      * Buffer name already exists, append <X> and try again
      */
     auto tmp(cp2);
-    while (tmp >= (bname + BUFFER::NBUFN - 4)) {
+    while (tmp >= (bname + Buffer::NBUFN - 4)) {
       /*
        * find the end of bname minus 4 chars for <?>
        */
@@ -580,14 +580,14 @@ writeout(const EMCHAR* fname) {
    *      Update mode lines.
    */
 
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
 
   return (s == FIOSUC);
 }
 
 #if     defined(_WIN32)
-extern  CMD NTansitooem(EDLINE* lp);
-extern  CMD NToemtoansi(EDLINE* lp);
+extern  CMD NTansitooem(Line* lp);
+extern  CMD NToemtoansi(Line* lp);
 
 CMD
 ansitooem() {
@@ -601,7 +601,7 @@ ansitooem() {
     NTansitooem(lp);
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   return T;
 }
@@ -618,7 +618,7 @@ oemtoansi() {
     NToemtoansi(lp);
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   return T;
 }
@@ -675,7 +675,7 @@ mactoansi() {
     }
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   return T;
 }
@@ -801,7 +801,7 @@ savetime() {
     return;
   }
 
-  EDLINE* lp;
+  Line* lp;
 
   if ((lp = curbp->firstline()) == curbp->lastline() ||
       (lp = lp->forw())         == curbp->lastline()) {
@@ -858,10 +858,10 @@ savetime() {
                        (nt->tm_mday) % 100);
 
       curwp->setDot(lp, i);
-      (void)EDLINE::ldelete(datelen);
+      (void)Line::ldelete(datelen);
 
       for (auto j = 0; sdate[j]; ++j) {
-        (void)EDLINE::linsert(sdate[j]);
+        (void)Line::linsert(sdate[j]);
       }
 
       if (!atline) {
@@ -870,7 +870,7 @@ savetime() {
         curwp->setDotPos(oldo);
       }
 
-      curwp->setFlags(WINSCR::WFHARD);
+      curwp->setFlags(Window::WFHARD);
       break;
     }
   }
@@ -898,7 +898,7 @@ toggleread() {
  * The   command  allows  the user  to  modify  the   file  name
  * associated  with  the  current buffer.  It is  like  the  "f"
  * command in UNIX "ed".  The operation is simple;  just zap the
- * name in the BUFFER structure, and mark the windows as needing
+ * name in the Buffer structure, and mark the windows as needing
  * an  update.  You can type a blank line at the prompt  if  you
  * wish.
  */
@@ -943,7 +943,7 @@ fileread() {
 
   curbp->setReadonly(true);
 
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -955,7 +955,7 @@ fileread() {
 CMD
 filealternate() {
   auto   ofname = getbufdir();
-  EMCHAR bname[BUFFER::NBUFN];
+  EMCHAR bname[Buffer::NBUFN];
   CMD s;
 
   complete = filematch;
@@ -981,7 +981,7 @@ filealternate() {
    *      Update mode lines.
    */
 
-  BUFFER::updatemodes();
+  Buffer::updatemodes();
   return T;
 }
 
@@ -994,7 +994,7 @@ filealternate() {
 
 CMD
 fileinsert() {
-  EDLINE* lp2;
+  Line* lp2;
   int     nline;
   int     nbytes;
   bool    binmode;
@@ -1057,7 +1057,7 @@ fileinsert() {
        */
 
       for (int i = 0; i < nbytes; ++i) {
-        (void)EDLINE::linsert(line[i]);
+        (void)Line::linsert(line[i]);
       }
 
       /*
@@ -1105,7 +1105,7 @@ fileinsert() {
   }
 
   curwp->setDot(dot);
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   return (res == FIOERR) ? NIL : T;
 }
@@ -1145,7 +1145,7 @@ filewrite() {
   }
 
   if (writeout(ofname)) {
-    EMCHAR bname[BUFFER::NBUFN];
+    EMCHAR bname[Buffer::NBUFN];
 
     makename(&bname[0], ofname);
     (void)emstrcpy(curbp->bufname(), bname);
@@ -1184,7 +1184,7 @@ filesave() {
 
 CMD
 savesomebuffers() {
-  return BUFFER::anycb(BUFFER::ANYCB::PROMPT) ? T : NIL;
+  return Buffer::anycb(Buffer::ANYCB::PROMPT) ? T : NIL;
 }
 
 /*
@@ -1222,7 +1222,7 @@ revertbuffer() {
    * Goto the line at dot (if any).
    */
 
-  EDLINE* clp;
+  Line* clp;
 
   for (clp = curbp->firstline(); clp != curbp->lastline(); clp = clp->forw()) {
     if (cln-- == 0) {
@@ -1236,7 +1236,7 @@ revertbuffer() {
     curwp->setDot(clp, clp->length());
   }
 
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
   return T;
 }
 

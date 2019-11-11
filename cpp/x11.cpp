@@ -25,7 +25,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 
 #include "./emacs.h"
 
-#if defined(_X11) && !defined(X_DISPLAY_MISSING)
+#if defined(_X11) && !defined(X_Display_MISSING)
 
 #if defined(sun) && defined(__GNUC__)
 #pragma GCC diagnostic push
@@ -101,7 +101,7 @@ class X11Terminal final : public Terminal {
   void
   cursor(bool flag) {
 #if defined(UNICODE)
-    EMCHAR code{DISPLAY::_curchar};
+    EMCHAR code{Display::_curchar};
 
     XwcDrawImageString(_dpy,
                        _win,
@@ -112,7 +112,7 @@ class X11Terminal final : public Terminal {
                        &code,
                        1);
 #else
-    char code{(char)DISPLAY::_curchar};
+    char code{(char)Display::_curchar};
 
     XDrawImageString(_dpy,
                      _win,
@@ -576,7 +576,7 @@ X11Terminal::X11Terminal() {
   this->setInitialized();
   term = this;
 
-  DISPLAY::_mouse = true;
+  Display::_mouse = true;
 
   widget.w_clipcopy  = X11clipcopy;
   widget.w_clippaste = X11clippaste;
@@ -678,7 +678,7 @@ X11Terminal::getEvent() {
       } while (XCheckTypedEvent(_dpy, Expose, &event));
 
       XSetRegion(_dpy, _gcstd, region);
-      DISPLAY::exposed();
+      Display::exposed();
       display->update();
       XDestroyRegion(region);
     }
@@ -709,8 +709,8 @@ X11Terminal::getEvent() {
     this->setNbCols(_width / _wfnt);
 
     if (X11expose) {
-      display = new DISPLAY;
-      (void)WINSCR::resize();
+      display = new Display;
+      (void)Window::resize();
     }
 
     break;

@@ -35,11 +35,11 @@ static EMCHAR* call[] = {
 
 #define EVAL    0x100
 
-static  EDLINE* curline;
+static  Line* curline;
 static  int     evalflag;
 
 #define EXIT            0
-#define EVALBUFFER      1
+#define EVALBuffer      1
 #define EVALFUNCTION    2
 
 /*
@@ -87,7 +87,7 @@ llembol(const EMCHAR* buf) {
 
 int
 llemeol(const EMCHAR *buf, int n) {
-  while (n-- && EDLINE::linsert(*buf++) == T) {
+  while (n-- && Line::linsert(*buf++) == T) {
     continue;
   }
 
@@ -100,7 +100,7 @@ llemeol(const EMCHAR *buf, int n) {
 
 CMD
 lispevalbuffer() {
-  evalflag = EVALBUFFER;
+  evalflag = EVALBuffer;
   curline  = curbp->firstline();
   tidy();
 }
@@ -111,7 +111,7 @@ evalfunction() {
 
   (void)blispexpr();
 
-  evalflag = EVALBUFFER;
+  evalflag = EVALBuffer;
   curline  = curwp->line();
   curwp->setDot(dot);
 

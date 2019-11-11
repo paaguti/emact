@@ -51,12 +51,12 @@ Editor::backchar() {
 
   while (n--) {
     if (curwp->pos() == 0) {
-      EDLINE* lp;
+      Line* lp;
       if ((lp = curwp->line()->back()) == curbp->lastline()) {
         return NIL;
       }
       curwp->setDot(lp, lp->length());
-      curwp->setFlags(WINSCR::WFMOVE);
+      curwp->setFlags(Window::WFMOVE);
     } else {
       curwp->setDotPos(curwp->pos() - 1);
     }
@@ -92,7 +92,7 @@ Editor::forwchar() {
         return NIL;
       }
       curwp->setDot(curwp->line()->forw(), 0);
-      curwp->setFlags(WINSCR::WFMOVE);
+      curwp->setFlags(Window::WFMOVE);
     } else {
       curwp->setDotPos(curwp->pos() + 1);
     }
@@ -111,7 +111,7 @@ Editor::forwchar() {
 CMD
 Editor::gotobob() {
   curwp->setDot(curbp->firstline(), 0);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
   return T;
 }
 
@@ -124,7 +124,7 @@ Editor::gotobob() {
 CMD
 Editor::gotoeob() {
   curwp->setDot(curbp->lastline(), 0);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
   return T;
 }
 
@@ -154,7 +154,7 @@ Editor::gotoline() {
   }
 
   curwp->setDot(clp, 0);
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   if (n <= 0) {
     return T;
@@ -171,12 +171,12 @@ Editor::gotoline() {
 
 CMD
 Editor::forwline() {
-  EDLINE* dlp;
+  Line* dlp;
   int     n = Editor::_repeat;
 
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P or C-N */
-    Editor::_curgoal = DISPLAY::_curcol;
+    Editor::_curgoal = Display::_curcol;
   }
   Editor::_thisflag |= CFCPCN;
   if ((dlp = curwp->line()) == curbp->lastline()) {
@@ -188,7 +188,7 @@ Editor::forwline() {
   }
 
   curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   return T;
 }
@@ -204,7 +204,7 @@ CMD
 Editor::backline() {
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
-    Editor::_curgoal = DISPLAY::_curcol;
+    Editor::_curgoal = Display::_curcol;
   }
 
   Editor::_thisflag |= CFCPCN;
@@ -221,7 +221,7 @@ Editor::backline() {
   }
 
   curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   return T;
 }
@@ -251,7 +251,7 @@ Editor::forwpage() {
 
   curwp->setTopline(lp);
   curwp->setDot(lp, 0);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
 
   return T;
 }
@@ -263,8 +263,8 @@ Editor::forwpage() {
 
 CMD
 Editor::forwother() {
-  if (WINSCR::nextwind() == T && forwpage() == T) {
-    return WINSCR::prevwind();
+  if (Window::nextwind() == T && forwpage() == T) {
+    return Window::prevwind();
   } else {
     return NIL;
   }
@@ -293,7 +293,7 @@ Editor::backpage() {
 
   curwp->setTopline(lp);
   curwp->setDot(lp, 0);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
 
   return T;
 }
@@ -354,7 +354,7 @@ Editor::swapmark() {
 
   curwp->setDot(mark);
   curwp->setMark(dot);
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   return T;
 }

@@ -27,8 +27,8 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 
 static void    getkeyname(int key, EMCHAR *buf);
 static EMCHAR* varmatch(const EMCHAR* prompt, EMCHAR* buf);
-static void    printcmd(int c, BUFFER* bp);
-static void    printmacro(const EMCHAR* name, BUFFER* bp);
+static void    printcmd(int c, Buffer* bp);
+static void    printmacro(const EMCHAR* name, Buffer* bp);
 static CMD     internalfindtag(int lineno);
 
 /*
@@ -119,7 +119,7 @@ help() {
   /*
    * find or create buffer if it does not exist.
    */
-  auto bp = BUFFER::find(BUF_HELP);
+  auto bp = Buffer::find(BUF_HELP);
   bp->setChanged(false);
 
   /* Blow old text away */
@@ -127,7 +127,7 @@ help() {
     return NIL;
   }
 
-  EDLINE::append(bp, ECSTR("===== Standard key definition ====="));
+  Line::append(bp, ECSTR("===== Standard key definition ====="));
 
   for (const auto& ktp : Editor::_keytab) {
     auto c(ktp.code());
@@ -155,10 +155,10 @@ help() {
         (void)emstrcat(line, ECSTR(")"));
       }
     }
-    EDLINE::append(bp, line);
+    Line::append(bp, line);
   }
 
-  EDLINE::append(bp, ECSTR("====== User macro definition ======"));
+  Line::append(bp, ECSTR("====== User macro definition ======"));
 
   for (const auto& macro : Editor::getMacros()) {
     /* Look in macro table. */
@@ -183,12 +183,12 @@ help() {
       (void)emstrcat(line, ECSTR("unbound"));
     }
 
-    EDLINE::append(bp, line);
+    Line::append(bp, line);
   }
 
-  EDLINE::append(bp, ECSTR("===== Customer variable value ====="));
+  Line::append(bp, ECSTR("===== Customer variable value ====="));
 
-  for (const auto& vtp : VARTAB::vartab) {
+  for (const auto& vtp : Variable::vartab) {
     (void)emstrcpy(line, vtp.name());
     for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
       line[i] = ' ';
@@ -214,7 +214,7 @@ help() {
       (void)emstrcat(line, ECSTR("\""));
     }
 
-    EDLINE::append(bp, line);
+    Line::append(bp, line);
   }
 
   (void)bp->show();
@@ -244,7 +244,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
 
   index_found = 0;
   index_type  = INDEX_VARIABLE;
-  for (const auto& var : VARTAB::vartab) {
+  for (const auto& var : Variable::vartab) {
     if (emstrcmp(var.name(), buf) == 0) {
       return var.name();
     }
@@ -266,7 +266,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
 
   index_found = 0;
   index_type  = INDEX_VARIABLE;
-  for (const auto& var : VARTAB::vartab) {
+  for (const auto& var : Variable::vartab) {
     if (len == 0 || emstrncmp(var.name(), buf, len) == 0) {
       if (len != emstrlen(var.name())) {
         WDGupdate(prompt, var.name());
@@ -344,7 +344,7 @@ setvar() {
     return status;
   case INDEX_VARIABLE:
     {
-      auto& var(VARTAB::vartab[index_found]);
+      auto& var(Variable::vartab[index_found]);
 
       switch (var.type()) {
       case BOOLVAL :
@@ -377,7 +377,7 @@ setvar() {
     }
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     display->modeline(wp);
   }
 
@@ -586,7 +586,7 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
 }
 
 /*
- * Uncompile  the  current macro definition in MLisp or OpenLisp
+ * Uncompile  the  current macro definition in Lisp or OpenLisp
  * statements.  The  command  popup  the help buffer and display
  * the definition. Bound to C-XU
  */
@@ -602,7 +602,7 @@ static  int     count     = 1;
  */
 
 static void
-printmacro(const EMCHAR* name, BUFFER* bp) {
+printmacro(const EMCHAR* name, Buffer* bp) {
   if (instringp) {
     if (count > 1) {
       (void)emstrcat(macline, ECSTR("\"))"));
@@ -610,7 +610,7 @@ printmacro(const EMCHAR* name, BUFFER* bp) {
       (void)emstrcat(macline, ECSTR("\")"));
     }
 
-    EDLINE::append(bp, macline);
+    Line::append(bp, macline);
   }
 
   if (name) {
@@ -628,7 +628,7 @@ printmacro(const EMCHAR* name, BUFFER* bp) {
       (void)emstrcat(macline, ECSTR(")"));
     }
 
-    EDLINE::append(bp, macline);
+    Line::append(bp, macline);
   }
 
   instringp = false;
@@ -639,7 +639,7 @@ printmacro(const EMCHAR* name, BUFFER* bp) {
  */
 
 static void
-printcmd(int c, BUFFER* bp) {
+printcmd(int c, Buffer* bp) {
   EMCHAR ch[2];
 
   ch[0] = (EMCHAR)(c & MAX_EMCHAR);
@@ -707,7 +707,7 @@ uncompile() {
   /*
    * find or create buffer if it does not exist.
    */
-  auto bp = BUFFER::find(BUF_HELP);
+  auto bp = Buffer::find(BUF_HELP);
   bp->setChanged(false);
 
   /* Blow old text away */
@@ -715,7 +715,7 @@ uncompile() {
     return NIL;
   }
 
-  EDLINE::append(bp, ECSTR("(defun current-macro ()"));
+  Line::append(bp, ECSTR("(defun current-macro ()"));
 
   kbdm.startPlaying();
   while ((c = kbdm.play()) != (CTLX|')')) {
@@ -730,7 +730,7 @@ uncompile() {
   kbdm.stopPlaying();
   printmacro(nullptr, bp);
 
-  EDLINE::append(bp, ECSTR(")"));
+  Line::append(bp, ECSTR(")"));
 
   (void)bp->show();
 

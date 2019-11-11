@@ -281,12 +281,12 @@ dired() {
 bool
 diredbuffer(const EMCHAR* fname) {
   EMCHAR  buf[NFILEN];
-  EMCHAR  bname[BUFFER::NBUFN];
+  EMCHAR  bname[Buffer::NBUFN];
 
   fname = normalize(const_cast<EMCHAR*>(fname), NOSLASH);
   makename(&bname[0], fname);
 
-  auto bp(BUFFER::find(bname, true, EDITMODE::DIRED));
+  auto bp(Buffer::find(bname, true, EDITMODE::DIRED));
 
   if (bp == nullptr) {
     return false;
@@ -328,7 +328,7 @@ diredbuffer(const EMCHAR* fname) {
       }
       (void)emstrcat(buf, caseconvert(emgetdirentry(dp)));
 
-      EDLINE::append(bp, buf);
+      Line::append(bp, buf);
       ++nfiles;
     }
   } catch(...) {
@@ -384,7 +384,7 @@ diredcmd(int c) {
       lp->put(0, 'D');
     }
 
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -424,7 +424,7 @@ diredcmd(int c) {
         if (removefile(pfname, true)) {
           removed++;
           (void)Editor::gotobol();
-          (void)EDLINE::ldelete(curwp->line()->length() + 1);
+          (void)Line::ldelete(curwp->line()->length() + 1);
           (void)Editor::backline();
         }
       }
@@ -497,7 +497,7 @@ diredcmd(int c) {
         && lp->get(0) == 'D') {
       curbp->setReadonly(false);
       curwp->line()->put(0, ' ');
-      BUFFER::change(WINSCR::WFEDIT);
+      Buffer::change(Window::WFEDIT);
       curbp->setReadonly(true);
       curbp->setChanged(false);
     }

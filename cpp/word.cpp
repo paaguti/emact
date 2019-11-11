@@ -194,7 +194,7 @@ upperword() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::islower(c)) {
         curwp->setChar(std::toupper(c));
-        BUFFER::change(WINSCR::WFHARD);
+        Buffer::change(Window::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -229,7 +229,7 @@ lowerword() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::isupper(c)) {
         curwp->setChar(std::tolower(c));
-        BUFFER::change(WINSCR::WFHARD);
+        Buffer::change(Window::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -266,7 +266,7 @@ capword() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::islower(c)) {
         curwp->setChar(std::toupper(c));
-        BUFFER::change(WINSCR::WFHARD);
+        Buffer::change(Window::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -275,7 +275,7 @@ capword() {
         c = curwp->getChar();
         if (std::isalpha(c) && std::isupper(c)) {
           curwp->setChar(std::tolower(c));
-          BUFFER::change(WINSCR::WFHARD);
+          Buffer::change(Window::WFHARD);
         }
         if (Editor::forwchar() == NIL) {
           return NIL;
@@ -410,7 +410,7 @@ wtwiddle() {
    */
 
   for (auto j(0); word1[j]; ++j) {
-    (void)EDLINE::linsert(word1[j]);
+    (void)Line::linsert(word1[j]);
   }
 
   /*
@@ -431,7 +431,7 @@ wtwiddle() {
   }
 
   for (auto j(0); word2[j]; ++j) {
-    (void)EDLINE::linsert(word2[j]);
+    (void)Line::linsert(word2[j]);
   }
 
   return T;

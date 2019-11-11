@@ -101,7 +101,7 @@ EMCHAR* ffgetenv(const EMCHAR* file);
 int     ffremove(const EMCHAR* fn);
 int     ffrename(const EMCHAR* oldfn, const EMCHAR* newfn);
 int     ffaccess(const EMCHAR* fn);
-bool    ffsetaccess(const EMCHAR* fname, BUFFER* bp);
+bool    ffsetaccess(const EMCHAR* fname, Buffer* bp);
 int     ffullname(EMCHAR* rname, const EMCHAR* fname);
 bool    ffchanged(const EMCHAR* fname, time_t* time);
 bool    ffilevalid(const EMCHAR* fname);
@@ -113,8 +113,8 @@ void    ffputbom(ENCODING widep);
  */
 
 bool    unindent(int c, bool f = true);
-int     lastc(EDLINE* line);
-int     lastlisp(EDLINE* line);
+int     lastc(Line* line);
+int     lastlisp(Line* line);
 CMD     tabindent();
 CMD     indentline();
 CMD     newlineindent();

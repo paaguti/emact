@@ -90,7 +90,7 @@ enum class EDITMODE {
   /** Fortran mode */
   FORTRANMODE,
   /** Buffer mode */
-  BUFFERMODE,
+  BufferMODE,
   /** SGML mode */
   SGMLMODE,
   /** Perl mode */
@@ -103,10 +103,10 @@ enum class EDITMODE {
   SHELLMODE
 };
 
-class BUFFER;
-class EDLINE;
+class Buffer;
+class Line;
 class Point;
-class WINSCR;
+class Window;
 class Terminal;
 class EditorCommand;
 class Completion;
@@ -114,11 +114,11 @@ class Editor;
 class Kbdm;
 
 /**
- * A Point is a position of a character in an EDLINE.
+ * A Point is a position of a character in an Line.
  */
 class Point final {
  public:
-  explicit Point(EDLINE* pointLine = nullptr, int pointPos = 0)
+  explicit Point(Line* pointLine = nullptr, int pointPos = 0)
     : _line{pointLine},
       _pos{pointPos} {
   }
@@ -138,13 +138,13 @@ class Point final {
   }
 
   void
-  set(EDLINE* newLine, int newPos) {
+  set(Line* newLine, int newPos) {
     _line = newLine;
     _pos  = newPos;
   }
 
   void
-  setLine(EDLINE* newLine) {
+  setLine(Line* newLine) {
     _line = newLine;
   }
 
@@ -153,7 +153,7 @@ class Point final {
     _pos  = newPos;
   }
 
-  EDLINE*
+  Line*
   line() const noexcept {
     return _line;
   }
@@ -164,7 +164,7 @@ class Point final {
   }
 
  private:
-  EDLINE* _line{nullptr};
+  Line* _line{nullptr};
   int     _pos{0};
 };
 
@@ -176,7 +176,7 @@ class Point final {
  * redisplay.
  */
 
-class WINSCR {
+class Window {
  public:
   static constexpr uint32_t WFCLEAR = 0x00; // All flags cleared.
   static constexpr uint32_t WFFORCE = 0x01; // Window needs forced reframe
@@ -187,18 +187,18 @@ class WINSCR {
 
   /**
    * Default ctor.
-   * Create a new WINSCR object and put its pointer on top of an internal list.
+   * Create a new Window object and put its pointer on top of an internal list.
    * @param [in] bp buffer associated to this window.
    */
-  explicit WINSCR(BUFFER* bp) noexcept;
+  explicit Window(Buffer* bp) noexcept;
 
   /**
    * destroy window and uncontitionally removes its pointer
    * from an internal list.
    */
-  ~WINSCR();
+  ~Window();
 
-  BUFFER*
+  Buffer*
   buffer() const noexcept {
     return _bufp;
   }
@@ -230,7 +230,7 @@ class WINSCR {
    * @return true on success.
    */
   bool
-  connect(BUFFER* bp, bool check = true) noexcept;
+  connect(Buffer* bp, bool check = true) noexcept;
 
   int
   toprow() const noexcept {
@@ -242,7 +242,7 @@ class WINSCR {
    * only  one  window.
    * @return uppermost window that isn't the current window.
    */
-  static WINSCR*
+  static Window*
   popup() noexcept;
 
   /*
@@ -258,10 +258,10 @@ class WINSCR {
    * the ast window.
    * @return window down or nullptr.
    */
-  WINSCR*
+  Window*
   down() const noexcept {
-    auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), this);
-    if (++it != WINSCR::list().end()) {
+    auto it = std::find(Window::list().begin(), Window::list().end(), this);
+    if (++it != Window::list().end()) {
       return *it;
     } else {
       return nullptr;
@@ -273,10 +273,10 @@ class WINSCR {
    * the last window.
    * @return window up or nullptr.
    */
-  WINSCR*
+  Window*
   up() const noexcept {
-    auto it = std::find(WINSCR::list().rbegin(), WINSCR::list().rend(), this);
-    if (++it != WINSCR::list().rend()) {
+    auto it = std::find(Window::list().rbegin(), Window::list().rend(), this);
+    if (++it != Window::list().rend()) {
       return *it;
     } else {
       return nullptr;
@@ -322,7 +322,7 @@ class WINSCR {
   }
 
   void
-  setDot(EDLINE* dotLine, int dotPos) noexcept {
+  setDot(Line* dotLine, int dotPos) noexcept {
     _dot.set(dotLine, dotPos);
   }
 
@@ -337,14 +337,14 @@ class WINSCR {
   }
 
   void
-  setDotLine(EDLINE* dotLine) noexcept {
+  setDotLine(Line* dotLine) noexcept {
     _dot.setLine(dotLine);
   }
 
   /**
    * helper. Equivalent to getDot().line()
    */
-  EDLINE*
+  Line*
   line() const noexcept {
     return _dot.line();
   }
@@ -364,7 +364,7 @@ class WINSCR {
   }
 
   void
-  setMark(EDLINE* markLine, int markPos) noexcept {
+  setMark(Line* markLine, int markPos) noexcept {
     _mark.set(markLine, markPos);
   }
 
@@ -378,13 +378,13 @@ class WINSCR {
     return _mark;
   }
 
-  EDLINE*
+  Line*
   topline() {
     return _toplinep;
   }
 
   void
-  setTopline(EDLINE* topLine) {
+  setTopline(Line* topLine) {
     _toplinep = topLine;
   }
 
@@ -399,7 +399,7 @@ class WINSCR {
   friend CMD delwind();
   friend CMD splitwind();
 
-  static std::list<WINSCR*>&
+  static std::list<Window*>&
   list() noexcept {
     return _wlist;
   }
@@ -423,11 +423,11 @@ class WINSCR {
   static CMD adjust();
 
  private:
-  static std::list<WINSCR*> _wlist;
-  EDLINE*  _toplinep{nullptr};  // Top line in the window
+  static std::list<Window*> _wlist;
+  Line*  _toplinep{nullptr};  // Top line in the window
   Point    _dot;                // Line containing "."
   Point    _mark;               // Mark point.
-  BUFFER*  _bufp{nullptr};      // Buffer displayed in window
+  Buffer*  _bufp{nullptr};      // Buffer displayed in window
   int      _toprow{0};          // Origin 0 top row of window
   int      _ntrows{0};          // # of rows of text in window
   uint32_t _flags{0};           // Flags.
@@ -445,7 +445,7 @@ class WINSCR {
  * list of lines, with a pointer to the header line in b_linep.
  */
 
-class BUFFER {
+class Buffer {
  public:
   /**
    * Enum for anycb function
@@ -461,14 +461,14 @@ class BUFFER {
 
   /**
    * Find a buffer, by name.
-   * @return a pointer to the BUFFER structure associated with it.  If
+   * @return a pointer to the Buffer structure associated with it.  If
    * the named buffer is found, but is a TEMP buffer (like the buffer
    * list) conplain.
    * @param [in] bname buffer name
    * @param [in] cflag if true, create the buffer if not found.
    * @param [in] mode buffer edit mode (default EDITMODE::FUNDAMENTAL).
    */
-  static BUFFER*
+  static Buffer*
   find(const EMCHAR* bname,
        bool cflag = true,
        EDITMODE mode = EDITMODE::FUNDAMENTAL);
@@ -481,7 +481,7 @@ class BUFFER {
    * screen,  split  the  current  window  and  display  it.
    * @return the window that display the buffer or nullptr if it fails.
    */
-  WINSCR*
+  Window*
   show() noexcept;
 
   /**
@@ -510,10 +510,10 @@ class BUFFER {
   bool
   discard() noexcept;
 
-  EDLINE*
+  Line*
   firstline();
 
-  EDLINE*
+  Line*
   lastline() {
     return _linep;
   }
@@ -552,7 +552,7 @@ class BUFFER {
   static void
   updatemodes() noexcept;
 
-  static std::list<BUFFER*>& list() noexcept {
+  static std::list<Buffer*>& list() noexcept {
     return _blist;
   }
 
@@ -567,14 +567,14 @@ class BUFFER {
   }
 
   void
-  setDot(EDLINE* dotLine, int dotPos) noexcept {
+  setDot(Line* dotLine, int dotPos) noexcept {
     _dot.set(dotLine, dotPos);
   }
 
   /**
    * helper. Equivalent to getDot().line()
    */
-  EDLINE*
+  Line*
   line() const noexcept {
     return _dot.line();
   }
@@ -593,7 +593,7 @@ class BUFFER {
   }
 
   void
-  setMark(EDLINE* markLine, int markPos) noexcept {
+  setMark(Line* markLine, int markPos) noexcept {
     _mark.set(markLine, markPos);
   }
 
@@ -603,12 +603,12 @@ class BUFFER {
   }
 
  private:
-  BUFFER(const EMCHAR* bname,
+  Buffer(const EMCHAR* bname,
          bool bflag = false,
          EDITMODE mode = EDITMODE::FUNDAMENTAL);
 
  public:
-  ~BUFFER() {}
+  ~Buffer() {}
 
   void
   setBuffer(const EMCHAR* name) {
@@ -705,11 +705,11 @@ class BUFFER {
   static CMD listbuffers();
 
  private:
-  static std::list<BUFFER*> _blist;
+  static std::list<Buffer*> _blist;
 
   mode_t   _mode{0};                      // File permission mode.
-  Point    _dot;                          // "." EDLINE and offset link.
-  EDLINE*  _linep{nullptr};               // Link to the header EDLINE
+  Point    _dot;                          // "." Line and offset link.
+  Line*  _linep{nullptr};               // Link to the header Line
   Point    _mark;                         // Mark in this buffer.
   ENCODING _wide{ENCODING::EMASCII};      // Wide flag
   EDITMODE _emode{EDITMODE::FUNDAMENTAL}; // Buffer electric mode
@@ -723,26 +723,26 @@ class BUFFER {
 };
 
 /*
- * All  text  is  kept  in  circularly  linked  lists  of EDLINE
+ * All  text  is  kept  in  circularly  linked  lists  of Line
  * structures.  These  begin  at  the  header line (which is the
  * blank  line  beyond  the  end  of  the buffer).  This line is
- * pointed  to by the "BUFFER".  Each line contains a the number
+ * pointed  to by the "Buffer".  Each line contains a the number
  * of bytes in the line (the "used" size),  the size of the text
  * array,  and  the  text.  The  end  of line is not stored as a
  * byte;  it's  implied.  Future  additions  will include update
  * hints, and a list of marks into the line.
  */
 
-class EDLINE {
+class Line {
  public:
-  EDLINE() = delete;
-  EDLINE(const EDLINE&) = delete;
-  EDLINE& operator=(const EDLINE&) = delete;
-  ~EDLINE() = delete;
+  Line() = delete;
+  Line(const Line&) = delete;
+  Line& operator=(const Line&) = delete;
+  ~Line() = delete;
 
-  static EDLINE* alloc(int used = 0);
-  static void    dispose(EDLINE*& lp);
-  static void    free(EDLINE*& lp);
+  static Line* alloc(int used = 0);
+  static void    dispose(Line*& lp);
+  static void    free(Line*& lp);
 
   int
   leftmargin() const noexcept;
@@ -800,19 +800,19 @@ class EDLINE {
     l_used = n;
   }
 
-  EDLINE*
+  Line*
   forw() const noexcept {
     return l_fp;
   }
 
-  EDLINE*
+  Line*
   back() const noexcept {
     return l_bp;
   }
 
   void
   print(const char* file, size_t line, const char* msg) {
-    auto f = [this](const char* what, const EDLINE* l) {
+    auto f = [this](const char* what, const Line* l) {
                char buf[128];
                (void)std::memset(buf, 0, sizeof(buf));
                (void)std::memcpy(buf, l->l_text, l_used);
@@ -848,9 +848,9 @@ class EDLINE {
    *    +-->| this |
    *        +------+
    */
-  EDLINE*
+  Line*
   insertBefore(int n, const char* file = nullptr, size_t lineNb = 0) {
-    EDLINE* line;
+    Line* line;
 
     if (file) {
       print(file, lineNb, ">> insertBefore-1 this");
@@ -874,9 +874,9 @@ class EDLINE {
     return line;
   }
 
-  EDLINE*
+  Line*
   realloc(int n, const char* file = nullptr, size_t lineNb = 0) {
-    EDLINE* line;
+    Line* line;
 
     if (file) {
       (void)print(file, lineNb, "realloc");
@@ -912,10 +912,10 @@ class EDLINE {
    * Current line becomes the parent of its next line.
    */
   void
-  remove(EDLINE* line);
+  remove(Line* line);
 
   /**
-   * This  routine,  given a pointer to a EDLINE, and the  current
+   * This  routine,  given a pointer to a Line, and the  current
    * cursor  goal column,  return the best choice for the  offset.
    * The offset is returned.  Used by "C-N" and "C-P".
    * @param [in] goal current goal (generally Editing::_curcol).
@@ -938,7 +938,7 @@ class EDLINE {
    * swap current line with line argument.
    */
   void
-  swap(EDLINE* line);
+  swap(Line* line);
 
   /**
    * Insert  "n"  copies  of  the  character  "c"  at  the current
@@ -971,7 +971,7 @@ class EDLINE {
    * Replace "n" copies of the character "c" at the current location
    * of dot.  In the easy case all that happens is the text is
    * replaced in the line. In the hard case, at the end of the line,
-   * the routine EDLINE::linsert is call with n equal to the number of
+   * the routine Line::linsert is call with n equal to the number of
    * characters alredy replaced.
    * @param [in] c character code to insert.
    * @param [in] n number of character to replace (default 1).
@@ -986,7 +986,7 @@ class EDLINE {
    * @param [in] text points to a string to append.
    */
   static void
-  append(BUFFER* bp, const EMCHAR* text);
+  append(Buffer* bp, const EMCHAR* text);
 
   /*
    * Editor commands bound to key:
@@ -1010,8 +1010,8 @@ class EDLINE {
   static bool delnewline();
 
   EMCHAR* l_text; // A bunch of characters.
-  EDLINE* l_fp;   // Link to the next line
-  EDLINE* l_bp;   // Link to the previous line
+  Line* l_fp;   // Link to the next line
+  Line* l_bp;   // Link to the previous line
   int     l_size; // Allocated size
   int     l_used; // Used size
 };
@@ -1025,7 +1025,7 @@ class EDLINE {
  * funny  get  and put character code too.  Some implementations
  * using  a high level interface such as Windowing system define
  * graphic  widget  to select a file,  display error and ask the
- * user.  A  "WIDGET" structure holds indirect pointers to those
+ * user.  A  "Widget" structure holds indirect pointers to those
  * functionalities.
  */
 
@@ -1131,7 +1131,7 @@ class Terminal {
   int t_ncol{0};
 };
 
-class WIDGET {
+class Widget {
  public:
   /*
    * Y/N Widget
@@ -1260,17 +1260,17 @@ enum EMVAR {
   STRING  = 0x0002           // String type
 };
 
-class VARTAB {
+class Variable {
  public:
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* varName, EMVAR varType)
+  constexpr Variable(T& val, EMCHAR* varName, EMVAR varType)
   : f_val{&val},
     f_name{varName},
     f_type{varType} {
   }
 
   template<typename T>
-  constexpr VARTAB(T& val, EMCHAR* varName, int strSize)
+  constexpr Variable(T& val, EMCHAR* varName, int strSize)
   : f_val{&val},
     f_name{varName},
     f_type{STRING},
@@ -1307,7 +1307,7 @@ class VARTAB {
     return f_size;
   }
 
-  static std::vector<VARTAB> vartab;
+  static std::vector<Variable> vartab;
 
  private:
   void*   f_val;                 // Flag address
@@ -1316,11 +1316,11 @@ class VARTAB {
   size_t  f_size{0};             // Size of the variable
 };
 
-class MLisp;
-class MACTAB {
-  friend class MLisp;
+class Lisp;
+class Macro {
+  friend class Lisp;
  public:
-  MACTAB() = default;
+  Macro() = default;
 
   template<typename T>
   void
@@ -1406,7 +1406,7 @@ class Completion {
 /**
  * Class that handles display.
  */
-class DISPLAY {
+class Display {
  public:
   enum class Mode {
     DELTA   = 0,
@@ -1418,14 +1418,14 @@ class DISPLAY {
     SYNCHRONIZED = 1,
     EXPOSE       = 2
   };
-  DISPLAY();
-  ~DISPLAY();
+  Display();
+  ~Display();
   bool running() const noexcept;
   void tidy() const noexcept;
   const EMCHAR* text(int y) const noexcept;
-  void update(DISPLAY::Mode mode = Mode::DELTA);
+  void update(Display::Mode mode = Mode::DELTA);
   void statputc(int n, int c) const noexcept;
-  void modeline(const WINSCR* wp) noexcept;
+  void modeline(const Window* wp) noexcept;
   static void garbaged() { _sgarbf = Sync::GARBAGE; }
   static void synchronized() { _sgarbf = Sync::SYNCHRONIZED; }
   static void exposed() { _sgarbf = Sync::EXPOSE; }
@@ -1436,7 +1436,7 @@ class DISPLAY {
   static bool   _mouse;    // mouse flags
 
  private:
-  void refresh(WINSCR* wp);
+  void refresh(Window* wp);
   static void computecursor();
   static void updateline(int row, EMCHAR* vline, EMCHAR* pline);
 };
@@ -1665,7 +1665,7 @@ class Editor {
   static int
   getkey();
 
-  static std::vector<MACTAB>&
+  static std::vector<Macro>&
   getMacros() {
     return _macros;
   }
@@ -1681,7 +1681,7 @@ class Editor {
 
   static std::vector<EditorCommand> _keytab;
   /* User macros table */
-  static std::vector<MACTAB> _macros;
+  static std::vector<Macro> _macros;
   static int _thisflag;  // Flags, this command
   static int _lastflag;  // Flags, last command
   static int _repeat;    // Repeat count
@@ -1729,12 +1729,12 @@ class Editor {
 };
 
 EMCHAR
-WINSCR::getChar() const {
+Window::getChar() const {
   return _dot.line()->get(_dot.pos());
 }
 
 void
-WINSCR::setChar(int c) {
+Window::setChar(int c) {
   _dot.line()->put(_dot.pos(), c);
 }
 
@@ -1744,7 +1744,7 @@ WINSCR::setChar(int c) {
  * region commands.
  */
 
-class REGION {
+class Region {
  public:
   /*
    * Editor commands bound to key:
@@ -1760,9 +1760,9 @@ class REGION {
   static CMD shiftleft();
 
 private:
-  REGION();
-  EDLINE* _linep{nullptr};  // Origin EDLINE address
-  int     _offset{0};       // Origin EDLINE offset
+  Region();
+  Line* _linep{nullptr};  // Origin Line address
+  int     _offset{0};       // Origin Line offset
   int     _size{0};         // Length in characters
   int     _lines{0};        // Number of lines
   bool    _empty{true};     // empty or not set.

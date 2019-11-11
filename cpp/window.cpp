@@ -26,9 +26,9 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
 
 #include "./emacs.h"
 
-std::list<WINSCR*> WINSCR::_wlist;
+std::list<Window*> Window::_wlist;
 
-WINSCR::WINSCR(BUFFER* bp) noexcept
+Window::Window(Buffer* bp) noexcept
   : _ntrows{term->getNbRows() - 1} {
   if (_wlist.empty()) {
     curwp = this;
@@ -39,7 +39,7 @@ WINSCR::WINSCR(BUFFER* bp) noexcept
   }
 }
 
-WINSCR::~WINSCR() {
+Window::~Window() {
   disconnect();
   _wlist.remove(this);
 }
@@ -49,8 +49,8 @@ WINSCR::~WINSCR() {
  * only  one  window.  Pick  the uppermost window that isn't the
  * current window.
  */
-WINSCR*
-WINSCR::popup() noexcept {
+Window*
+Window::popup() noexcept {
   if (_wlist.size() == 1) {
     if (splitwind() == NIL) {
       return nullptr;
@@ -72,8 +72,8 @@ WINSCR::popup() noexcept {
  */
 
 bool
-WINSCR::resize() noexcept {
-  BUFFER* bp{nullptr};
+Window::resize() noexcept {
+  Buffer* bp{nullptr};
 
   /*
    * Search for the first buffer that may exist on another window.
@@ -101,7 +101,7 @@ WINSCR::resize() noexcept {
    */
   head->_ntrows = (term->getNbRows() - 1);
   display->modeline(head);
-  head->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  head->setFlags(Window::WFMODE|Window::WFHARD);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
 
@@ -109,7 +109,7 @@ WINSCR::resize() noexcept {
    * Try to create a second window connected to bp (if it exist).
    */
   if (bp != nullptr && (term->getNbRows() >= 4)) {
-    auto wp = WINSCR::popup();
+    auto wp = Window::popup();
     if (wp == nullptr) {
       return false;
     } else {
@@ -129,7 +129,7 @@ WINSCR::resize() noexcept {
  */
 
 void
-WINSCR::disconnect() noexcept {
+Window::disconnect() noexcept {
   auto bp(this->buffer());
 
   if (bp != nullptr) {
@@ -151,7 +151,7 @@ WINSCR::disconnect() noexcept {
  */
 
 bool
-WINSCR::connect(BUFFER* bp, bool check) noexcept {
+Window::connect(Buffer* bp, bool check) noexcept {
   this->disconnect();
 
   if (this == curwp) {
@@ -160,7 +160,7 @@ WINSCR::connect(BUFFER* bp, bool check) noexcept {
 
   this->_bufp = bp;
   this->_toplinep = bp->lastline();  /* For macros, ignored. */
-  this->setFlags(WINSCR::WFMODE|WINSCR::WFFORCE|WINSCR::WFHARD);
+  this->setFlags(Window::WFMODE|Window::WFFORCE|Window::WFHARD);
 
   bp->incr();
 
@@ -184,7 +184,7 @@ WINSCR::connect(BUFFER* bp, bool check) noexcept {
   }
 
   if (check) {
-    BUFFER::validitycheck(__func__);
+    Buffer::validitycheck(__func__);
   }
   return true;
 }
@@ -196,7 +196,7 @@ WINSCR::connect(BUFFER* bp, bool check) noexcept {
  */
 
 void
-WINSCR::current() noexcept {
+Window::current() noexcept {
   curwp = this;
   this->buffer()->ontop();
 }
@@ -206,9 +206,9 @@ WINSCR::current() noexcept {
  */
 
 CMD
-WINSCR::reposition() {
+Window::reposition() {
   curwp->_force = Editor::_repeat;
-  curwp->setFlags(WINSCR::WFFORCE);
+  curwp->setFlags(Window::WFFORCE);
   return T;
 }
 
@@ -218,9 +218,9 @@ WINSCR::reposition() {
  */
 
 CMD
-WINSCR::recenter() {
+Window::recenter() {
   curwp->_force = curwp->rows() / 2;
-  curwp->setFlags(WINSCR::WFFORCE);
+  curwp->setFlags(Window::WFFORCE);
   Editor::redrawscreen();
 
   return T;
@@ -233,11 +233,11 @@ WINSCR::recenter() {
  */
 
 CMD
-WINSCR::nextwind() {
+Window::nextwind() {
   auto next(curwp->down());
 
   if (next == nullptr) {
-    next = WINSCR::list().front();
+    next = Window::list().front();
   }
 
   next->current();
@@ -252,11 +252,11 @@ WINSCR::nextwind() {
  */
 
 CMD
-WINSCR::prevwind() {
+Window::prevwind() {
   auto prev(curwp->up());
 
   if (prev == nullptr) {
-    prev = WINSCR::list().back();
+    prev = Window::list().back();
   }
 
   prev->current();
@@ -271,8 +271,8 @@ WINSCR::prevwind() {
  */
 
 CMD
-WINSCR::topwind() {
-  for (auto wp : WINSCR::list()) {
+Window::topwind() {
+  for (auto wp : Window::list()) {
     if (wp->toprow() == 0) {
       wp->current();
       return T;
@@ -291,7 +291,7 @@ WINSCR::topwind() {
  */
 
 CMD
-WINSCR::mvdnwind() {
+Window::mvdnwind() {
   auto save = Editor::_repeat;
 
   Editor::_repeat = -Editor::_repeat;
@@ -310,7 +310,7 @@ WINSCR::mvdnwind() {
  */
 
 CMD
-WINSCR::mvupwind() {
+Window::mvupwind() {
   auto lp = curwp->topline();
   auto n = Editor::_repeat;
 
@@ -325,7 +325,7 @@ WINSCR::mvupwind() {
   }
 
   curwp->setTopline(lp);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
 
   for (int i = 0; i < curwp->rows(); ++i) {
     if (lp == curwp->line()) {
@@ -356,28 +356,28 @@ WINSCR::mvupwind() {
  */
 
 CMD
-WINSCR::onlywind() {
-  if (WINSCR::list().size() == 1) {
-    return T;  // already a single WINSCR exists.
+Window::onlywind() {
+  if (Window::list().size() == 1) {
+    return T;  // already a single Window exists.
   }
 
   /*
-   * keep curwp out of WINSCR list.
+   * keep curwp out of Window list.
    */
-  WINSCR::list().remove(curwp);
+  Window::list().remove(curwp);
 
   /*
-   * remove all other WINSCR still in list.
+   * remove all other Window still in list.
    */
 
 #if 1
-  for (std::list<WINSCR*>::iterator it = WINSCR::list().begin();
-       it != WINSCR::list().end();) {
+  for (std::list<Window*>::iterator it = Window::list().begin();
+       it != Window::list().end();) {
     delete *it++;
   }
 #else
   for (bool loop{true}; loop; loop = false) {
-    for (auto wp : WINSCR::list()) {
+    for (auto wp : Window::list()) {
       delete wp;
       loop = true;
       break;
@@ -386,9 +386,9 @@ WINSCR::onlywind() {
 #endif
 
   /*
-   * push curwp in WINSCR list.
+   * push curwp in Window list.
    */
-  WINSCR::list().push_front(curwp);
+  Window::list().push_front(curwp);
 
   auto lp = curwp->_toplinep;
 
@@ -399,7 +399,7 @@ WINSCR::onlywind() {
   curwp->_toprow   = 0;
   curwp->_ntrows   = (term->getNbRows() - 1);
   curwp->_toplinep = lp;
-  curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  curwp->setFlags(Window::WFMODE|Window::WFHARD);
 
   return T;
 }
@@ -410,15 +410,15 @@ WINSCR::onlywind() {
  */
 
 CMD
-WINSCR::delwind() {
-  if (WINSCR::list().size() == 1) {
+Window::delwind() {
+  if (Window::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
 
-  WINSCR* wp;
+  Window* wp;
 
-  if (curwp == WINSCR::list().front()) {
+  if (curwp == Window::list().front()) {
     wp = curwp->down();
     wp->_toprow = 0;
   } else {
@@ -426,7 +426,7 @@ WINSCR::delwind() {
   }
 
   wp->_ntrows += curwp->rows() + 1;
-  wp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  wp->setFlags(Window::WFMODE|Window::WFHARD);
 
   delete curwp;
 
@@ -443,22 +443,22 @@ WINSCR::delwind() {
  */
 
 CMD
-WINSCR::splitwind() {
+Window::splitwind() {
   if (curwp->rows() < 3) {
     WDGmessage(ECSTR("You can't have windows smaller than 2 lines high"));
     return NIL;
   }
 
-  auto wp = new WINSCR{curbp};
+  auto wp = new Window{curbp};
   wp->setDot(curwp->getDot());
   wp->setMark(curwp->getMark());
-  wp->setFlags(WINSCR::WFCLEAR);
+  wp->setFlags(Window::WFCLEAR);
 
   auto ntru = (curwp->rows() - 1) / 2;         /* Upper size           */
   auto ntrl = (curwp->rows() - 1) - ntru;      /* Lower size           */
   auto ntrd = 0;
 
-  EDLINE* lp;
+  Line* lp;
 
   for (lp = curwp->topline(); lp != curwp->line(); ++ntrd) {
     lp = lp->forw();
@@ -473,23 +473,23 @@ WINSCR::splitwind() {
     }
     curwp->_ntrows = ntru;
 
-    auto insertIt = std::find(WINSCR::list().begin(),
-                              WINSCR::list().end(),
+    auto insertIt = std::find(Window::list().begin(),
+                              Window::list().end(),
                               curwp);
-    if (insertIt != WINSCR::list().end()) {
-      WINSCR::list().insert(++insertIt, wp);
+    if (insertIt != Window::list().end()) {
+      Window::list().insert(++insertIt, wp);
     }
 
     wp->_toprow = curwp->toprow() + ntru + 1;
     wp->_ntrows = ntrl;
   } else {                               /* Old is lower window  */
-    auto insertIt = std::find(WINSCR::list().begin(),
-                              WINSCR::list().end(),
+    auto insertIt = std::find(Window::list().begin(),
+                              Window::list().end(),
                               curwp);
-    if (insertIt != WINSCR::list().end()) {
-      WINSCR::list().insert(insertIt, wp);
+    if (insertIt != Window::list().end()) {
+      Window::list().insert(insertIt, wp);
     } else {
-      WINSCR::list().push_front(wp);
+      Window::list().push_front(wp);
     }
 
     wp->_toprow = curwp->toprow();
@@ -503,9 +503,9 @@ WINSCR::splitwind() {
   }
 
   curwp->setTopline(lp);          /* Adjust the top lines */
-  curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  curwp->setFlags(Window::WFMODE|Window::WFHARD);
   wp->setTopline(lp);
-  wp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  wp->setFlags(Window::WFMODE|Window::WFHARD);
 
   return T;
 }
@@ -519,8 +519,8 @@ WINSCR::splitwind() {
  */
 
 CMD
-WINSCR::enlargewind() {
-  if (WINSCR::list().size() == 1) {
+Window::enlargewind() {
+  if (Window::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
@@ -530,7 +530,7 @@ WINSCR::enlargewind() {
 
   if (adjwp == nullptr) {
     below = false;
-    adjwp = WINSCR::list().front();
+    adjwp = Window::list().front();
   }
 
   if (adjwp->rows() <= Editor::_repeat) {
@@ -565,9 +565,9 @@ WINSCR::enlargewind() {
   }
 
   curwp->_ntrows += Editor::_repeat;
-  curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  curwp->setFlags(Window::WFMODE|Window::WFHARD);
   adjwp->_ntrows -= Editor::_repeat;
-  adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  adjwp->setFlags(Window::WFMODE|Window::WFHARD);
   return T;
 }
 
@@ -578,8 +578,8 @@ WINSCR::enlargewind() {
  */
 
 CMD
-WINSCR::shrinkwind() {
-  if (WINSCR::list().size() == 1) {
+Window::shrinkwind() {
+  if (Window::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
@@ -589,7 +589,7 @@ WINSCR::shrinkwind() {
 
   if (adjwp == nullptr) {
     below = false;
-    adjwp = WINSCR::list().front();
+    adjwp = Window::list().front();
   }
 
   if (curwp->rows() <= Editor::_repeat) {
@@ -621,9 +621,9 @@ WINSCR::shrinkwind() {
     curwp->_toprow  += Editor::_repeat;
   }
   curwp->_ntrows -= Editor::_repeat;
-  curwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  curwp->setFlags(Window::WFMODE|Window::WFHARD);
   adjwp->_ntrows += Editor::_repeat;
-  adjwp->setFlags(WINSCR::WFMODE|WINSCR::WFHARD);
+  adjwp->setFlags(Window::WFMODE|Window::WFHARD);
   return T;
 }
 
@@ -632,14 +632,14 @@ WINSCR::shrinkwind() {
  */
 
 CMD
-WINSCR::findwind() {
-  EDLINE* lp{nullptr};
+Window::findwind() {
+  Line* lp{nullptr};
   auto wx = mevent.x;
   auto wy = mevent.y;
   auto l  = wy;
   int  i;
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     auto top  = wp->toprow();
     auto nrow = wp->rows();
     if (top <= l && top + nrow >= l) {
@@ -705,8 +705,8 @@ WINSCR::findwind() {
         (void)Editor::forwchar();
       }
 
-      if (wp->buffer()->editMode() == EDITMODE::BUFFERMODE) {
-        return BUFFER::buffercmd('f');
+      if (wp->buffer()->editMode() == EDITMODE::BufferMODE) {
+        return Buffer::buffercmd('f');
       } else if (wp->buffer()->editMode() == EDITMODE::DIRED) {
         return diredcmd('f');
       }
@@ -725,18 +725,18 @@ WINSCR::findwind() {
         break;
       case MEvent::MButton7:
         /* mouse-track insert */
-        (void)REGION::copyregion();
+        (void)Region::copyregion();
         (void)Editor::swapmark();
         WDGclipcopy();
         break;
       case MEvent::MButton8:
         /* x-mouse-kill */
-        (void)REGION::killregion();
+        (void)Region::killregion();
         WDGclipcopy();
         break;
       case MEvent::MButton4:
         /* mouse-track-adjust */
-        (void)REGION::copyregion();
+        (void)Region::copyregion();
         WDGclipcopy();
         break;
       }
@@ -752,7 +752,7 @@ WINSCR::findwind() {
 }
 
 CMD
-WINSCR::adjust() {
+Window::adjust() {
   WDGadjust();
   return T;
 }

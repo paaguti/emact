@@ -37,7 +37,7 @@ extern Terminal* makeXpTerminal();
 static Terminal* makeXpTerminal() { return nullptr; }
 #endif
 
-#if defined(_X11) && !defined(X_DISPLAY_MISSING)
+#if defined(_X11) && !defined(X_Display_MISSING)
 extern Terminal* makeX11Terminal();
 #else
 static Terminal* makeX11Terminal() { return nullptr; }

@@ -29,7 +29,7 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
 
 static int  getccol();
 static CMD  addprefix();
-static bool prefixlinep(const EDLINE* line, int len);
+static bool prefixlinep(const Line* line, int len);
 
 static constexpr int JUSTLEFT{0x00};    /* left justification (default) */
 static constexpr int JUSTFULL{0x10};    /* full justification           */
@@ -86,7 +86,7 @@ showcpos() {
   if (cac < 32) {
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
-      nbl, col, DISPLAY::_currow, cac, cac,
+      nbl, col, Display::_currow, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc) / nch));
   } else {
     EMCHAR buf[2];
@@ -94,7 +94,7 @@ showcpos() {
     buf[1] = '\000';
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
-      nbl, col, DISPLAY::_currow, buf, cac, cac,
+      nbl, col, Display::_currow, buf, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc)/ nch));
   }
 
@@ -135,7 +135,7 @@ getccol() {
  * an error if dot is at the beginning of line; it seems to be a bit
  * pointless to make this work.  This fixes up a very common typo with
  * a single stroke.  Normally bound to "C-T".  This always works
- * within a line, so "WINSCR::WFEDIT" is good enough.
+ * within a line, so "Window::WFEDIT" is good enough.
  */
 
 CMD
@@ -174,7 +174,7 @@ twiddle() {
     (void)Editor::forwchar();
   }
 
-  BUFFER::change(WINSCR::WFEDIT);
+  Buffer::change(Window::WFEDIT);
 
   return T;
 }
@@ -194,12 +194,12 @@ quotechar() {
   int  c;
 
   if ((c = term->get()) == '\n') {
-    while (EDLINE::newline() && --n) {
+    while (Line::newline() && --n) {
       continue;
     }
     return T;
   }
-  return EDLINE::linsert(c, n) ? T : NIL;
+  return Line::linsert(c, n) ? T : NIL;
 }
 
 /*
@@ -253,9 +253,9 @@ tabexpand() {
       curbp->editMode() != EDITMODE::JAVAMODE &&
       curbp->editMode() != EDITMODE::PYTHONMODE &&
       curbp->editMode() != EDITMODE::CSHARPMODE) {
-    res = EDLINE::linsert('\t');
+    res = Line::linsert('\t');
   } else {
-    res = EDLINE::linsert(' ', opt::tab_size - (getccol() % opt::tab_size));
+    res = Line::linsert(' ', opt::tab_size - (getccol() % opt::tab_size));
   }
 
   return res ? T : NIL;
@@ -275,13 +275,13 @@ openline() {
   for (auto i = 0; i < Editor::_repeat; ++i) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
       for (auto j = 0; opt::fill_prefix[j]; ++j) {
-        if (!EDLINE::linsert(opt::fill_prefix[j])) {
+        if (!Line::linsert(opt::fill_prefix[j])) {
           return NIL;
         }
       }
     }
 
-    if (!EDLINE::newline()) {
+    if (!Line::newline()) {
       return NIL;
     }
   }
@@ -357,7 +357,7 @@ newline() {
       if ((s = Editor::forwchar()) != T) {
         return s;
       }
-    } else if (!EDLINE::newline()) {
+    } else if (!Line::newline()) {
       return NIL;
     }
   }
@@ -378,7 +378,7 @@ CMD
 deblank() {
   auto lp1 = curwp->line();
 
-  EDLINE* lp2;
+  Line* lp2;
   while (lp1->length() == 0 && (lp2 = lp1->back()) != curbp->lastline()) {
     lp1 = lp2;
   }
@@ -395,7 +395,7 @@ deblank() {
 
   curwp->setDot(lp1->forw(), 0);
 
-  return EDLINE::ldelete(nld) ? T : NIL;
+  return Line::ldelete(nld) ? T : NIL;
 }
 
 /*
@@ -407,7 +407,7 @@ deblank() {
 
 CMD
 forwdel() {
-  return EDLINE::ldelete(Editor::_repeat) ? T : NIL;
+  return Line::ldelete(Editor::_repeat) ? T : NIL;
 }
 
 /*
@@ -421,8 +421,8 @@ forwdel() {
 CMD
 backdel() {
   if (curbp->readonly()) {
-    if (curbp->editMode() == EDITMODE::BUFFERMODE) {
-      return BUFFER::buffercmd(0x08);
+    if (curbp->editMode() == EDITMODE::BufferMODE) {
+      return Buffer::buffercmd(0x08);
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {
@@ -448,7 +448,7 @@ backdel() {
        */
 
       if (Editor::backchar() == T) {
-        (void)EDLINE::ldelete(1);
+        (void)Line::ldelete(1);
       }
 
       pos = getccol();
@@ -458,13 +458,13 @@ backdel() {
        */
 
       do {
-        (void)EDLINE::linsert(' ');
+        (void)Line::linsert(' ');
       } while (++pos % opt::tab_display);
     }
   }
 
   if (Editor::backchar() == T) {
-    return EDLINE::ldelete(Editor::_repeat) ? T : NIL;
+    return Line::ldelete(Editor::_repeat) ? T : NIL;
   } else {
     return NIL;
   }
@@ -497,7 +497,7 @@ killtext() {
     chunk = 1;
   }
 
-  return EDLINE::ldelete(chunk, true) ? T : NIL;
+  return Line::ldelete(chunk, true) ? T : NIL;
 }
 
 /*
@@ -505,7 +505,7 @@ killtext() {
  * the work is done by the standard insert routines.  All you do is
  * run the loop, and check for errors.  Bound to "C-Y".  The blank
  * lines are inserted with a call to "newline" instead of a call to
- * "EDLINE::newline" so that the magic stuff that happens when you
+ * "Line::newline" so that the magic stuff that happens when you
  * type a carriage return also happens when a carriage return is
  * yanked back from the kill buffer.  As a special case we check if
  * yank is done at the end of buffer.  If so, insert push a new line
@@ -528,10 +528,10 @@ yank() {
 
     for (auto i = 0; (c = kremove(i)) >= 0; ++i) {
       if (c == '\n') {
-        if (!EDLINE::newline()) {
+        if (!Line::newline()) {
           return NIL;
         }
-      } else if (!EDLINE::linsert(c)) {
+      } else if (!Line::linsert(c)) {
         return NIL;
       }
     }
@@ -553,9 +553,9 @@ yank() {
        * for all active buffer.
        */
 
-      for (auto wp : WINSCR::list()) {
+      for (auto wp : Window::list()) {
         if (wp->buffer() == curbp) {
-          wp->setFlags(WINSCR::WFFORCE);
+          wp->setFlags(Window::WFFORCE);
         }
       }
     }
@@ -584,7 +584,7 @@ appendnextkill() {
  */
 
 static bool
-prefixlinep(const EDLINE *line, int len) {
+prefixlinep(const Line *line, int len) {
   auto l = line->length();
 
   if (l == 0 || l < len) {
@@ -665,7 +665,7 @@ addprefix() {
 
   if (!prefixlinep(dotp, len)) {
     for (auto i = 0; opt::fill_prefix[i]; ++i) {
-      if (!EDLINE::linsert(opt::fill_prefix[i])) {
+      if (!Line::linsert(opt::fill_prefix[i])) {
         return NIL;
       }
     }
@@ -675,7 +675,7 @@ addprefix() {
 
   while ((curwp->pos() < curwp->line()->length())
          && curwp->getChar() == ' ') {
-    (void)EDLINE::ldelete(1);
+    (void)Line::ldelete(1);
   }
 
   return T;
@@ -703,7 +703,7 @@ fillparagraph() {
 
   curwp->setDotPos(0);
   if (prefixlinep(curwp->line(), len)) {
-    (void)EDLINE::ldelete(len);
+    (void)Line::ldelete(len);
   }
 
   /*
@@ -713,9 +713,9 @@ fillparagraph() {
   while (curwp->line()->forw()->length() > len
          && prefixlinep(curwp->line()->forw(), len)) {
     (void)Editor::gotoeol();
-    (void)EDLINE::ldelete(1);
-    (void)EDLINE::linsert(' ');
-    (void)EDLINE::ldelete(len);
+    (void)Line::ldelete(1);
+    (void)Line::linsert(' ');
+    (void)Line::ldelete(len);
   }
 
   /*
@@ -738,7 +738,7 @@ fillparagraph() {
         if (curwp->getChar() != ' ') {
           break;
         }
-        (void)EDLINE::ldelete(1);
+        (void)Line::ldelete(1);
       }
     }
   }
@@ -762,7 +762,7 @@ fillparagraph() {
    * Reset the _curcol to the current position (any better solution ?)
    */
 
-  DISPLAY::_curcol = Editor::_curgoal = getccol();
+  Display::_curcol = Editor::_curgoal = getccol();
 
   curbp->setEditMode(oldmode);
 
@@ -892,7 +892,7 @@ justifycurline() {
       (void)Editor::forwchar();
       if ((curwp->pos() < (curwp->line()->length() - 1))
           && curwp->getChar() == ' ') {
-        (void)EDLINE::linsert(' ');
+        (void)Line::linsert(' ');
       }
     } else {
       (void)Editor::forwchar();
@@ -938,7 +938,7 @@ justifycurline() {
         } while (curwp->pos() < curwp->line()->length());
 
         if (nbspace < maxspace) {
-          (void)EDLINE::linsert(' ');
+          (void)Line::linsert(' ');
           justifyed = true;
         }
       } else {
@@ -1113,7 +1113,7 @@ counterinsert() {
   (void)emsprintf(buf, &cntfmt[0], cntval);
 
   for (auto s = &buf[0]; *s; ++s) {
-    (void)EDLINE::linsert(*s);
+    (void)Line::linsert(*s);
   }
 
   return T;

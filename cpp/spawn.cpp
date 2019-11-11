@@ -55,12 +55,12 @@ static CMD javaevalbuffer();
 bool
 syscompile(const EMCHAR* cmd, int flag) {
   auto owp = curwp;
-  BUFFER* bp;
+  Buffer* bp;
 
   /*
    * find or create buffer it it does not exist.
    */
-  if ((bp = BUFFER::find(BUF_PROC)) == nullptr) {
+  if ((bp = Buffer::find(BUF_PROC)) == nullptr) {
     return false;
   }
 
@@ -80,7 +80,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     return false;
   }
 
-  (void)EDLINE::notmodified();
+  (void)Line::notmodified();
   (void)Editor::gotobob();
   owp->current();
 
@@ -98,7 +98,7 @@ syscompile(const EMCHAR* cmd, int flag) {
 bool
 syscompile(const EMCHAR* cmd, int flag) {
   auto owp = curwp;
-  BUFFER* bp;
+  Buffer* bp;
   auto    status = false;
   int     out    = -1;
   int     err;
@@ -107,7 +107,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   /*
    * find or create buffer it it does not exist.
    */
-  if ((bp = BUFFER::find(BUF_PROC)) == nullptr) {
+  if ((bp = Buffer::find(BUF_PROC)) == nullptr) {
     return false;
   }
 
@@ -151,7 +151,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         display->update();
         break;
       default:
-        (void)EDLINE::linsert(c);
+        (void)Line::linsert(c);
       }
     }
 
@@ -162,7 +162,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     (void)emstrcpy(line, cmd);
     (void)emstrcat(line, ECSTR(" 2>&1"));
 
-    auto proc = [&line](WINSCR* old) {
+    auto proc = [&line](Window* old) {
       auto fd2 = empopen(&line[0], ECSTR("r"));
       if (fd2 == nullptr) {
         return false;
@@ -171,12 +171,12 @@ syscompile(const EMCHAR* cmd, int flag) {
       int c;
 
       while ((c = std::fgetc(fd2)) != EOF) {
-        BUFFER* bproc;
+        Buffer* bproc;
 
         /*
          * find or create buffer it it does not exist.
          */
-        if ((bproc = BUFFER::find(BUF_PROC)) == nullptr) {
+        if ((bproc = Buffer::find(BUF_PROC)) == nullptr) {
           return false;
         }
 
@@ -203,7 +203,7 @@ syscompile(const EMCHAR* cmd, int flag) {
           display->update();
           break;
         default:
-          (void)EDLINE::linsert(c);
+          (void)Line::linsert(c);
         }
         old->current();
       }
@@ -239,7 +239,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         (void)dup2(out, fileno(stdout));
         (void)dup2(err, fileno(stderr));
         term->rawmode(); /* close the duplicate out */
-        display->update(DISPLAY::Mode::REFRESH);
+        display->update(Display::Mode::REFRESH);
       }
 
       if (tmp1 != -1) {
@@ -271,7 +271,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     }
   }
 
-  (void)EDLINE::notmodified();
+  (void)Line::notmodified();
   (void)Editor::gotobob();
   owp->current();
 
@@ -522,7 +522,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
   }
 
   term->rawmode();
@@ -608,7 +608,7 @@ sed() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
   }
 
   term->rawmode();
@@ -673,7 +673,7 @@ perl() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLTEMP);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
   }
 
   term->rawmode();

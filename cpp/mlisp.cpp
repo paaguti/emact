@@ -30,7 +30,7 @@ static auto rcsid("$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $");
 #include "./emacs.h"
 #include <array>
 
-class MLisp {
+class Lisp {
  private:
   enum class SpecialForm {
     NOFUNCTION      = 0,
@@ -102,21 +102,21 @@ class MLisp {
 /*
  * Define static variables
  */
-int MLisp::_msize;
-FILE* MLisp::_mfile{nullptr};
-std::array<int, MLisp::MAXKBD> MLisp::_macrotab;
-bool MLisp::_insideComment{false};
-bool MLisp::_insideString{false};
-EMCHAR MLisp::_library[NPAT];
-EMCHAR MLisp::_arg1[MLisp::ARGLEN];
-EMCHAR MLisp::_arg2[MLisp::ARGLEN];
-EMCHAR MLisp::_arg3[MLisp::ARGLEN];
+int Lisp::_msize;
+FILE* Lisp::_mfile{nullptr};
+std::array<int, Lisp::MAXKBD> Lisp::_macrotab;
+bool Lisp::_insideComment{false};
+bool Lisp::_insideString{false};
+EMCHAR Lisp::_library[NPAT];
+EMCHAR Lisp::_arg1[Lisp::ARGLEN];
+EMCHAR Lisp::_arg2[Lisp::ARGLEN];
+EMCHAR Lisp::_arg3[Lisp::ARGLEN];
 
 /**
  * read next valid lisp character skipping comments.
  */
 int
-MLisp::lispgetc(FILE* fd) {
+Lisp::lispgetc(FILE* fd) {
   for (;;) {
     auto c = std::fgetc(fd);
     switch (c) {
@@ -153,7 +153,7 @@ MLisp::lispgetc(FILE* fd) {
  */
 
 bool
-MLisp::getfun() {
+Lisp::getfun() {
   EMCHAR* name = nullptr;
   int     lpar  = 0;
   auto    code = SpecialForm::NOTFOUND;
@@ -238,7 +238,7 @@ MLisp::getfun() {
     /*
      * It's a new macro.
      */
-    Editor::_macros.emplace_back(MACTAB());
+    Editor::_macros.emplace_back(Macro());
   }
 
   auto& macro(Editor::_macros[indx]);
@@ -340,7 +340,7 @@ MLisp::getfun() {
  */
 
 void
-MLisp::fillmacro(int key) {
+Lisp::fillmacro(int key) {
   if (_msize < MAXKBD) {
     _macrotab[_msize++] = key;
   } else {
@@ -353,7 +353,7 @@ MLisp::fillmacro(int key) {
  */
 
 void
-MLisp::fillcommand(SpecialForm key) {
+Lisp::fillcommand(SpecialForm key) {
   auto word = getword();
   int  i;
 
@@ -363,18 +363,18 @@ MLisp::fillcommand(SpecialForm key) {
   case SpecialForm::SETQ:
     {
       i = 0;
-      for (const auto& var : VARTAB::vartab) {
+      for (const auto& var : Variable::vartab) {
         if (var.name() && !emstrcmp(var.name(), word)) {
           break;
         }
         ++i;
       }
 
-      if (i >= (int)VARTAB::vartab.size()) {
+      if (i >= (int)Variable::vartab.size()) {
         readerror(ECSTR("Unknown variable. "), word);
       }
 
-      auto& var(VARTAB::vartab[i]);
+      auto& var(Variable::vartab[i]);
 
       fillmacro(i);
       word = getword();
@@ -443,7 +443,7 @@ MLisp::fillcommand(SpecialForm key) {
  */
 
 int
-MLisp::nextchar() {
+Lisp::nextchar() {
   int c;
 
   if ((c = lispgetc(_mfile)) == EOF) {
@@ -458,7 +458,7 @@ MLisp::nextchar() {
  */
 
 const EMCHAR*
-MLisp::getword() {
+Lisp::getword() {
   static EMCHAR workbuf[NPAT];
   int    c;
 
@@ -516,7 +516,7 @@ MLisp::getword() {
  */
 
 int
-MLisp::decrypt(const EMCHAR* strg) {
+Lisp::decrypt(const EMCHAR* strg) {
   int     meta  = 0;
   int     ctrl  = 0;
   int     ctrlx = 0;
@@ -564,7 +564,7 @@ MLisp::decrypt(const EMCHAR* strg) {
  */
 
 EMCHAR*
-MLisp::duplicate(const EMCHAR* s) {
+Lisp::duplicate(const EMCHAR* s) {
   return emstrcpy(new EMCHAR[emstrlen(s) + 1], s);
 }
 
@@ -573,7 +573,7 @@ MLisp::duplicate(const EMCHAR* s) {
  */
 
 int
-MLisp::getcode(const EMCHAR* s, int* indx) {
+Lisp::getcode(const EMCHAR* s, int* indx) {
   /*
    * Look in macro table.
    */
@@ -603,7 +603,7 @@ MLisp::getcode(const EMCHAR* s, int* indx) {
  */
 
 bool
-MLisp::eval(int expr, size_t depth) {
+Lisp::eval(int expr, size_t depth) {
   EMCHAR  string[NPAT];
   int     c;
   int     i;
@@ -681,7 +681,7 @@ MLisp::eval(int expr, size_t depth) {
               s = endline();
               break;
             default:
-              s = EDLINE::linsert(*str) ? T : NIL;
+              s = Line::linsert(*str) ? T : NIL;
             }
           }
         }
@@ -700,14 +700,14 @@ MLisp::eval(int expr, size_t depth) {
               break;
             case '\\':
               if (*(bufcmd + 1) != 'n') {
-                s = EDLINE::linsert(*bufcmd) ? T : NIL;
+                s = Line::linsert(*bufcmd) ? T : NIL;
               } else {
                 ++bufcmd;
                 s = endline();
               }
               break;
             default:
-              s = EDLINE::linsert(*bufcmd) ? T : NIL;
+              s = Line::linsert(*bufcmd) ? T : NIL;
             }
             ++bufcmd;
           }
@@ -739,7 +739,7 @@ MLisp::eval(int expr, size_t depth) {
       while (n--) {
         if (ffindstring()) {
           curwp->setDot(Editor::_found);
-          curwp->setFlags(WINSCR::WFMOVE);
+          curwp->setFlags(Window::WFMOVE);
         } else {
           s = NIL;
           break;
@@ -758,7 +758,7 @@ MLisp::eval(int expr, size_t depth) {
       {
         bufcmd++;
         c = *bufcmd++;
-        auto& var(VARTAB::vartab[c]);
+        auto& var(Variable::vartab[c]);
 
         switch (var.type()) {
         case BOOLVAL:
@@ -817,7 +817,7 @@ MLisp::eval(int expr, size_t depth) {
       break;
     case SpecialForm::INSERTNAME:
       for (auto name = curbp->bufname(); *name && s == T; ++name) {
-        s = EDLINE::linsert(*name) ? T : NIL;
+        s = Line::linsert(*name) ? T : NIL;
       }
       break;
     case SpecialForm::INSERTBASENAME:
@@ -825,7 +825,7 @@ MLisp::eval(int expr, size_t depth) {
         if (*name == '.') {
           break;
         } else {
-          s = EDLINE::linsert(*name) ? T : NIL;
+          s = Line::linsert(*name) ? T : NIL;
         }
       }
       break;
@@ -865,7 +865,7 @@ MLisp::eval(int expr, size_t depth) {
  */
 
 void
-MLisp::readerror(const EMCHAR* msg, const EMCHAR* arg) {
+Lisp::readerror(const EMCHAR* msg, const EMCHAR* arg) {
   EMCHAR buf[NPAT];
 
   (void)emstrcpy(buf, msg);
@@ -879,7 +879,7 @@ MLisp::readerror(const EMCHAR* msg, const EMCHAR* arg) {
  */
 
 bool
-MLisp::loadmacro(const EMCHAR* macfile) {
+Lisp::loadmacro(const EMCHAR* macfile) {
   if (ffaccess(macfile) != FIOSUC) {
     return false;
   }
@@ -916,31 +916,31 @@ mlcustomize() {
   EMCHAR  base[NPAT];
 
   if ((p = ffgetenv(ECSTR("EMACSLIB"))) == nullptr) {
-    (void)emstrcpy(MLisp::_library, PATH);
+    (void)emstrcpy(Lisp::_library, PATH);
   } else {
-    (void)emstrcpy(MLisp::_library, p);
+    (void)emstrcpy(Lisp::_library, p);
   }
 
-  (void)emstrcat(MLisp::_library, ECSTR("/"));
-  (void)emstrcpy(init, MLisp::_library);
+  (void)emstrcat(Lisp::_library, ECSTR("/"));
+  (void)emstrcpy(init, Lisp::_library);
   (void)emstrcat(init, ECSTR("emacs.lsp"));
 
   /*
    * Try to find load emacs.lsp
    */
 
-  if ((MLisp::_mfile = ffopen(init, ECSTR("r"))) != 0) {
+  if ((Lisp::_mfile = ffopen(init, ECSTR("r"))) != 0) {
     /*
      * The PATH is at the standard place.
      */
-    (void)std::fclose(MLisp::_mfile);
-    MLisp::_mfile = nullptr;
+    (void)std::fclose(Lisp::_mfile);
+    Lisp::_mfile = nullptr;
   } else {
     /*
      * Set the _library PATH where the binary is found.
      */
-    (void)emstrcpy(MLisp::_library, Editor::getName());
-    (void)updir(MLisp::_library, SLASH);
+    (void)emstrcpy(Lisp::_library, Editor::getName());
+    (void)updir(Lisp::_library, SLASH);
   }
 
   makename(base, Editor::getName());
@@ -953,10 +953,10 @@ mlcustomize() {
   }
 
   (void)emstrcat(base, ECSTR(".lsp"));
-  (void)emstrcpy(init, MLisp::_library);
+  (void)emstrcpy(init, Lisp::_library);
   (void)emstrcat(init, base);
 
-  return MLisp::loadmacro(base) || MLisp::loadmacro(init);
+  return Lisp::loadmacro(base) || Lisp::loadmacro(init);
 }
 
 /*
@@ -966,7 +966,7 @@ mlcustomize() {
 CMD
 mlinternaleval(int expr) {
   for (decltype(Editor::_repeat) i{0}; i < Editor::_repeat; ++i) {
-    if (MLisp::eval(expr, 1) != true) {
+    if (Lisp::eval(expr, 1) != true) {
       return NIL;
     }
   }
@@ -991,7 +991,7 @@ getmacfile() {
 
   s = mlreply(ECSTR(": macro-file "), fname, NFILEN);
 
-  return ((s == T) && MLisp::loadmacro(fname) ? T : NIL);
+  return ((s == T) && Lisp::loadmacro(fname) ? T : NIL);
 }
 
 CMD

@@ -33,16 +33,16 @@ static EMCHAR* NOMATCH = ECSTR("No match.");
 static int upline = 0;
 
 extern int     indento;
-extern EDLINE* indentp;
+extern Line* indentp;
 extern int     commento;
 
 static bool replace(bool prompt);
-static bool quotep(const EDLINE* l, int i);
-static bool instringp(const EDLINE* clp, int cbo);
-static void mlmatch(const EDLINE* clp, int cbo);
+static bool quotep(const Line* l, int i);
+static bool instringp(const Line* clp, int cbo);
+static void mlmatch(const Line* clp, int cbo);
 static CMD  readpattern(const EMCHAR* prompt);
 static bool bfindstring();
-static void saveindent(EDLINE *clp, int cbo);
+static void saveindent(Line *clp, int cbo);
 
 /*
  * Compare two characters.  The "bc" comes from the  buffer. It
@@ -231,7 +231,7 @@ replace(bool prompt) {
   int replaced;
   for (replaced = 0; ffindstring() && c != 'q' && c != '.';) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(WINSCR::WFHARD);
+    curwp->setFlags(Window::WFHARD);
 
     if (!prompt) {
       subst(patl, (EMCHAR*)npat);
@@ -288,7 +288,7 @@ replace(bool prompt) {
   }
 
   curwp->setDot(clp, cbo);
-  curwp->setFlags(WINSCR::WFHARD);
+  curwp->setFlags(Window::WFHARD);
 
   if (c == 'q') {
     return false;
@@ -300,7 +300,7 @@ replace(bool prompt) {
 
 /*
  * Substitute 'newstr'  string of 'length' characters at current
- * position in the buffer. Call BUFFER::change to ensure that redisplay
+ * position in the buffer. Call Buffer::change to ensure that redisplay
  * is done in.
  */
 
@@ -316,14 +316,14 @@ subst(int length, const EMCHAR* newstr) {
 
   for (; *newstr; ++newstr) {
     if (*newstr == '\n') {
-      (void)EDLINE::newline();
+      (void)Line::newline();
     } else {
-      (void)EDLINE::linsert(*newstr);
+      (void)Line::linsert(*newstr);
     }
   }
 
   curbp->setEditMode(obmode);
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 }
 
 /*
@@ -347,7 +347,7 @@ readpattern(const EMCHAR* prompt) {
  */
 
 static bool
-quotep(const EDLINE* l, int i) {
+quotep(const Line* l, int i) {
   if (i < 1) {
     return false;
   }
@@ -380,7 +380,7 @@ quotep(const EDLINE* l, int i) {
 }
 
 static bool
-instringp(const EDLINE* clp, int cbo) {
+instringp(const Line* clp, int cbo) {
   bool dblquote{false};
 
   for (int i = cbo; i >= 0; i--) {
@@ -398,7 +398,7 @@ instringp(const EDLINE* clp, int cbo) {
  */
 
 static void
-mlmatch(const EDLINE* clp, int cbo) {
+mlmatch(const Line* clp, int cbo) {
   int     i = 0;
   int     j = 0;
   int     pos   = 0;
@@ -493,7 +493,7 @@ rmatchc(int patc, bool printflag) {
 
     if (c == matchpat && --nbmatch == 0) {
       curwp->setDot(clp, cbo - 1);
-      curwp->setFlags(WINSCR::WFMOVE);
+      curwp->setFlags(Window::WFMOVE);
       return true;
     }
   }
@@ -594,7 +594,7 @@ lmatchc(int patc, bool printflag) {
     if (c == matchpat && --nbmatch == 0) {
       saveindent(clp, ++cbo);
       curwp->setDot(clp, cbo);
-      curwp->setFlags(WINSCR::WFMOVE);
+      curwp->setFlags(Window::WFMOVE);
       return true;
     }
   }
@@ -605,7 +605,7 @@ lmatchc(int patc, bool printflag) {
  */
 
 static void
-saveindent(EDLINE *clp, int cbo) {
+saveindent(Line *clp, int cbo) {
   indentp = clp;
 
   switch (curbp->editMode()) {
@@ -639,9 +639,9 @@ saveindent(EDLINE *clp, int cbo) {
 bool
 automatch(int c, bool f) {
   const auto& dot(curwp->getDot());
-  auto crow(DISPLAY::_currow - (int)curwp->toprow());
+  auto crow(Display::_currow - (int)curwp->toprow());
   auto res(false);
-  EDLINE* mlp{nullptr};
+  Line* mlp{nullptr};
   int     mbo{0};
 
   upline = 0;
@@ -663,7 +663,7 @@ automatch(int c, bool f) {
   }
 
   curwp->setDot(dot);  // reposition
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   if (mlp != nullptr) {
     mlmatch(mlp, mbo);
@@ -718,7 +718,7 @@ forwsearch() {
 
   if (ffindstring()) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(WINSCR::WFMOVE);
+    curwp->setFlags(Window::WFMOVE);
     return T;
   } else {
     term->beep();
@@ -759,7 +759,7 @@ backsearch() {
 
   if (bfindstring()) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(WINSCR::WFMOVE);
+    curwp->setFlags(Window::WFMOVE);
     return T;
   } else {
     term->beep();
@@ -837,10 +837,10 @@ getdefinition() {
     case EDITMODE::PYTHONMODE:
     case EDITMODE::SHELLMODE:
       if (Editor::_found.pos() == len) {
-        curwp->setFlags(WINSCR::WFMOVE);
+        curwp->setFlags(Window::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)Editor::backline();
-        (void)WINSCR::reposition();
+        (void)Window::reposition();
         return T;
       }
       break;
@@ -851,10 +851,10 @@ getdefinition() {
           curwp->pos() != 0 || curwp->line()->get(0) != '(') {
         curwp->setDot(Editor::_found);
       } else {
-        curwp->setFlags(WINSCR::WFMOVE);
+        curwp->setFlags(Window::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)Editor::backline();
-        (void)WINSCR::reposition();
+        (void)Window::reposition();
         return T;
       }
       break;
@@ -1037,7 +1037,7 @@ loop:
     curwp->setDot(clp, cbo);
 
     for (i = 0; buf[i] != '\000'; ++i) {
-      if (!EDLINE::linsert(buf[i])) {
+      if (!Line::linsert(buf[i])) {
         s = NIL;
         break;
       }
@@ -1078,7 +1078,7 @@ loop:
         curwp->setDot(clp, cbo);
 
         for (i = slen; tagbuf[i] != '\000'; ++i) {
-          if (!EDLINE::linsert(tagbuf[i])) {
+          if (!Line::linsert(tagbuf[i])) {
             break;
           }
         }
@@ -1107,12 +1107,12 @@ diffwindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), curwp);
+  auto it = std::find(Window::list().begin(), Window::list().end(), curwp);
 
-  if (++it != WINSCR::list().end()) {
+  if (++it != Window::list().end()) {
     wp2 = *it;
   } else {
-    wp2 = WINSCR::list().front();
+    wp2 = Window::list().front();
   }
 
   if (wp2 == wp1) {
@@ -1121,10 +1121,10 @@ diffwindows() {
   }
 
   wp1->setDot(wp1->buffer()->firstline(), 0);
-  wp1->setFlags(WINSCR::WFHARD);
+  wp1->setFlags(Window::WFHARD);
 
   wp2->setDot(wp2->buffer()->firstline(), 0);
-  wp2->setFlags(WINSCR::WFHARD);
+  wp2->setFlags(Window::WFHARD);
 
   return comparewindows();
 }
@@ -1141,12 +1141,12 @@ comparewindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(WINSCR::list().begin(), WINSCR::list().end(), curwp);
+  auto it = std::find(Window::list().begin(), Window::list().end(), curwp);
 
-  if (++it != WINSCR::list().end()) {
+  if (++it != Window::list().end()) {
     wp2 = *it;
   } else {
-    wp2 = WINSCR::list().front();
+    wp2 = Window::list().front();
   }
 
   if (wp2 == wp1) {
@@ -1199,10 +1199,10 @@ comparewindows() {
       }
 
       wp2->setDot(lp2, lo2);
-      wp2->setFlags(WINSCR::WFMOVE);
+      wp2->setFlags(Window::WFMOVE);
 
       wp1->setDot(lp1, lo1);
-      wp1->setFlags(WINSCR::WFMOVE);
+      wp1->setFlags(Window::WFMOVE);
 
       Editor::_thisflag    |= CFCOMP;
       return showcpos();
@@ -1223,10 +1223,10 @@ comparewindows() {
 
   if (flag) {
     wp2->setDot(lp2, 0);
-    wp2->setFlags(WINSCR::WFMOVE);
+    wp2->setFlags(Window::WFMOVE);
 
     wp1->setDot(lp1, 0);
-    wp1->setFlags(WINSCR::WFMOVE);
+    wp1->setFlags(Window::WFMOVE);
 
     Editor::_thisflag |= CFCOMP;
     return T;

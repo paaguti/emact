@@ -25,7 +25,7 @@ static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
 
 #include "./emacs.h"
 
-static EDLINE* nextcindent();
+static Line* nextcindent();
 static bool    nexttab(int col);
 static CMD     indent();
 static bool    lispindent();
@@ -33,7 +33,7 @@ static bool    sgmlindent();
 static bool    cindent();
 
 int     indento{0};
-EDLINE* indentp{nullptr};
+Line* indentp{nullptr};
 int     commento{0};
 
 /*
@@ -55,11 +55,11 @@ nexttab(int col) {
       curbp->editMode() == EDITMODE::PYTHONMODE ||
       curbp->editMode() == EDITMODE::LISPMODE   ||
       curbp->editMode() == EDITMODE::JAVAMODE) {
-    return EDLINE::linsert(' ', col);
+    return Line::linsert(' ', col);
   }
 
-  if (((i = col/opt::tab_display) != 0 && EDLINE::linsert('\t', i) == false) ||
-      ((i = col%opt::tab_display) != 0 && EDLINE::linsert(' ', i) == false)) {
+  if (((i = col/opt::tab_display) != 0 && Line::linsert('\t', i) == false) ||
+      ((i = col%opt::tab_display) != 0 && Line::linsert(' ', i) == false)) {
     return false;
   } else {
     return true;
@@ -71,13 +71,13 @@ nexttab(int col) {
  * CMODE, CPPMODE, CSHARPMODE, PERLMODE PYTHONMODE or JAVAMODE.
  */
 
-static EDLINE*
+static Line*
 nextcindent() {
   int     c;
 
   auto llflag = (curwp->line() == curbp->lastline());
 
-  (void)EDLINE::linsert('}');
+  (void)Line::linsert('}');
 
   const auto& dot(curwp->getDot());
   auto oclp = dot.line();
@@ -185,22 +185,22 @@ unindent(int c, bool f) {
   auto max(curwp->pos());
 
   if (max > 1 && curwp->line()->get(max - 1) == '\'') {
-    return EDLINE::linsert(c);
+    return Line::linsert(c);
   }
 
-  if (EDLINE::linsert(c) != true || automatch(c, f) != true || backdel() != T) {
+  if (Line::linsert(c) != true || automatch(c, f) != true || backdel() != T) {
     return false;
   }
 
   if ((indentp == curwp->line())
       && (max > 1)
       && curwp->line()->get(max - 1) != '{') {
-    return EDLINE::linsert(c);
+    return Line::linsert(c);
   }
 
   while (curwp->pos() > 0) {
     if (!separatorp(curwp->line()->get(curwp->pos() - 1))) {
-      if (!EDLINE::newline()) {
+      if (!Line::newline()) {
         return false;
       } else {
         break;
@@ -216,7 +216,7 @@ unindent(int c, bool f) {
     return false;
   }
 
-  return EDLINE::linsert(c);
+  return Line::linsert(c);
 }
 
 /*
@@ -224,7 +224,7 @@ unindent(int c, bool f) {
  */
 
 int
-lastc(EDLINE* line) {
+lastc(Line* line) {
   auto buf = line->text();
 
   for (auto n(line->length() - 1); n >= 0; --n) {
@@ -382,7 +382,7 @@ cindent() {
  */
 
 int
-lastlisp(EDLINE* line) {
+lastlisp(Line* line) {
   auto buf = line->text();
   auto  n  = line->length();
   int     dblq = 0;
@@ -625,7 +625,7 @@ lispindent() {
 
   indento = j;
   curwp->setDot(dot);
-  curwp->setFlags(WINSCR::WFMOVE);
+  curwp->setFlags(Window::WFMOVE);
 
   return nexttab(indento);
 }
@@ -733,15 +733,15 @@ indent() {
     switch (clp->get(i - 1)) {
     case '-' :
       if (i >= 2 && clp->get(i - 2) == ':') {
-        if (EDLINE::newline()) {
-          return EDLINE::linsert('\t') ? T : NIL;
+        if (Line::newline()) {
+          return Line::linsert('\t') ? T : NIL;
         } else {
           return NIL;
         }
       }
       break;
     case '.' :
-      return EDLINE::newline() ? T : NIL;
+      return Line::newline() ? T : NIL;
     }
     break;
   default:
@@ -931,7 +931,7 @@ justonespace() {
     (void)Editor::backchar();
     if ((c = curwp->getChar()) != ' ' && c != '\t') {
       (void)Editor::forwchar();
-      (void)EDLINE::linsert(' ');
+      (void)Line::linsert(' ');
       return T;
     }
   }
@@ -946,7 +946,7 @@ justonespace() {
     (void)Editor::forwchar();
   }
 
-  (void)EDLINE::linsert(' ');
+  (void)Line::linsert(' ');
 
   while ((curwp->pos() < curwp->line()->length()) &&
          ((c = curwp->getChar()) == ' ' || c == '\t')) {

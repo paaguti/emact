@@ -29,7 +29,7 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 
 /*
  * This  routine  figures  out  the  bounds of the region in the
- * current  window,  and  fills  in  the  fields of the "REGION"
+ * current  window,  and  fills  in  the  fields of the "Region"
  * structure  pointed  to by "rp".  Because the dot and mark are
  * usually  very  close  together,  we  scan  outward  from  dot
  * looking  for mark.  This should save time.  Return a standard
@@ -38,7 +38,7 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
  * later.
  */
 
-REGION::REGION() {
+Region::Region() {
   static auto rtoobig = ECSTR("Region too big.");
 
   const auto& mark(curwp->getMark());
@@ -74,7 +74,7 @@ REGION::REGION() {
   auto fsize = flp->length() - dot.pos() + 1;
 
   while (flp != curbp->lastline() || blp->back() != curbp->lastline()) {
-    static constexpr size_t MAX_REGION{1024 * 1024};  // MAX region size.
+    static constexpr size_t MAX_Region{1024 * 1024};  // MAX region size.
     _lines++;
     if (flp != curbp->lastline()) {
       flp = flp->forw();
@@ -86,7 +86,7 @@ REGION::REGION() {
         return;
       }
       fsize += flp->length() + 1;
-      if ((size_t)fsize > (MAX_REGION - NLINE)) {
+      if ((size_t)fsize > (MAX_Region - NLINE)) {
         WDGerror(rtoobig);
         _empty = true;
         return;
@@ -95,7 +95,7 @@ REGION::REGION() {
     if (blp->back() != curbp->lastline()) {
       blp = blp->back();
       bsize += blp->length() + 1;
-      if ((size_t)bsize >= MAX_REGION) {
+      if ((size_t)bsize >= MAX_Region) {
         WDGerror(rtoobig);
         _empty = true;
         return;
@@ -117,17 +117,17 @@ REGION::REGION() {
 /*
  * Kill the region.  Ask "get" to figure out the bounds of the
  * region.  Move "." to the start, and kill the characters.  Bound to
- * "C-W". Region as a maximum of MAX_REGION characters in size and
+ * "C-W". Region as a maximum of MAX_Region characters in size and
  * check is made prior any operation on a region.
  */
 
 CMD
-REGION::killregion() {
+Region::killregion() {
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
@@ -140,7 +140,7 @@ REGION::killregion() {
   Editor::_thisflag |= CFKILL;
   curwp->setDot(region._linep, region._offset);
 
-  if (EDLINE::ldelete(region._size, true)) {
+  if (Line::ldelete(region._size, true)) {
     WDGclipcopy();
     return T;
   } else {
@@ -155,8 +155,8 @@ REGION::killregion() {
  */
 
 CMD
-REGION::copyregion() {
-  REGION region;
+Region::copyregion() {
+  Region region;
 
   if (region.empty()) {
     return NIL;
@@ -193,24 +193,24 @@ REGION::copyregion() {
 /*
  * Lower  case region.  Zap all of the upper case characters  in
  * the  region  to lower case.  Use the region code to  set  the
- * limits. Scan the buffer, doing the changes. Call "BUFFER::change" to
+ * limits. Scan the buffer, doing the changes. Call "Buffer::change" to
  * ensure  that redisplay is done in all buffers.  Bound to "C-X
  * C-L".
  */
 
 CMD
-REGION::lowerregion() {
+Region::lowerregion() {
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -237,18 +237,18 @@ REGION::lowerregion() {
  */
 
 CMD
-REGION::fillregion() {
+Region::fillregion() {
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -260,7 +260,7 @@ REGION::fillregion() {
     if ((size_t)dotline->length() < fillmax ||
         emstrncmp(dotline->text(), opt::fill_prefix, fillmax) != 0) {
       for (int i{0}; opt::fill_prefix[i]; ++i) {
-        (void)EDLINE::linsert(opt::fill_prefix[i]);
+        (void)Line::linsert(opt::fill_prefix[i]);
       }
     }
     (void)Editor::forwline();
@@ -272,24 +272,24 @@ REGION::fillregion() {
 /*
  * Upper  case  region.  Zap all of the lower case characters in
  * the  region  to  upper  case.  Use the region code to set the
- * limits.  Scan the buffer,  doing the changes.  Call "BUFFER::change"
+ * limits.  Scan the buffer,  doing the changes.  Call "Buffer::change"
  * to  ensure  that  redisplay is done in all buffers.  Bound to
  * "C-X C-L".
  */
 
 CMD
-REGION::upperregion() {
+Region::upperregion() {
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -316,8 +316,8 @@ REGION::upperregion() {
  */
 
 CMD
-REGION::writeregion() {
-  REGION region;
+Region::writeregion() {
+  Region region;
 
   if (region.empty()) {
     return NIL;
@@ -361,20 +361,20 @@ REGION::writeregion() {
  */
 
 CMD
-REGION::indentregion() {
+Region::indentregion() {
   auto s = T;
 
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -391,8 +391,8 @@ REGION::indentregion() {
  */
 
 CMD
-REGION::shiftright() {
-  REGION region;
+Region::shiftright() {
+  Region region;
 
   if (freadonly()) {
     return NIL;
@@ -402,13 +402,13 @@ REGION::shiftright() {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
   auto s = true;
   do {
-    s = EDLINE::linsert('\t');
+    s = Line::linsert('\t');
     curwp->setDot(curwp->line()->forw(), 0);
   } while (s && (--region._lines > 0));
 
@@ -421,23 +421,23 @@ REGION::shiftright() {
  */
 
 CMD
-REGION::shiftleft() {
+Region::shiftleft() {
   if (freadonly()) {
     return NIL;
   }
 
-  REGION region;
+  Region region;
 
   if (region.empty()) {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
   do {
-    if (curwp->line()->get(0) == '\t' && !EDLINE::ldelete(1)) {
+    if (curwp->line()->get(0) == '\t' && !Line::ldelete(1)) {
       return NIL;
     }
     curwp->setDot(curwp->line()->forw(), 0);

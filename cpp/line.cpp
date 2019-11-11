@@ -44,8 +44,8 @@ static auto rcsid("$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $");
  * or nullptr if there isn't any memory left.  Print a message in
  * the message line if no space.
  */
-EDLINE*
-EDLINE::alloc(int used) {
+Line*
+Line::alloc(int used) {
   static constexpr auto NBLOCK(16);  // Line block chunk size
   size_t size = (size_t)((used + NBLOCK - 1) & ~(NBLOCK - 1));
 
@@ -55,8 +55,8 @@ EDLINE::alloc(int used) {
 
   const auto buflen = size * sizeof(EMCHAR);
 
-  auto raw = new std::uint8_t[sizeof(EDLINE) + buflen];
-  auto lp  = reinterpret_cast<EDLINE*>(raw);
+  auto raw = new std::uint8_t[sizeof(Line) + buflen];
+  auto lp  = reinterpret_cast<Line*>(raw);
 
   if (lp == nullptr) {
     term->beep();
@@ -64,7 +64,7 @@ EDLINE::alloc(int used) {
     return nullptr;
   }
 
-  lp->l_text = reinterpret_cast<EMCHAR*>(raw + sizeof(EDLINE));
+  lp->l_text = reinterpret_cast<EMCHAR*>(raw + sizeof(Line));
   lp->l_size = static_cast<int>(size);
   lp->l_used = used;
   lp->l_bp   = lp;
@@ -78,7 +78,7 @@ EDLINE::alloc(int used) {
  * line is then set to nullptr.
  */
 void
-EDLINE::dispose(EDLINE*& lp) {
+Line::dispose(Line*& lp) {
   auto raw = reinterpret_cast<std::uint8_t*>(lp);
   delete[] raw;
   lp = nullptr;
@@ -93,8 +93,8 @@ EDLINE::dispose(EDLINE*& lp) {
  */
 
 void
-EDLINE::free(EDLINE*& lp) {
-  for (auto wp : WINSCR::list()) {
+Line::free(Line*& lp) {
+  for (auto wp : Window::list()) {
     if (wp->topline() == lp) {
       wp->setTopline(lp->forw());
     }
@@ -108,7 +108,7 @@ EDLINE::free(EDLINE*& lp) {
     }
   }
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     if (bp->count() == 0) {
       if (bp->line() == lp) {
         bp->setDot(lp->forw(), 0);
@@ -127,7 +127,7 @@ EDLINE::free(EDLINE*& lp) {
 }
 
 void
-EDLINE::swap(EDLINE* lp2) {
+Line::swap(Line* lp2) {
   if (this != curbp->lastline()) {
     lp2->l_fp        = this->l_fp;
     this->l_fp->l_bp = lp2;
@@ -142,10 +142,10 @@ EDLINE::swap(EDLINE* lp2) {
 }
 
 void
-EDLINE::remove(EDLINE* line) {
+Line::remove(Line* line) {
   this->l_fp = line->l_fp;
   line->l_fp->l_bp = this;
-  EDLINE::dispose(line);
+  Line::dispose(line);
 }
 
 /*
@@ -154,7 +154,7 @@ EDLINE::remove(EDLINE* line) {
  */
 
 int
-EDLINE::position() const noexcept {
+Line::position() const noexcept {
   auto str  = this->text();
   auto lmax = this->length();
   int  col  = 0;
@@ -178,7 +178,7 @@ EDLINE::position() const noexcept {
  */
 
 int
-EDLINE::leftmargin() const noexcept {
+Line::leftmargin() const noexcept {
   int  ncol = 0;
   auto max  = this->length();
 
@@ -209,10 +209,10 @@ EDLINE::leftmargin() const noexcept {
  */
 
 bool
-EDLINE::linsert(int c, int n) {
+Line::linsert(int c, int n) {
   if (curbp->readonly()) {
-    if (curbp->editMode() == EDITMODE::BUFFERMODE) {
-      return BUFFER::buffercmd(c) == T;
+    if (curbp->editMode() == EDITMODE::BufferMODE) {
+      return Buffer::buffercmd(c) == T;
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {
@@ -224,15 +224,15 @@ EDLINE::linsert(int c, int n) {
     return false;
   }
 
-  BUFFER::change(WINSCR::WFEDIT);
+  Buffer::change(Window::WFEDIT);
 
   if (c > 0xFF && curbp->encoding() == ENCODING::EMASCII) {
     curbp->setEncoding(ENCODING::EMUTF16);
-    BUFFER::updatemodes();
+    Buffer::updatemodes();
   }
 
   auto lp1 = curwp->line();
-  EDLINE* lp2;
+  Line* lp2;
 
   if (lp1 == curbp->lastline()) {
     /*
@@ -314,7 +314,7 @@ EDLINE::linsert(int c, int n) {
     }
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -337,7 +337,7 @@ EDLINE::linsert(int c, int n) {
   }
 
   if (kflag) {
-    EDLINE::dispose(lp1); /* was a realloc */
+    Line::dispose(lp1); /* was a realloc */
   }
 
   return true;
@@ -347,12 +347,12 @@ EDLINE::linsert(int c, int n) {
  * Replace "n"  copies  of  the character  "c"  at  the  current
  * location  of dot.  In the easy case all that happens  is  the
  * text is replaced in the line. In the hard case, at the end of
- * the line, the routine EDLINE::linsert is call  with n  equal  to  the
+ * the line, the routine Line::linsert is call  with n  equal  to  the
  * number of characters alredy replaced.
  */
 
 bool
-EDLINE::lreplace(int c, int n) {
+Line::lreplace(int c, int n) {
   if (freadonly()) {
     return false;
   }
@@ -364,7 +364,7 @@ EDLINE::lreplace(int c, int n) {
   for (auto i(0); i < n; ++i) {
     if (doto == dotp->length()) {
       curwp->setDotPos(doto);
-      return EDLINE::linsert(c, n - i);
+      return Line::linsert(c, n - i);
     } else {
       dotp->put(doto++, c);
     }
@@ -372,7 +372,7 @@ EDLINE::lreplace(int c, int n) {
 
   curwp->setDot(dotp, doto);
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
   return true;
 }
 
@@ -385,7 +385,7 @@ EDLINE::lreplace(int c, int n) {
  */
 
 bool
-EDLINE::ldelete(int n, bool kflag) {
+Line::ldelete(int n, bool kflag) {
   if (freadonly()) {
     return false;
   }
@@ -404,14 +404,14 @@ EDLINE::ldelete(int n, bool kflag) {
       chunk = n;
     }
     if (chunk == 0) {              /* End of line, merge.  */
-      BUFFER::change(WINSCR::WFHARD);
-      if (!EDLINE::delnewline() || (kflag && !kinsert('\n'))) {
+      Buffer::change(Window::WFHARD);
+      if (!Line::delnewline() || (kflag && !kinsert('\n'))) {
         return false;
       }
       --n;
       continue;
     }
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
     auto cp1 = dot.line()->address(dot.pos());     /* Scrunch text.        */
     auto cp2 = cp1 + chunk;
     if (kflag) {            /* Kill?                */
@@ -430,7 +430,7 @@ EDLINE::ldelete(int n, bool kflag) {
 
     dot.line()->setLength(dot.line()->length() - chunk);
 
-    for (auto wp : WINSCR::list()) {
+    for (auto wp : Window::list()) {
       if (wp->line() == dot.line() && wp->pos() >= dot.pos()) {
         wp->moveDotPos(-chunk);
         if (wp->pos() < dot.pos()) {
@@ -469,7 +469,7 @@ EDLINE::ldelete(int n, bool kflag) {
  */
 
 bool
-EDLINE::delnewline() {
+Line::delnewline() {
   auto lp1 = curwp->line();
   auto lp2 = lp1->forw();
 
@@ -479,13 +479,13 @@ EDLINE::delnewline() {
      */
     if (lp1->length() == 0) {
       /* Blank line. */
-      EDLINE::free(lp1);
+      Line::free(lp1);
     }
     return true;
   }
 
   /*
-   * If  not  FUNDAMENTAL,  BUFFERMODE  or  DIRED,  delete left
+   * If  not  FUNDAMENTAL,  BufferMODE  or  DIRED,  delete left
    * blanks and tabs.
    */
 
@@ -494,7 +494,7 @@ EDLINE::delnewline() {
 
   if (curbp->editMode() != EDITMODE::FUNDAMENTAL &&
       curbp->editMode() != EDITMODE::DIRED       &&
-      curbp->editMode() != EDITMODE::BUFFERMODE  &&
+      curbp->editMode() != EDITMODE::BufferMODE  &&
       (Editor::_thisflag & CFKILL) == 0) {
     while (cp2 - lp2->last()) {
       if (*cp2 == ' ' || *cp2 == '\t') {
@@ -506,7 +506,7 @@ EDLINE::delnewline() {
     }
   }
 
-  EDLINE* del = nullptr;
+  Line* del = nullptr;
   auto curLen = lp1->length();
   if (lp2->length() > (lp1->size() - curLen)) {
     del = lp1;
@@ -519,7 +519,7 @@ EDLINE::delnewline() {
     *cp = *cp2++;
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->topline() == del || wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -553,7 +553,7 @@ EDLINE::delnewline() {
  */
 
 void
-EDLINE::append(BUFFER* bp, const EMCHAR* text) {
+Line::append(Buffer* bp, const EMCHAR* text) {
   auto ntext(emstrlen(text));
   auto cur(bp->lastline());
   auto line(cur->insertBefore(ntext));
@@ -581,12 +581,12 @@ EDLINE::append(BUFFER* bp, const EMCHAR* text) {
  */
 
 bool
-EDLINE::newline() noexcept {
+Line::newline() noexcept {
   if (freadonly()) {
     return false;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
   /*
    * Get the address and offset of "."
@@ -620,7 +620,7 @@ EDLINE::newline() noexcept {
 
   lp1->setLength(lp1->length() - doto);
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -647,13 +647,13 @@ EDLINE::newline() noexcept {
 }
 
 /**
- * This  routine,  given a pointer to a EDLINE, and the  current
+ * This  routine,  given a pointer to a Line, and the  current
  * cursor  goal column,  return the best choice for the  offset.
  * The offset is returned.  Used by "C-N" and "C-P".
  * @param [in] goal current goal (generally Editing::_curcol).
  */
 int
-EDLINE::getgoal(int goal) const noexcept {
+Line::getgoal(int goal) const noexcept {
   for (auto dbo(0), col(0); dbo != this->length(); ++dbo) {
     auto c = this->get(dbo);
     auto newcol = col;
@@ -679,7 +679,7 @@ EDLINE::getgoal(int goal) const noexcept {
 }
 
 /*
- * Reverse  the  effects  of BUFFER::change for the current buffer.  It
+ * Reverse  the  effects  of Buffer::change for the current buffer.  It
  * updates  all  of  the required flags in the buffer and window
  * system.  If  the  buffer  is being displayed in more than one
  * window  we  change  EDIT  to HARD.  Set MODE if the mode line
@@ -687,18 +687,18 @@ EDLINE::getgoal(int goal) const noexcept {
  */
 
 CMD
-EDLINE::notmodified() {
+Line::notmodified() {
   int flag{0};
 
   if (curbp->count() != 1) {
     /* Ensure hard. */
-    flag = WINSCR::WFHARD;
+    flag = Window::WFHARD;
   }
 
   curbp->setChanged(false);
-  flag |= WINSCR::WFMODE;        /* update mode lines. */
+  flag |= Window::WFMODE;        /* update mode lines. */
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -715,7 +715,7 @@ EDLINE::notmodified() {
  */
 
 CMD
-EDLINE::ltwiddle() {
+Line::ltwiddle() {
   if (freadonly()) {
     return NIL;
   }
@@ -727,9 +727,9 @@ EDLINE::ltwiddle() {
     return NIL;
   }
 
-  BUFFER::change(WINSCR::WFHARD);
+  Buffer::change(Window::WFHARD);
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -743,7 +743,7 @@ EDLINE::ltwiddle() {
     }
   }
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     if (bp->count() == 0) {
       if (bp->line() == lp1) {
         bp->setDot(lp2, 0);
@@ -766,10 +766,10 @@ EDLINE::ltwiddle() {
  */
 
 CMD
-EDLINE::instoggle() {
+Line::instoggle() {
   opt::replace_mode = !opt::replace_mode;
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     display->modeline(wp);
   }
 

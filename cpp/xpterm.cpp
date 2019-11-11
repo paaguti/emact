@@ -347,8 +347,8 @@ XpTerminal::xpchangefont(int font) {
     delete display;
     xpsetfontsize(font);
     xpsettextattrib();
-    display = new DISPLAY;
-    (void)WINSCR::resize();
+    display = new Display;
+    (void)Window::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
   } else {
     xpsetfontsize(font);
@@ -531,7 +531,7 @@ XpTerminal::XpTerminal() {
     xpprinterror(_T("Can't update window"), TRUE);
   }
 
-  DISPLAY::_mouse = true;
+  Display::_mouse = true;
   _openp = true;
 }
 
@@ -591,7 +591,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
 
   if ((dwFlags & FR_REPLACE) && nFindFlag) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(WINSCR::WFHARD);
+    curwp->setFlags(Window::WFHARD);
     subst((int)emstrlen(szFind), szReplace);
     replaced++;
     if (dwFlags & FR_DOWN) {
@@ -606,7 +606,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
       int len = (int)emstrlen(szFind);
 
       curwp->setDot(Editor::_found);
-      curwp->setFlags(WINSCR::WFHARD);
+      curwp->setFlags(Window::WFHARD);
       subst(len, szReplace);
       replaced++;
     } while (ffindstring());
@@ -865,7 +865,7 @@ XpTerminal::cshow(bool nFlag) {
 
   SetBkColor(_dc, nFlag ? _fgcolor : _bgcolor);
   SetTextColor(_dc, nFlag ? _bgcolor : _fgcolor);
-  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &DISPLAY::_curchar, 1, nullptr);
+  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &Display::_curchar, 1, nullptr);
   SetBkColor(_dc, _bgcolor);
   SetTextColor(_dc, _fgcolor);
 #endif
@@ -966,7 +966,7 @@ xpquit() {
   if (opt::confirm_unsaved_buffer) {
     int ret;
 
-    if (!BUFFER::anycb(BUFFER::ANYCB::CHECK)) {
+    if (!Buffer::anycb(Buffer::ANYCB::CHECK)) {
       (void)Editor::killemacs();
       return TRUE;
     }
@@ -1036,11 +1036,11 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       DialogBox(XpTerminal::_inst, _T("AboutBox"), hWnd, (DLGPROC)xpabout);
       break;
     case IDM_CUT:
-      REGION::killregion();
+      Region::killregion();
       display->update();
       break;
     case IDM_COPY:
-      REGION::copyregion();
+      Region::copyregion();
       break;
     case IDM_PASTE:
       yank();
@@ -1072,7 +1072,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         XpTerminal::_fgcolor = XpTerminal::_colortable[opt::foreground_color];
       }
 
-      display->update(DISPLAY::Mode::REFRESH);
+      display->update(Display::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, (LPRECT)nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
@@ -1083,9 +1083,9 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         && !IsIconic(XpTerminal::_wnd)) {
       delete display;
       XpTerminal::xpsettextattrib();
-      display = new DISPLAY;
-      (void)WINSCR::resize();
-      display->update(DISPLAY::Mode::REFRESH);
+      display = new Display;
+      (void)Window::resize();
+      display->update(Display::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
@@ -1103,8 +1103,8 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     term->cshow(FALSE);
     BeginPaint(hWnd, &ps);
     if (XpTerminal::_openp) {
-      if (DISPLAY::_sgarbf != DISPLAY::Sync::GARBAGE) {
-        DISPLAY::exposed();
+      if (Display::_sgarbf != Display::Sync::GARBAGE) {
+        Display::exposed();
       }
       display->update();
     }
@@ -1308,7 +1308,7 @@ xpcutcopy(WPARAM wParam) {
   }
 
   if (wParam == IDM_CUT) {
-    (void)REGION::killregion();
+    (void)Region::killregion();
     EnableMenuItem(GetMenu(XpTerminal::_wnd), IDM_CUT,  MF_GRAYED);
     EnableMenuItem(GetMenu(XpTerminal::_wnd), IDM_COPY, MF_GRAYED);
   }
@@ -1385,7 +1385,7 @@ xpclippaste() {
 }
 
 CMD
-NTansitooem(EDLINE* lp) {
+NTansitooem(Line* lp) {
 #if !defined(UNICODE)
   CharToOemBuff(lp->text(), lp->text(), lp->length());
 #else
@@ -1395,7 +1395,7 @@ NTansitooem(EDLINE* lp) {
 }
 
 CMD
-NToemtoansi(EDLINE* lp) {
+NToemtoansi(Line* lp) {
 #if !defined(UNICODE)
   OemToCharBuff(lp->text(), lp->text(), lp->length());
 #else
@@ -1480,7 +1480,7 @@ XpTerminal::xpshowlines(TCHAR* chBuf, int nLen) {
       (void)newline();
       break;
     default:
-      (void)EDLINE::linsert(c);
+      (void)Line::linsert(c);
     }
   }
 }

@@ -80,7 +80,7 @@
 
 #if defined(HAVE_CONFIG_H)
 #include "./config.h"
-#if !defined(X_DISPLAY_MISSING)
+#if !defined(X_Display_MISSING)
 #define _X11
 #endif
 #endif
@@ -378,14 +378,14 @@ extern bool   mouse_avoidance_mode;   // Auto mouse move flag
 extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 } // namespace opt
 
-extern BUFFER*    curbp;               // Current buffer
+extern Buffer*    curbp;               // Current buffer
 extern Completion complete;            // Automatic completion
-extern DISPLAY*   display;             // Object responsible to display things.
+extern Display*   display;             // Object responsible to display things.
 extern Kbdm       kbdm;                // Keyboard macro
 extern MEvent     mevent;              // Mouse event
 extern Terminal*  term;                // Emact terminal
-extern WIDGET     widget;              // Widgets tools
-extern WINSCR*    curwp;               // Current window
+extern Widget     widget;              // Widgets tools
+extern Window*    curwp;               // Current window
 
 #include "./defines.h"
 #endif

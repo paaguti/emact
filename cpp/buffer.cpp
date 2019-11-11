@@ -28,27 +28,27 @@ static auto rcsid("$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $");
 #include        "./emacs.h"
 
 static EMCHAR* bufmatch(const EMCHAR* prompt, EMCHAR* buffer);
-static BUFFER* getbpcmd(EMCHAR* buf);
+static Buffer* getbpcmd(EMCHAR* buf);
 static void    longtostrtr(EMCHAR* buf, int width, size_t num);
-static bool    makelist(BUFFER* blp);
+static bool    makelist(Buffer* blp);
 static bool    savebname(const EMCHAR* bname);
 
-std::list<BUFFER*> BUFFER::_blist;
+std::list<Buffer*> Buffer::_blist;
 
-static constexpr auto BUFFERPOS(13);  // Buffer name is at pos 13
+static constexpr auto BufferPOS(13);  // Buffer name is at pos 13
 
-#define BUFFER_DEBUG    1
+#define Buffer_DEBUG    1
 
-EDLINE*
-BUFFER::firstline() {
+Line*
+Buffer::firstline() {
   return _linep->forw();
 }
 
-BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
+Buffer::Buffer(const EMCHAR* bname, bool bflag, EDITMODE mode)
   : _emode{mode},
     _flag{bflag},
     _binary{opt::binary_mode} {
-  auto lp(EDLINE::alloc());
+  auto lp(Line::alloc());
 
   setDot(lp, 0);
   _linep = lp;
@@ -60,18 +60,18 @@ BUFFER::BUFFER(const EMCHAR* bname, bool bflag, EDITMODE mode)
 }
 
 /*
- * This function is called by WINSCR::[dis]connect to ensure that
- * buffers count() are always correct.  Valid only when BUFFER_DEBUG
+ * This function is called by Window::[dis]connect to ensure that
+ * buffers count() are always correct.  Valid only when Buffer_DEBUG
  * has been defined.
  */
 
 void
-BUFFER::validitycheck(const char* msg) {
-#if defined(BUFFER_DEBUG)
-  for (auto bp : BUFFER::list()) {
+Buffer::validitycheck(const char* msg) {
+#if defined(Buffer_DEBUG)
+  for (auto bp : Buffer::list()) {
     int count = 0;
 
-    for (auto wp : WINSCR::list()) {
+    for (auto wp : Window::list()) {
       if (wp->buffer() == bp) {
         ++count;
       }
@@ -93,7 +93,7 @@ BUFFER::validitycheck(const char* msg) {
  */
 
 void
-BUFFER::ontop() noexcept {
+Buffer::ontop() noexcept {
   /*
    *      restack buffers (add the new buffer on top)
    */
@@ -110,16 +110,16 @@ BUFFER::ontop() noexcept {
  * if it fails.
  */
 
-WINSCR*
-BUFFER::show() noexcept {
+Window*
+Buffer::show() noexcept {
   if (this->count() == 0) { /* Not on screen yet. */
-    auto wp = WINSCR::popup();
+    auto wp = Window::popup();
     if (wp != nullptr) {
       (void)wp->connect(this);
     }
     return wp;
   } else {
-    for (auto wp : WINSCR::list()) {
+    for (auto wp : Window::list()) {
       if (wp->buffer() == this) {
         (void)wp->connect(this);
         return wp;
@@ -135,33 +135,33 @@ BUFFER::show() noexcept {
  */
 
 void
-BUFFER::updatemodes() noexcept {
+Buffer::updatemodes() noexcept {
   int flag = 0;
 
   if (curbp->count() != 1) {
     /* Ensure hard.         */
-    flag |= WINSCR::WFHARD;
+    flag |= Window::WFHARD;
   }
 
-  flag |= WINSCR::WFMODE; /* update mode lines.   */
+  flag |= Window::WFMODE; /* update mode lines.   */
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
   }
 }
 
-BUFFER*
-BUFFER::find(const EMCHAR* bname, bool cflag, EDITMODE mode) {
-  for (auto bp : BUFFER::list()) {
+Buffer*
+Buffer::find(const EMCHAR* bname, bool cflag, EDITMODE mode) {
+  for (auto bp : Buffer::list()) {
     if (emstrcmp(bname, bp->bufname()) == 0) {
       return bp;
     }
   }
 
   if (cflag) {
-    auto bp = new BUFFER(bname, false, mode);
+    auto bp = new Buffer(bname, false, mode);
     if (bp == nullptr) {
       WDGwrite(ECSTR("Can't create buffer %s"), bname);
       return nullptr;
@@ -183,8 +183,8 @@ BUFFER::find(const EMCHAR* bname, bool cflag, EDITMODE mode) {
  */
 
 bool
-BUFFER::clear() noexcept {
-  EDLINE* lp;
+Buffer::clear() noexcept {
+  Line* lp;
 
   if (this->isChanged() && WDGyn(ECSTR("Discard changes? ")) != T) {
     return false;
@@ -193,7 +193,7 @@ BUFFER::clear() noexcept {
   this->setChanged(false);
 
   while ((lp = firstline()) != lastline()) {
-    EDLINE::free(lp);
+    Line::free(lp);
   }
 
   setDot(_linep, 0);    // Fix "."
@@ -208,8 +208,8 @@ BUFFER::clear() noexcept {
  */
 
 bool
-BUFFER::usewindow() const noexcept {
-  for (auto wp : WINSCR::list()) {
+Buffer::usewindow() const noexcept {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == this) {
       wp->current();
       return true;
@@ -225,7 +225,7 @@ BUFFER::usewindow() const noexcept {
  */
 
 bool
-BUFFER::discard() noexcept {
+Buffer::discard() noexcept {
   if (this->isChanged()) {
     EMCHAR buf[NLINE];
 
@@ -247,7 +247,7 @@ BUFFER::discard() noexcept {
   auto bp1 = this;
   auto bp2 = this;
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     bp2 = bp;
     if (bp2 == this) {
       continue;
@@ -275,7 +275,7 @@ BUFFER::discard() noexcept {
    * containing buffer "this".
    */
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == this) {
       (void)wp->connect(bp1);
     }
@@ -285,7 +285,7 @@ BUFFER::discard() noexcept {
     return false;
   }
 
-  EDLINE::dispose(this->_linep);          /* Release header line. */
+  Line::dispose(this->_linep);          /* Release header line. */
 
   _blist.remove(this);
   delete this;
@@ -302,18 +302,18 @@ BUFFER::discard() noexcept {
  */
 
 void
-BUFFER::change(int flag) {
+Buffer::change(int flag) {
   if (curbp->count() != 1) {
     /* Ensure hard. */
-    flag = WINSCR::WFHARD;
+    flag = Window::WFHARD;
   }
 
   if (!curbp->isChanged()) {    /* First change, so     */
-    flag |= WINSCR::WFMODE;     /* update mode lines.   */
+    flag |= Window::WFMODE;     /* update mode lines.   */
     curbp->setChanged(true);
   }
 
-  for (auto wp : WINSCR::list()) {
+  for (auto wp : Window::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -327,7 +327,7 @@ BUFFER::change(int flag) {
  * false if no buffers have been changed.
  */
 bool
-BUFFER::anycb(ANYCB flag) {
+Buffer::anycb(ANYCB flag) {
   static constexpr auto ANYHLP =
     ECSTR("y = save, n = skip, ! = save all, . = save and exit, q = exit");
 
@@ -335,7 +335,7 @@ BUFFER::anycb(ANYCB flag) {
   auto alert = false;
   auto saveall = false;
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     if (!bp->isChanged()) {
       continue;
     }
@@ -437,7 +437,7 @@ longtostrtr(EMCHAR* buf, int width, size_t num) {
  */
 
 static bool
-makelist(BUFFER *blp) {
+makelist(Buffer *blp) {
   EMCHAR* cp1;
   EMCHAR* cp2;
   size_t  nbytes;
@@ -455,10 +455,10 @@ makelist(BUFFER *blp) {
 
   (void)emstrcpy(blp->filename(), ECSTR(""));
 
-  EDLINE::append(blp, ECSTR(" MRBE   Size Buffer           Edit-Mode   File"));
-  EDLINE::append(blp, ECSTR(" ----   ---- ------           ---------   ----"));
+  Line::append(blp, ECSTR(" MRBE   Size Buffer           Edit-Mode   File"));
+  Line::append(blp, ECSTR(" ----   ---- ------           ---------   ----"));
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     cp1 = &line[0];                 /* Start at left edge   */
     if (bp == curbp) {
       *cp1++ = '.';
@@ -508,9 +508,9 @@ makelist(BUFFER *blp) {
     }
     *cp1++ = ' ';                   /* Gap.                 */
 
-    if (cp1 != (&line[0] + BUFFERPOS)) {
+    if (cp1 != (&line[0] + BufferPOS)) {
       term->beep();
-      WDGwrite(ECSTR("#<BUFFERPOS: invalid constant>"));
+      WDGwrite(ECSTR("#<BufferPOS: invalid constant>"));
       term->get();
     }
 
@@ -519,13 +519,13 @@ makelist(BUFFER *blp) {
       *cp1++ = (EMCHAR)c;
     }
 
-    while (cp1 - &line[5 + 1 + 6 + 1 + BUFFER::NBUFN + 1]) {
+    while (cp1 - &line[5 + 1 + 6 + 1 + Buffer::NBUFN + 1]) {
       *cp1++ = ' ';
     }
 
     switch (bp->editMode()) {
     case EDITMODE::ASMODE      : cp2 = ECSTR("Assembler   "); break;
-    case EDITMODE::BUFFERMODE  : cp2 = ECSTR("Buffer Menu "); break;
+    case EDITMODE::BufferMODE  : cp2 = ECSTR("Buffer Menu "); break;
     case EDITMODE::CMODE       : cp2 = ECSTR("C           "); break;
     case EDITMODE::CPPMODE     : cp2 = ECSTR("C++         "); break;
     case EDITMODE::CSHARPMODE  : cp2 = ECSTR("C#          "); break;
@@ -557,18 +557,18 @@ makelist(BUFFER *blp) {
     }
 
     *cp1 = '\0';
-    EDLINE::append(blp, line);
+    Line::append(blp, line);
   }
   return true;
 }
 
 static bool
 savebname(const EMCHAR* bname) {
-  BUFFER* newbp;
+  Buffer* newbp;
   auto oldbp = curbp;
   auto res  = true;
 
-  if ((newbp = BUFFER::find(bname, false)) == nullptr) {
+  if ((newbp = Buffer::find(bname, false)) == nullptr) {
     return false;
   }
 
@@ -590,7 +590,7 @@ static EMCHAR*
 bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
   auto len = emstrlen(buffer);
 
-  for (auto bp : BUFFER::list()) {
+  for (auto bp : Buffer::list()) {
     if (len == 0 || !emstrncmp(bp->bufname(), buffer, len)) {
       WDGupdate(prompt, bp->bufname());
       switch (term->get()) {
@@ -619,15 +619,15 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
  */
 
 CMD
-BUFFER::usebuffer() {
+Buffer::usebuffer() {
   CMD     s;
-  EMCHAR  bufn[BUFFER::NBUFN];
+  EMCHAR  bufn[Buffer::NBUFN];
   EMCHAR  prompt[NLINE];
 
   complete = bufmatch;
 
-  auto bp1 = BUFFER::list().front();
-  for (auto bp : BUFFER::list()) {
+  auto bp1 = Buffer::list().front();
+  for (auto bp : Buffer::list()) {
     if (bp->count() == 0) {
       /* Not on screen yet.   */
       bp1 = bp;
@@ -645,10 +645,10 @@ BUFFER::usebuffer() {
     return s;
   }
 
-  BUFFER* bp;
+  Buffer* bp;
   if (s == NIL) {
     bp = bp1;
-  } else if ((bp = BUFFER::find(bufn, false)) == nullptr) {
+  } else if ((bp = Buffer::find(bufn, false)) == nullptr) {
     return NIL;
   }
 
@@ -668,17 +668,17 @@ BUFFER::usebuffer() {
  * Process buffer commands 'd', 'f', 'k, 's', 'u', 'x' or TAB.
  */
 
-static BUFFER*
+static Buffer*
 getbpcmd(EMCHAR* buf) {
   /*
    * get buffer pointer, internally used by buffercmd
    */
 
-  int     j = BUFFERPOS;
+  int     j = BufferPOS;
   int     i;
   EMCHAR  c;
 
-  if (curwp->line()->length() < BUFFERPOS) {
+  if (curwp->line()->length() < BufferPOS) {
     return nullptr;
   }
 
@@ -688,13 +688,13 @@ getbpcmd(EMCHAR* buf) {
 
   buf[i] = '\000';
 
-  return BUFFER::find(buf, false);
+  return Buffer::find(buf, false);
 }
 
 CMD
-BUFFER::buffercmd(int cmd) {
+Buffer::buffercmd(int cmd) {
   EMCHAR  buf[NPAT];
-  BUFFER  *bp;
+  Buffer  *bp;
   int     asked = 0;
 
   if (cmd != 'x' && cmd != 'n' && cmd != 'p' && cmd != 0x08) {
@@ -736,7 +736,7 @@ BUFFER::buffercmd(int cmd) {
       curwp->line()->put(0, 'D');
     }
 
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -761,7 +761,7 @@ BUFFER::buffercmd(int cmd) {
       curwp->line()->put(1, 'S');
     }
 
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -788,7 +788,7 @@ BUFFER::buffercmd(int cmd) {
       curwp->line()->put(2, ' ');
     }
 
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -807,7 +807,7 @@ BUFFER::buffercmd(int cmd) {
       curwp->line()->put(2, '%');
     }
 
-    BUFFER::change(WINSCR::WFEDIT);
+    Buffer::change(Window::WFEDIT);
     (void)Editor::forwline();
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -826,11 +826,11 @@ BUFFER::buffercmd(int cmd) {
       }
 
       if (curwp->line()->get(1) == 'S') {
-        BUFFER* oldbp = curbp;
+        Buffer* oldbp = curbp;
         curbp = bp;
         if (filesave() == T) {
           curwp->line()->put(1, ' ');
-          BUFFER::change(WINSCR::WFEDIT);
+          Buffer::change(Window::WFEDIT);
         }
         curbp = oldbp;
       }
@@ -850,8 +850,8 @@ BUFFER::buffercmd(int cmd) {
         asked++;
         if (bp->discard()) {
           (void)Editor::gotobol();
-          (void)EDLINE::ldelete(curwp->line()->length() + 1);
-          BUFFER::change(WINSCR::WFEDIT);
+          (void)Line::ldelete(curwp->line()->length() + 1);
+          Buffer::change(Window::WFEDIT);
           (void)Editor::backline();
           (void)Editor::gotobol();
         }
@@ -880,7 +880,7 @@ BUFFER::buffercmd(int cmd) {
         } else {
           curwp->line()->put(0, ' ');
         }
-        BUFFER::change(WINSCR::WFEDIT);
+        Buffer::change(Window::WFEDIT);
       }
       if (curwp->line()->get(1) == 'S') {
         if (bp->isChanged()) {
@@ -888,7 +888,7 @@ BUFFER::buffercmd(int cmd) {
         } else {
           curwp->line()->put(1, ' ');
         }
-        BUFFER::change(WINSCR::WFEDIT);
+        Buffer::change(Window::WFEDIT);
       }
       if (curwp->line()->get(2) == '%') {
         if (bp->readonly()) {
@@ -896,7 +896,7 @@ BUFFER::buffercmd(int cmd) {
         } else {
           curwp->line()->put(2, ' ');
         }
-        BUFFER::change(WINSCR::WFEDIT);
+        Buffer::change(Window::WFEDIT);
       }
       curbp->setReadonly(true);
       curbp->setChanged(false);
@@ -917,9 +917,9 @@ BUFFER::buffercmd(int cmd) {
  */
 
 CMD
-BUFFER::killbuffer() {
+Buffer::killbuffer() {
   CMD     s;
-  EMCHAR  bufn[BUFFER::NBUFN];
+  EMCHAR  bufn[Buffer::NBUFN];
   EMCHAR  prompt[NLINE];
 
   complete = bufmatch;
@@ -934,11 +934,11 @@ BUFFER::killbuffer() {
     return s;
   }
 
-  BUFFER* bp;
+  Buffer* bp;
 
   if (s == NIL) {
     bp = curbp;
-  } else if ((bp = BUFFER::find(bufn, false)) == nullptr) {
+  } else if ((bp = Buffer::find(bufn, false)) == nullptr) {
     return NIL;
   }
 
@@ -954,8 +954,8 @@ BUFFER::killbuffer() {
  */
 
 CMD
-BUFFER::listbuffers() {
-  auto bp(find(BUF_LIST, true, EDITMODE::BUFFERMODE));
+Buffer::listbuffers() {
+  auto bp(find(BUF_LIST, true, EDITMODE::BufferMODE));
 
   if (bp == nullptr) {
     return NIL;
