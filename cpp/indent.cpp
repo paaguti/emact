@@ -772,7 +772,7 @@ tabindent() {
   if (dot.pos() != dot.line()->length() && curwp->getChar() == '}') {
     (void)forwdel();
     (void)unindent('}', false);
-    (void)backchar();
+    (void)Editor::backchar();
   }
 
   return T;
@@ -795,12 +795,15 @@ indentline() {
   if (curbp->editMode() == EDITMODE::FUNDAMENTAL ||
       curbp->editMode() == EDITMODE::DIRED       ||
       curwp->line()->length() == 0) {
-    (void)forwline();
+    (void)Editor::forwline();
     Editor::_repeat = save;
     return NIL;
   }
 
-  while (n-- && (gotobol() == T) && (tabindent() == T) && (forwline() == T)) {
+  while (n--
+         && (Editor::gotobol() == T)
+         && (tabindent() == T)
+         && (Editor::forwline() == T)) {
     continue;
   }
 
@@ -818,10 +821,10 @@ indentline() {
 CMD
 newlineindent() {
   (void)justonespace();
-  (void)backchar();
+  (void)Editor::backchar();
   (void)openline();
-  (void)forwline();
-  (void)gotobol();
+  (void)Editor::forwline();
+  (void)Editor::gotobol();
   (void)tabindent();
 
   return T;
@@ -834,11 +837,11 @@ newlineindent() {
 
 CMD
 backtoindent() {
-  (void)gotobol();
+  (void)Editor::gotobol();
   const auto len(curwp->line()->length());
   for (int i{0}; i < len; ++i) {
     if (separatorp(curwp->getChar())) {
-      (void)forwchar();
+      (void)Editor::forwchar();
     } else {
       break;
     }
@@ -872,7 +875,7 @@ blispexpr() {
     return NIL;
   }
 
-  while (curwp->line()->get(0) != c && backline() == T) {
+  while (curwp->line()->get(0) != c && Editor::backline() == T) {
     continue;
   }
 
@@ -923,24 +926,24 @@ justonespace() {
 
   if (curwp->pos() == curwp->line()->length()) {
     /*
-     *      At the end, back one char.
+     * At the end, back one char.
      */
-    (void)backchar();
+    (void)Editor::backchar();
     if ((c = curwp->getChar()) != ' ' && c != '\t') {
-      (void)forwchar();
+      (void)Editor::forwchar();
       (void)EDLINE::linsert(' ');
       return T;
     }
   }
 
   do {
-    if (backchar() == NIL) {
+    if (Editor::backchar() == NIL) {
       break;
     }
   } while (curwp->pos() >= 0 && ((c = curwp->getChar()) == ' ' || c == '\t'));
 
   if ((c = curwp->getChar()) != ' ' && c != '\t') {
-    (void)forwchar();
+    (void)Editor::forwchar();
   }
 
   (void)EDLINE::linsert(' ');

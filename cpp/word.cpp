@@ -84,7 +84,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
    */
 
   if (!inword() && curwp->pos() > 0) {
-    (void)backchar();
+    (void)Editor::backchar();
   }
 
   if (!inword()) {
@@ -96,7 +96,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
     size_t i{0};
     while (inword() && i < (len - 1)) {
       buf[i++] = curwp->getChar();
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         break;
       }
     }
@@ -119,13 +119,13 @@ CMD
 backword() {
   int n = Editor::_repeat;
 
-  if (backchar() == NIL) {
+  if (Editor::backchar() == NIL) {
     return NIL;
   }
 
   while (n--) {
     while (!inword()) {
-      if (backchar() == NIL) {
+      if (Editor::backchar() == NIL) {
         return NIL;
       }
     }
@@ -134,13 +134,13 @@ backword() {
       const auto& dot(curwp->getDot());
       if (dot.line() == curbp->firstline() && dot.pos() == 0) {
         return T; /* start of buffer */
-      } else if (backchar() == NIL) {
+      } else if (Editor::backchar() == NIL) {
         return NIL;
       }
     }
   }
 
-  return forwchar();
+  return Editor::forwchar();
 }
 
 /*
@@ -155,13 +155,13 @@ forwword() {
 
   while (n--) {
     while (!inword()) {
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
 
     while (inword()) {
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -185,7 +185,7 @@ upperword() {
 
   while (n--) {
     while (!inword()) {
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -196,7 +196,7 @@ upperword() {
         curwp->setChar(std::toupper(c));
         BUFFER::change(WINSCR::WFHARD);
       }
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -220,7 +220,7 @@ lowerword() {
   int n = Editor::_repeat;
   while (n--) {
     while (!inword()) {
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -231,7 +231,7 @@ lowerword() {
         curwp->setChar(std::tolower(c));
         BUFFER::change(WINSCR::WFHARD);
       }
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -257,7 +257,7 @@ capword() {
 
   while (n--) {
     while (!inword()) {
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
     }
@@ -268,7 +268,7 @@ capword() {
         curwp->setChar(std::toupper(c));
         BUFFER::change(WINSCR::WFHARD);
       }
-      if (forwchar() == NIL) {
+      if (Editor::forwchar() == NIL) {
         return NIL;
       }
       while (inword()) {
@@ -277,7 +277,7 @@ capword() {
           curwp->setChar(std::tolower(c));
           BUFFER::change(WINSCR::WFHARD);
         }
-        if (forwchar() == NIL) {
+        if (Editor::forwchar() == NIL) {
           return NIL;
         }
       }
@@ -326,19 +326,19 @@ delbword() {
 
   Editor::_repeat = 1;
   while (n--) {
-    while (backchar() == T && !inword()) {
+    while (Editor::backchar() == T && !inword()) {
       if (forwdel() == NIL) {
         return NIL;
       }
     }
-    while (forwdel() == T && backchar() == T) {
+    while (forwdel() == T && Editor::backchar() == T) {
       if (!inword()) {
         break;
       }
     }
   }
 
-  (void)forwchar();
+  (void)Editor::forwchar();
   Editor::_repeat = sv;
 
   return T;
@@ -421,7 +421,7 @@ wtwiddle() {
    */
 
   while (curwp->line() != dotp) {
-    if (forwline() == NIL) {
+    if (Editor::forwline() == NIL) {
       return NIL;
     }
   }

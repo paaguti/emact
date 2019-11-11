@@ -34,7 +34,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
  */
 
 CMD
-gotobol() {
+Editor::gotobol() {
   curwp->setDotPos(0);
   return T;
 }
@@ -46,7 +46,7 @@ gotobol() {
  */
 
 CMD
-backchar() {
+Editor::backchar() {
   auto n = Editor::_repeat;
 
   while (n--) {
@@ -70,7 +70,7 @@ backchar() {
  */
 
 CMD
-gotoeol() {
+Editor::gotoeol() {
   curwp->setDotPos(curwp->line()->length());
   return T;
 }
@@ -83,7 +83,7 @@ gotoeol() {
  */
 
 CMD
-forwchar() {
+Editor::forwchar() {
   int n = Editor::_repeat;
 
   while (n--) {
@@ -109,7 +109,7 @@ forwchar() {
  */
 
 CMD
-gotobob() {
+Editor::gotobob() {
   curwp->setDot(curbp->firstline(), 0);
   curwp->setFlags(WINSCR::WFHARD);
   return T;
@@ -122,7 +122,7 @@ gotobob() {
  */
 
 CMD
-gotoeob() {
+Editor::gotoeob() {
   curwp->setDot(curbp->lastline(), 0);
   curwp->setFlags(WINSCR::WFHARD);
   return T;
@@ -135,7 +135,7 @@ gotoeob() {
  */
 
 CMD
-gotoline() {
+Editor::gotoline() {
   int n = Editor::_repeat;
 
   if (n <= 1) {
@@ -170,7 +170,7 @@ gotoline() {
  */
 
 CMD
-forwline() {
+Editor::forwline() {
   EDLINE* dlp;
   int     n = Editor::_repeat;
 
@@ -201,7 +201,7 @@ forwline() {
  */
 
 CMD
-backline() {
+Editor::backline() {
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
     Editor::_curgoal = DISPLAY::_curcol;
@@ -236,7 +236,7 @@ backline() {
  */
 
 CMD
-forwpage() {
+Editor::forwpage() {
   int l;
 
   if ((l = curwp->rows() - 2) <= 0) {
@@ -262,7 +262,7 @@ forwpage() {
  */
 
 CMD
-forwother() {
+Editor::forwother() {
   if (WINSCR::nextwind() == T && forwpage() == T) {
     return WINSCR::prevwind();
   } else {
@@ -278,7 +278,7 @@ forwother() {
  */
 
 CMD
-backpage() {
+Editor::backpage() {
   int l;
 
   if ((l = curwp->rows() - 2) <= 0) {
@@ -304,7 +304,7 @@ backpage() {
  */
 
 CMD
-setmark() {
+Editor::setmark() {
   curwp->setMark(curwp->getDot());
   WDGmessage(ECSTR("Mark set."));
   return T;
@@ -317,7 +317,7 @@ setmark() {
  */
 
 CMD
-markwholebuffer() {
+Editor::markwholebuffer() {
   /*
    * Set mark at the end of the buffer.
    */
@@ -342,7 +342,7 @@ markwholebuffer() {
  */
 
 CMD
-swapmark() {
+Editor::swapmark() {
   const auto& mark = curwp->getMark();
 
   if (mark.line() == nullptr) {

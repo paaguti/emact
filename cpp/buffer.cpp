@@ -737,17 +737,17 @@ BUFFER::buffercmd(int cmd) {
     }
 
     BUFFER::change(WINSCR::WFEDIT);
-    (void)forwline();
+    (void)Editor::forwline();
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
     return T;
 
   case 'n':
-    return forwline();
+    return Editor::forwline();
 
   case 'p':
-    return backline();
+    return Editor::backline();
 
   case 's':
     if (curwp->line()->length() == 0) {
@@ -762,7 +762,7 @@ BUFFER::buffercmd(int cmd) {
     }
 
     BUFFER::change(WINSCR::WFEDIT);
-    (void)forwline();
+    (void)Editor::forwline();
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -808,7 +808,7 @@ BUFFER::buffercmd(int cmd) {
     }
 
     BUFFER::change(WINSCR::WFEDIT);
-    (void)forwline();
+    (void)Editor::forwline();
     curbp->setReadonly(true);
     curbp->setChanged(false);
 
@@ -816,9 +816,9 @@ BUFFER::buffercmd(int cmd) {
 
   case 'x':
     curbp->setReadonly(false);
-    (void)gotobob();
-    (void)forwline();
-    (void)forwline();
+    (void)Editor::gotobob();
+    (void)Editor::forwline();
+    (void)Editor::forwline();
 
     do {
       if ((bp = getbpcmd(buf)) == nullptr) {
@@ -849,14 +849,14 @@ BUFFER::buffercmd(int cmd) {
       if (curwp->line()->get(0) == 'D') {
         asked++;
         if (bp->discard()) {
-          (void)gotobol();
+          (void)Editor::gotobol();
           (void)EDLINE::ldelete(curwp->line()->length() + 1);
           BUFFER::change(WINSCR::WFEDIT);
-          (void)backline();
-          (void)gotobol();
+          (void)Editor::backline();
+          (void)Editor::gotobol();
         }
       }
-    } while (curwp->line() != curbp->lastline() && forwline() == T);
+    } while (curwp->line() != curbp->lastline() && Editor::forwline() == T);
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -868,7 +868,7 @@ BUFFER::buffercmd(int cmd) {
     return T;
 
   case 0x08 : /* ^H */
-    if (backline() == T && gotobol() == T) {
+    if (Editor::backline() == T && Editor::gotobol() == T) {
       if ((bp = getbpcmd(buf)) == nullptr) {
         return NIL;
       }

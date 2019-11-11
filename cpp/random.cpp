@@ -171,7 +171,7 @@ twiddle() {
   dotp->put(doto, cl);
 
   if (curwp->pos() < dotp->length()) {
-    (void)forwchar();
+    (void)Editor::forwchar();
   }
 
   BUFFER::change(WINSCR::WFEDIT);
@@ -286,11 +286,11 @@ openline() {
     }
   }
 
-  if (backline() != T) {
+  if (Editor::backline() != T) {
     return NIL;
   }
 
-  return gotoeol();
+  return Editor::gotoeol();
 }
 
 /*
@@ -354,7 +354,7 @@ newline() {
     if ((dotp->length() == doto)
         && (dotp != curbp->lastline())
         && (dotp->forw()->length() > 0)) {
-      if ((s = forwchar()) != T) {
+      if ((s = Editor::forwchar()) != T) {
         return s;
       }
     } else if (!EDLINE::newline()) {
@@ -447,7 +447,7 @@ backdel() {
        * Delete 'tab'
        */
 
-      if (backchar() == T) {
+      if (Editor::backchar() == T) {
         (void)EDLINE::ldelete(1);
       }
 
@@ -463,7 +463,7 @@ backdel() {
     }
   }
 
-  if (backchar() == T) {
+  if (Editor::backchar() == T) {
     return EDLINE::ldelete(Editor::_repeat) ? T : NIL;
   } else {
     return NIL;
@@ -712,7 +712,7 @@ fillparagraph() {
 
   while (curwp->line()->forw()->length() > len
          && prefixlinep(curwp->line()->forw(), len)) {
-    (void)gotoeol();
+    (void)Editor::gotoeol();
     (void)EDLINE::ldelete(1);
     (void)EDLINE::linsert(' ');
     (void)EDLINE::ldelete(len);
@@ -731,7 +731,7 @@ fillparagraph() {
       nbspace = false;
     }
 
-    (void)forwchar();
+    (void)Editor::forwchar();
 
     if (nbspace) {
       while (curwp->pos() < curwp->line()->length()) {
@@ -756,7 +756,7 @@ fillparagraph() {
     }
   }
 
-  (void)gotoeol();
+  (void)Editor::gotoeol();
 
   /*
    * Reset the _curcol to the current position (any better solution ?)
@@ -839,13 +839,13 @@ splitlinetofill() {
       /*
        * assumes full-justify
        */
-      (void)backline();
+      (void)Editor::backline();
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
         (void)justifycomment();
       } else {
         (void)justifycurline();
       }
-      (void)forwline();
+      (void)Editor::forwline();
     }
     (void)addprefix();
   }
@@ -889,13 +889,13 @@ justifycurline() {
     EMCHAR c = curwp->getChar();
 
     if (c == '.' || c == ',') {
-      (void)forwchar();
+      (void)Editor::forwchar();
       if ((curwp->pos() < (curwp->line()->length() - 1))
           && curwp->getChar() == ' ') {
         (void)EDLINE::linsert(' ');
       }
     } else {
-      (void)forwchar();
+      (void)Editor::forwchar();
     }
 
     if (curwp->line()->position() >= fillmax) {
@@ -933,7 +933,7 @@ justifycurline() {
           if (curwp->getChar() != ' ') {
             break;
           }
-          (void)forwchar();
+          (void)Editor::forwchar();
           nbspace++;
         } while (curwp->pos() < curwp->line()->length());
 
@@ -942,7 +942,7 @@ justifycurline() {
           justifyed = true;
         }
       } else {
-        (void)forwchar();
+        (void)Editor::forwchar();
       }
 
       if (curwp->line()->position() >= fillmax) {
@@ -963,7 +963,7 @@ backparagraph() {
   auto len = emstrlen(opt::fill_prefix);
 
   while (curwp->line()->back() != curbp->lastline() &&
-         backline() == T &&
+         Editor::backline() == T &&
          curwp->line()->length() > len &&
          prefixlinep(curwp->line(), len)) {
     /* empty loop*/
@@ -971,7 +971,7 @@ backparagraph() {
   }
 
   if (curwp->line() != curbp->firstline()) {
-    (void)forwline();
+    (void)Editor::forwline();
   }
 
   if (curwp->line()->length() > len) {
@@ -992,7 +992,7 @@ forwparagraph() {
   auto len = emstrlen(opt::fill_prefix);
 
   while (curwp->line() != curbp->firstline() &&
-         forwline() == T &&
+         Editor::forwline() == T &&
          curwp->line()->length() > len &&
          prefixlinep(curwp->line(), len)) {
     /* empty loop*/
@@ -1000,10 +1000,10 @@ forwparagraph() {
   }
 
   if (curwp->line() != curbp->lastline()) {
-    (void)backline();
+    (void)Editor::backline();
   }
 
-  (void)gotoeol();
+  (void)Editor::gotoeol();
 
   return T;
 }
@@ -1015,7 +1015,7 @@ forwparagraph() {
 CMD
 markparagraph() {
   (void)backparagraph();
-  (void)setmark();
+  (void)Editor::setmark();
   (void)forwparagraph();
 
   return T;
@@ -1073,7 +1073,7 @@ justifycomment() {
       break;
     }
 
-    (void)forwchar();
+    (void)Editor::forwchar();
   }
 
   const auto& dot(curwp->getDot());

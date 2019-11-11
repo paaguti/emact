@@ -1558,6 +1558,30 @@ class Editor {
   void
   engine();
 
+  /*
+   * basic.cpp
+   */
+
+  static CMD gotobol();
+  static CMD backchar();
+  static CMD gotoeol();
+  static CMD forwchar();
+  static CMD gotobob();
+  static CMD gotoeob();
+  static CMD gotoline();
+  static CMD forwline();
+  static CMD backline();
+  static CMD forwpage();
+  static CMD forwother();
+  static CMD backpage();
+  static CMD setmark();
+  static CMD markwholebuffer();
+  static CMD swapmark();
+
+  /*
+   *  emacs.cpp
+   */
+
   static CMD emacsversion();
   static CMD killemacs();
   static CMD exitemacs();

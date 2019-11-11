@@ -511,7 +511,7 @@ internalfindtag(int tagnext) {
       {
         auto save(Editor::_repeat);
         Editor::_repeat = emstrtoi(line);
-        (void)gotoline();
+        (void)Editor::gotoline();
         Editor::_repeat = save;
       }
       return T;

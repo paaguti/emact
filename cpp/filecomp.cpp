@@ -338,7 +338,7 @@ diredbuffer(const EMCHAR* fname) {
 
   (void)closedir(dirp);
   (void)curwp->connect(bp);
-  (void)gotobob();
+  (void)Editor::gotobob();
 
   WDGwrite(ECSTR(": %d file(s) found."), nfiles);
 
@@ -385,7 +385,7 @@ diredcmd(int c) {
     }
 
     BUFFER::change(WINSCR::WFEDIT);
-    (void)forwline();
+    (void)Editor::forwline();
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -393,9 +393,9 @@ diredcmd(int c) {
   case 'f':
     return newfile(pfname) ? T : NIL;
   case 'n':
-    return forwline();
+    return Editor::forwline();
   case 'p':
-    return backline();
+    return Editor::backline();
   case 'v':
     if (!readin(pfname)) {
       return NIL;
@@ -406,7 +406,7 @@ diredcmd(int c) {
     return T;
   case 'x' :
     curbp->setReadonly(false);
-    (void)gotobob();
+    (void)Editor::gotobob();
 
     asked = 0;
 
@@ -423,17 +423,17 @@ diredcmd(int c) {
 
         if (removefile(pfname, true)) {
           removed++;
-          (void)gotobol();
+          (void)Editor::gotobol();
           (void)EDLINE::ldelete(curwp->line()->length() + 1);
-          (void)backline();
+          (void)Editor::backline();
         }
       }
-    } while (curwp->line() != curbp->lastline() && forwline() == T);
+    } while (curwp->line() != curbp->lastline() && Editor::forwline() == T);
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
 
-    (void)gotobob();
+    (void)Editor::gotobob();
 
     switch (asked) {
     case 0 :
@@ -483,7 +483,7 @@ diredcmd(int c) {
       WDGwrite(ECSTR("Move: 1 file"));
     }
 
-    (void)gotobob();
+    (void)Editor::gotobob();
 
     (void)emstrncpy(buf,
                     curwp->line()->text(),
@@ -492,7 +492,9 @@ diredcmd(int c) {
 
     return diredbuffer(pfname) ? T : NIL;
   case 0x08 : /* ^H */
-    if (backline() == T && gotobol() == T && lp->get(0) == 'D') {
+    if (Editor::backline() == T
+        && Editor::gotobol() == T
+        && lp->get(0) == 'D') {
       curbp->setReadonly(false);
       curwp->line()->put(0, ' ');
       BUFFER::change(WINSCR::WFEDIT);

@@ -890,7 +890,7 @@ XpTerminal::xpsetfontsize(int size) {
   lf.lfWeight         = FW_BOLD;
   lf.lfOutPrecision   = OUT_DEFAULT_PRECIS;
   lf.lfClipPrecision  = CLIP_DEFAULT_PRECIS;
-  _font              = CreateFontIndirect(&lf); /* SYSTEM_FONT */
+  _font               = CreateFontIndirect(&lf); /* SYSTEM_FONT */
 
   if (_font == nullptr) {
     xpprinterror(_T("Can't create Font"), FALSE);
@@ -1140,9 +1140,9 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     break;
   case WM_MOUSEWHEEL :
     if (((std::int16_t)HIWORD(wParam)) < 0) { /* zDelta */
-      (void)forwpage();
+      (void)Editor::forwpage();
     } else {
-      (void)backpage();
+      (void)Editor::backpage();
     }
     display->update();
     break;

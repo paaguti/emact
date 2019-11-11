@@ -81,7 +81,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   }
 
   (void)EDLINE::notmodified();
-  (void)gotobob();
+  (void)Editor::gotobob();
   owp->current();
 
   WDGwrite(ECSTR("Done."));

@@ -454,7 +454,7 @@ rmatchc(int patc, bool printflag) {
   }
 
   if (curwp->getChar() == matchpat) {
-    (void)forwchar();
+    (void)Editor::forwchar();
   }
 
   const auto& dot(curwp->getDot());
@@ -531,7 +531,7 @@ lmatchc(int patc, bool printflag) {
   }
 
   if (clp->get(indx) == matchpat) {
-    (void)backchar();
+    (void)Editor::backchar();
   }
 
   if (mode == EDITMODE::LISPMODE && (cbo > lastlisp(clp) + 1)) {
@@ -646,7 +646,7 @@ automatch(int c, bool f) {
 
   upline = 0;
 
-  if (backchar() == T && lmatchc(c, f) && f) {
+  if (Editor::backchar() == T && lmatchc(c, f) && f) {
     res = true;;
     if (upline <= crow) {
       display->update();
@@ -712,7 +712,7 @@ forwsearch() {
 
   if (Editor::_lastflag & CFFAIL) {
     Editor::_lastflag &= ~CFFAIL;
-    (void)gotobob();
+    (void)Editor::gotobob();
     return forwsearch();
   }
 
@@ -753,7 +753,7 @@ backsearch() {
 
   if (Editor::_lastflag & CFFAIL) {
     Editor::_lastflag &= ~CFFAIL;
-    (void)gotoeob();
+    (void)Editor::gotoeob();
     return backsearch();
   }
 
@@ -839,7 +839,7 @@ getdefinition() {
       if (Editor::_found.pos() == len) {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
-        (void)backline();
+        (void)Editor::backline();
         (void)WINSCR::reposition();
         return T;
       }
@@ -847,13 +847,13 @@ getdefinition() {
     case EDITMODE::LISPMODE:
       if (backword() == NIL ||
           backword() == NIL ||
-          backchar() == NIL ||
+          Editor::backchar() == NIL ||
           curwp->pos() != 0 || curwp->line()->get(0) != '(') {
         curwp->setDot(Editor::_found);
       } else {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
-        (void)backline();
+        (void)Editor::backline();
         (void)WINSCR::reposition();
         return T;
       }
@@ -1009,7 +1009,7 @@ loop:
 
     for (i = 0; inword(); ++i) {
       buf[i] = curwp->getChar();
-      (void)forwchar();
+      (void)Editor::forwchar();
     }
 
     buf[i] = '\000';

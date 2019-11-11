@@ -649,10 +649,10 @@ WINSCR::findwind() {
         auto resizep = NIL;
         if (wx == (term->getNbCols() - 4)
             || wx == (term->getNbCols() - 3)) {
-          (void)forwpage();
+          (void)Editor::forwpage();
         } else if (wx == (term->getNbCols() - 7)
                    || wx == (term->getNbCols() - 6)) {
-          (void)backpage();
+          (void)Editor::backpage();
         } else {
           switch (mevent.button) {
           case MEvent::MButton1 :
@@ -681,11 +681,11 @@ WINSCR::findwind() {
 
       if (l < wy) {
         while (l++ < wy) {
-          (void)forwline();
+          (void)Editor::forwline();
         }
       } else {
         while (lp != wp->line()) {
-          (void)backline();
+          (void)Editor::backline();
         }
       }
 
@@ -702,7 +702,7 @@ WINSCR::findwind() {
         } else {
           ++l;
         }
-        (void)forwchar();
+        (void)Editor::forwchar();
       }
 
       if (wp->buffer()->editMode() == EDITMODE::BUFFERMODE) {
@@ -714,7 +714,7 @@ WINSCR::findwind() {
       switch (mevent.button) {
       case MEvent::MButton1:
         /* mouse-track */
-        (void)setmark();
+        (void)Editor::setmark();
         break;
       case MEvent::MButton2:
       case MEvent::MButton3:
@@ -726,7 +726,7 @@ WINSCR::findwind() {
       case MEvent::MButton7:
         /* mouse-track insert */
         (void)REGION::copyregion();
-        (void)swapmark();
+        (void)Editor::swapmark();
         WDGclipcopy();
         break;
       case MEvent::MButton8:

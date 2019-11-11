@@ -213,7 +213,7 @@ nexterror() {
     } else {
       auto save(Editor::_repeat);
       Editor::_repeat = errlinenum;
-      (void)gotoline();
+      (void)Editor::gotoline();
       Editor::_repeat = save;
       WDGwrite(ECSTR("%L"), Editor::_found.line());
     }

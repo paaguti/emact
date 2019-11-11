@@ -23,26 +23,6 @@
 #define __DEFINES_H
 
 /*
- *      basic.cpp
- */
-
-CMD     gotobol();
-CMD     backchar();
-CMD     gotoeol();
-CMD     forwchar();
-CMD     gotobob();
-CMD     gotoeob();
-CMD     gotoline();
-CMD     forwline();
-CMD     backline();
-CMD     forwpage();
-CMD     forwother();
-CMD     backpage();
-CMD     setmark();
-CMD     markwholebuffer();
-CMD     swapmark();
-
-/*
  *      charutil.cpp
  */
 

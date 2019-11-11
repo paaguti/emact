@@ -756,7 +756,7 @@ EDLINE::ltwiddle() {
 
   lp1->swap(lp2);
 
-  (void)forwline();
+  (void)Editor::forwline();
 
   return T;
 }

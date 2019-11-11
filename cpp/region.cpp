@@ -263,7 +263,7 @@ REGION::fillregion() {
         (void)EDLINE::linsert(opt::fill_prefix[i]);
       }
     }
-    (void)forwline();
+    (void)Editor::forwline();
   }
 
   return T;
