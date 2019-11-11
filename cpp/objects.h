@@ -737,8 +737,8 @@ class Line {
   ~Line() = delete;
 
   static Line* alloc(int used = 0);
-  static void    dispose(Line*& lp);
-  static void    free(Line*& lp);
+  static void  dispose(Line*& lp);
+  static void  free(Line*& lp);
 
   int
   leftmargin() const noexcept;
@@ -1006,8 +1006,8 @@ class Line {
   static bool delnewline();
 
   EMCHAR* l_text; // A bunch of characters.
-  Line* l_fp;   // Link to the next line
-  Line* l_bp;   // Link to the previous line
+  Line*   l_fp;   // Link to the next line
+  Line*   l_bp;   // Link to the previous line
   int     l_size; // Allocated size
   int     l_used; // Used size
 };
@@ -1758,10 +1758,10 @@ class Region {
 private:
   Region();
   Line* _linep{nullptr};  // Origin Line address
-  int     _offset{0};       // Origin Line offset
-  int     _size{0};         // Length in characters
-  int     _lines{0};        // Number of lines
-  bool    _empty{true};     // empty or not set.
+  int   _offset{0};       // Origin Line offset
+  int   _size{0};         // Length in characters
+  int   _lines{0};        // Number of lines
+  bool  _empty{true};     // empty or not set.
 
   bool empty() { return _empty; }
 };
