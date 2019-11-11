@@ -287,20 +287,6 @@ CMD     undo();
 CMD     enterdebug();
 
 /*
- *      region.cpp
- */
-
-CMD     killregion();
-CMD     copyregion();
-CMD     lowerregion();
-CMD     upperregion();
-CMD     writeregion();
-CMD     fillregion();
-CMD     indentregion();
-CMD     shiftright();
-CMD     shiftleft();
-
-/*
  *      search.cpp
  */
 

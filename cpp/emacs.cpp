@@ -173,7 +173,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'W',
-     killregion,
+     REGION::killregion,
      ECSTR("kill-region")
   },
   {
@@ -233,7 +233,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'L',
-     lowerregion,
+     REGION::lowerregion,
      ECSTR("downcase-region")
   },
   {
@@ -278,7 +278,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'U',
-     upperregion,
+     REGION::upperregion,
      ECSTR("upcase-region")
   },
   {
@@ -358,12 +358,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'>',
-     shiftright,
+     REGION::shiftright,
      ECSTR("shift-region-right")
   },
   {
      CTLX|'<',
-     shiftleft,
+     REGION::shiftleft,
      ECSTR("shift-region-left")
   },
   {
@@ -458,7 +458,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'W',
-     writeregion,
+     REGION::writeregion,
      ECSTR("write-region")
   },
   {
@@ -473,7 +473,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'\\',
-     indentregion,
+     REGION::indentregion,
      ECSTR("indent-region")
   },
   {
@@ -723,7 +723,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'W',
-     copyregion,
+     REGION::copyregion,
      ECSTR("kill-ring-save")
   },
   {
@@ -833,7 +833,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     fillregion,
+     REGION::fillregion,
      ECSTR("fill-region")
   },
   {

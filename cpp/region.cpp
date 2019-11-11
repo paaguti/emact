@@ -28,22 +28,6 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #include "./emacs.h"
 
 /*
- * The starting position of a region, and the size of the region
- * in  characters,  is kept in a region structure.   Used by the
- * region commands.
- */
-
-class REGION {
- public:
-  EDLINE* _linep{nullptr};  // Origin EDLINE address
-  int     _offset{0};       // Origin EDLINE offset
-  int     _size{0};         // Length in characters
-  int     _lines{0};        // Number of lines
-
-  bool get();
-};
-
-/*
  * This  routine  figures  out  the  bounds of the region in the
  * current  window,  and  fills  in  the  fields of the "REGION"
  * structure  pointed  to by "rp".  Because the dot and mark are
@@ -133,7 +117,7 @@ REGION::get() {
  */
 
 CMD
-killregion() {
+REGION::killregion() {
   if (freadonly()) {
     return NIL;
   }
@@ -166,7 +150,7 @@ killregion() {
  */
 
 CMD
-copyregion() {
+REGION::copyregion() {
   REGION  region;
 
   if (!region.get()) {
@@ -210,7 +194,7 @@ copyregion() {
  */
 
 CMD
-lowerregion() {
+REGION::lowerregion() {
   if (freadonly()) {
     return NIL;
   }
@@ -248,7 +232,7 @@ lowerregion() {
  */
 
 CMD
-fillregion() {
+REGION::fillregion() {
   if (freadonly()) {
     return NIL;
   }
@@ -289,7 +273,7 @@ fillregion() {
  */
 
 CMD
-upperregion() {
+REGION::upperregion() {
   if (freadonly()) {
     return NIL;
   }
@@ -327,7 +311,7 @@ upperregion() {
  */
 
 CMD
-writeregion() {
+REGION::writeregion() {
   REGION region;
 
   if (!region.get()) {
@@ -372,7 +356,7 @@ writeregion() {
  */
 
 CMD
-indentregion() {
+REGION::indentregion() {
   REGION region;
   auto s = T;
 
@@ -401,7 +385,7 @@ indentregion() {
  */
 
 CMD
-shiftright() {
+REGION::shiftright() {
   REGION region;
 
   if (freadonly()) {
@@ -431,7 +415,7 @@ shiftright() {
  */
 
 CMD
-shiftleft() {
+REGION::shiftleft() {
   REGION region;
 
   if (freadonly()) {

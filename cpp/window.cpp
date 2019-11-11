@@ -725,18 +725,18 @@ WINSCR::findwind() {
         break;
       case MEvent::MButton7:
         /* mouse-track insert */
-        (void)copyregion();
+        (void)REGION::copyregion();
         (void)swapmark();
         WDGclipcopy();
         break;
       case MEvent::MButton8:
         /* x-mouse-kill */
-        (void)killregion();
+        (void)REGION::killregion();
         WDGclipcopy();
         break;
       case MEvent::MButton4:
         /* mouse-track-adjust */
-        (void)copyregion();
+        (void)REGION::copyregion();
         WDGclipcopy();
         break;
       }

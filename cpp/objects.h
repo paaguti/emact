@@ -1688,4 +1688,32 @@ WINSCR::setChar(int c) {
   _dot.line()->put(_dot.pos(), c);
 }
 
+/*
+ * The starting position of a region, and the size of the region
+ * in  characters,  is kept in a region structure.   Used by the
+ * region commands.
+ */
+
+class REGION {
+ public:
+  EDLINE* _linep{nullptr};  // Origin EDLINE address
+  int     _offset{0};       // Origin EDLINE offset
+  int     _size{0};         // Length in characters
+  int     _lines{0};        // Number of lines
+
+  bool get();
+
+  /*
+   *      region.cpp
+   */
+  static CMD killregion();
+  static CMD copyregion();
+  static CMD lowerregion();
+  static CMD upperregion();
+  static CMD writeregion();
+  static CMD fillregion();
+  static CMD indentregion();
+  static CMD shiftright();
+  static CMD shiftleft();
+};
 #endif /* __OBJECTS_H */
