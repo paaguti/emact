@@ -212,7 +212,7 @@ bool
 EDLINE::linsert(int c, int n) {
   if (curbp->readonly()) {
     if (curbp->editMode() == EDITMODE::BUFFERMODE) {
-      return buffercmd(c) == T;
+      return BUFFER::buffercmd(c) == T;
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {
@@ -687,7 +687,7 @@ EDLINE::getgoal(int goal) const noexcept {
  */
 
 CMD
-notmodified() {
+EDLINE::notmodified() {
   int flag{0};
 
   if (curbp->count() != 1) {
@@ -715,7 +715,7 @@ notmodified() {
  */
 
 CMD
-ltwiddle() {
+EDLINE::ltwiddle() {
   if (freadonly()) {
     return NIL;
   }
@@ -766,7 +766,7 @@ ltwiddle() {
  */
 
 CMD
-instoggle() {
+EDLINE::instoggle() {
   opt::replace_mode = !opt::replace_mode;
 
   for (auto wp : WINSCR::list()) {

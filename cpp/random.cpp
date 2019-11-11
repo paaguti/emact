@@ -422,7 +422,7 @@ CMD
 backdel() {
   if (curbp->readonly()) {
     if (curbp->editMode() == EDITMODE::BUFFERMODE) {
-      return buffercmd(0x08);
+      return BUFFER::buffercmd(0x08);
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {

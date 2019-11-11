@@ -706,7 +706,7 @@ WINSCR::findwind() {
       }
 
       if (wp->buffer()->editMode() == EDITMODE::BUFFERMODE) {
-        return buffercmd('f');
+        return BUFFER::buffercmd('f');
       } else if (wp->buffer()->editMode() == EDITMODE::DIRED) {
         return diredcmd('f');
       }

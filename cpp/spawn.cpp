@@ -80,7 +80,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     return false;
   }
 
-  (void)notmodified();
+  (void)EDLINE::notmodified();
   (void)gotobob();
   owp->current();
 
@@ -271,7 +271,7 @@ syscompile(const EMCHAR* cmd, int flag) {
     }
   }
 
-  (void)notmodified();
+  (void)EDLINE::notmodified();
   (void)gotobob();
   owp->current();
 

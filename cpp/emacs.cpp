@@ -203,7 +203,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'B',
-     listbuffers,
+     BUFFER::listbuffers,
      ECSTR("list-buffers")
   },
   {
@@ -273,7 +273,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'T',
-     ltwiddle,
+     EDLINE::ltwiddle,
      ECSTR("transpose-lines")
   },
   {
@@ -378,7 +378,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'B',
-     usebuffer,
+     BUFFER::usebuffer,
      ECSTR("use-buffers")
   },
   {
@@ -418,7 +418,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'K',
-     killbuffer,
+     BUFFER::killbuffer,
      ECSTR("kill-buffer")
   },
   {
@@ -668,7 +668,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'I',
-     instoggle,
+     EDLINE::instoggle,
      ECSTR("toggle-insert")
   },
   {
@@ -753,7 +753,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'~',
-     notmodified,
+     EDLINE::notmodified,
      ECSTR("not-modified")
   },
   {
@@ -1168,7 +1168,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     }
 
     if (i > 2) {
-      (void)listbuffers();
+      (void)BUFFER::listbuffers();
       (void)WINSCR::prevwind();
     }
 

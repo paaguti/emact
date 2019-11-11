@@ -404,6 +404,9 @@ class WINSCR {
     return _wlist;
   }
 
+  /*
+   * Editor commands bound to key:
+   */
   static CMD mvdnwind();
   static CMD mvupwind();
   static CMD reposition();
@@ -692,6 +695,15 @@ class BUFFER {
     return _mode;
   }
 
+  static CMD buffercmd(int c);
+
+  /*
+   * Editor commands bound to key:
+   */
+  static CMD usebuffer();
+  static CMD killbuffer();
+  static CMD listbuffers();
+
  private:
   static std::list<BUFFER*> _blist;
 
@@ -975,6 +987,13 @@ class EDLINE {
    */
   static void
   append(BUFFER* bp, const EMCHAR* text);
+
+  /*
+   * Editor commands bound to key:
+   */
+  static CMD notmodified();
+  static CMD ltwiddle();
+  static CMD instoggle();
 
  private:
   /*

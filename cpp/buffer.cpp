@@ -619,7 +619,7 @@ bufmatch(const EMCHAR* prompt, EMCHAR* buffer) {
  */
 
 CMD
-usebuffer() {
+BUFFER::usebuffer() {
   CMD     s;
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
@@ -692,7 +692,7 @@ getbpcmd(EMCHAR* buf) {
 }
 
 CMD
-buffercmd(int cmd) {
+BUFFER::buffercmd(int cmd) {
   EMCHAR  buf[NPAT];
   BUFFER  *bp;
   int     asked = 0;
@@ -917,7 +917,7 @@ buffercmd(int cmd) {
  */
 
 CMD
-killbuffer() {
+BUFFER::killbuffer() {
   CMD     s;
   EMCHAR  bufn[BUFFER::NBUFN];
   EMCHAR  prompt[NLINE];
@@ -954,8 +954,8 @@ killbuffer() {
  */
 
 CMD
-listbuffers() {
-  auto bp(BUFFER::find(BUF_LIST, true, EDITMODE::BUFFERMODE));
+BUFFER::listbuffers() {
+  auto bp(find(BUF_LIST, true, EDITMODE::BUFFERMODE));
 
   if (bp == nullptr) {
     return NIL;

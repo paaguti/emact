@@ -43,15 +43,6 @@ CMD     markwholebuffer();
 CMD     swapmark();
 
 /*
- *      buffer.cpp
- */
-
-CMD     buffercmd(int c);
-CMD     usebuffer();
-CMD     killbuffer();
-CMD     listbuffers();
-
-/*
  *      charutil.cpp
  */
 
@@ -176,14 +167,6 @@ CMD     backtoindent();
 CMD     blispexpr();
 CMD     elispexpr();
 CMD     justonespace();
-
-/*
- *      line.cpp
- */
-
-CMD     notmodified();
-CMD     ltwiddle();
-CMD     instoggle();
 
 /*
  *      killbuf.cpp
@@ -396,22 +379,6 @@ DIR*    emopendir(const EMCHAR* path);
 EMCHAR* emgetdirentry(ENTRY *entryp);
 EMCHAR* ematou(const char *in, EMCHAR* out, int max);
 char*   emutoa(const EMCHAR* in, char *out, int max);
-
-/*
- *      window.cpp
- */
-
-CMD     recenter();
-CMD     nextwind();
-CMD     prevwind();
-CMD     topwind();
-CMD     onlywind();
-CMD     delwind();
-CMD     splitwind();
-CMD     enlargewind();
-CMD     shrinkwind();
-CMD     findwind();
-CMD     adjust();
 
 /*
  *      word.cpp
