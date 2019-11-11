@@ -321,21 +321,6 @@ EMCHAR* emgetdirentry(ENTRY *entryp);
 EMCHAR* ematou(const char *in, EMCHAR* out, int max);
 char*   emutoa(const EMCHAR* in, char *out, int max);
 
-/*
- *      word.cpp
- */
-
-bool    inword();
-bool    wordatcursor(EMCHAR* buf, size_t len);
-CMD     backword();
-CMD     forwword();
-CMD     upperword();
-CMD     lowerword();
-CMD     capword();
-CMD     delfword();
-CMD     delbword();
-CMD     wtwiddle();
-
 #if     defined( _X11 )
 int     X11emacs(int argc, char* argv[]);
 #endif

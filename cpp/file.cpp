@@ -858,7 +858,7 @@ savetime() {
                        (nt->tm_mday) % 100);
 
       curwp->setDot(lp, i);
-      (void)Line::ldelete(datelen);
+      (void)Line::remove(datelen);
 
       for (auto j = 0; sdate[j]; ++j) {
         (void)Line::insert(sdate[j]);

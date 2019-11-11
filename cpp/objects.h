@@ -961,7 +961,7 @@ class Line {
    * if they were not (because dot ran into the end of the buffer).
    */
   static bool
-  ldelete(int n, bool kflag = false);
+  remove(int n, bool kflag = false);
 
   /**
    * Replace "n" copies of the character "c" at the current location
@@ -1000,7 +1000,7 @@ class Line {
    * done,  and  this  makes  the  kill buffer work "right".  Easy
    * cases  can  be  done  by  shuffling  data around.  Hard cases
    * require  that  lines be moved about in memory.
-   * Called by "ldelete" only.
+   * Called by "remove" only.
    * @return false on error and true if all looks ok. 
    */
   static bool delnewline();
@@ -1010,6 +1010,28 @@ class Line {
   Line*   l_bp;   // Link to the previous line
   int     l_size; // Allocated size
   int     l_used; // Used size
+};
+
+/*
+ * The  routines  in this class implement commands that work word
+ * at a time. There are all sorts of word mode commands.
+ */
+class Word {
+ public:
+  /*
+   * see word.cpp
+   */
+  static CMD backward();
+  static CMD forward();
+  static CMD upper();
+  static CMD lower();
+  static CMD capitalize();
+  static CMD delForward();
+  static CMD delBackward();
+  static CMD twiddle();
+
+  static bool inword();
+  static bool atCursor(EMCHAR* buf, size_t len);
 };
 
 /*

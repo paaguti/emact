@@ -140,7 +140,7 @@ Region::kill() {
   Editor::_thisflag |= CFKILL;
   curwp->setDot(region._linep, region._offset);
 
-  if (Line::ldelete(region._size, true)) {
+  if (Line::remove(region._size, true)) {
     WDGclipcopy();
     return T;
   } else {
@@ -437,7 +437,7 @@ Region::shiftleft() {
   curwp->setDot(region._linep, 0);
 
   do {
-    if (curwp->line()->get(0) == '\t' && !Line::ldelete(1)) {
+    if (curwp->line()->get(0) == '\t' && !Line::remove(1)) {
       return NIL;
     }
     curwp->setDot(curwp->line()->forw(), 0);

@@ -19,11 +19,6 @@ static auto rcsid("$Id: word.cpp,v 1.9 2018/09/02 14:06:50 jullien Exp $");
  * 02111-1307, USA.
  */
 
-/*
- * The  routines  in this file implement commands that work word
- * at a time. There are all sorts of word mode commands.
- */
-
 #include "./emacs.h"
 
 /*
@@ -33,7 +28,7 @@ static auto rcsid("$Id: word.cpp,v 1.9 2018/09/02 14:06:50 jullien Exp $");
  */
 
 bool
-inword() {
+Word::inword() {
   const auto& dot(curwp->getDot());
 
   if (dot.line() == curbp->lastline() || dot.pos() == dot.line()->length()) {
@@ -76,7 +71,7 @@ inword() {
  */
 
 bool
-wordatcursor(EMCHAR* buf, size_t len) {
+Word::atCursor(EMCHAR* buf, size_t len) {
   auto cbo = curwp->pos();
 
   /*
@@ -92,7 +87,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
     return false;
   }
 
-  if ((forwword() == T) && (backword() == T)) {
+  if ((Word::forward() == T) && (Word::backward() == T)) {
     size_t i{0};
     while (inword() && i < (len - 1)) {
       buf[i++] = curwp->getChar();
@@ -116,7 +111,7 @@ wordatcursor(EMCHAR* buf, size_t len) {
  */
 
 CMD
-backword() {
+Word::backward() {
   int n = Editor::_repeat;
 
   if (Editor::backchar() == NIL) {
@@ -150,7 +145,7 @@ backword() {
  */
 
 CMD
-forwword() {
+Word::forward() {
   int n = Editor::_repeat;
 
   while (n--) {
@@ -176,7 +171,7 @@ forwword() {
  */
 
 CMD
-upperword() {
+Word::upper() {
   if (freadonly()) {
     return NIL;
   }
@@ -212,7 +207,7 @@ upperword() {
  */
 
 CMD
-lowerword() {
+Word::lower() {
   if (freadonly()) {
     return NIL;
   }
@@ -248,7 +243,7 @@ lowerword() {
  */
 
 CMD
-capword() {
+Word::capitalize() {
   int n = Editor::_repeat;
 
   if (freadonly()) {
@@ -292,7 +287,7 @@ capword() {
  */
 
 CMD
-delfword() {
+Word::delForward() {
   int n  = Editor::_repeat;
   int sv = Editor::_repeat;
 
@@ -320,7 +315,7 @@ delfword() {
  */
 
 CMD
-delbword() {
+Word::delBackward() {
   auto n  = Editor::_repeat;
   auto sv = Editor::_repeat;
 
@@ -351,12 +346,12 @@ delbword() {
  */
 
 CMD
-wtwiddle() {
+Word::twiddle() {
   int     i;
   EMCHAR  word1[NPAT];
   EMCHAR  word2[NPAT];
 
-  if ((forwword() == NIL) || (backword() == NIL)) {
+  if ((Word::forward() == NIL) || (Word::backward() == NIL)) {
     return NIL;
   }
 
@@ -388,7 +383,7 @@ wtwiddle() {
    * ^         @
    */
 
-  (void)backword();
+  (void)Word::backward();
 
   /*
    * then delete left word and store it in 'word2'

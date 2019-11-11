@@ -845,8 +845,8 @@ getdefinition() {
       }
       break;
     case EDITMODE::LISPMODE:
-      if (backword() == NIL ||
-          backword() == NIL ||
+      if (Word::backward() == NIL ||
+          Word::backward() == NIL ||
           Editor::backchar() == NIL ||
           curwp->pos() != 0 || curwp->line()->get(0) != '(') {
         curwp->setDot(Editor::_found);
@@ -947,7 +947,7 @@ completeword() {
    *      Copy the start of match
    */
 
-  (void)backword();
+  (void)Word::backward();
 
   for (slen = 0, i = curwp->pos(); i < cbo; ++i) {
     buf[slen++] = clp->get(i);
@@ -981,7 +981,7 @@ loop:
 
     if (Editor::_found.pos() > 0) {
       curwp->setDot(Editor::_found.line(), Editor::_found.pos() - 1);
-      if (inword()) {
+      if (Word::inword()) {
         /* match the middle of a word */
         if (find == ffindstring) {
           Editor::_found.setPos(Editor::_found.pos() + slen);
@@ -1007,7 +1007,7 @@ loop:
      * Copy new characters in a temporary buffer.
      */
 
-    for (i = 0; inword(); ++i) {
+    for (i = 0; Word::inword(); ++i) {
       buf[i] = curwp->getChar();
       (void)Editor::forwchar();
     }

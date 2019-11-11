@@ -395,7 +395,7 @@ deblank() {
 
   curwp->setDot(lp1->forw(), 0);
 
-  return Line::ldelete(nld) ? T : NIL;
+  return Line::remove(nld) ? T : NIL;
 }
 
 /*
@@ -407,7 +407,7 @@ deblank() {
 
 CMD
 forwdel() {
-  return Line::ldelete(Editor::_repeat) ? T : NIL;
+  return Line::remove(Editor::_repeat) ? T : NIL;
 }
 
 /*
@@ -448,7 +448,7 @@ backdel() {
        */
 
       if (Editor::backchar() == T) {
-        (void)Line::ldelete(1);
+        (void)Line::remove(1);
       }
 
       pos = getccol();
@@ -464,7 +464,7 @@ backdel() {
   }
 
   if (Editor::backchar() == T) {
-    return Line::ldelete(Editor::_repeat) ? T : NIL;
+    return Line::remove(Editor::_repeat) ? T : NIL;
   } else {
     return NIL;
   }
@@ -497,7 +497,7 @@ killtext() {
     chunk = 1;
   }
 
-  return Line::ldelete(chunk, true) ? T : NIL;
+  return Line::remove(chunk, true) ? T : NIL;
 }
 
 /*
@@ -675,7 +675,7 @@ addprefix() {
 
   while ((curwp->pos() < curwp->line()->length())
          && curwp->getChar() == ' ') {
-    (void)Line::ldelete(1);
+    (void)Line::remove(1);
   }
 
   return T;
@@ -703,7 +703,7 @@ fillparagraph() {
 
   curwp->setDotPos(0);
   if (prefixlinep(curwp->line(), len)) {
-    (void)Line::ldelete(len);
+    (void)Line::remove(len);
   }
 
   /*
@@ -713,9 +713,9 @@ fillparagraph() {
   while (curwp->line()->forw()->length() > len
          && prefixlinep(curwp->line()->forw(), len)) {
     (void)Editor::gotoeol();
-    (void)Line::ldelete(1);
+    (void)Line::remove(1);
     (void)Line::insert(' ');
-    (void)Line::ldelete(len);
+    (void)Line::remove(len);
   }
 
   /*
@@ -738,7 +738,7 @@ fillparagraph() {
         if (curwp->getChar() != ' ') {
           break;
         }
-        (void)Line::ldelete(1);
+        (void)Line::remove(1);
       }
     }
   }

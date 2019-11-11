@@ -503,7 +503,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'H',
-     delbword,
+     Word::delBackward,
      ECSTR("backward-kill-word")
   },
   {
@@ -633,17 +633,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'B',
-     backword,
+     Word::backward,
      ECSTR("backward-word")
   },
   {
      META|'C',
-     capword,
+     Word::capitalize,
      ECSTR("capitalize-word")
   },
   {
      META|'D',
-     delfword,
+     Word::delForward,
      ECSTR("delete-forward")
   },
   {
@@ -653,7 +653,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'F',
-     forwword,
+     Word::forward,
      ECSTR("forward-word")
   },
   {
@@ -673,7 +673,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'L',
-     lowerword,
+     Word::lower,
      ECSTR("downcase-word")
   },
   {
@@ -703,12 +703,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'T',
-     wtwiddle,
+     Word::twiddle,
      ECSTR("transpose-words")
   },
   {
      META|'U',
-     upperword,
+     Word::upper,
      ECSTR("upcase-word")
   },
   {
@@ -753,7 +753,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|BACKDEL,
-     delbword,
+     Word::delBackward,
      ECSTR("backward-kill-word")
   },
   {

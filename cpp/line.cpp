@@ -385,7 +385,7 @@ Line::replace(int c, int n) {
  */
 
 bool
-Line::ldelete(int n, bool kflag) {
+Line::remove(int n, bool kflag) {
   if (freadonly()) {
     return false;
   }
@@ -465,7 +465,7 @@ Line::ldelete(int n, bool kflag) {
  * done,  and  this  makes  the  kill buffer work "right".  Easy
  * cases  can  be  done  by  shuffling  data around.  Hard cases
  * require  that  lines be moved about in memory.  Return false on
- * error and true if all looks ok. Called by "ldelete" only.
+ * error and true if all looks ok. Called by "remove" only.
  */
 
 bool

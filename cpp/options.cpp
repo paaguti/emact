@@ -435,7 +435,7 @@ internalfindtag(int tagnext) {
   } else {
     tagname[0] = '\000';
 
-    if (!wordatcursor(tagname, NPAT)) {
+    if (!Word::atCursor(tagname, NPAT)) {
       tagname[0] = '\000';
     }
 

@@ -850,7 +850,7 @@ Buffer::buffercmd(int cmd) {
         asked++;
         if (bp->discard()) {
           (void)Editor::gotobol();
-          (void)Line::ldelete(curwp->line()->length() + 1);
+          (void)Line::remove(curwp->line()->length() + 1);
           Buffer::change(Window::WFEDIT);
           (void)Editor::backline();
           (void)Editor::gotobol();

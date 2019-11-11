@@ -378,7 +378,7 @@ man() {
   EMCHAR  buf[NPAT];
   EMCHAR  cmd[NLINE];
 
-  if (!wordatcursor(buf, NPAT)) {
+  if (!Word::atCursor(buf, NPAT)) {
     buf[0] = '\000';
   }
 

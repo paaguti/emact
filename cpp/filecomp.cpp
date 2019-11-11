@@ -424,7 +424,7 @@ diredcmd(int c) {
         if (removefile(pfname, true)) {
           removed++;
           (void)Editor::gotobol();
-          (void)Line::ldelete(curwp->line()->length() + 1);
+          (void)Line::remove(curwp->line()->length() + 1);
           (void)Editor::backline();
         }
       }
