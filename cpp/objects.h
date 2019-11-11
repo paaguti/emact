@@ -1558,6 +1558,32 @@ class Editor {
   void
   engine();
 
+  static CMD emacsversion();
+  static CMD killemacs();
+  static CMD exitemacs();
+  static CMD ctlxlp();
+  static CMD ctlxrp();
+  static CMD ctlxe();
+  static CMD ctrlg();
+  static CMD insertunicode();
+  static CMD binaryfile();
+  static CMD utf8encoding();
+  static CMD utf16encoding();
+  static CMD systemencoding();
+  static CMD switchfund();
+  static CMD switchcc();
+  static CMD switchcpp();
+  static CMD switchsgml();
+  static CMD switchjava();
+  static CMD switchlisp();
+  static CMD switchshell();
+  static CMD switchperl();
+  static CMD switchprolog();
+  static CMD switchpython();
+  static CMD switchas();
+  static CMD switchfortran();
+  static CMD redrawscreen();
+
   /*
    * This is the general command execution routine. It handles the
    * fake binding of all the keys to "self-insert". It also clears

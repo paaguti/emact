@@ -84,7 +84,7 @@ mlyn(const EMCHAR* prompt) {
   for (;;) {
     switch (term->get()) {
     case 0x07:
-      (void)ctrlg();
+      (void)Editor::ctrlg();
       WDGmessage(ECSTR("Quit"));
       return ABORT;
     case 'y' :
@@ -98,7 +98,7 @@ mlyn(const EMCHAR* prompt) {
     case 0x1B:
       return ABORT;
     default  :
-      (void)ctrlg();
+      (void)Editor::ctrlg();
     }
   }
 }
@@ -127,7 +127,7 @@ mlyesno(const EMCHAR* prompt) {
         emstrcmp(buf, ECSTR("NO")) == 0) {
       return NIL;
     }
-    (void)ctrlg();
+    (void)Editor::ctrlg();
     mlwrite(ECSTR("Please answer yes or no"));
     waitmatch(3);
   }
@@ -202,7 +202,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       complete = nullptr;
       complete.setStatus(Completion::Status::COMPLETE_ABORT);
       WDGmessage(ECSTR("Quit"));
-      return ctrlg();
+      return Editor::ctrlg();
     case 0x0D:      /* Return               */
     case 0x0A:      /* LineFeed             */
     case 0x12:      /* C-R, Back Search     */
@@ -223,7 +223,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
             kbdm.record(buf[i]);
           }
         } catch (const Kbdm::BufferFullException&) {
-          (void)ctrlg();
+          (void)Editor::ctrlg();
         }
       }
       return (buf[0] == 0) ? NIL : editflg;

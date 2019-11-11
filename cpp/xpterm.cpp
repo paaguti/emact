@@ -967,7 +967,7 @@ xpquit() {
     int ret;
 
     if (!BUFFER::anycb(BUFFER::ANYCB::CHECK)) {
-      (void)killemacs();
+      (void)Editor::killemacs();
       return TRUE;
     }
 
@@ -978,14 +978,14 @@ xpquit() {
 
     if (ret == IDYES) {
       XpTerminal::_openp = false;
-      (void)killemacs();
+      (void)Editor::killemacs();
       return TRUE;
     } else {
       return FALSE;
     }
   } else {
     XpTerminal::_openp = false;
-    (void)killemacs();
+    (void)Editor::killemacs();
     return TRUE;
   }
 }
@@ -1018,15 +1018,15 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       xpterm->xpchangefont(XP_EMACS_ALTERNATE_FONT_SIZE);
       break;
     case IDM_UTF8ENCODING:
-      utf8encoding();
+      Editor::utf8encoding();
       display->update();
       break;
     case IDM_UTF16ENCODING:
-      utf16encoding();
+      Editor::utf16encoding();
       display->update();
       break;
     case IDM_DEFAULTENCODING:
-      systemencoding();
+      Editor::systemencoding();
       display->update();
       break;
     case IDM_HELPEMACS:

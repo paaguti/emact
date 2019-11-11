@@ -59,31 +59,6 @@ int     emmbclen(int c);
 int     getkey();
 bool    separatorp(int c);
 bool    charp(int c);
-CMD     emacsversion();
-CMD     killemacs();
-CMD     exitemacs();
-CMD     ctlxlp();
-CMD     ctlxrp();
-CMD     ctlxe();
-CMD     ctrlg();
-CMD     insertunicode();
-CMD     binaryfile();
-CMD     utf8encoding();
-CMD     utf16encoding();
-CMD     systemencoding();
-CMD     switchfund();
-CMD     switchcc();
-CMD     switchcpp();
-CMD     switchsgml();
-CMD     switchjava();
-CMD     switchlisp();
-CMD     switchshell();
-CMD     switchperl();
-CMD     switchprolog();
-CMD     switchpython();
-CMD     switchas();
-CMD     switchfortran();
-CMD     redrawscreen();
 
 /*
  *      file.cpp

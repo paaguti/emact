@@ -363,7 +363,7 @@ diredcmd(int c) {
 
   if (c != 'x' && c != 0x08) {
     if (lp == curbp->lastline() || lp->length() == 0) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
   }
 
@@ -373,7 +373,7 @@ diredcmd(int c) {
   switch (c) {
   case 'd':
     if (lp->length() == 0) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
 
     curbp->setReadonly(false);
@@ -501,6 +501,6 @@ diredcmd(int c) {
     }
     return T;
   default :
-    return ctrlg();
+    return Editor::ctrlg();
   }
 }

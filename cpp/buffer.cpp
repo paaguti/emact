@@ -372,7 +372,7 @@ BUFFER::anycb(ANYCB flag) {
         WDGwrite(ECSTR("%s"), buf);
         switch (term->get()) {
         case 0x07:
-          (void)ctrlg();
+          (void)Editor::ctrlg();
           WDGmessage(ECSTR("Quit"));
           return true;
         case ' ' :
@@ -399,7 +399,7 @@ BUFFER::anycb(ANYCB flag) {
         case 0x1B:
           return res;
         default  :
-          (void)ctrlg();
+          (void)Editor::ctrlg();
           WDGwrite(ANYHLP);
           waitmatch(5);
         }
@@ -703,7 +703,7 @@ BUFFER::buffercmd(int cmd) {
         lp1 == curbp->firstline() ||        /* At the beginning */
         lp1 == curbp->firstline()->forw()     /* At 2nd line      */
       ) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
   }
 
@@ -726,7 +726,7 @@ BUFFER::buffercmd(int cmd) {
   case 'd':
   case 'k':
     if (curwp->line()->length() == 0) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
 
     curbp->setReadonly(false);
@@ -751,7 +751,7 @@ BUFFER::buffercmd(int cmd) {
 
   case 's':
     if (curwp->line()->length() == 0) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
 
     curbp->setReadonly(false);
@@ -904,7 +904,7 @@ BUFFER::buffercmd(int cmd) {
     return T;
 
   default :
-    return ctrlg();
+    return Editor::ctrlg();
   }
 }
 

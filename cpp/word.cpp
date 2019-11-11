@@ -249,7 +249,7 @@ lowerword() {
 
 CMD
 capword() {
-  int     n = Editor::_repeat;
+  int n = Editor::_repeat;
 
   if (freadonly()) {
     return NIL;

@@ -221,7 +221,7 @@ CMD
 WINSCR::recenter() {
   curwp->_force = curwp->rows() / 2;
   curwp->setFlags(WINSCR::WFFORCE);
-  redrawscreen();
+  Editor::redrawscreen();
 
   return T;
 }
@@ -663,7 +663,7 @@ WINSCR::findwind() {
             break;
           default :
             WDGmessage(ECSTR("Not such window!"));
-            (void)ctrlg();
+            (void)Editor::ctrlg();
             return NIL;
           }
         }

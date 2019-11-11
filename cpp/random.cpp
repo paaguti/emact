@@ -319,7 +319,7 @@ endline() {
     const auto dotp(curwp->line());
 
     if (dotp == curbp->lastline() || dotp->length() == 0) {
-      return ctrlg();
+      return Editor::ctrlg();
     }
 
     EMCHAR buf[NFILEN];

@@ -1476,7 +1476,7 @@ again() {
 }
 
 CMD
-emacsversion() {
+Editor::emacsversion() {
 #if defined(UNICODE)
   WDGwrite(ECSTR("%s (%s / UNICODE - Build: %d) of %s - C. Jullien."),
            version,
@@ -1522,7 +1522,7 @@ getctl() {
  */
 
 CMD
-killemacs() {
+Editor::killemacs() {
   display->tidy();
   editflag = false;
   return T;
@@ -1535,7 +1535,7 @@ killemacs() {
  */
 
 CMD
-exitemacs() {
+Editor::exitemacs() {
   static EMCHAR* msg = ECSTR("Modified buffers exist; exit anymawy? ");
 
   auto res = BUFFER::anycb(BUFFER::ANYCB::PROMPT) ? T : NIL;
@@ -1561,7 +1561,7 @@ exitemacs() {
  */
 
 CMD
-ctlxlp() {
+Editor::ctlxlp() {
   if (kbdm.isRecording() || kbdm.isPlaying()) {
     WDGmessage(ECSTR("Already defining kbd macro."));
     return NIL;
@@ -1578,7 +1578,7 @@ ctlxlp() {
  */
 
 CMD
-ctlxrp() {
+Editor::ctlxrp() {
   if (!kbdm.isRecording()) {
     WDGmessage(ECSTR("Not defining a kbd macro."));
     return NIL;
@@ -1596,7 +1596,7 @@ ctlxrp() {
  */
 
 CMD
-ctlxe() {
+Editor::ctlxe() {
   const auto n = Editor::_repeat;
 
   if (!kbdm.exist()) {
@@ -1640,7 +1640,7 @@ ctlxe() {
  */
 
 CMD
-ctrlg() {
+Editor::ctrlg() {
   term->beep();
 
   if (kbdm.isRecording()) {
@@ -1655,7 +1655,7 @@ ctrlg() {
  */
 
 CMD
-insertunicode() {
+Editor::insertunicode() {
   EMCHAR buf[2];
   EMCHAR unicode_buffer[NPAT]; /* Main pattern             */
 
@@ -1684,7 +1684,7 @@ insertunicode() {
  */
 
 CMD
-binaryfile() {
+Editor::binaryfile() {
   curbp->setBinary(!curbp->binary());
 
   BUFFER::change(WINSCR::WFEDIT);
@@ -1697,7 +1697,7 @@ binaryfile() {
  */
 
 CMD
-utf8encoding() {
+Editor::utf8encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF8);
 
@@ -1716,7 +1716,7 @@ utf8encoding() {
  */
 
 CMD
-utf16encoding() {
+Editor::utf16encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF16);
 
@@ -1734,7 +1734,7 @@ utf16encoding() {
  */
 
 CMD
-systemencoding() {
+Editor::systemencoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMASCII);
 
@@ -1754,7 +1754,7 @@ systemencoding() {
  */
 
 CMD
-switchfund() {
+Editor::switchfund() {
   curbp->setEditMode(EDITMODE::FUNDAMENTAL);
   BUFFER::updatemodes();
   return T;
@@ -1765,7 +1765,7 @@ switchfund() {
  */
 
 CMD
-switchcc() {
+Editor::switchcc() {
   curbp->setEditMode(EDITMODE::CMODE);
   BUFFER::updatemodes();
   return T;
@@ -1776,7 +1776,7 @@ switchcc() {
  */
 
 CMD
-switchcpp() {
+Editor::switchcpp() {
   curbp->setEditMode(EDITMODE::CPPMODE);
   BUFFER::updatemodes();
   return T;
@@ -1787,7 +1787,7 @@ switchcpp() {
  */
 
 CMD
-switchjava() {
+Editor::switchjava() {
   curbp->setEditMode(EDITMODE::JAVAMODE);
   BUFFER::updatemodes();
   return T;
@@ -1798,7 +1798,7 @@ switchjava() {
  */
 
 CMD
-switchfortran() {
+Editor::switchfortran() {
   curbp->setEditMode(EDITMODE::FORTRANMODE);
   BUFFER::updatemodes();
   return T;
@@ -1809,7 +1809,7 @@ switchfortran() {
  */
 
 CMD
-switchlisp() {
+Editor::switchlisp() {
   curbp->setEditMode(EDITMODE::LISPMODE);
   BUFFER::updatemodes();
   return T;
@@ -1820,7 +1820,7 @@ switchlisp() {
  */
 
 CMD
-switchperl() {
+Editor::switchperl() {
   curbp->setEditMode(EDITMODE::PERLMODE);
   BUFFER::updatemodes();
   return T;
@@ -1831,7 +1831,7 @@ switchperl() {
  */
 
 CMD
-switchsgml() {
+Editor::switchsgml() {
   curbp->setEditMode(EDITMODE::SGMLMODE);
   opt::sgml_mode      = true;
   opt::auto_fill_mode = true;
@@ -1846,7 +1846,7 @@ switchsgml() {
  */
 
 CMD
-switchprolog() {
+Editor::switchprolog() {
   curbp->setEditMode(EDITMODE::PROLOGMODE);
   BUFFER::updatemodes();
   return T;
@@ -1857,7 +1857,7 @@ switchprolog() {
  */
 
 CMD
-switchpython() {
+Editor::switchpython() {
   curbp->setEditMode(EDITMODE::PYTHONMODE);
   BUFFER::updatemodes();
   return T;
@@ -1868,7 +1868,7 @@ switchpython() {
  */
 
 CMD
-switchas() {
+Editor::switchas() {
   curbp->setEditMode(EDITMODE::ASMODE);
   BUFFER::updatemodes();
   return T;
@@ -1879,7 +1879,7 @@ switchas() {
  */
 
 CMD
-switchshell() {
+Editor::switchshell() {
   curbp->setEditMode(EDITMODE::SHELLMODE);
   BUFFER::updatemodes();
   return T;
@@ -1981,7 +1981,7 @@ latexinsert(int n, int c) {
  */
 
 CMD
-redrawscreen() {
+Editor::redrawscreen() {
   DISPLAY::garbaged();
   return T;
 }
