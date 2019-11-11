@@ -98,7 +98,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'G',
-     ctrlg,
+     Editor::ctrlg,
      ECSTR("illegal-operation")
   },
   {
@@ -208,7 +208,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'C',
-     exitemacs,
+     Editor::exitemacs,
      ECSTR("save-buffers-kill-emacs")
   },
   {
@@ -323,12 +323,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'(',
-     ctlxlp,
+     Editor::ctlxlp,
      ECSTR("start-remembering")
   },
   {
      CTLX|')',
-     ctlxrp,
+     Editor::ctlxrp,
      ECSTR("stop-remembering")
   },
   {
@@ -393,7 +393,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'E',
-     ctlxe,
+     Editor::ctlxe,
      ECSTR("execute-keyboard-macro")
   },
   {
@@ -478,7 +478,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'A',
-     switchas,
+     Editor::switchas,
      ECSTR("assembler-mode")
   },
   {
@@ -488,7 +488,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'C',
-     switchcc,
+     Editor::switchcc,
      ECSTR("c-mode")
   },
   {
@@ -513,12 +513,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'L',
-     switchlisp,
+     Editor::switchlisp,
      ECSTR("lisp-mode")
   },
   {
      META|Ctrl|'J',
-     switchjava,
+     Editor::switchjava,
      ECSTR("java-mode")
   },
   {
@@ -528,17 +528,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'N',
-     switchfund,
+     Editor::switchfund,
      ECSTR("fundamental-mode")
   },
   {
      META|Ctrl|'O',
-     switchfortran,
+     Editor::switchfortran,
      ECSTR("fortran-mode")
   },
   {
      META|Ctrl|'P',
-     switchprolog,
+     Editor::switchprolog,
      ECSTR("prolog-mode")
   },
   {
@@ -548,7 +548,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'U',
-     insertunicode,
+     Editor::insertunicode,
      ECSTR("insert-unicode")
   },
   {
@@ -568,7 +568,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'+',
-     switchcpp,
+     Editor::switchcpp,
      ECSTR("c++-mode")
   },
   {
@@ -808,7 +808,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     binaryfile,
+     Editor::binaryfile,
      ECSTR("binary-file")
   },
   {
@@ -823,12 +823,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     emacsversion,
+     Editor::emacsversion,
      ECSTR("emacs-version")
   },
   {
      UNBOUND,
-     exitemacs,
+     Editor::exitemacs,
      ECSTR("exit-emacs")
   },
   {
@@ -848,7 +848,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     switchsgml,
+     Editor::switchsgml,
      ECSTR("sgml-mode")
   },
   {
@@ -858,7 +858,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     killemacs,
+     Editor::killemacs,
      ECSTR("kill-emacs")
   },
   {
@@ -903,17 +903,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     switchperl,
+     Editor::switchperl,
      ECSTR("perl-mode")
   },
   {
      UNBOUND,
-     switchpython,
+     Editor::switchpython,
      ECSTR("python-mode")
   },
   {
      UNBOUND,
-     redrawscreen,
+     Editor::redrawscreen,
      ECSTR("redraw-screen")
   },
   {
@@ -943,17 +943,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     utf8encoding,
+     Editor::utf8encoding,
      ECSTR("utf8-encoding")
   },
   {
      UNBOUND,
-     utf16encoding,
+     Editor::utf16encoding,
      ECSTR("utf16-encoding")
   },
   {
      UNBOUND,
-     systemencoding,
+     Editor::systemencoding,
      ECSTR("system-encoding")
   },
   {
