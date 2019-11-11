@@ -266,13 +266,13 @@ syscompile(const EMCHAR* cmd, int flag) {
       term = Terminal::getInstance();
       WDGwrite(ECSTR("Strike any key to continue .. "));
       term->get();
-      redrawscreen();
+      (void)Editor::redrawscreen();
       return status;
     }
   }
 
   (void)EDLINE::notmodified();
-  (void)gotobob();
+  (void)Editor::gotobob();
   owp->current();
 
   WDGwrite(ECSTR("Done."));
@@ -306,7 +306,7 @@ spawncli() {
     (void)ffsystem((cp != nullptr) ? cp : ECSTR("sh"));
   }
 
-  redrawscreen();
+  (void)Editor::redrawscreen();
   term = Terminal::getInstance();
 #endif
   return T;
@@ -339,7 +339,7 @@ spawn() {
 
   term = Terminal::getInstance();
   mlerase();
-  redrawscreen();
+  (void)Editor::redrawscreen();
 #endif
   return T;
 }
