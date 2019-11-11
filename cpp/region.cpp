@@ -38,15 +38,15 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
  * later.
  */
 
-bool
-REGION::get() {
+REGION::REGION() {
   static auto rtoobig = ECSTR("Region too big.");
 
   const auto& mark(curwp->getMark());
 
   if (mark.line() == nullptr) {
     WDGmessage(ECSTR("No mark set in this buffer!"));
-    return false;
+    _empty = true;
+    return;
   }
 
   _lines = 0;
@@ -63,7 +63,8 @@ REGION::get() {
       _offset = mark.pos();
       _size   = dot.pos() - mark.pos();
     }
-    return true;
+    _empty = false;
+    return;
   }
 
   auto blp   = dot.line();
@@ -81,12 +82,14 @@ REGION::get() {
         _linep  = dot.line();
         _offset = dot.pos();
         _size   = fsize + curwp->getMark().pos();
-        return true;
+        _empty = false;
+        return;
       }
       fsize += flp->length() + 1;
       if ((size_t)fsize > (MAX_REGION - NLINE)) {
         WDGerror(rtoobig);
-        return false;
+        _empty = true;
+        return;
       }
     }
     if (blp->back() != curbp->lastline()) {
@@ -94,19 +97,21 @@ REGION::get() {
       bsize += blp->length() + 1;
       if ((size_t)bsize >= MAX_REGION) {
         WDGerror(rtoobig);
-        return false;
+        _empty = true;
+        return;
       }
       if (blp == curwp->getMark().line()) {
         _linep  = blp;
         _offset = curwp->getMark().pos();
         _size   = bsize - curwp->getMark().pos();
-        return true;
+        _empty = false;
+        return;
       }
     }
   }
 
   WDGmessage(ECSTR("Error lost mark"));
-  return false;
+  _empty = true;
 }
 
 /*
@@ -124,7 +129,7 @@ REGION::killregion() {
 
   REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -151,9 +156,9 @@ REGION::killregion() {
 
 CMD
 REGION::copyregion() {
-  REGION  region;
+  REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -201,7 +206,7 @@ REGION::lowerregion() {
 
   REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -237,9 +242,9 @@ REGION::fillregion() {
     return NIL;
   }
 
-  REGION  region;
+  REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -280,7 +285,7 @@ REGION::upperregion() {
 
   REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -314,7 +319,7 @@ CMD
 REGION::writeregion() {
   REGION region;
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -357,14 +362,15 @@ REGION::writeregion() {
 
 CMD
 REGION::indentregion() {
-  REGION region;
   auto s = T;
 
   if (freadonly()) {
     return NIL;
   }
 
-  if (!region.get()) {
+  REGION region;
+
+  if (region.empty()) {
     return NIL;
   }
 
@@ -392,7 +398,7 @@ REGION::shiftright() {
     return NIL;
   }
 
-  if (!region.get()) {
+  if (region.empty()) {
     return NIL;
   }
 
@@ -416,13 +422,13 @@ REGION::shiftright() {
 
 CMD
 REGION::shiftleft() {
-  REGION region;
-
   if (freadonly()) {
     return NIL;
   }
 
-  if (!region.get()) {
+  REGION region;
+
+  if (region.empty()) {
     return NIL;
   }
 

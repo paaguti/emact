@@ -1696,15 +1696,8 @@ WINSCR::setChar(int c) {
 
 class REGION {
  public:
-  EDLINE* _linep{nullptr};  // Origin EDLINE address
-  int     _offset{0};       // Origin EDLINE offset
-  int     _size{0};         // Length in characters
-  int     _lines{0};        // Number of lines
-
-  bool get();
-
   /*
-   *      region.cpp
+   * Editor commands bound to key:
    */
   static CMD killregion();
   static CMD copyregion();
@@ -1715,5 +1708,15 @@ class REGION {
   static CMD indentregion();
   static CMD shiftright();
   static CMD shiftleft();
+
+private:
+  REGION();
+  EDLINE* _linep{nullptr};  // Origin EDLINE address
+  int     _offset{0};       // Origin EDLINE offset
+  int     _size{0};         // Length in characters
+  int     _lines{0};        // Number of lines
+  bool    _empty{true};     // empty or not set.
+
+  bool empty() { return _empty; }
 };
 #endif /* __OBJECTS_H */
