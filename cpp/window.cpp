@@ -206,7 +206,7 @@ WINSCR::current() noexcept {
  */
 
 CMD
-reposition() {
+WINSCR::reposition() {
   curwp->_force = Editor::_repeat;
   curwp->setFlags(WINSCR::WFFORCE);
   return T;
@@ -218,7 +218,7 @@ reposition() {
  */
 
 CMD
-recenter() {
+WINSCR::recenter() {
   curwp->_force = curwp->rows() / 2;
   curwp->setFlags(WINSCR::WFFORCE);
   redrawscreen();
@@ -233,7 +233,7 @@ recenter() {
  */
 
 CMD
-nextwind() {
+WINSCR::nextwind() {
   auto next(curwp->down());
 
   if (next == nullptr) {
@@ -252,7 +252,7 @@ nextwind() {
  */
 
 CMD
-prevwind() {
+WINSCR::prevwind() {
   auto prev(curwp->up());
 
   if (prev == nullptr) {
@@ -271,7 +271,7 @@ prevwind() {
  */
 
 CMD
-topwind() {
+WINSCR::topwind() {
   for (auto wp : WINSCR::list()) {
     if (wp->toprow() == 0) {
       wp->current();
@@ -291,7 +291,7 @@ topwind() {
  */
 
 CMD
-mvdnwind() {
+WINSCR::mvdnwind() {
   auto save = Editor::_repeat;
 
   Editor::_repeat = -Editor::_repeat;
@@ -310,7 +310,7 @@ mvdnwind() {
  */
 
 CMD
-mvupwind() {
+WINSCR::mvupwind() {
   auto lp = curwp->topline();
   auto n = Editor::_repeat;
 
@@ -356,7 +356,7 @@ mvupwind() {
  */
 
 CMD
-onlywind() {
+WINSCR::onlywind() {
   if (WINSCR::list().size() == 1) {
     return T;  // already a single WINSCR exists.
   }
@@ -410,7 +410,7 @@ onlywind() {
  */
 
 CMD
-delwind() {
+WINSCR::delwind() {
   if (WINSCR::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
@@ -443,7 +443,7 @@ delwind() {
  */
 
 CMD
-splitwind() {
+WINSCR::splitwind() {
   if (curwp->rows() < 3) {
     WDGmessage(ECSTR("You can't have windows smaller than 2 lines high"));
     return NIL;
@@ -519,7 +519,7 @@ splitwind() {
  */
 
 CMD
-enlargewind() {
+WINSCR::enlargewind() {
   if (WINSCR::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
@@ -578,7 +578,7 @@ enlargewind() {
  */
 
 CMD
-shrinkwind() {
+WINSCR::shrinkwind() {
   if (WINSCR::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
@@ -632,7 +632,7 @@ shrinkwind() {
  */
 
 CMD
-findwind() {
+WINSCR::findwind() {
   EDLINE* lp{nullptr};
   auto wx = mevent.x;
   auto wy = mevent.y;
@@ -752,7 +752,7 @@ findwind() {
 }
 
 CMD
-adjust() {
+WINSCR::adjust() {
   WDGadjust();
   return T;
 }

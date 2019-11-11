@@ -392,7 +392,6 @@ class WINSCR {
    * EmACT commands having access to private members.
    */
   friend CMD recenter();
-  friend CMD reposition();
   friend CMD resize();
   friend CMD onlywind();
   friend CMD enlargewind();
@@ -404,6 +403,21 @@ class WINSCR {
   list() noexcept {
     return _wlist;
   }
+
+  static CMD mvdnwind();
+  static CMD mvupwind();
+  static CMD reposition();
+  static CMD recenter();
+  static CMD nextwind();
+  static CMD prevwind();
+  static CMD topwind();
+  static CMD onlywind();
+  static CMD delwind();
+  static CMD splitwind();
+  static CMD enlargewind();
+  static CMD shrinkwind();
+  static CMD findwind();
+  static CMD adjust();
 
  private:
   static std::list<WINSCR*> _wlist;

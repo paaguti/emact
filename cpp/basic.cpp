@@ -263,8 +263,8 @@ forwpage() {
 
 CMD
 forwother() {
-  if (nextwind() == T && forwpage() == T) {
-    return prevwind();
+  if (WINSCR::nextwind() == T && forwpage() == T) {
+    return WINSCR::prevwind();
   } else {
     return NIL;
   }

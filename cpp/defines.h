@@ -401,13 +401,10 @@ char*   emutoa(const EMCHAR* in, char *out, int max);
  *      window.cpp
  */
 
-CMD     reposition();
 CMD     recenter();
 CMD     nextwind();
 CMD     prevwind();
 CMD     topwind();
-CMD     mvdnwind();
-CMD     mvupwind();
 CMD     onlywind();
 CMD     delwind();
 CMD     splitwind();

@@ -66,189 +66,900 @@ Point  Editor::_found;                // Position of last search
  */
 
 std::vector<EditorCommand> Editor::_keytab = {
-  { Ctrl|'@',       setmark,         ECSTR("set-mark-command")            },
-  { Ctrl|'A',       gotobol,         ECSTR("beginning-of-line")           },
-  { Ctrl|'B',       backchar,        ECSTR("backward-char")               },
-  { Ctrl|'D',       forwdel,         ECSTR("delete-char")                 },
-  { Ctrl|'E',       gotoeol,         ECSTR("end-of-line")                 },
-  { Ctrl|'F',       forwchar,        ECSTR("forward-character")           },
-  { Ctrl|'G',       ctrlg,           ECSTR("illegal-operation")           },
-  { Ctrl|'H',       backdel,         ECSTR("delete-backward-char")        },
-  { Ctrl|'I',       tab,             ECSTR("indent-for-tab-command")      },
-  { Ctrl|'J',       newlineindent,   ECSTR("newline-and-indent")          },
-  { Ctrl|'K',       killtext,        ECSTR("kill-line")                   },
-  { Ctrl|'L',       recenter,        ECSTR("recenter")                    },
-  { Ctrl|'M',       endline,         ECSTR("newline")                     },
-  { Ctrl|'N',       forwline,        ECSTR("next-line")                   },
-  { Ctrl|'O',       openline,        ECSTR("open-line")                   },
-  { Ctrl|'P',       backline,        ECSTR("previous-line")               },
-  { Ctrl|'Q',       quotechar,       ECSTR("quoted-insert")               },
-  { Ctrl|'R',       backsearch,      ECSTR("backward-search")             },
-  { Ctrl|'S',       forwsearch,      ECSTR("forward-search")              },
-  { Ctrl|'T',       twiddle,         ECSTR("transpose-chars")             },
-  { Ctrl|'V',       forwpage,        ECSTR("scroll-up")                   },
-  { Ctrl|'W',       killregion,      ECSTR("kill-region")                 },
-  { Ctrl|'Y',       yank,            ECSTR("yank")                        },
-  { Ctrl|'Z',       spawncli,        ECSTR("suspend-emacs")               },
-  { Ctrl|']',       completeword,    ECSTR("dabbrev-expand")              },
-  { Ctrl|'_',       undo,            ECSTR("undo")                        },
-  { CTLX|METACH,    again,           ECSTR("repeat-last-command")         },
-  { CTLX|Ctrl|'B',  listbuffers,     ECSTR("list-buffers")                },
-  { CTLX|Ctrl|'C',  exitemacs,       ECSTR("save-buffers-kill-emacs")     },
-  { CTLX|Ctrl|'D',  changedir,       ECSTR("cd")                          },
-  { CTLX|Ctrl|'E',  evalbuf,         ECSTR("eval-buffer")                 },
-  { CTLX|Ctrl|'F',  findfile,        ECSTR("find-file")                   },
-  { CTLX|Ctrl|'I',  indentline,      ECSTR("indent-rigidily")             },
-  { CTLX|Ctrl|'L',  lowerregion,     ECSTR("downcase-region")             },
-  { CTLX|Ctrl|'M',  makefile,        ECSTR("execute-makefile")            },
-  { CTLX|Ctrl|'N',  mvdnwind,        ECSTR("scroll-one-line-down")        },
-  { CTLX|Ctrl|'O',  deblank,         ECSTR("delete-blank-lines")          },
-  { CTLX|Ctrl|'P',  mvupwind,        ECSTR("scroll-one-line-up")          },
-  { CTLX|Ctrl|'Q',  toggleread,      ECSTR("toggle-read-only")            },
-  { CTLX|Ctrl|'R',  fileread,        ECSTR("find-file-read-only")         },
-  { CTLX|Ctrl|'S',  filesave,        ECSTR("save-buffer")                 },
-  { CTLX|Ctrl|'T',  ltwiddle,        ECSTR("transpose-lines")             },
-  { CTLX|Ctrl|'U',  upperregion,     ECSTR("upcase-region")               },
-  { CTLX|Ctrl|'V',  filealternate,   ECSTR("find-alternate-file")         },
-  { CTLX|Ctrl|'W',  filewrite,       ECSTR("write-file")                  },
-  { CTLX|Ctrl|'X',  swapmark,        ECSTR("exchange-point-and-mark")     },
-  { CTLX|Ctrl|'Z',  shrinkwind,      ECSTR("shrink-window")               },
-  { CTLX|' ',       setmark,         ECSTR("set-mark-command")            },
-  { CTLX|'!',       getcommand,      ECSTR("get-command-in-buffer")       },
-  { CTLX|'%',       spawn,           ECSTR("execute-monitor-command")     },
-  { CTLX|'=',       showcpos,        ECSTR("what-cursor-position")        },
-  { CTLX|'(',       ctlxlp,          ECSTR("start-remembering")           },
-  { CTLX|')',       ctlxrp,          ECSTR("stop-remembering")            },
-  { CTLX|'.',       setfillprefix,   ECSTR("set-fill-prefix")             },
-  { CTLX|'0',       delwind,         ECSTR("delete-window")               },
-  { CTLX|'1',       onlywind,        ECSTR("delete-other-window")         },
-  { CTLX|'2',       splitwind,       ECSTR("split-window-vertically")     },
-  { CTLX|'8',       adjust,          ECSTR("adjust-to-80-columns")        },
-  { CTLX|'>',       shiftright,      ECSTR("shift-region-right")          },
-  { CTLX|'<',       shiftleft,       ECSTR("shift-region-left")           },
-  { CTLX|'`',       nexterror,       ECSTR("next-error")                  },
-  { CTLX|'A',       assemble,        ECSTR("assemble-file")               },
-  { CTLX|'B',       usebuffer,       ECSTR("use-buffers")                 },
-  { CTLX|'C',       compilecurrent,  ECSTR("compile-current-buffer")      },
-  { CTLX|'D',       dired,           ECSTR("dired")                       },
-  { CTLX|'E',       ctlxe,           ECSTR("execute-keyboard-macro")      },
-  { CTLX|'F',       setfillcolumn,   ECSTR("set-fill-column")             },
-  { CTLX|'H',       markwholebuffer, ECSTR("mark-whole-buffer")           },
-  { CTLX|'I',       fileinsert,      ECSTR("insert-file")                 },
-  { CTLX|'J',       javacompile,     ECSTR("java-compile")                },
-  { CTLX|'K',       killbuffer,      ECSTR("kill-buffer")                 },
-  { CTLX|'N',       nextwind,        ECSTR("next-window")                 },
-  { CTLX|'O',       prevwind,        ECSTR("other-window")                },
-  { CTLX|'P',       prevwind,        ECSTR("previous-window")             },
-  { CTLX|'R',       setvar,          ECSTR("global-rebind")               },
-  { CTLX|'S',       savesomebuffers, ECSTR("save-some-buffers")           },
-  { CTLX|'T',       topwind,         ECSTR("top-window")                  },
-  { CTLX|'U',       undo,            ECSTR("undo")                        },
-  { CTLX|'W',       writeregion,     ECSTR("write-region")                },
-  { CTLX|'Z',       enlargewind,     ECSTR("enlarge-window")              },
-  { META|METACH,    evalexpression,  ECSTR("eval-expression")             },
-  { META|Ctrl|'\\', indentregion,    ECSTR("indent-region")               },
-  { META|Ctrl|'A',  switchas,        ECSTR("assembler-mode")              },
-  { META|Ctrl|'B',  blispexpr,       ECSTR("beginning-of-expression")     },
-  { META|Ctrl|'C',  switchcc,        ECSTR("c-mode")                      },
-  { META|Ctrl|'D',  diffwindows,     ECSTR("diff-windows")                },
-  { META|Ctrl|'E',  elispexpr,       ECSTR("end-of-expression")           },
-  { META|Ctrl|'F',  getdefinition,   ECSTR("get-definition")              },
-  { META|Ctrl|'H',  delbword,        ECSTR("backward-kill-word")          },
-  { META|Ctrl|'L',  switchlisp,      ECSTR("lisp-mode")                   },
-  { META|Ctrl|'J',  switchjava,      ECSTR("java-mode")                   },
-  { META|Ctrl|'M',  getmacfile,      ECSTR("prompt-for-macro-file")       },
-  { META|Ctrl|'N',  switchfund,      ECSTR("fundamental-mode")            },
-  { META|Ctrl|'O',  switchfortran,   ECSTR("fortran-mode")                },
-  { META|Ctrl|'P',  switchprolog,    ECSTR("prolog-mode")                 },
-  { META|Ctrl|'R',  revertbuffer,    ECSTR("revert-buffer")               },
-  { META|Ctrl|'U',  insertunicode,   ECSTR("insert-unicode")              },
-  { META|Ctrl|'V',  forwother,       ECSTR("scroll-other-window")         },
-  { META|Ctrl|'W',  appendnextkill,  ECSTR("append-next-kill")            },
-  { META|' ',       justonespace,    ECSTR("just-one-space")              },
-  { META|'+',       switchcpp,       ECSTR("c++-mode")                    },
-  { META|'!',       reposition,      ECSTR("reposition")                  },
-  { META|'$',       comparewindows,  ECSTR("compare-windows")             },
-  { META|'%',       query,           ECSTR("query-replace")               },
-  { META|'&',       global,          ECSTR("replace-string")              },
-  { META|'(',       matchlpar,       ECSTR("match-left-parenthesis")      },
-  { META|')',       matchrpar,       ECSTR("match-right-parenthesis")     },
-  { META|',',       tagsloopcont,    ECSTR("tags-loop-continue")          },
-  { META|'.',       findtag,         ECSTR("find-tag")                    },
-  { META|'>',       gotoeob,         ECSTR("end-of-buffer")               },
-  { META|'<',       gotobob,         ECSTR("beginning-of-buffer")         },
-  { META|'?',       describekey,     ECSTR("apropos")                     },
-  { META|'/',       completeword,    ECSTR("dabbrev-expand")              },
-  { META|';',       justifycomment,  ECSTR("justify-comment")             },
-  { META|'B',       backword,        ECSTR("backward-word")               },
-  { META|'C',       capword,         ECSTR("capitalize-word")             },
-  { META|'D',       delfword,        ECSTR("delete-forward")              },
-  { META|'E',       nexterror,       ECSTR("next-error")                  },
-  { META|'F',       forwword,        ECSTR("forward-word")                },
-  { META|'G',       gotoline,        ECSTR("goto-line")                   },
-  { META|'I',       instoggle,       ECSTR("toggle-insert")               },
-  { META|'H',       markparagraph,   ECSTR("mark-paragrah")               },
-  { META|'L',       lowerword,       ECSTR("downcase-word")               },
-  { META|'M',       backtoindent,    ECSTR("back-to-indent")              },
-  { META|'N',       gotoline,        ECSTR("goto-line")                   },
-  { META|'Q',       fillparagraph,   ECSTR("fill-paragraph")              },
-  { META|'R',       backsearch,      ECSTR("backward-search")             },
-  { META|'S',       forwsearch,      ECSTR("forward-search")              },
-  { META|'T',       wtwiddle,        ECSTR("transpose-words")             },
-  { META|'U',       upperword,       ECSTR("upcase-word")                 },
-  { META|'V',       backpage,        ECSTR("scroll-down")                 },
-  { META|'W',       copyregion,      ECSTR("kill-ring-save")              },
-  { META|'X',       setvar,          ECSTR("eval-function")               },
-  { META|'[',       matchlbra,       ECSTR("match-left-bracket")          },
-  { META|']',       matchrbra,       ECSTR("match-right-bracket")         },
-  { META|'{',       backparagraph,   ECSTR("backward-paragraph")          },
-  { META|'}',       forwparagraph,   ECSTR("forward-paragraph")           },
-  { META|'~',       notmodified,     ECSTR("not-modified")                },
-  { META|BACKDEL,   delbword,        ECSTR("backward-kill-word")          },
-  { CXDR|'$',       counterinsert,   ECSTR("counter-insert")              },
-  { CXDR|'+',       counterincr,     ECSTR("counter-incr")                },
-  { CXDR|'-',       counterdecr,     ECSTR("counter-decr")                },
-  { CXDR|'S',       counterset,      ECSTR("counter-set")                 },
-  { CXDR|'F',       counterformat,   ECSTR("counter-format")              },
-  { BACKDEL,        backdel,         ECSTR("delete-previous-character")   },
-  { MEVT,           findwind,        ECSTR("find-window")                 },
+  {
+     Ctrl|'@',
+     setmark,
+     ECSTR("set-mark-command")
+  },
+  {
+     Ctrl|'A',
+     gotobol,
+     ECSTR("beginning-of-line")
+  },
+  {
+     Ctrl|'B',
+     backchar,
+     ECSTR("backward-char")
+  },
+  {
+     Ctrl|'D',
+     forwdel,
+     ECSTR("delete-char")
+  },
+  {
+     Ctrl|'E',
+     gotoeol,
+     ECSTR("end-of-line")
+  },
+  {
+     Ctrl|'F',
+     forwchar,
+     ECSTR("forward-character")
+  },
+  {
+     Ctrl|'G',
+     ctrlg,
+     ECSTR("illegal-operation")
+  },
+  {
+     Ctrl|'H',
+     backdel,
+     ECSTR("delete-backward-char")
+  },
+  {
+     Ctrl|'I',
+     tab,
+     ECSTR("indent-for-tab-command")
+  },
+  {
+     Ctrl|'J',
+     newlineindent,
+     ECSTR("newline-and-indent")
+  },
+  {
+     Ctrl|'K',
+     killtext,
+     ECSTR("kill-line")
+  },
+  {
+     Ctrl|'L',
+     WINSCR::recenter,
+     ECSTR("recenter")
+  },
+  {
+     Ctrl|'M',
+     endline,
+     ECSTR("newline")
+  },
+  {
+     Ctrl|'N',
+     forwline,
+     ECSTR("next-line")
+  },
+  {
+     Ctrl|'O',
+     openline,
+     ECSTR("open-line")
+  },
+  {
+     Ctrl|'P',
+     backline,
+     ECSTR("previous-line")
+  },
+  {
+     Ctrl|'Q',
+     quotechar,
+     ECSTR("quoted-insert")
+  },
+  {
+     Ctrl|'R',
+     backsearch,
+     ECSTR("backward-search")
+  },
+  {
+     Ctrl|'S',
+     forwsearch,
+     ECSTR("forward-search")
+  },
+  {
+     Ctrl|'T',
+     twiddle,
+     ECSTR("transpose-chars")
+  },
+  {
+     Ctrl|'V',
+     forwpage,
+     ECSTR("scroll-up")
+  },
+  {
+     Ctrl|'W',
+     killregion,
+     ECSTR("kill-region")
+  },
+  {
+     Ctrl|'Y',
+     yank,
+     ECSTR("yank")
+  },
+  {
+     Ctrl|'Z',
+     spawncli,
+     ECSTR("suspend-emacs")
+  },
+  {
+     Ctrl|']',
+     completeword,
+     ECSTR("dabbrev-expand")
+  },
+  {
+     Ctrl|'_',
+     undo,
+     ECSTR("undo")
+  },
+  {
+     CTLX|METACH,
+     again,
+     ECSTR("repeat-last-command")
+  },
+  {
+     CTLX|Ctrl|'B',
+     listbuffers,
+     ECSTR("list-buffers")
+  },
+  {
+     CTLX|Ctrl|'C',
+     exitemacs,
+     ECSTR("save-buffers-kill-emacs")
+  },
+  {
+     CTLX|Ctrl|'D',
+     changedir,
+     ECSTR("cd")
+  },
+  {
+     CTLX|Ctrl|'E',
+     evalbuf,
+     ECSTR("eval-buffer")
+  },
+  {
+     CTLX|Ctrl|'F',
+     findfile,
+     ECSTR("find-file")
+  },
+  {
+     CTLX|Ctrl|'I',
+     indentline,
+     ECSTR("indent-rigidily")
+  },
+  {
+     CTLX|Ctrl|'L',
+     lowerregion,
+     ECSTR("downcase-region")
+  },
+  {
+     CTLX|Ctrl|'M',
+     makefile,
+     ECSTR("execute-makefile")
+  },
+  {
+     CTLX|Ctrl|'N',
+     WINSCR::mvdnwind,
+     ECSTR("scroll-one-line-down")
+  },
+  {
+     CTLX|Ctrl|'O',
+     deblank,
+     ECSTR("delete-blank-lines")
+  },
+  {
+     CTLX|Ctrl|'P',
+     WINSCR::mvupwind,
+     ECSTR("scroll-one-line-up")
+  },
+  {
+     CTLX|Ctrl|'Q',
+     toggleread,
+     ECSTR("toggle-read-only")
+  },
+  {
+     CTLX|Ctrl|'R',
+     fileread,
+     ECSTR("find-file-read-only")
+  },
+  {
+     CTLX|Ctrl|'S',
+     filesave,
+     ECSTR("save-buffer")
+  },
+  {
+     CTLX|Ctrl|'T',
+     ltwiddle,
+     ECSTR("transpose-lines")
+  },
+  {
+     CTLX|Ctrl|'U',
+     upperregion,
+     ECSTR("upcase-region")
+  },
+  {
+     CTLX|Ctrl|'V',
+     filealternate,
+     ECSTR("find-alternate-file")
+  },
+  {
+     CTLX|Ctrl|'W',
+     filewrite,
+     ECSTR("write-file")
+  },
+  {
+     CTLX|Ctrl|'X',
+     swapmark,
+     ECSTR("exchange-point-and-mark")
+  },
+  {
+     CTLX|Ctrl|'Z',
+     WINSCR::shrinkwind,
+     ECSTR("shrink-window")
+  },
+  {
+     CTLX|' ',
+     setmark,
+     ECSTR("set-mark-command")
+  },
+  {
+     CTLX|'!',
+     getcommand,
+     ECSTR("get-command-in-buffer")
+  },
+  {
+     CTLX|'%',
+     spawn,
+     ECSTR("execute-monitor-command")
+  },
+  {
+     CTLX|'=',
+     showcpos,
+     ECSTR("what-cursor-position")
+  },
+  {
+     CTLX|'(',
+     ctlxlp,
+     ECSTR("start-remembering")
+  },
+  {
+     CTLX|')',
+     ctlxrp,
+     ECSTR("stop-remembering")
+  },
+  {
+     CTLX|'.',
+     setfillprefix,
+     ECSTR("set-fill-prefix")
+  },
+  {
+     CTLX|'0',
+     WINSCR::delwind,
+     ECSTR("delete-window")
+  },
+  {
+     CTLX|'1',
+     WINSCR::onlywind,
+     ECSTR("delete-other-window")
+  },
+  {
+     CTLX|'2',
+     WINSCR::splitwind,
+     ECSTR("split-window-vertically")
+  },
+  {
+     CTLX|'8',
+     WINSCR::adjust,
+     ECSTR("adjust-to-80-columns")
+  },
+  {
+     CTLX|'>',
+     shiftright,
+     ECSTR("shift-region-right")
+  },
+  {
+     CTLX|'<',
+     shiftleft,
+     ECSTR("shift-region-left")
+  },
+  {
+     CTLX|'`',
+     nexterror,
+     ECSTR("next-error")
+  },
+  {
+     CTLX|'A',
+     assemble,
+     ECSTR("assemble-file")
+  },
+  {
+     CTLX|'B',
+     usebuffer,
+     ECSTR("use-buffers")
+  },
+  {
+     CTLX|'C',
+     compilecurrent,
+     ECSTR("compile-current-buffer")
+  },
+  {
+     CTLX|'D',
+     dired,
+     ECSTR("dired")
+  },
+  {
+     CTLX|'E',
+     ctlxe,
+     ECSTR("execute-keyboard-macro")
+  },
+  {
+     CTLX|'F',
+     setfillcolumn,
+     ECSTR("set-fill-column")
+  },
+  {
+     CTLX|'H',
+     markwholebuffer,
+     ECSTR("mark-whole-buffer")
+  },
+  {
+     CTLX|'I',
+     fileinsert,
+     ECSTR("insert-file")
+  },
+  {
+     CTLX|'J',
+     javacompile,
+     ECSTR("java-compile")
+  },
+  {
+     CTLX|'K',
+     killbuffer,
+     ECSTR("kill-buffer")
+  },
+  {
+     CTLX|'N',
+     WINSCR::nextwind,
+     ECSTR("next-window")
+  },
+  {
+     CTLX|'O',
+     WINSCR::prevwind,
+     ECSTR("other-window")
+  },
+  {
+     CTLX|'P',
+     WINSCR::prevwind,
+     ECSTR("previous-window")
+  },
+  {
+     CTLX|'R',
+     setvar,
+     ECSTR("global-rebind")
+  },
+  {
+     CTLX|'S',
+     savesomebuffers,
+     ECSTR("save-some-buffers")
+  },
+  {
+     CTLX|'T',
+     WINSCR::topwind,
+     ECSTR("top-window")
+  },
+  {
+     CTLX|'U',
+     undo,
+     ECSTR("undo")
+  },
+  {
+     CTLX|'W',
+     writeregion,
+     ECSTR("write-region")
+  },
+  {
+     CTLX|'Z',
+     WINSCR::enlargewind,
+     ECSTR("enlarge-window")
+  },
+  {
+     META|METACH,
+     evalexpression,
+     ECSTR("eval-expression")
+  },
+  {
+     META|Ctrl|'\\',
+     indentregion,
+     ECSTR("indent-region")
+  },
+  {
+     META|Ctrl|'A',
+     switchas,
+     ECSTR("assembler-mode")
+  },
+  {
+     META|Ctrl|'B',
+     blispexpr,
+     ECSTR("beginning-of-expression")
+  },
+  {
+     META|Ctrl|'C',
+     switchcc,
+     ECSTR("c-mode")
+  },
+  {
+     META|Ctrl|'D',
+     diffwindows,
+     ECSTR("diff-windows")
+  },
+  {
+     META|Ctrl|'E',
+     elispexpr,
+     ECSTR("end-of-expression")
+  },
+  {
+     META|Ctrl|'F',
+     getdefinition,
+     ECSTR("get-definition")
+  },
+  {
+     META|Ctrl|'H',
+     delbword,
+     ECSTR("backward-kill-word")
+  },
+  {
+     META|Ctrl|'L',
+     switchlisp,
+     ECSTR("lisp-mode")
+  },
+  {
+     META|Ctrl|'J',
+     switchjava,
+     ECSTR("java-mode")
+  },
+  {
+     META|Ctrl|'M',
+     getmacfile,
+     ECSTR("prompt-for-macro-file")
+  },
+  {
+     META|Ctrl|'N',
+     switchfund,
+     ECSTR("fundamental-mode")
+  },
+  {
+     META|Ctrl|'O',
+     switchfortran,
+     ECSTR("fortran-mode")
+  },
+  {
+     META|Ctrl|'P',
+     switchprolog,
+     ECSTR("prolog-mode")
+  },
+  {
+     META|Ctrl|'R',
+     revertbuffer,
+     ECSTR("revert-buffer")
+  },
+  {
+     META|Ctrl|'U',
+     insertunicode,
+     ECSTR("insert-unicode")
+  },
+  {
+     META|Ctrl|'V',
+     forwother,
+     ECSTR("scroll-other-window")
+  },
+  {
+     META|Ctrl|'W',
+     appendnextkill,
+     ECSTR("append-next-kill")
+  },
+  {
+     META|' ',
+     justonespace,
+     ECSTR("just-one-space")
+  },
+  {
+     META|'+',
+     switchcpp,
+     ECSTR("c++-mode")
+  },
+  {
+     META|'!',
+     WINSCR::reposition,
+     ECSTR("reposition")
+  },
+  {
+     META|'$',
+     comparewindows,
+     ECSTR("compare-windows")
+  },
+  {
+     META|'%',
+     query,
+     ECSTR("query-replace")
+  },
+  {
+     META|'&',
+     global,
+     ECSTR("replace-string")
+  },
+  {
+     META|'(',
+     matchlpar,
+     ECSTR("match-left-parenthesis")
+  },
+  {
+     META|')',
+     matchrpar,
+     ECSTR("match-right-parenthesis")
+  },
+  {
+     META|',',
+     tagsloopcont,
+     ECSTR("tags-loop-continue")
+  },
+  {
+     META|'.',
+     findtag,
+     ECSTR("find-tag")
+  },
+  {
+     META|'>',
+     gotoeob,
+     ECSTR("end-of-buffer")
+  },
+  {
+     META|'<',
+     gotobob,
+     ECSTR("beginning-of-buffer")
+  },
+  {
+     META|'?',
+     describekey,
+     ECSTR("apropos")
+  },
+  {
+     META|'/',
+     completeword,
+     ECSTR("dabbrev-expand")
+  },
+  {
+     META|';',
+     justifycomment,
+     ECSTR("justify-comment")
+  },
+  {
+     META|'B',
+     backword,
+     ECSTR("backward-word")
+  },
+  {
+     META|'C',
+     capword,
+     ECSTR("capitalize-word")
+  },
+  {
+     META|'D',
+     delfword,
+     ECSTR("delete-forward")
+  },
+  {
+     META|'E',
+     nexterror,
+     ECSTR("next-error")
+  },
+  {
+     META|'F',
+     forwword,
+     ECSTR("forward-word")
+  },
+  {
+     META|'G',
+     gotoline,
+     ECSTR("goto-line")
+  },
+  {
+     META|'I',
+     instoggle,
+     ECSTR("toggle-insert")
+  },
+  {
+     META|'H',
+     markparagraph,
+     ECSTR("mark-paragrah")
+  },
+  {
+     META|'L',
+     lowerword,
+     ECSTR("downcase-word")
+  },
+  {
+     META|'M',
+     backtoindent,
+     ECSTR("back-to-indent")
+  },
+  {
+     META|'N',
+     gotoline,
+     ECSTR("goto-line")
+  },
+  {
+     META|'Q',
+     fillparagraph,
+     ECSTR("fill-paragraph")
+  },
+  {
+     META|'R',
+     backsearch,
+     ECSTR("backward-search")
+  },
+  {
+     META|'S',
+     forwsearch,
+     ECSTR("forward-search")
+  },
+  {
+     META|'T',
+     wtwiddle,
+     ECSTR("transpose-words")
+  },
+  {
+     META|'U',
+     upperword,
+     ECSTR("upcase-word")
+  },
+  {
+     META|'V',
+     backpage,
+     ECSTR("scroll-down")
+  },
+  {
+     META|'W',
+     copyregion,
+     ECSTR("kill-ring-save")
+  },
+  {
+     META|'X',
+     setvar,
+     ECSTR("eval-function")
+  },
+  {
+     META|'[',
+     matchlbra,
+     ECSTR("match-left-bracket")
+  },
+  {
+     META|']',
+     matchrbra,
+     ECSTR("match-right-bracket")
+  },
+  {
+     META|'{',
+     backparagraph,
+     ECSTR("backward-paragraph")
+  },
+  {
+     META|'}',
+     forwparagraph,
+     ECSTR("forward-paragraph")
+  },
+  {
+     META|'~',
+     notmodified,
+     ECSTR("not-modified")
+  },
+  {
+     META|BACKDEL,
+     delbword,
+     ECSTR("backward-kill-word")
+  },
+  {
+     CXDR|'$',
+     counterinsert,
+     ECSTR("counter-insert")
+  },
+  {
+     CXDR|'+',
+     counterincr,
+     ECSTR("counter-incr")
+  },
+  {
+     CXDR|'-',
+     counterdecr,
+     ECSTR("counter-decr")
+  },
+  {
+     CXDR|'S',
+     counterset,
+     ECSTR("counter-set")
+  },
+  {
+     CXDR|'F',
+     counterformat,
+     ECSTR("counter-format")
+  },
+  {
+     BACKDEL,
+     backdel,
+     ECSTR("delete-previous-character")
+  },
+  {
+     MEVT,
+     WINSCR::findwind,
+     ECSTR("find-window")
+  },
 
   /*
    *      unbound functions (called with M-x)
    */
 
-  { UNBOUND,       ansitooem,       ECSTR("ansi-to-oem")                 },
-  { UNBOUND,       binaryfile,      ECSTR("binary-file")                 },
-  { UNBOUND,       comparewindows,  ECSTR("compare-windows")             },
-  { UNBOUND,       compile,         ECSTR("compile")                     },
-  { UNBOUND,       emacsversion,    ECSTR("emacs-version")               },
-  { UNBOUND,       exitemacs,       ECSTR("exit-emacs")                  },
-  { UNBOUND,       fillregion,      ECSTR("fill-region")                 },
-  { UNBOUND,       grep,            ECSTR("grep")                        },
-  { UNBOUND,       help,            ECSTR("help")                        },
-  { UNBOUND,       switchsgml,      ECSTR("sgml-mode")                   },
-  { UNBOUND,       justifycurline,  ECSTR("justify-current-line")        },
-  { UNBOUND,       killemacs,       ECSTR("kill-emacs")                  },
-  { UNBOUND,       mactoansi,       ECSTR("mac-to-ansi")                 },
-  { UNBOUND,       mactooem,        ECSTR("mac-to-oem")                  },
-  { UNBOUND,       man,             ECSTR("man")                         },
-  { UNBOUND,       matchlcur,       ECSTR("match-left-curly-bracket")    },
-  { UNBOUND,       matchrcur,       ECSTR("match-right-curly-bracket")   },
-  { UNBOUND,       oemtoansi,       ECSTR("oem-to-ansi")                 },
-  { UNBOUND,       printbuffer,     ECSTR("print-buffer")                },
-  { UNBOUND,       perl,            ECSTR("perl")                        },
-  { UNBOUND,       switchperl,      ECSTR("perl-mode")                   },
-  { UNBOUND,       switchpython,    ECSTR("python-mode")                 },
-  { UNBOUND,       redrawscreen,    ECSTR("redraw-screen")               },
-  { UNBOUND,       sed,             ECSTR("sed")                         },
-  { UNBOUND,       setjustifyleft,  ECSTR("set-justification-left")      },
-  { UNBOUND,       setjustifyfull,  ECSTR("set-justification-full")      },
-  { UNBOUND,       uncompile,       ECSTR("uncompile-macro")             },
-  { UNBOUND,       unlinkfile,      ECSTR("unlink-file")                 },
-  { UNBOUND,       utf8encoding,    ECSTR("utf8-encoding")               },
-  { UNBOUND,       utf16encoding,   ECSTR("utf16-encoding")              },
-  { UNBOUND,       systemencoding,  ECSTR("system-encoding")             },
-  { UNBOUND,       enterdebug,      ECSTR("enter-debug")                 }
+  {
+     UNBOUND,
+     ansitooem,
+     ECSTR("ansi-to-oem")
+  },
+  {
+     UNBOUND,
+     binaryfile,
+     ECSTR("binary-file")
+  },
+  {
+     UNBOUND,
+     comparewindows,
+     ECSTR("compare-windows")
+  },
+  {
+     UNBOUND,
+     compile,
+     ECSTR("compile")
+  },
+  {
+     UNBOUND,
+     emacsversion,
+     ECSTR("emacs-version")
+  },
+  {
+     UNBOUND,
+     exitemacs,
+     ECSTR("exit-emacs")
+  },
+  {
+     UNBOUND,
+     fillregion,
+     ECSTR("fill-region")
+  },
+  {
+     UNBOUND,
+     grep,
+     ECSTR("grep")
+  },
+  {
+     UNBOUND,
+     help,
+     ECSTR("help")
+  },
+  {
+     UNBOUND,
+     switchsgml,
+     ECSTR("sgml-mode")
+  },
+  {
+     UNBOUND,
+     justifycurline,
+     ECSTR("justify-current-line")
+  },
+  {
+     UNBOUND,
+     killemacs,
+     ECSTR("kill-emacs")
+  },
+  {
+     UNBOUND,
+     mactoansi,
+     ECSTR("mac-to-ansi")
+  },
+  {
+     UNBOUND,
+     mactooem,
+     ECSTR("mac-to-oem")
+  },
+  {
+     UNBOUND,
+     man,
+     ECSTR("man")
+  },
+  {
+     UNBOUND,
+     matchlcur,
+     ECSTR("match-left-curly-bracket")
+  },
+  {
+     UNBOUND,
+     matchrcur,
+     ECSTR("match-right-curly-bracket")
+  },
+  {
+     UNBOUND,
+     oemtoansi,
+     ECSTR("oem-to-ansi")
+  },
+  {
+     UNBOUND,
+     printbuffer,
+     ECSTR("print-buffer")
+  },
+  {
+     UNBOUND,
+     perl,
+     ECSTR("perl")
+  },
+  {
+     UNBOUND,
+     switchperl,
+     ECSTR("perl-mode")
+  },
+  {
+     UNBOUND,
+     switchpython,
+     ECSTR("python-mode")
+  },
+  {
+     UNBOUND,
+     redrawscreen,
+     ECSTR("redraw-screen")
+  },
+  {
+     UNBOUND,
+     sed,
+     ECSTR("sed")
+  },
+  {
+     UNBOUND,
+     setjustifyleft,
+     ECSTR("set-justification-left")
+  },
+  {
+     UNBOUND,
+     setjustifyfull,
+     ECSTR("set-justification-full")
+  },
+  {
+     UNBOUND,
+     uncompile,
+     ECSTR("uncompile-macro")
+  },
+  {
+     UNBOUND,
+     unlinkfile,
+     ECSTR("unlink-file")
+  },
+  {
+     UNBOUND,
+     utf8encoding,
+     ECSTR("utf8-encoding")
+  },
+  {
+     UNBOUND,
+     utf16encoding,
+     ECSTR("utf16-encoding")
+  },
+  {
+     UNBOUND,
+     systemencoding,
+     ECSTR("system-encoding")
+  },
+  {
+     UNBOUND,
+     enterdebug,
+     ECSTR("enter-debug")                 }
 };
 
 namespace opt {
@@ -446,9 +1157,9 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (_argc > curarg) {
       i++;
-      (void)splitwind();
+      (void)WINSCR::splitwind();
       (void)newfile(_argv[curarg++]);
-      (void)prevwind();
+      (void)WINSCR::prevwind();
     }
 
     while (_argc > curarg) {
@@ -458,7 +1169,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (i > 2) {
       (void)listbuffers();
-      (void)prevwind();
+      (void)WINSCR::prevwind();
     }
 
     /*

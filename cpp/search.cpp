@@ -840,7 +840,7 @@ getdefinition() {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)backline();
-        (void)reposition();
+        (void)WINSCR::reposition();
         return T;
       }
       break;
@@ -854,7 +854,7 @@ getdefinition() {
         curwp->setFlags(WINSCR::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)backline();
-        (void)reposition();
+        (void)WINSCR::reposition();
         return T;
       }
       break;
