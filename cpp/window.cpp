@@ -52,7 +52,7 @@ Window::~Window() {
 Window*
 Window::popup() noexcept {
   if (_wlist.size() == 1) {
-    if (splitwind() == NIL) {
+    if (split() == NIL) {
       return nullptr;
     }
   }
@@ -233,7 +233,7 @@ Window::recenter() {
  */
 
 CMD
-Window::nextwind() {
+Window::next() {
   auto next(curwp->down());
 
   if (next == nullptr) {
@@ -252,7 +252,7 @@ Window::nextwind() {
  */
 
 CMD
-Window::prevwind() {
+Window::previous() {
   auto prev(curwp->up());
 
   if (prev == nullptr) {
@@ -265,24 +265,6 @@ Window::prevwind() {
 }
 
 /*
- * This  command makes the top window the current window.  There
- * arn't  any errors,  although the command does not do a lot if
- * there is 1 window. Bount to C-XT
- */
-
-CMD
-Window::topwind() {
-  for (auto wp : Window::list()) {
-    if (wp->toprow() == 0) {
-      wp->current();
-      return T;
-    }
-  }
-
-  return NIL;
-}
-
-/*
  * This  command  moves  the current window down by "arg" lines.
  * Recompute  the  top line in the window.  Most of the work has
  * to  do with reframing the window,  and picking a new dot.  We
@@ -291,11 +273,11 @@ Window::topwind() {
  */
 
 CMD
-Window::mvdnwind() {
+Window::moveDown() {
   auto save = Editor::_repeat;
 
   Editor::_repeat = -Editor::_repeat;
-  (void)mvupwind();
+  (void)moveUp();
   Editor::_repeat = save;
 
   return T;
@@ -310,7 +292,7 @@ Window::mvdnwind() {
  */
 
 CMD
-Window::mvupwind() {
+Window::moveUp() {
   auto lp = curwp->topline();
   auto n = Editor::_repeat;
 
@@ -443,7 +425,7 @@ Window::delwind() {
  */
 
 CMD
-Window::splitwind() {
+Window::split() {
   if (curwp->rows() < 3) {
     WDGmessage(ECSTR("You can't have windows smaller than 2 lines high"));
     return NIL;
@@ -519,7 +501,7 @@ Window::splitwind() {
  */
 
 CMD
-Window::enlargewind() {
+Window::enlarge() {
   if (Window::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
@@ -578,7 +560,7 @@ Window::enlargewind() {
  */
 
 CMD
-Window::shrinkwind() {
+Window::shrink() {
   if (Window::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
@@ -632,7 +614,7 @@ Window::shrinkwind() {
  */
 
 CMD
-Window::findwind() {
+Window::find() {
   Line* lp{nullptr};
   auto wx = mevent.x;
   auto wy = mevent.y;
@@ -656,10 +638,10 @@ Window::findwind() {
         } else {
           switch (mevent.button) {
           case MEvent::MButton1 :
-            resizep = shrinkwind();
+            resizep = shrink();
             break;
           case MEvent::MButton2 :
-            resizep = enlargewind();
+            resizep = enlarge();
             break;
           default :
             WDGmessage(ECSTR("Not such window!"));
@@ -725,18 +707,18 @@ Window::findwind() {
         break;
       case MEvent::MButton7:
         /* mouse-track insert */
-        (void)Region::copyregion();
+        (void)Region::copy();
         (void)Editor::swapmark();
         WDGclipcopy();
         break;
       case MEvent::MButton8:
         /* x-mouse-kill */
-        (void)Region::killregion();
+        (void)Region::kill();
         WDGclipcopy();
         break;
       case MEvent::MButton4:
         /* mouse-track-adjust */
-        (void)Region::copyregion();
+        (void)Region::copy();
         WDGclipcopy();
         break;
       }

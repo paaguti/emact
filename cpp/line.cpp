@@ -209,7 +209,7 @@ Line::leftmargin() const noexcept {
  */
 
 bool
-Line::linsert(int c, int n) {
+Line::insert(int c, int n) {
   if (curbp->readonly()) {
     if (curbp->editMode() == EDITMODE::BufferMODE) {
       return Buffer::buffercmd(c) == T;
@@ -347,12 +347,12 @@ Line::linsert(int c, int n) {
  * Replace "n"  copies  of  the character  "c"  at  the  current
  * location  of dot.  In the easy case all that happens  is  the
  * text is replaced in the line. In the hard case, at the end of
- * the line, the routine Line::linsert is call  with n  equal  to  the
+ * the line, the routine Line::insert is call  with n  equal  to  the
  * number of characters alredy replaced.
  */
 
 bool
-Line::lreplace(int c, int n) {
+Line::replace(int c, int n) {
   if (freadonly()) {
     return false;
   }
@@ -364,7 +364,7 @@ Line::lreplace(int c, int n) {
   for (auto i(0); i < n; ++i) {
     if (doto == dotp->length()) {
       curwp->setDotPos(doto);
-      return Line::linsert(c, n - i);
+      return Line::insert(c, n - i);
     } else {
       dotp->put(doto++, c);
     }
@@ -715,7 +715,7 @@ Line::notmodified() {
  */
 
 CMD
-Line::ltwiddle() {
+Line::twiddle() {
   if (freadonly()) {
     return NIL;
   }

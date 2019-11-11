@@ -173,7 +173,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'W',
-     Region::killregion,
+     Region::kill,
      ECSTR("kill-region")
   },
   {
@@ -233,7 +233,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'L',
-     Region::lowerregion,
+     Region::lower,
      ECSTR("downcase-region")
   },
   {
@@ -243,7 +243,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'N',
-     Window::mvdnwind,
+     Window::moveDown,
      ECSTR("scroll-one-line-down")
   },
   {
@@ -253,7 +253,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'P',
-     Window::mvupwind,
+     Window::moveUp,
      ECSTR("scroll-one-line-up")
   },
   {
@@ -273,12 +273,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'T',
-     Line::ltwiddle,
+     Line::twiddle,
      ECSTR("transpose-lines")
   },
   {
      CTLX|Ctrl|'U',
-     Region::upperregion,
+     Region::upper,
      ECSTR("upcase-region")
   },
   {
@@ -298,7 +298,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'Z',
-     Window::shrinkwind,
+     Window::shrink,
      ECSTR("shrink-window")
   },
   {
@@ -344,11 +344,11 @@ std::vector<EditorCommand> Editor::_keytab = {
   {
      CTLX|'1',
      Window::onlywind,
-     ECSTR("delete-other-window")
+     ECSTR("delete-other-windows")
   },
   {
      CTLX|'2',
-     Window::splitwind,
+     Window::split,
      ECSTR("split-window-vertically")
   },
   {
@@ -418,22 +418,22 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'K',
-     Buffer::killbuffer,
+     Buffer::kill,
      ECSTR("kill-buffer")
   },
   {
      CTLX|'N',
-     Window::nextwind,
+     Window::next,
      ECSTR("next-window")
   },
   {
      CTLX|'O',
-     Window::prevwind,
+     Window::previous,
      ECSTR("other-window")
   },
   {
      CTLX|'P',
-     Window::prevwind,
+     Window::previous,
      ECSTR("previous-window")
   },
   {
@@ -447,23 +447,18 @@ std::vector<EditorCommand> Editor::_keytab = {
      ECSTR("save-some-buffers")
   },
   {
-     CTLX|'T',
-     Window::topwind,
-     ECSTR("top-window")
-  },
-  {
      CTLX|'U',
      undo,
      ECSTR("undo")
   },
   {
      CTLX|'W',
-     Region::writeregion,
+     Region::write,
      ECSTR("write-region")
   },
   {
      CTLX|'Z',
-     Window::enlargewind,
+     Window::enlarge,
      ECSTR("enlarge-window")
   },
   {
@@ -473,7 +468,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'\\',
-     Region::indentregion,
+     Region::indent,
      ECSTR("indent-region")
   },
   {
@@ -723,7 +718,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'W',
-     Region::copyregion,
+     Region::copy,
      ECSTR("kill-ring-save")
   },
   {
@@ -793,7 +788,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      MEVT,
-     Window::findwind,
+     Window::find,
      ECSTR("find-window")
   },
 
@@ -833,7 +828,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     Region::fillregion,
+     Region::fill,
      ECSTR("fill-region")
   },
   {
@@ -1157,9 +1152,9 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (_argc > curarg) {
       i++;
-      (void)Window::splitwind();
+      (void)Window::split();
       (void)newfile(_argv[curarg++]);
-      (void)Window::prevwind();
+      (void)Window::previous();
     }
 
     while (_argc > curarg) {
@@ -1169,7 +1164,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (i > 2) {
       (void)Buffer::listbuffers();
-      (void)Window::prevwind();
+      (void)Window::previous();
     }
 
     /*
@@ -1366,9 +1361,9 @@ Editor::execute(int c, int n) {
     if (c > 0x7F && (opt::latex_mode || emode == EDITMODE::SGMLMODE)) {
       status = (latexinsert(Editor::_repeat, c) ? T : NIL);
     } else if (!opt::replace_mode) {
-      status = Line::linsert(c, Editor::_repeat) ? T : NIL;
+      status = Line::insert(c, Editor::_repeat) ? T : NIL;
     } else {
-      status = Line::lreplace(c, Editor::_repeat) ? T : NIL;
+      status = Line::replace(c, Editor::_repeat) ? T : NIL;
     }
 
     Editor::_lastflag = Editor::_thisflag;
@@ -1675,7 +1670,7 @@ Editor::insertunicode() {
   buf[0] = (EMCHAR)c;
   buf[1] = '\000';
   WDGwrite(ECSTR("Unicode='%s', code(%d, 0x%x)"), buf, c, c);
-  Line::linsert(c, Editor::_repeat);
+  Line::insert(c, Editor::_repeat);
   return T;
 }
 
@@ -1959,13 +1954,13 @@ latexinsert(int n, int c) {
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
         while (n-- > 0) {
           for (auto p = convtab[i].sgml; *p; ++p) {
-            (void)Line::linsert(*p);
+            (void)Line::insert(*p);
           }
         }
       } else {
         while (n-- > 0) {
           for (auto p = convtab[i].latex; *p; ++p) {
-            (void)Line::linsert(*p);
+            (void)Line::insert(*p);
           }
         }
       }
@@ -1973,7 +1968,7 @@ latexinsert(int n, int c) {
     }
   }
 
-  return Line::linsert(c, n);
+  return Line::insert(c, n);
 }
 
 /*

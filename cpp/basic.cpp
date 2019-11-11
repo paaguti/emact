@@ -263,8 +263,8 @@ Editor::forwpage() {
 
 CMD
 Editor::forwother() {
-  if (Window::nextwind() == T && forwpage() == T) {
-    return Window::prevwind();
+  if (Window::next() == T && forwpage() == T) {
+    return Window::previous();
   } else {
     return NIL;
   }

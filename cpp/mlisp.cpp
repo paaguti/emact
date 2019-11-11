@@ -681,7 +681,7 @@ Lisp::eval(int expr, size_t depth) {
               s = endline();
               break;
             default:
-              s = Line::linsert(*str) ? T : NIL;
+              s = Line::insert(*str) ? T : NIL;
             }
           }
         }
@@ -700,14 +700,14 @@ Lisp::eval(int expr, size_t depth) {
               break;
             case '\\':
               if (*(bufcmd + 1) != 'n') {
-                s = Line::linsert(*bufcmd) ? T : NIL;
+                s = Line::insert(*bufcmd) ? T : NIL;
               } else {
                 ++bufcmd;
                 s = endline();
               }
               break;
             default:
-              s = Line::linsert(*bufcmd) ? T : NIL;
+              s = Line::insert(*bufcmd) ? T : NIL;
             }
             ++bufcmd;
           }
@@ -817,7 +817,7 @@ Lisp::eval(int expr, size_t depth) {
       break;
     case SpecialForm::INSERTNAME:
       for (auto name = curbp->bufname(); *name && s == T; ++name) {
-        s = Line::linsert(*name) ? T : NIL;
+        s = Line::insert(*name) ? T : NIL;
       }
       break;
     case SpecialForm::INSERTBASENAME:
@@ -825,7 +825,7 @@ Lisp::eval(int expr, size_t depth) {
         if (*name == '.') {
           break;
         } else {
-          s = Line::linsert(*name) ? T : NIL;
+          s = Line::insert(*name) ? T : NIL;
         }
       }
       break;

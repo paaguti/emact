@@ -410,7 +410,7 @@ wtwiddle() {
    */
 
   for (auto j(0); word1[j]; ++j) {
-    (void)Line::linsert(word1[j]);
+    (void)Line::insert(word1[j]);
   }
 
   /*
@@ -431,7 +431,7 @@ wtwiddle() {
   }
 
   for (auto j(0); word2[j]; ++j) {
-    (void)Line::linsert(word2[j]);
+    (void)Line::insert(word2[j]);
   }
 
   return T;

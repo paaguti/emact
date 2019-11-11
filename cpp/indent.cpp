@@ -55,11 +55,11 @@ nexttab(int col) {
       curbp->editMode() == EDITMODE::PYTHONMODE ||
       curbp->editMode() == EDITMODE::LISPMODE   ||
       curbp->editMode() == EDITMODE::JAVAMODE) {
-    return Line::linsert(' ', col);
+    return Line::insert(' ', col);
   }
 
-  if (((i = col/opt::tab_display) != 0 && Line::linsert('\t', i) == false) ||
-      ((i = col%opt::tab_display) != 0 && Line::linsert(' ', i) == false)) {
+  if (((i = col/opt::tab_display) != 0 && Line::insert('\t', i) == false) ||
+      ((i = col%opt::tab_display) != 0 && Line::insert(' ', i) == false)) {
     return false;
   } else {
     return true;
@@ -77,7 +77,7 @@ nextcindent() {
 
   auto llflag = (curwp->line() == curbp->lastline());
 
-  (void)Line::linsert('}');
+  (void)Line::insert('}');
 
   const auto& dot(curwp->getDot());
   auto oclp = dot.line();
@@ -185,17 +185,17 @@ unindent(int c, bool f) {
   auto max(curwp->pos());
 
   if (max > 1 && curwp->line()->get(max - 1) == '\'') {
-    return Line::linsert(c);
+    return Line::insert(c);
   }
 
-  if (Line::linsert(c) != true || automatch(c, f) != true || backdel() != T) {
+  if (Line::insert(c) != true || automatch(c, f) != true || backdel() != T) {
     return false;
   }
 
   if ((indentp == curwp->line())
       && (max > 1)
       && curwp->line()->get(max - 1) != '{') {
-    return Line::linsert(c);
+    return Line::insert(c);
   }
 
   while (curwp->pos() > 0) {
@@ -216,7 +216,7 @@ unindent(int c, bool f) {
     return false;
   }
 
-  return Line::linsert(c);
+  return Line::insert(c);
 }
 
 /*
@@ -734,7 +734,7 @@ indent() {
     case '-' :
       if (i >= 2 && clp->get(i - 2) == ':') {
         if (Line::newline()) {
-          return Line::linsert('\t') ? T : NIL;
+          return Line::insert('\t') ? T : NIL;
         } else {
           return NIL;
         }
@@ -931,7 +931,7 @@ justonespace() {
     (void)Editor::backchar();
     if ((c = curwp->getChar()) != ' ' && c != '\t') {
       (void)Editor::forwchar();
-      (void)Line::linsert(' ');
+      (void)Line::insert(' ');
       return T;
     }
   }
@@ -946,7 +946,7 @@ justonespace() {
     (void)Editor::forwchar();
   }
 
-  (void)Line::linsert(' ');
+  (void)Line::insert(' ');
 
   while ((curwp->pos() < curwp->line()->length()) &&
          ((c = curwp->getChar()) == ' ' || c == '\t')) {

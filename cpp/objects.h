@@ -394,10 +394,7 @@ class Window {
   friend CMD recenter();
   friend CMD resize();
   friend CMD onlywind();
-  friend CMD enlargewind();
-  friend CMD shrinkwind();
   friend CMD delwind();
-  friend CMD splitwind();
 
   static std::list<Window*>&
   list() noexcept {
@@ -407,24 +404,23 @@ class Window {
   /*
    * Editor commands bound to key:
    */
-  static CMD mvdnwind();
-  static CMD mvupwind();
+  static CMD moveDown();
+  static CMD moveUp();
   static CMD reposition();
   static CMD recenter();
-  static CMD nextwind();
-  static CMD prevwind();
-  static CMD topwind();
+  static CMD next();
+  static CMD previous();
   static CMD onlywind();
   static CMD delwind();
-  static CMD splitwind();
-  static CMD enlargewind();
-  static CMD shrinkwind();
-  static CMD findwind();
+  static CMD split();
+  static CMD enlarge();
+  static CMD shrink();
+  static CMD find();
   static CMD adjust();
 
  private:
   static std::list<Window*> _wlist;
-  Line*  _toplinep{nullptr};  // Top line in the window
+  Line*    _toplinep{nullptr};  // Top line in the window
   Point    _dot;                // Line containing "."
   Point    _mark;               // Mark point.
   Buffer*  _bufp{nullptr};      // Buffer displayed in window
@@ -701,7 +697,7 @@ class Buffer {
    * Editor commands bound to key:
    */
   static CMD usebuffer();
-  static CMD killbuffer();
+  static CMD kill();
   static CMD listbuffers();
 
  private:
@@ -709,7 +705,7 @@ class Buffer {
 
   mode_t   _mode{0};                      // File permission mode.
   Point    _dot;                          // "." Line and offset link.
-  Line*  _linep{nullptr};               // Link to the header Line
+  Line*    _linep{nullptr};               // Link to the header Line
   Point    _mark;                         // Mark in this buffer.
   ENCODING _wide{ENCODING::EMASCII};      // Wide flag
   EDITMODE _emode{EDITMODE::FUNDAMENTAL}; // Buffer electric mode
@@ -954,7 +950,7 @@ class Line {
    * @return true if all is well, and false on errors.
    */
   static bool
-  linsert(int c, int n = 1);
+  insert(int c, int n = 1);
 
   /**
    * This function deletes "n" bytes, starting at dot.  It understands
@@ -971,14 +967,14 @@ class Line {
    * Replace "n" copies of the character "c" at the current location
    * of dot.  In the easy case all that happens is the text is
    * replaced in the line. In the hard case, at the end of the line,
-   * the routine Line::linsert is call with n equal to the number of
+   * the routine Line::insert is call with n equal to the number of
    * characters alredy replaced.
    * @param [in] c character code to insert.
    * @param [in] n number of character to replace (default 1).
    * @return true if all is well, and false on errors.
    */
   static bool
-  lreplace(int c, int n = 1);
+  replace(int c, int n = 1);
 
   /**
    * Append this line to the buffer. Handcraft the EOL on the end.
@@ -992,7 +988,7 @@ class Line {
    * Editor commands bound to key:
    */
   static CMD notmodified();
-  static CMD ltwiddle();
+  static CMD twiddle();
   static CMD instoggle();
 
  private:
@@ -1749,13 +1745,13 @@ class Region {
   /*
    * Editor commands bound to key:
    */
-  static CMD killregion();
-  static CMD copyregion();
-  static CMD lowerregion();
-  static CMD upperregion();
-  static CMD writeregion();
-  static CMD fillregion();
-  static CMD indentregion();
+  static CMD kill();
+  static CMD copy();
+  static CMD lower();
+  static CMD upper();
+  static CMD write();
+  static CMD fill();
+  static CMD indent();
   static CMD shiftright();
   static CMD shiftleft();
 

@@ -917,7 +917,7 @@ Buffer::buffercmd(int cmd) {
  */
 
 CMD
-Buffer::killbuffer() {
+Buffer::kill() {
   CMD     s;
   EMCHAR  bufn[Buffer::NBUFN];
   EMCHAR  prompt[NLINE];

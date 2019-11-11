@@ -151,7 +151,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         display->update();
         break;
       default:
-        (void)Line::linsert(c);
+        (void)Line::insert(c);
       }
     }
 
@@ -203,7 +203,7 @@ syscompile(const EMCHAR* cmd, int flag) {
           display->update();
           break;
         default:
-          (void)Line::linsert(c);
+          (void)Line::insert(c);
         }
         old->current();
       }

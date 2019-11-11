@@ -861,7 +861,7 @@ savetime() {
       (void)Line::ldelete(datelen);
 
       for (auto j = 0; sdate[j]; ++j) {
-        (void)Line::linsert(sdate[j]);
+        (void)Line::insert(sdate[j]);
       }
 
       if (!atline) {
@@ -1057,7 +1057,7 @@ fileinsert() {
        */
 
       for (int i = 0; i < nbytes; ++i) {
-        (void)Line::linsert(line[i]);
+        (void)Line::insert(line[i]);
       }
 
       /*

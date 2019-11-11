@@ -122,7 +122,7 @@ Region::Region() {
  */
 
 CMD
-Region::killregion() {
+Region::kill() {
   if (freadonly()) {
     return NIL;
   }
@@ -155,7 +155,7 @@ Region::killregion() {
  */
 
 CMD
-Region::copyregion() {
+Region::copy() {
   Region region;
 
   if (region.empty()) {
@@ -199,7 +199,7 @@ Region::copyregion() {
  */
 
 CMD
-Region::lowerregion() {
+Region::lower() {
   if (freadonly()) {
     return NIL;
   }
@@ -237,7 +237,7 @@ Region::lowerregion() {
  */
 
 CMD
-Region::fillregion() {
+Region::fill() {
   if (freadonly()) {
     return NIL;
   }
@@ -260,7 +260,7 @@ Region::fillregion() {
     if ((size_t)dotline->length() < fillmax ||
         emstrncmp(dotline->text(), opt::fill_prefix, fillmax) != 0) {
       for (int i{0}; opt::fill_prefix[i]; ++i) {
-        (void)Line::linsert(opt::fill_prefix[i]);
+        (void)Line::insert(opt::fill_prefix[i]);
       }
     }
     (void)Editor::forwline();
@@ -278,7 +278,7 @@ Region::fillregion() {
  */
 
 CMD
-Region::upperregion() {
+Region::upper() {
   if (freadonly()) {
     return NIL;
   }
@@ -316,7 +316,7 @@ Region::upperregion() {
  */
 
 CMD
-Region::writeregion() {
+Region::write() {
   Region region;
 
   if (region.empty()) {
@@ -361,7 +361,7 @@ Region::writeregion() {
  */
 
 CMD
-Region::indentregion() {
+Region::indent() {
   auto s = T;
 
   if (freadonly()) {
@@ -408,7 +408,7 @@ Region::shiftright() {
 
   auto s = true;
   do {
-    s = Line::linsert('\t');
+    s = Line::insert('\t');
     curwp->setDot(curwp->line()->forw(), 0);
   } while (s && (--region._lines > 0));
 

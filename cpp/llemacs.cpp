@@ -87,7 +87,7 @@ llembol(const EMCHAR* buf) {
 
 int
 llemeol(const EMCHAR *buf, int n) {
-  while (n-- && Line::linsert(*buf++) == T) {
+  while (n-- && Line::insert(*buf++) == T) {
     continue;
   }
 

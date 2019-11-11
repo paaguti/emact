@@ -318,7 +318,7 @@ subst(int length, const EMCHAR* newstr) {
     if (*newstr == '\n') {
       (void)Line::newline();
     } else {
-      (void)Line::linsert(*newstr);
+      (void)Line::insert(*newstr);
     }
   }
 
@@ -1037,7 +1037,7 @@ loop:
     curwp->setDot(clp, cbo);
 
     for (i = 0; buf[i] != '\000'; ++i) {
-      if (!Line::linsert(buf[i])) {
+      if (!Line::insert(buf[i])) {
         s = NIL;
         break;
       }
@@ -1078,7 +1078,7 @@ loop:
         curwp->setDot(clp, cbo);
 
         for (i = slen; tagbuf[i] != '\000'; ++i) {
-          if (!Line::linsert(tagbuf[i])) {
+          if (!Line::insert(tagbuf[i])) {
             break;
           }
         }

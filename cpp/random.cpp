@@ -199,7 +199,7 @@ quotechar() {
     }
     return T;
   }
-  return Line::linsert(c, n) ? T : NIL;
+  return Line::insert(c, n) ? T : NIL;
 }
 
 /*
@@ -253,9 +253,9 @@ tabexpand() {
       curbp->editMode() != EDITMODE::JAVAMODE &&
       curbp->editMode() != EDITMODE::PYTHONMODE &&
       curbp->editMode() != EDITMODE::CSHARPMODE) {
-    res = Line::linsert('\t');
+    res = Line::insert('\t');
   } else {
-    res = Line::linsert(' ', opt::tab_size - (getccol() % opt::tab_size));
+    res = Line::insert(' ', opt::tab_size - (getccol() % opt::tab_size));
   }
 
   return res ? T : NIL;
@@ -275,7 +275,7 @@ openline() {
   for (auto i = 0; i < Editor::_repeat; ++i) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
       for (auto j = 0; opt::fill_prefix[j]; ++j) {
-        if (!Line::linsert(opt::fill_prefix[j])) {
+        if (!Line::insert(opt::fill_prefix[j])) {
           return NIL;
         }
       }
@@ -458,7 +458,7 @@ backdel() {
        */
 
       do {
-        (void)Line::linsert(' ');
+        (void)Line::insert(' ');
       } while (++pos % opt::tab_display);
     }
   }
@@ -531,7 +531,7 @@ yank() {
         if (!Line::newline()) {
           return NIL;
         }
-      } else if (!Line::linsert(c)) {
+      } else if (!Line::insert(c)) {
         return NIL;
       }
     }
@@ -665,7 +665,7 @@ addprefix() {
 
   if (!prefixlinep(dotp, len)) {
     for (auto i = 0; opt::fill_prefix[i]; ++i) {
-      if (!Line::linsert(opt::fill_prefix[i])) {
+      if (!Line::insert(opt::fill_prefix[i])) {
         return NIL;
       }
     }
@@ -714,7 +714,7 @@ fillparagraph() {
          && prefixlinep(curwp->line()->forw(), len)) {
     (void)Editor::gotoeol();
     (void)Line::ldelete(1);
-    (void)Line::linsert(' ');
+    (void)Line::insert(' ');
     (void)Line::ldelete(len);
   }
 
@@ -892,7 +892,7 @@ justifycurline() {
       (void)Editor::forwchar();
       if ((curwp->pos() < (curwp->line()->length() - 1))
           && curwp->getChar() == ' ') {
-        (void)Line::linsert(' ');
+        (void)Line::insert(' ');
       }
     } else {
       (void)Editor::forwchar();
@@ -938,7 +938,7 @@ justifycurline() {
         } while (curwp->pos() < curwp->line()->length());
 
         if (nbspace < maxspace) {
-          (void)Line::linsert(' ');
+          (void)Line::insert(' ');
           justifyed = true;
         }
       } else {
@@ -1113,7 +1113,7 @@ counterinsert() {
   (void)emsprintf(buf, &cntfmt[0], cntval);
 
   for (auto s = &buf[0]; *s; ++s) {
-    (void)Line::linsert(*s);
+    (void)Line::insert(*s);
   }
 
   return T;
