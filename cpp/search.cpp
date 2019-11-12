@@ -1057,7 +1057,7 @@ loop:
     } else {
       EMCHAR tagbuf[NLINE];
 
-      indx = completeintag(indx, Editor::searchBuffer(), tagbuf);
+      indx = Options::completeintag(indx, Editor::searchBuffer(), tagbuf);
 
       if (indx != 0) {
         /*

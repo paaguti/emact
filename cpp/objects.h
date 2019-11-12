@@ -1787,4 +1787,22 @@ private:
 
   bool empty() { return _empty; }
 };
+
+class Options {
+ public:
+  /*
+   *      options.cpp
+   */
+
+  static CMD describekey();
+  static CMD help();
+  static CMD setvar();
+  static CMD uncompile();
+  static CMD findtag();
+  static CMD tagsloopcont();
+
+  static int completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp);
+
+  static int tagfound;
+};
 #endif /* __OBJECTS_H */

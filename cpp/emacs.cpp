@@ -438,7 +438,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'R',
-     setvar,
+     Options::setvar,
      ECSTR("global-rebind")
   },
   {
@@ -598,12 +598,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|',',
-     tagsloopcont,
+     Options::tagsloopcont,
      ECSTR("tags-loop-continue")
   },
   {
      META|'.',
-     findtag,
+     Options::findtag,
      ECSTR("find-tag")
   },
   {
@@ -618,7 +618,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'?',
-     describekey,
+     Options::describekey,
      ECSTR("apropos")
   },
   {
@@ -723,7 +723,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'X',
-     setvar,
+     Options::setvar,
      ECSTR("eval-function")
   },
   {
@@ -838,7 +838,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     help,
+     Options::help,
      ECSTR("help")
   },
   {
@@ -928,7 +928,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     uncompile,
+     Options::uncompile,
      ECSTR("uncompile-macro")
   },
   {

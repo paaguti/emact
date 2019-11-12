@@ -193,18 +193,6 @@ void    clearerr();
 CMD     nexterror();
 
 /*
- *      options.cpp
- */
-
-CMD     describekey();
-CMD     help();
-CMD     setvar();
-CMD     uncompile();
-CMD     findtag();
-CMD     tagsloopcont();
-int     completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp);
-
-/*
  *      random.cpp
  */
 

@@ -31,15 +31,14 @@ static void    printcmd(int c, Buffer* bp);
 static void    printmacro(const EMCHAR* name, Buffer* bp);
 static CMD     internalfindtag(int lineno);
 
+int Options::tagfound = -1;
+
 /*
  * Describe  the  next  key  or  the entire binding if RETURN is
  * pressed.
  */
-
-static int tagfound = -1;
-
 CMD
-describekey() {
+Options::describekey() {
   int     c;
   EMCHAR  ch[2];
   EMCHAR  meta[10];
@@ -108,7 +107,7 @@ getkeyname(int key, EMCHAR* buf) {
  */
 
 CMD
-help() {
+Options::help() {
   static constexpr int COLUMN_VALUE{30};
   int     i;
   EMCHAR  ch[2];
@@ -323,7 +322,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
  */
 
 CMD
-setvar() {
+Options::setvar() {
   EMCHAR buf[NPAT];
   auto status = T;
 
@@ -389,7 +388,7 @@ setvar() {
  */
 
 CMD
-findtag() {
+Options::findtag() {
   return internalfindtag(0);
 }
 
@@ -398,7 +397,7 @@ findtag() {
  */
 
 CMD
-tagsloopcont() {
+Options::tagsloopcont() {
   return internalfindtag(tagfound);
 }
 
@@ -458,7 +457,7 @@ internalfindtag(int tagnext) {
 
       (void)std::fclose(tagfd);
 
-      tagfound = tagno;
+      Options::tagfound = tagno;
 
       /*
        * skip tag name
@@ -538,7 +537,7 @@ internalfindtag(int tagnext) {
  */
 
 int
-completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
+Options::completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
   EMCHAR  tagline[NLINE];
   EMCHAR  tagdir[NFILEN];
   EMCHAR  tagfile[NFILEN];
@@ -565,7 +564,7 @@ completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp) {
     if (Editor::isEqual(tagline, tagname, mode == EDITMODE::LISPMODE)) {
       (void)std::fclose(tagfd);
 
-      tagfound = tagno;
+      Options::tagfound = tagno;
 
       /*
        * skip tag name
@@ -691,7 +690,7 @@ printcmd(int c, Buffer* bp) {
  */
 
 CMD
-uncompile() {
+Options::uncompile() {
   int c;
 
   if (kbdm.exist()) {
