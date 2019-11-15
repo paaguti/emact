@@ -1036,11 +1036,11 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       DialogBox(XpTerminal::_inst, _T("AboutBox"), hWnd, (DLGPROC)xpabout);
       break;
     case IDM_CUT:
-      Region::kill();
+      TextRegion::kill();
       display->update();
       break;
     case IDM_COPY:
-      Region::copy();
+      TextRegion::copy();
       break;
     case IDM_PASTE:
       yank();
@@ -1308,7 +1308,7 @@ xpcutcopy(WPARAM wParam) {
   }
 
   if (wParam == IDM_CUT) {
-    (void)Region::kill();
+    (void)TextRegion::kill();
     EnableMenuItem(GetMenu(XpTerminal::_wnd), IDM_CUT,  MF_GRAYED);
     EnableMenuItem(GetMenu(XpTerminal::_wnd), IDM_COPY, MF_GRAYED);
   }

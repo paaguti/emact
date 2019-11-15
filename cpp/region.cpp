@@ -28,17 +28,16 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #include "./emacs.h"
 
 /*
- * This  routine  figures  out  the  bounds of the region in the
- * current  window,  and  fills  in  the  fields of the "Region"
- * structure  pointed  to by "rp".  Because the dot and mark are
- * usually  very  close  together,  we  scan  outward  from  dot
- * looking  for mark.  This should save time.  Return a standard
- * code.  Callers  of  this routine should be prepared to get an
- * "ABORT"  status;  we  might  make this have the conform thing
- * later.
+ * This routine figures out the bounds of the region in the current
+ * window, and fills in the fields of the "TextRegion" structure
+ * pointed to by "rp".  Because the dot and mark are usually very
+ * close together, we scan outward from dot looking for mark.  This
+ * should save time.  Return a standard code.  Callers of this routine
+ * should be prepared to get an "ABORT" status; we might make this
+ * have the conform thing later.
  */
 
-Region::Region() {
+TextRegion::TextRegion() {
   static auto rtoobig = ECSTR("Region too big.");
 
   const auto& mark(curwp->getMark());
@@ -74,7 +73,7 @@ Region::Region() {
   auto fsize = flp->length() - dot.pos() + 1;
 
   while (flp != curbp->lastline() || blp->back() != curbp->lastline()) {
-    static constexpr size_t MAX_Region{1024 * 1024};  // MAX region size.
+    static constexpr size_t MAX_REGION{1024 * 1024};  // MAX region size.
     _lines++;
     if (flp != curbp->lastline()) {
       flp = flp->forw();
@@ -86,7 +85,7 @@ Region::Region() {
         return;
       }
       fsize += flp->length() + 1;
-      if ((size_t)fsize > (MAX_Region - NLINE)) {
+      if ((size_t)fsize > (MAX_REGION - NLINE)) {
         WDGerror(rtoobig);
         _empty = true;
         return;
@@ -95,7 +94,7 @@ Region::Region() {
     if (blp->back() != curbp->lastline()) {
       blp = blp->back();
       bsize += blp->length() + 1;
-      if ((size_t)bsize >= MAX_Region) {
+      if ((size_t)bsize >= MAX_REGION) {
         WDGerror(rtoobig);
         _empty = true;
         return;
@@ -117,17 +116,17 @@ Region::Region() {
 /*
  * Kill the region.  Ask "get" to figure out the bounds of the
  * region.  Move "." to the start, and kill the characters.  Bound to
- * "C-W". Region as a maximum of MAX_Region characters in size and
+ * "C-W". Region as a maximum of MAX_REGION characters in size and
  * check is made prior any operation on a region.
  */
 
 CMD
-Region::kill() {
+TextRegion::kill() {
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -155,8 +154,8 @@ Region::kill() {
  */
 
 CMD
-Region::copy() {
-  Region region;
+TextRegion::copy() {
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -199,12 +198,12 @@ Region::copy() {
  */
 
 CMD
-Region::lower() {
+TextRegion::lower() {
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -237,12 +236,12 @@ Region::lower() {
  */
 
 CMD
-Region::fill() {
+TextRegion::fill() {
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -278,12 +277,12 @@ Region::fill() {
  */
 
 CMD
-Region::upper() {
+TextRegion::upper() {
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -316,8 +315,8 @@ Region::upper() {
  */
 
 CMD
-Region::write() {
-  Region region;
+TextRegion::write() {
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -361,14 +360,14 @@ Region::write() {
  */
 
 CMD
-Region::indent() {
+TextRegion::indent() {
   auto s = T;
 
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;
@@ -391,8 +390,8 @@ Region::indent() {
  */
 
 CMD
-Region::shiftright() {
-  Region region;
+TextRegion::shiftright() {
+  TextRegion region;
 
   if (freadonly()) {
     return NIL;
@@ -421,12 +420,12 @@ Region::shiftright() {
  */
 
 CMD
-Region::shiftleft() {
+TextRegion::shiftleft() {
   if (freadonly()) {
     return NIL;
   }
 
-  Region region;
+  TextRegion region;
 
   if (region.empty()) {
     return NIL;

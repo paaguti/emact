@@ -707,18 +707,18 @@ EditWindow::find() {
         break;
       case MEvent::MButton7:
         /* mouse-track insert */
-        (void)Region::copy();
+        (void)TextRegion::copy();
         (void)Editor::swapmark();
         WDGclipcopy();
         break;
       case MEvent::MButton8:
         /* x-mouse-kill */
-        (void)Region::kill();
+        (void)TextRegion::kill();
         WDGclipcopy();
         break;
       case MEvent::MButton4:
         /* mouse-track-adjust */
-        (void)Region::copy();
+        (void)TextRegion::copy();
         WDGclipcopy();
         break;
       }

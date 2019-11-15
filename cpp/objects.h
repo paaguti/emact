@@ -1770,7 +1770,7 @@ EditWindow::setChar(int c) {
  * region commands.
  */
 
-class Region {
+class TextRegion {
  public:
   /*
    * Editor commands bound to key:
@@ -1786,7 +1786,7 @@ class Region {
   static CMD shiftleft();
 
 private:
-  Region();
+  TextRegion();
   Line* _linep{nullptr};  // Origin Line address
   int   _offset{0};       // Origin Line offset
   int   _size{0};         // Length in characters
