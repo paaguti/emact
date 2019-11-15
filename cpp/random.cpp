@@ -36,6 +36,17 @@ static constexpr int JUSTFULL{0x10};    /* full justification           */
 
 static int justmode{JUSTFULL};          /* Justification mode           */
 
+CMD
+Counter::format() {
+  CMD s;
+
+  if ((s = WDGedit(ECSTR("Counter format: "), _fmt, NPAT)) != T) {
+    return s;
+  } else {
+    return T;
+  }
+}
+
 /*
  * Display  the current position of the cursor,  in origin 1 X-Y
  * coordinates,  the  character  that  is  under  the cursor (in
@@ -135,7 +146,7 @@ getccol() {
  * an error if dot is at the beginning of line; it seems to be a bit
  * pointless to make this work.  This fixes up a very common typo with
  * a single stroke.  Normally bound to "C-T".  This always works
- * within a line, so "Window::WFEDIT" is good enough.
+ * within a line, so "EditWindow::WFEDIT" is good enough.
  */
 
 CMD
@@ -174,7 +185,7 @@ twiddle() {
     (void)Editor::forwchar();
   }
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
 
   return T;
 }
@@ -553,9 +564,9 @@ yank() {
        * for all active buffer.
        */
 
-      for (auto wp : Window::list()) {
+      for (auto wp : EditWindow::list()) {
         if (wp->buffer() == curbp) {
-          wp->setFlags(Window::WFFORCE);
+          wp->setFlags(EditWindow::WFFORCE);
         }
       }
     }

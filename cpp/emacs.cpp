@@ -47,18 +47,18 @@ extern const EMCHAR* version;   /* Current version              */
 
 static bool initflag = false;   /* Init flag                    */
 
-Display* display{nullptr};
-Buffer*  curbp{nullptr};        /* Current buffer               */
-Window*  curwp{nullptr};        /* Current window               */
-MEvent   mevent;                /* Mouse event (if any)         */
-Kbdm     kbdm;                  /* Keyboad Macro                */
+Display*    display{nullptr};
+Buffer*     curbp{nullptr};     /* Current buffer               */
+EditWindow* curwp{nullptr};     /* Current window               */
+MEvent      mevent;             /* Mouse event (if any)         */
+Kbdm        kbdm;               /* Keyboad Macro                */
 
 int    Editor::_curgoal;              // Goal column
 int    Editor::_repeat{1};            // Repeat count
 int    Editor::_thisflag{CFUNSET};    // Flags, this command
 int    Editor::_lastflag{CFUNSET};    // Flags, last command
 EMCHAR Editor::_search[NPAT];         // Internal search buffer
-std::vector<Macro> Editor::_macros;  // User macros table
+std::vector<Macro> Editor::_macros;   // User macros table
 Point  Editor::_found;                // Position of last search
 
 /*
@@ -130,7 +130,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'L',
-     Window::recenter,
+     EditWindow::recenter,
      ECSTR("recenter")
   },
   {
@@ -250,7 +250,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'N',
-     Window::moveDown,
+     EditWindow::moveDown,
      ECSTR("scroll-one-line-down")
   },
   {
@@ -260,7 +260,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'P',
-     Window::moveUp,
+     EditWindow::moveUp,
      ECSTR("scroll-one-line-up")
   },
   {
@@ -305,7 +305,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'Z',
-     Window::shrink,
+     EditWindow::shrink,
      ECSTR("shrink-window")
   },
   {
@@ -345,22 +345,22 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'0',
-     Window::delwind,
+     EditWindow::delwind,
      ECSTR("delete-window")
   },
   {
      CTLX|'1',
-     Window::onlywind,
+     EditWindow::onlywind,
      ECSTR("delete-other-windows")
   },
   {
      CTLX|'2',
-     Window::split,
+     EditWindow::split,
      ECSTR("split-window-vertically")
   },
   {
      CTLX|'8',
-     Window::adjust,
+     EditWindow::adjust,
      ECSTR("adjust-to-80-columns")
   },
   {
@@ -430,17 +430,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'N',
-     Window::next,
+     EditWindow::next,
      ECSTR("next-window")
   },
   {
      CTLX|'O',
-     Window::previous,
+     EditWindow::previous,
      ECSTR("other-window")
   },
   {
      CTLX|'P',
-     Window::previous,
+     EditWindow::previous,
      ECSTR("previous-window")
   },
   {
@@ -465,7 +465,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'Z',
-     Window::enlarge,
+     EditWindow::enlarge,
      ECSTR("enlarge-window")
   },
   {
@@ -575,7 +575,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'!',
-     Window::reposition,
+     EditWindow::reposition,
      ECSTR("reposition")
   },
   {
@@ -795,7 +795,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      MEVT,
-     Window::find,
+     EditWindow::find,
      ECSTR("find-window")
   },
 
@@ -1146,7 +1146,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
       exit(0);
     }
 
-    new Window{bp};  // Allocated Window is managed by an internal list.
+    new EditWindow{bp};  // Allocated Window is managed by an internal list.
 
     kbdm.reset();
     display = new Display;
@@ -1159,9 +1159,9 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (_argc > curarg) {
       i++;
-      (void)Window::split();
+      (void)EditWindow::split();
       (void)newfile(_argv[curarg++]);
-      (void)Window::previous();
+      (void)EditWindow::previous();
     }
 
     while (_argc > curarg) {
@@ -1171,7 +1171,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     if (i > 2) {
       (void)Buffer::listbuffers();
-      (void)Window::previous();
+      (void)EditWindow::previous();
     }
 
     /*
@@ -1689,7 +1689,7 @@ CMD
 Editor::binaryfile() {
   curbp->setBinary(!curbp->binary());
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
   Buffer::updatemodes();
   return T;
 }
@@ -1703,7 +1703,7 @@ Editor::utf8encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF8);
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
   Buffer::updatemodes();
 
   return T;
@@ -1722,7 +1722,7 @@ Editor::utf16encoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMUTF16);
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
   Buffer::updatemodes();
   return T;
 #else
@@ -1740,7 +1740,7 @@ Editor::systemencoding() {
 #if defined(UNICODE)
   curbp->setEncoding(ENCODING::EMASCII);
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
   Buffer::updatemodes();
   return T;
 #else

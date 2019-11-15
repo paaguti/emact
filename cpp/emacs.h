@@ -378,14 +378,14 @@ extern bool   mouse_avoidance_mode;   // Auto mouse move flag
 extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 } // namespace opt
 
-extern Buffer*    curbp;               // Current buffer
-extern Completion complete;            // Automatic completion
-extern Display*   display;             // Object responsible to display things.
-extern Kbdm       kbdm;                // Keyboard macro
-extern MEvent     mevent;              // Mouse event
-extern Terminal*  term;                // Emact terminal
-extern Widget     widget;              // Widgets tools
-extern Window*    curwp;               // Current window
+extern Buffer*     curbp;              // Current buffer
+extern Completion  complete;           // Automatic completion
+extern Display*    display;            // Object responsible to display things.
+extern Kbdm        kbdm;               // Keyboard macro
+extern MEvent      mevent;             // Mouse event
+extern Terminal*   term;               // Emact terminal
+extern Widget      widget;             // Widgets tools
+extern EditWindow* curwp;              // Current window
 
 #include "./defines.h"
 #endif

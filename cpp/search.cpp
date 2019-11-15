@@ -231,7 +231,7 @@ replace(bool prompt) {
   int replaced;
   for (replaced = 0; ffindstring() && c != 'q' && c != '.';) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(Window::WFHARD);
+    curwp->setFlags(EditWindow::WFHARD);
 
     if (!prompt) {
       subst(patl, (EMCHAR*)npat);
@@ -288,7 +288,7 @@ replace(bool prompt) {
   }
 
   curwp->setDot(clp, cbo);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
 
   if (c == 'q') {
     return false;
@@ -323,7 +323,7 @@ subst(int length, const EMCHAR* newstr) {
   }
 
   curbp->setEditMode(obmode);
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 }
 
 /*
@@ -493,7 +493,7 @@ rmatchc(int patc, bool printflag) {
 
     if (c == matchpat && --nbmatch == 0) {
       curwp->setDot(clp, cbo - 1);
-      curwp->setFlags(Window::WFMOVE);
+      curwp->setFlags(EditWindow::WFMOVE);
       return true;
     }
   }
@@ -594,7 +594,7 @@ lmatchc(int patc, bool printflag) {
     if (c == matchpat && --nbmatch == 0) {
       saveindent(clp, ++cbo);
       curwp->setDot(clp, cbo);
-      curwp->setFlags(Window::WFMOVE);
+      curwp->setFlags(EditWindow::WFMOVE);
       return true;
     }
   }
@@ -663,7 +663,7 @@ automatch(int c, bool f) {
   }
 
   curwp->setDot(dot);  // reposition
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   if (mlp != nullptr) {
     mlmatch(mlp, mbo);
@@ -718,7 +718,7 @@ forwsearch() {
 
   if (ffindstring()) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(Window::WFMOVE);
+    curwp->setFlags(EditWindow::WFMOVE);
     return T;
   } else {
     term->beep();
@@ -759,7 +759,7 @@ backsearch() {
 
   if (bfindstring()) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(Window::WFMOVE);
+    curwp->setFlags(EditWindow::WFMOVE);
     return T;
   } else {
     term->beep();
@@ -837,10 +837,10 @@ getdefinition() {
     case EDITMODE::PYTHONMODE:
     case EDITMODE::SHELLMODE:
       if (Editor::_found.pos() == len) {
-        curwp->setFlags(Window::WFMOVE);
+        curwp->setFlags(EditWindow::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)Editor::backline();
-        (void)Window::reposition();
+        (void)EditWindow::reposition();
         return T;
       }
       break;
@@ -851,10 +851,10 @@ getdefinition() {
           curwp->pos() != 0 || curwp->line()->get(0) != '(') {
         curwp->setDot(Editor::_found);
       } else {
-        curwp->setFlags(Window::WFMOVE);
+        curwp->setFlags(EditWindow::WFMOVE);
         (void)emstrcpy(Editor::searchBuffer(), save);
         (void)Editor::backline();
-        (void)Window::reposition();
+        (void)EditWindow::reposition();
         return T;
       }
       break;
@@ -1107,12 +1107,12 @@ diffwindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(Window::list().begin(), Window::list().end(), curwp);
+  auto it = std::find(EditWindow::list().begin(), EditWindow::list().end(), curwp);
 
-  if (++it != Window::list().end()) {
+  if (++it != EditWindow::list().end()) {
     wp2 = *it;
   } else {
-    wp2 = Window::list().front();
+    wp2 = EditWindow::list().front();
   }
 
   if (wp2 == wp1) {
@@ -1121,10 +1121,10 @@ diffwindows() {
   }
 
   wp1->setDot(wp1->buffer()->firstline(), 0);
-  wp1->setFlags(Window::WFHARD);
+  wp1->setFlags(EditWindow::WFHARD);
 
   wp2->setDot(wp2->buffer()->firstline(), 0);
-  wp2->setFlags(Window::WFHARD);
+  wp2->setFlags(EditWindow::WFHARD);
 
   return comparewindows();
 }
@@ -1141,12 +1141,12 @@ comparewindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(Window::list().begin(), Window::list().end(), curwp);
+  auto it = std::find(EditWindow::list().begin(), EditWindow::list().end(), curwp);
 
-  if (++it != Window::list().end()) {
+  if (++it != EditWindow::list().end()) {
     wp2 = *it;
   } else {
-    wp2 = Window::list().front();
+    wp2 = EditWindow::list().front();
   }
 
   if (wp2 == wp1) {
@@ -1199,10 +1199,10 @@ comparewindows() {
       }
 
       wp2->setDot(lp2, lo2);
-      wp2->setFlags(Window::WFMOVE);
+      wp2->setFlags(EditWindow::WFMOVE);
 
       wp1->setDot(lp1, lo1);
-      wp1->setFlags(Window::WFMOVE);
+      wp1->setFlags(EditWindow::WFMOVE);
 
       Editor::_thisflag    |= CFCOMP;
       return showcpos();
@@ -1223,10 +1223,10 @@ comparewindows() {
 
   if (flag) {
     wp2->setDot(lp2, 0);
-    wp2->setFlags(Window::WFMOVE);
+    wp2->setFlags(EditWindow::WFMOVE);
 
     wp1->setDot(lp1, 0);
-    wp1->setFlags(Window::WFMOVE);
+    wp1->setFlags(EditWindow::WFMOVE);
 
     Editor::_thisflag |= CFCOMP;
     return T;

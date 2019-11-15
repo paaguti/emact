@@ -384,7 +384,7 @@ diredcmd(int c) {
       lp->put(0, 'D');
     }
 
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -497,7 +497,7 @@ diredcmd(int c) {
         && lp->get(0) == 'D') {
       curbp->setReadonly(false);
       curwp->line()->put(0, ' ');
-      Buffer::change(Window::WFEDIT);
+      Buffer::change(EditWindow::WFEDIT);
       curbp->setReadonly(true);
       curbp->setChanged(false);
     }

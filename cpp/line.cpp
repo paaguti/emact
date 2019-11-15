@@ -94,7 +94,7 @@ Line::dispose(Line*& lp) {
 
 void
 Line::free(Line*& lp) {
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->topline() == lp) {
       wp->setTopline(lp->forw());
     }
@@ -224,7 +224,7 @@ Line::insert(int c, int n) {
     return false;
   }
 
-  Buffer::change(Window::WFEDIT);
+  Buffer::change(EditWindow::WFEDIT);
 
   if (c > 0xFF && curbp->encoding() == ENCODING::EMASCII) {
     curbp->setEncoding(ENCODING::EMUTF16);
@@ -314,7 +314,7 @@ Line::insert(int c, int n) {
     }
   }
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -372,7 +372,7 @@ Line::replace(int c, int n) {
 
   curwp->setDot(dotp, doto);
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
   return true;
 }
 
@@ -404,14 +404,14 @@ Line::remove(int n, bool kflag) {
       chunk = n;
     }
     if (chunk == 0) {              /* End of line, merge.  */
-      Buffer::change(Window::WFHARD);
+      Buffer::change(EditWindow::WFHARD);
       if (!Line::delnewline() || (kflag && !kinsert('\n'))) {
         return false;
       }
       --n;
       continue;
     }
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
     auto cp1 = dot.line()->address(dot.pos());     /* Scrunch text.        */
     auto cp2 = cp1 + chunk;
     if (kflag) {            /* Kill?                */
@@ -430,7 +430,7 @@ Line::remove(int n, bool kflag) {
 
     dot.line()->setLength(dot.line()->length() - chunk);
 
-    for (auto wp : Window::list()) {
+    for (auto wp : EditWindow::list()) {
       if (wp->line() == dot.line() && wp->pos() >= dot.pos()) {
         wp->moveDotPos(-chunk);
         if (wp->pos() < dot.pos()) {
@@ -519,7 +519,7 @@ Line::delnewline() {
     *cp = *cp2++;
   }
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->topline() == del || wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -586,7 +586,7 @@ Line::newline() noexcept {
     return false;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   /*
    * Get the address and offset of "."
@@ -620,7 +620,7 @@ Line::newline() noexcept {
 
   lp1->setLength(lp1->length() - doto);
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->topline() == lp1) {
       wp->setTopline(lp2);
     }
@@ -692,13 +692,13 @@ Line::notmodified() {
 
   if (curbp->count() != 1) {
     /* Ensure hard. */
-    flag = Window::WFHARD;
+    flag = EditWindow::WFHARD;
   }
 
   curbp->setChanged(false);
-  flag |= Window::WFMODE;        /* update mode lines. */
+  flag |= EditWindow::WFMODE;        /* update mode lines. */
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -727,9 +727,9 @@ Line::twiddle() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->topline() == lp2) {
       wp->setTopline(lp1);
     }
@@ -769,7 +769,7 @@ CMD
 Line::instoggle() {
   opt::replace_mode = !opt::replace_mode;
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     display->modeline(wp);
   }
 

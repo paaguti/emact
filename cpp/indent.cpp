@@ -625,7 +625,7 @@ lispindent() {
 
   indento = j;
   curwp->setDot(dot);
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   return nexttab(indento);
 }

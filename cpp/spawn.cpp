@@ -522,7 +522,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
   }
 
   term->rawmode();
@@ -608,7 +608,7 @@ sed() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLRESULT);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
   }
 
   term->rawmode();
@@ -673,7 +673,7 @@ perl() {
   if ((s = ((ffsystem(buf) == 0) ? T : NIL)) == T) {
     (void)readin(SHELLTEMP);
     (void)emstrcpy(curbp->filename(), &oldfname[0]);
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
   }
 
   term->rawmode();

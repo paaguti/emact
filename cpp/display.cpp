@@ -268,7 +268,7 @@ Display::computecursor() {
  */
 
 void
-Display::refresh(Window* wp) {
+Display::refresh(EditWindow* wp) {
   Line* lp;
   bool    out = false;
   int     i;
@@ -278,7 +278,7 @@ Display::refresh(Window* wp) {
    * If not force reframe, check the framing.
    */
 
-  if ((wp->getFlags() & Window::WFFORCE) == 0) {
+  if ((wp->getFlags() & EditWindow::WFFORCE) == 0) {
     lp = wp->topline();
     for (i = 0; i < wp->rows(); ++i) {
       if (lp == wp->line()) {
@@ -296,7 +296,7 @@ Display::refresh(Window* wp) {
 
   /*
    * Not acceptable, better compute a new value for the line at the
-   * top of the window. Then set the "Window::WFHARD" flag to force full
+   * top of the window. Then set the "EditWindow::WFHARD" flag to force full
    * redraw.
    */
 
@@ -317,7 +317,7 @@ Display::refresh(Window* wp) {
     }
 
     wp->setTopline(lp);
-    wp->setFlags(Window::WFHARD);   /* Force full.  */
+    wp->setFlags(EditWindow::WFHARD);   /* Force full.  */
   }
 
   /*
@@ -328,7 +328,7 @@ Display::refresh(Window* wp) {
 
   lp = wp->topline();
   i  = wp->toprow();
-  if ((wp->getFlags() & ~Window::WFMODE) == Window::WFEDIT) {
+  if ((wp->getFlags() & ~EditWindow::WFMODE) == EditWindow::WFEDIT) {
     j = wp->rows() + i;
     while ((lp != wp->line()) && (j > i)) {
       ++i;
@@ -342,7 +342,7 @@ Display::refresh(Window* wp) {
       }
       VIDEO::vteeol();
     }
-  } else if ((wp->getFlags() & (Window::WFEDIT|Window::WFHARD)) != 0) {
+  } else if ((wp->getFlags() & (EditWindow::WFEDIT|EditWindow::WFHARD)) != 0) {
     while (i < (wp->toprow() + wp->rows())) {
       VIDEO::vscreen[i]->changed = true;
       VIDEO::vtmove(i, 0);
@@ -358,7 +358,7 @@ Display::refresh(Window* wp) {
   }
 
   display->modeline(wp);
-  wp->setFlags(Window::WFCLEAR);
+  wp->setFlags(EditWindow::WFCLEAR);
 }
 
 void
@@ -373,7 +373,7 @@ Display::update(Display::Mode mode) {
     return;
   }
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     /*
      * Look at any window with update flags set on.
      */
@@ -589,7 +589,7 @@ Display::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 }
 
 void
-Display::modeline(const Window* wp) noexcept {
+Display::modeline(const EditWindow* wp) noexcept {
   EMCHAR  buf[8];
   int     i;
 

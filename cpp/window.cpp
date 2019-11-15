@@ -26,9 +26,9 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
 
 #include "./emacs.h"
 
-std::list<Window*> Window::_wlist;
+std::list<EditWindow*> EditWindow::_wlist;
 
-Window::Window(Buffer* bp) noexcept
+EditWindow::EditWindow(Buffer* bp) noexcept
   : _ntrows{term->getNbRows() - 1} {
   if (_wlist.empty()) {
     curwp = this;
@@ -39,7 +39,7 @@ Window::Window(Buffer* bp) noexcept
   }
 }
 
-Window::~Window() {
+EditWindow::~EditWindow() {
   disconnect();
   _wlist.remove(this);
 }
@@ -49,8 +49,8 @@ Window::~Window() {
  * only  one  window.  Pick  the uppermost window that isn't the
  * current window.
  */
-Window*
-Window::popup() noexcept {
+EditWindow*
+EditWindow::popup() noexcept {
   if (_wlist.size() == 1) {
     if (split() == NIL) {
       return nullptr;
@@ -72,7 +72,7 @@ Window::popup() noexcept {
  */
 
 bool
-Window::resize() noexcept {
+EditWindow::resize() noexcept {
   Buffer* bp{nullptr};
 
   /*
@@ -101,7 +101,7 @@ Window::resize() noexcept {
    */
   head->_ntrows = (term->getNbRows() - 1);
   display->modeline(head);
-  head->setFlags(Window::WFMODE|Window::WFHARD);
+  head->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
 
@@ -109,7 +109,7 @@ Window::resize() noexcept {
    * Try to create a second window connected to bp (if it exist).
    */
   if (bp != nullptr && (term->getNbRows() >= 4)) {
-    auto wp = Window::popup();
+    auto wp = EditWindow::popup();
     if (wp == nullptr) {
       return false;
     } else {
@@ -129,7 +129,7 @@ Window::resize() noexcept {
  */
 
 void
-Window::disconnect() noexcept {
+EditWindow::disconnect() noexcept {
   auto bp(this->buffer());
 
   if (bp != nullptr) {
@@ -151,7 +151,7 @@ Window::disconnect() noexcept {
  */
 
 bool
-Window::connect(Buffer* bp, bool check) noexcept {
+EditWindow::connect(Buffer* bp, bool check) noexcept {
   this->disconnect();
 
   if (this == curwp) {
@@ -160,7 +160,7 @@ Window::connect(Buffer* bp, bool check) noexcept {
 
   this->_bufp = bp;
   this->_toplinep = bp->lastline();  /* For macros, ignored. */
-  this->setFlags(Window::WFMODE|Window::WFFORCE|Window::WFHARD);
+  this->setFlags(EditWindow::WFMODE|EditWindow::WFFORCE|EditWindow::WFHARD);
 
   bp->incr();
 
@@ -196,7 +196,7 @@ Window::connect(Buffer* bp, bool check) noexcept {
  */
 
 void
-Window::current() noexcept {
+EditWindow::current() noexcept {
   curwp = this;
   this->buffer()->ontop();
 }
@@ -206,9 +206,9 @@ Window::current() noexcept {
  */
 
 CMD
-Window::reposition() {
+EditWindow::reposition() {
   curwp->_force = Editor::_repeat;
-  curwp->setFlags(Window::WFFORCE);
+  curwp->setFlags(EditWindow::WFFORCE);
   return T;
 }
 
@@ -218,9 +218,9 @@ Window::reposition() {
  */
 
 CMD
-Window::recenter() {
+EditWindow::recenter() {
   curwp->_force = curwp->rows() / 2;
-  curwp->setFlags(Window::WFFORCE);
+  curwp->setFlags(EditWindow::WFFORCE);
   Editor::redrawscreen();
 
   return T;
@@ -233,11 +233,11 @@ Window::recenter() {
  */
 
 CMD
-Window::next() {
+EditWindow::next() {
   auto next(curwp->down());
 
   if (next == nullptr) {
-    next = Window::list().front();
+    next = EditWindow::list().front();
   }
 
   next->current();
@@ -252,11 +252,11 @@ Window::next() {
  */
 
 CMD
-Window::previous() {
+EditWindow::previous() {
   auto prev(curwp->up());
 
   if (prev == nullptr) {
-    prev = Window::list().back();
+    prev = EditWindow::list().back();
   }
 
   prev->current();
@@ -273,7 +273,7 @@ Window::previous() {
  */
 
 CMD
-Window::moveDown() {
+EditWindow::moveDown() {
   auto save = Editor::_repeat;
 
   Editor::_repeat = -Editor::_repeat;
@@ -292,7 +292,7 @@ Window::moveDown() {
  */
 
 CMD
-Window::moveUp() {
+EditWindow::moveUp() {
   auto lp = curwp->topline();
   auto n = Editor::_repeat;
 
@@ -307,7 +307,7 @@ Window::moveUp() {
   }
 
   curwp->setTopline(lp);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
 
   for (int i = 0; i < curwp->rows(); ++i) {
     if (lp == curwp->line()) {
@@ -338,28 +338,28 @@ Window::moveUp() {
  */
 
 CMD
-Window::onlywind() {
-  if (Window::list().size() == 1) {
+EditWindow::onlywind() {
+  if (EditWindow::list().size() == 1) {
     return T;  // already a single Window exists.
   }
 
   /*
    * keep curwp out of Window list.
    */
-  Window::list().remove(curwp);
+  EditWindow::list().remove(curwp);
 
   /*
    * remove all other Window still in list.
    */
 
 #if 1
-  for (std::list<Window*>::iterator it = Window::list().begin();
-       it != Window::list().end();) {
+  for (std::list<EditWindow*>::iterator it = EditWindow::list().begin();
+       it != EditWindow::list().end();) {
     delete *it++;
   }
 #else
   for (bool loop{true}; loop; loop = false) {
-    for (auto wp : Window::list()) {
+    for (auto wp : EditWindow::list()) {
       delete wp;
       loop = true;
       break;
@@ -370,7 +370,7 @@ Window::onlywind() {
   /*
    * push curwp in Window list.
    */
-  Window::list().push_front(curwp);
+  EditWindow::list().push_front(curwp);
 
   auto lp = curwp->_toplinep;
 
@@ -381,7 +381,7 @@ Window::onlywind() {
   curwp->_toprow   = 0;
   curwp->_ntrows   = (term->getNbRows() - 1);
   curwp->_toplinep = lp;
-  curwp->setFlags(Window::WFMODE|Window::WFHARD);
+  curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
 
   return T;
 }
@@ -392,15 +392,15 @@ Window::onlywind() {
  */
 
 CMD
-Window::delwind() {
-  if (Window::list().size() == 1) {
+EditWindow::delwind() {
+  if (EditWindow::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
 
-  Window* wp;
+  EditWindow* wp;
 
-  if (curwp == Window::list().front()) {
+  if (curwp == EditWindow::list().front()) {
     wp = curwp->down();
     wp->_toprow = 0;
   } else {
@@ -408,7 +408,7 @@ Window::delwind() {
   }
 
   wp->_ntrows += curwp->rows() + 1;
-  wp->setFlags(Window::WFMODE|Window::WFHARD);
+  wp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
 
   delete curwp;
 
@@ -425,16 +425,16 @@ Window::delwind() {
  */
 
 CMD
-Window::split() {
+EditWindow::split() {
   if (curwp->rows() < 3) {
     WDGmessage(ECSTR("You can't have windows smaller than 2 lines high"));
     return NIL;
   }
 
-  auto wp = new Window{curbp};
+  auto wp = new EditWindow{curbp};
   wp->setDot(curwp->getDot());
   wp->setMark(curwp->getMark());
-  wp->setFlags(Window::WFCLEAR);
+  wp->setFlags(EditWindow::WFCLEAR);
 
   auto ntru = (curwp->rows() - 1) / 2;         /* Upper size           */
   auto ntrl = (curwp->rows() - 1) - ntru;      /* Lower size           */
@@ -455,23 +455,23 @@ Window::split() {
     }
     curwp->_ntrows = ntru;
 
-    auto insertIt = std::find(Window::list().begin(),
-                              Window::list().end(),
+    auto insertIt = std::find(EditWindow::list().begin(),
+                              EditWindow::list().end(),
                               curwp);
-    if (insertIt != Window::list().end()) {
-      Window::list().insert(++insertIt, wp);
+    if (insertIt != EditWindow::list().end()) {
+      EditWindow::list().insert(++insertIt, wp);
     }
 
     wp->_toprow = curwp->toprow() + ntru + 1;
     wp->_ntrows = ntrl;
   } else {                               /* Old is lower window  */
-    auto insertIt = std::find(Window::list().begin(),
-                              Window::list().end(),
+    auto insertIt = std::find(EditWindow::list().begin(),
+                              EditWindow::list().end(),
                               curwp);
-    if (insertIt != Window::list().end()) {
-      Window::list().insert(insertIt, wp);
+    if (insertIt != EditWindow::list().end()) {
+      EditWindow::list().insert(insertIt, wp);
     } else {
-      Window::list().push_front(wp);
+      EditWindow::list().push_front(wp);
     }
 
     wp->_toprow = curwp->toprow();
@@ -485,9 +485,9 @@ Window::split() {
   }
 
   curwp->setTopline(lp);          /* Adjust the top lines */
-  curwp->setFlags(Window::WFMODE|Window::WFHARD);
+  curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
   wp->setTopline(lp);
-  wp->setFlags(Window::WFMODE|Window::WFHARD);
+  wp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
 
   return T;
 }
@@ -501,8 +501,8 @@ Window::split() {
  */
 
 CMD
-Window::enlarge() {
-  if (Window::list().size() == 1) {
+EditWindow::enlarge() {
+  if (EditWindow::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
@@ -512,7 +512,7 @@ Window::enlarge() {
 
   if (adjwp == nullptr) {
     below = false;
-    adjwp = Window::list().front();
+    adjwp = EditWindow::list().front();
   }
 
   if (adjwp->rows() <= Editor::_repeat) {
@@ -547,9 +547,9 @@ Window::enlarge() {
   }
 
   curwp->_ntrows += Editor::_repeat;
-  curwp->setFlags(Window::WFMODE|Window::WFHARD);
+  curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
   adjwp->_ntrows -= Editor::_repeat;
-  adjwp->setFlags(Window::WFMODE|Window::WFHARD);
+  adjwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
   return T;
 }
 
@@ -560,8 +560,8 @@ Window::enlarge() {
  */
 
 CMD
-Window::shrink() {
-  if (Window::list().size() == 1) {
+EditWindow::shrink() {
+  if (EditWindow::list().size() == 1) {
     WDGmessage(ECSTR("Only one window"));
     return NIL;
   }
@@ -571,7 +571,7 @@ Window::shrink() {
 
   if (adjwp == nullptr) {
     below = false;
-    adjwp = Window::list().front();
+    adjwp = EditWindow::list().front();
   }
 
   if (curwp->rows() <= Editor::_repeat) {
@@ -603,9 +603,9 @@ Window::shrink() {
     curwp->_toprow  += Editor::_repeat;
   }
   curwp->_ntrows -= Editor::_repeat;
-  curwp->setFlags(Window::WFMODE|Window::WFHARD);
+  curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
   adjwp->_ntrows += Editor::_repeat;
-  adjwp->setFlags(Window::WFMODE|Window::WFHARD);
+  adjwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
   return T;
 }
 
@@ -614,14 +614,14 @@ Window::shrink() {
  */
 
 CMD
-Window::find() {
+EditWindow::find() {
   Line* lp{nullptr};
   auto wx = mevent.x;
   auto wy = mevent.y;
   auto l  = wy;
   int  i;
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     auto top  = wp->toprow();
     auto nrow = wp->rows();
     if (top <= l && top + nrow >= l) {
@@ -734,7 +734,7 @@ Window::find() {
 }
 
 CMD
-Window::adjust() {
+EditWindow::adjust() {
   WDGadjust();
   return T;
 }

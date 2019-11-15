@@ -348,7 +348,7 @@ XpTerminal::xpchangefont(int font) {
     xpsetfontsize(font);
     xpsettextattrib();
     display = new Display;
-    (void)Window::resize();
+    (void)EditWindow::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
   } else {
     xpsetfontsize(font);
@@ -591,7 +591,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
 
   if ((dwFlags & FR_REPLACE) && nFindFlag) {
     curwp->setDot(Editor::_found);
-    curwp->setFlags(Window::WFHARD);
+    curwp->setFlags(EditWindow::WFHARD);
     subst((int)emstrlen(szFind), szReplace);
     replaced++;
     if (dwFlags & FR_DOWN) {
@@ -606,7 +606,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
       int len = (int)emstrlen(szFind);
 
       curwp->setDot(Editor::_found);
-      curwp->setFlags(Window::WFHARD);
+      curwp->setFlags(EditWindow::WFHARD);
       subst(len, szReplace);
       replaced++;
     } while (ffindstring());
@@ -1084,7 +1084,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       delete display;
       XpTerminal::xpsettextattrib();
       display = new Display;
-      (void)Window::resize();
+      (void)EditWindow::resize();
       display->update(Display::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);

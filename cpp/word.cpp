@@ -189,7 +189,7 @@ Word::upper() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::islower(c)) {
         curwp->setChar(std::toupper(c));
-        Buffer::change(Window::WFHARD);
+        Buffer::change(EditWindow::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -224,7 +224,7 @@ Word::lower() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::isupper(c)) {
         curwp->setChar(std::tolower(c));
-        Buffer::change(Window::WFHARD);
+        Buffer::change(EditWindow::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -261,7 +261,7 @@ Word::capitalize() {
       int c = curwp->getChar();
       if (std::isalpha(c) && std::islower(c)) {
         curwp->setChar(std::toupper(c));
-        Buffer::change(Window::WFHARD);
+        Buffer::change(EditWindow::WFHARD);
       }
       if (Editor::forwchar() == NIL) {
         return NIL;
@@ -270,7 +270,7 @@ Word::capitalize() {
         c = curwp->getChar();
         if (std::isalpha(c) && std::isupper(c)) {
           curwp->setChar(std::tolower(c));
-          Buffer::change(Window::WFHARD);
+          Buffer::change(EditWindow::WFHARD);
         }
         if (Editor::forwchar() == NIL) {
           return NIL;

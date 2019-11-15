@@ -60,7 +60,7 @@ Buffer::Buffer(const EMCHAR* bname, bool bflag, EDITMODE mode)
 }
 
 /*
- * This function is called by Window::[dis]connect to ensure that
+ * This function is called by EditWindow::[dis]connect to ensure that
  * buffers count() are always correct.  Valid only when Buffer_DEBUG
  * has been defined.
  */
@@ -71,7 +71,7 @@ Buffer::validitycheck(const char* msg) {
   for (auto bp : Buffer::list()) {
     int count = 0;
 
-    for (auto wp : Window::list()) {
+    for (auto wp : EditWindow::list()) {
       if (wp->buffer() == bp) {
         ++count;
       }
@@ -110,16 +110,16 @@ Buffer::ontop() noexcept {
  * if it fails.
  */
 
-Window*
+EditWindow*
 Buffer::show() noexcept {
   if (this->count() == 0) { /* Not on screen yet. */
-    auto wp = Window::popup();
+    auto wp = EditWindow::popup();
     if (wp != nullptr) {
       (void)wp->connect(this);
     }
     return wp;
   } else {
-    for (auto wp : Window::list()) {
+    for (auto wp : EditWindow::list()) {
       if (wp->buffer() == this) {
         (void)wp->connect(this);
         return wp;
@@ -140,12 +140,12 @@ Buffer::updatemodes() noexcept {
 
   if (curbp->count() != 1) {
     /* Ensure hard.         */
-    flag |= Window::WFHARD;
+    flag |= EditWindow::WFHARD;
   }
 
-  flag |= Window::WFMODE; /* update mode lines.   */
+  flag |= EditWindow::WFMODE; /* update mode lines.   */
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -209,7 +209,7 @@ Buffer::clear() noexcept {
 
 bool
 Buffer::usewindow() const noexcept {
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == this) {
       wp->current();
       return true;
@@ -275,7 +275,7 @@ Buffer::discard() noexcept {
    * containing buffer "this".
    */
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == this) {
       (void)wp->connect(bp1);
     }
@@ -305,15 +305,15 @@ void
 Buffer::change(int flag) {
   if (curbp->count() != 1) {
     /* Ensure hard. */
-    flag = Window::WFHARD;
+    flag = EditWindow::WFHARD;
   }
 
   if (!curbp->isChanged()) {    /* First change, so     */
-    flag |= Window::WFMODE;     /* update mode lines.   */
+    flag |= EditWindow::WFMODE;     /* update mode lines.   */
     curbp->setChanged(true);
   }
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == curbp) {
       wp->setFlags(flag);
     }
@@ -736,7 +736,7 @@ Buffer::buffercmd(int cmd) {
       curwp->line()->put(0, 'D');
     }
 
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -761,7 +761,7 @@ Buffer::buffercmd(int cmd) {
       curwp->line()->put(1, 'S');
     }
 
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
     (void)Editor::forwline();
 
     curbp->setReadonly(true);
@@ -788,7 +788,7 @@ Buffer::buffercmd(int cmd) {
       curwp->line()->put(2, ' ');
     }
 
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
 
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -807,7 +807,7 @@ Buffer::buffercmd(int cmd) {
       curwp->line()->put(2, '%');
     }
 
-    Buffer::change(Window::WFEDIT);
+    Buffer::change(EditWindow::WFEDIT);
     (void)Editor::forwline();
     curbp->setReadonly(true);
     curbp->setChanged(false);
@@ -830,7 +830,7 @@ Buffer::buffercmd(int cmd) {
         curbp = bp;
         if (filesave() == T) {
           curwp->line()->put(1, ' ');
-          Buffer::change(Window::WFEDIT);
+          Buffer::change(EditWindow::WFEDIT);
         }
         curbp = oldbp;
       }
@@ -851,7 +851,7 @@ Buffer::buffercmd(int cmd) {
         if (bp->discard()) {
           (void)Editor::gotobol();
           (void)Line::remove(curwp->line()->length() + 1);
-          Buffer::change(Window::WFEDIT);
+          Buffer::change(EditWindow::WFEDIT);
           (void)Editor::backline();
           (void)Editor::gotobol();
         }
@@ -880,7 +880,7 @@ Buffer::buffercmd(int cmd) {
         } else {
           curwp->line()->put(0, ' ');
         }
-        Buffer::change(Window::WFEDIT);
+        Buffer::change(EditWindow::WFEDIT);
       }
       if (curwp->line()->get(1) == 'S') {
         if (bp->isChanged()) {
@@ -888,7 +888,7 @@ Buffer::buffercmd(int cmd) {
         } else {
           curwp->line()->put(1, ' ');
         }
-        Buffer::change(Window::WFEDIT);
+        Buffer::change(EditWindow::WFEDIT);
       }
       if (curwp->line()->get(2) == '%') {
         if (bp->readonly()) {
@@ -896,7 +896,7 @@ Buffer::buffercmd(int cmd) {
         } else {
           curwp->line()->put(2, ' ');
         }
-        Buffer::change(Window::WFEDIT);
+        Buffer::change(EditWindow::WFEDIT);
       }
       curbp->setReadonly(true);
       curbp->setChanged(false);

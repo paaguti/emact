@@ -210,7 +210,7 @@ Region::lower() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -248,7 +248,7 @@ Region::fill() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -289,7 +289,7 @@ Region::upper() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   auto linep = region._linep;
   auto loffs = region._offset;
@@ -374,7 +374,7 @@ Region::indent() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -402,7 +402,7 @@ Region::shiftright() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   curwp->setDot(region._linep, 0);
 
@@ -432,7 +432,7 @@ Region::shiftleft() {
     return NIL;
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   curwp->setDot(region._linep, 0);
 

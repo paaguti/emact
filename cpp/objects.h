@@ -106,7 +106,7 @@ enum class EDITMODE {
 class Buffer;
 class Line;
 class Point;
-class Window;
+class EditWindow;
 class Terminal;
 class EditorCommand;
 class Completion;
@@ -176,7 +176,7 @@ class Point final {
  * redisplay.
  */
 
-class Window {
+class EditWindow {
  public:
   static constexpr uint32_t WFCLEAR = 0x00; // All flags cleared.
   static constexpr uint32_t WFFORCE = 0x01; // Window needs forced reframe
@@ -187,16 +187,17 @@ class Window {
 
   /**
    * Default ctor.
-   * Create a new Window object and put its pointer on top of an internal list.
+   * Create a new EditWindow object and put its pointer on top of an internal
+   * list.
    * @param [in] bp buffer associated to this window.
    */
-  explicit Window(Buffer* bp) noexcept;
+  explicit EditWindow(Buffer* bp) noexcept;
 
   /**
    * destroy window and uncontitionally removes its pointer
    * from an internal list.
    */
-  ~Window();
+  ~EditWindow();
 
   Buffer*
   buffer() const noexcept {
@@ -242,11 +243,11 @@ class Window {
    * only  one  window.
    * @return uppermost window that isn't the current window.
    */
-  static Window*
+  static EditWindow*
   popup() noexcept;
 
   /*
-   * Redisplay  the  screen  after  a resize.  Useful on Windowing
+   * Redisplay  the  screen  after  a resize.  Useful on EditWindowing
    * system. This command is not bound to any key stroke.
    * @return true on success.
    */
@@ -258,10 +259,12 @@ class Window {
    * the ast window.
    * @return window down or nullptr.
    */
-  Window*
+  EditWindow*
   down() const noexcept {
-    auto it = std::find(Window::list().begin(), Window::list().end(), this);
-    if (++it != Window::list().end()) {
+    auto it = std::find(EditWindow::list().begin(),
+                        EditWindow::list().end(),
+                        this);
+    if (++it != EditWindow::list().end()) {
       return *it;
     } else {
       return nullptr;
@@ -273,10 +276,12 @@ class Window {
    * the last window.
    * @return window up or nullptr.
    */
-  Window*
+  EditWindow*
   up() const noexcept {
-    auto it = std::find(Window::list().rbegin(), Window::list().rend(), this);
-    if (++it != Window::list().rend()) {
+    auto it = std::find(EditWindow::list().rbegin(),
+                        EditWindow::list().rend(),
+                        this);
+    if (++it != EditWindow::list().rend()) {
       return *it;
     } else {
       return nullptr;
@@ -396,7 +401,7 @@ class Window {
   friend CMD onlywind();
   friend CMD delwind();
 
-  static std::list<Window*>&
+  static std::list<EditWindow*>&
   list() noexcept {
     return _wlist;
   }
@@ -419,7 +424,7 @@ class Window {
   static CMD adjust();
 
  private:
-  static std::list<Window*> _wlist;
+  static std::list<EditWindow*> _wlist;
   Line*    _toplinep{nullptr};  // Top line in the window
   Point    _dot;                // Line containing "."
   Point    _mark;               // Mark point.
@@ -477,7 +482,7 @@ class Buffer {
    * screen,  split  the  current  window  and  display  it.
    * @return the window that display the buffer or nullptr if it fails.
    */
-  Window*
+  EditWindow*
   show() noexcept;
 
   /**
@@ -1443,7 +1448,7 @@ class Display {
   const EMCHAR* text(int y) const noexcept;
   void update(Display::Mode mode = Mode::DELTA);
   void statputc(int n, int c) const noexcept;
-  void modeline(const Window* wp) noexcept;
+  void modeline(const EditWindow* wp) noexcept;
   static void garbaged() { _sgarbf = Sync::GARBAGE; }
   static void synchronized() { _sgarbf = Sync::SYNCHRONIZED; }
   static void exposed() { _sgarbf = Sync::EXPOSE; }
@@ -1454,7 +1459,7 @@ class Display {
   static bool   _mouse;    // mouse flags
 
  private:
-  void refresh(Window* wp);
+  void refresh(EditWindow* wp);
   static void computecursor();
   static void updateline(int row, EMCHAR* vline, EMCHAR* pline);
 };
@@ -1750,12 +1755,12 @@ class Editor {
 };
 
 EMCHAR
-Window::getChar() const {
+EditWindow::getChar() const {
   return _dot.line()->get(_dot.pos());
 }
 
 void
-Window::setChar(int c) {
+EditWindow::setChar(int c) {
   _dot.line()->put(_dot.pos(), c);
 }
 
@@ -1871,15 +1876,7 @@ class Counter {
    * @return CMD
    */
   static CMD
-  format() {
-    CMD s;
-
-    if ((s = WDGedit(ECSTR("Counter format: "), _fmt, NPAT)) != T) {
-      return s;
-    } else {
-      return T;
-    }
-  }
+  format();
 
  private:
   static int    _val;

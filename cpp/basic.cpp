@@ -56,7 +56,7 @@ Editor::backchar() {
         return NIL;
       }
       curwp->setDot(lp, lp->length());
-      curwp->setFlags(Window::WFMOVE);
+      curwp->setFlags(EditWindow::WFMOVE);
     } else {
       curwp->setDotPos(curwp->pos() - 1);
     }
@@ -92,7 +92,7 @@ Editor::forwchar() {
         return NIL;
       }
       curwp->setDot(curwp->line()->forw(), 0);
-      curwp->setFlags(Window::WFMOVE);
+      curwp->setFlags(EditWindow::WFMOVE);
     } else {
       curwp->setDotPos(curwp->pos() + 1);
     }
@@ -111,7 +111,7 @@ Editor::forwchar() {
 CMD
 Editor::gotobob() {
   curwp->setDot(curbp->firstline(), 0);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
   return T;
 }
 
@@ -124,7 +124,7 @@ Editor::gotobob() {
 CMD
 Editor::gotoeob() {
   curwp->setDot(curbp->lastline(), 0);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
   return T;
 }
 
@@ -154,7 +154,7 @@ Editor::gotoline() {
   }
 
   curwp->setDot(clp, 0);
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   if (n <= 0) {
     return T;
@@ -188,7 +188,7 @@ Editor::forwline() {
   }
 
   curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   return T;
 }
@@ -221,7 +221,7 @@ Editor::backline() {
   }
 
   curwp->setDot(dlp, dlp->getgoal(Editor::_curgoal));
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   return T;
 }
@@ -251,7 +251,7 @@ Editor::forwpage() {
 
   curwp->setTopline(lp);
   curwp->setDot(lp, 0);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
 
   return T;
 }
@@ -263,8 +263,8 @@ Editor::forwpage() {
 
 CMD
 Editor::forwother() {
-  if (Window::next() == T && forwpage() == T) {
-    return Window::previous();
+  if (EditWindow::next() == T && forwpage() == T) {
+    return EditWindow::previous();
   } else {
     return NIL;
   }
@@ -293,7 +293,7 @@ Editor::backpage() {
 
   curwp->setTopline(lp);
   curwp->setDot(lp, 0);
-  curwp->setFlags(Window::WFHARD);
+  curwp->setFlags(EditWindow::WFHARD);
 
   return T;
 }
@@ -354,7 +354,7 @@ Editor::swapmark() {
 
   curwp->setDot(mark);
   curwp->setMark(dot);
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
 
   return T;
 }

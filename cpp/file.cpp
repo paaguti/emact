@@ -129,7 +129,7 @@ newfile(const EMCHAR* filename) {
         bp->setChanged(false);   /* Don't complain! */
         return revertbuffer() == T;
       }
-      curwp->setFlags(Window::WFMODE|Window::WFHARD);
+      curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
       WDGmessage(ECSTR("Old buffer"));
       return true;
     }
@@ -241,13 +241,13 @@ readin(const EMCHAR* fname) {
 
   curbp->setEditMode(getautomode(fname));
 
-  for (auto wp : Window::list()) {
+  for (auto wp : EditWindow::list()) {
     if (wp->buffer() == curbp) {
       wp->setTopline(curbp->firstline());
       wp->setDot(curbp->firstline(), 0);
       wp->setMark(nullptr, 0);
       // update mode line and ensure hard!
-      wp->setFlags(Window::WFMODE|Window::WFHARD);
+      wp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
     }
   }
 
@@ -601,7 +601,7 @@ ansitooem() {
     NTansitooem(lp);
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   return T;
 }
@@ -618,7 +618,7 @@ oemtoansi() {
     NToemtoansi(lp);
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   return T;
 }
@@ -675,7 +675,7 @@ mactoansi() {
     }
   }
 
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   return T;
 }
@@ -870,7 +870,7 @@ savetime() {
         curwp->setDotPos(oldo);
       }
 
-      curwp->setFlags(Window::WFHARD);
+      curwp->setFlags(EditWindow::WFHARD);
       break;
     }
   }
@@ -1105,7 +1105,7 @@ fileinsert() {
   }
 
   curwp->setDot(dot);
-  Buffer::change(Window::WFHARD);
+  Buffer::change(EditWindow::WFHARD);
 
   return (res == FIOERR) ? NIL : T;
 }
@@ -1236,7 +1236,7 @@ revertbuffer() {
     curwp->setDot(clp, clp->length());
   }
 
-  curwp->setFlags(Window::WFMOVE);
+  curwp->setFlags(EditWindow::WFMOVE);
   return T;
 }
 

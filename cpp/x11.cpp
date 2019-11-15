@@ -710,7 +710,7 @@ X11Terminal::getEvent() {
 
     if (X11expose) {
       display = new Display;
-      (void)Window::resize();
+      (void)EditWindow::resize();
     }
 
     break;

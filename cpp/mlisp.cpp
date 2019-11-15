@@ -741,7 +741,7 @@ Lisp::eval(int expr, size_t depth) {
       while (n--) {
         if (ffindstring()) {
           curwp->setDot(Editor::_found);
-          curwp->setFlags(Window::WFMOVE);
+          curwp->setFlags(EditWindow::WFMOVE);
         } else {
           s = NIL;
           break;
