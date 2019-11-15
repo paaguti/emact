@@ -723,7 +723,7 @@ Display::modeline(const EditWindow* wp) noexcept {
     }
   }
 
-#if defined(_Display_FILENAME)
+#if defined(_DISPLAY_FILENAME)
   if (bp->filename()) {
     /*
      *      Complete file name with PATH.
