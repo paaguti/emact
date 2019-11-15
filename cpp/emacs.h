@@ -80,7 +80,7 @@
 
 #if defined(HAVE_CONFIG_H)
 #include "./config.h"
-#if !defined(X_Display_MISSING)
+#if !defined(X_DISPLAY_MISSING)
 #define _X11
 #endif
 #endif

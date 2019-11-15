@@ -25,7 +25,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 
 #include "./emacs.h"
 
-#if defined(_X11) && !defined(X_Display_MISSING)
+#if defined(_X11) && !defined(X_DISPLAY_MISSING)
 
 #if defined(sun) && defined(__GNUC__)
 #pragma GCC diagnostic push
