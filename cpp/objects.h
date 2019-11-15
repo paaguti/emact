@@ -1573,6 +1573,9 @@ class Editor {
     }
   }
 
+  static bool separatorp(int c);
+  static bool charp(int c);
+
   void
   engine();
 
@@ -1804,5 +1807,82 @@ class Options {
   static int completeintag(int tagnext, const EMCHAR* tagname, EMCHAR* tagcomp);
 
   static int tagfound;
+};
+
+/**
+ * Counter class is used to manage an integer counter that can be incremented,
+ * decremented and inserted in current buffer. It is mainly used in a macro.
+ */
+class Counter {
+ public:
+  /**
+   * Insert the current value of counter at dot before increment
+   * it. Bound to C-X-$-$
+   * @return T
+   */
+  static CMD
+  insert() {
+    EMCHAR buf[NPAT];
+
+    (void)emsprintf(buf, &_fmt[0], _val);
+
+    for (auto s = &buf[0]; *s; ++s) {
+      (void)Line::insert(*s);
+    }
+
+    return T;
+  }
+
+  /**
+   * Increment counter. Bound to C-X-$-'+'
+   * @return T
+   */
+  static CMD
+  incr() noexcept {
+    _val += Editor::_repeat;
+
+    return T;
+  }
+
+  /**
+   * Decrement counter. Bound to C-X-$-'-'
+   * @return T
+   */
+  static CMD
+  decr() {
+    _val -= Editor::_repeat;
+
+    return T;
+  }
+
+  /**
+   * Set the value of counter. Bound to C-X-$-S
+   * @return T
+   */
+  static CMD
+  set() {
+    _val = Editor::_repeat;
+
+    return T;
+  }
+
+  /**
+   * Change the format of counter from default (%d). Bound to C-X-$-F
+   * @return CMD
+   */
+  static CMD
+  format() {
+    CMD s;
+
+    if ((s = WDGedit(ECSTR("Counter format: "), _fmt, NPAT)) != T) {
+      return s;
+    } else {
+      return T;
+    }
+  }
+
+ private:
+  static int    _val;
+  static EMCHAR _fmt[NPAT];
 };
 #endif /* __OBJECTS_H */

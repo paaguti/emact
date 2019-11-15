@@ -60,6 +60,13 @@ int    Editor::_lastflag{CFUNSET};    // Flags, last command
 EMCHAR Editor::_search[NPAT];         // Internal search buffer
 std::vector<Macro> Editor::_macros;  // User macros table
 Point  Editor::_found;                // Position of last search
+
+/*
+ * Internal counter variables.
+ */
+int    Counter::_val{0};
+EMCHAR Counter::_fmt[NPAT] = { '%', 'd', 0 };
+
 /*
  * Command table.  This table is *roughly* in ASCII order, left
  * to right across the characters of the command.
@@ -758,27 +765,27 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CXDR|'$',
-     counterinsert,
+     Counter::insert,
      ECSTR("counter-insert")
   },
   {
      CXDR|'+',
-     counterincr,
+     Counter::incr,
      ECSTR("counter-incr")
   },
   {
      CXDR|'-',
-     counterdecr,
+     Counter::decr,
      ECSTR("counter-decr")
   },
   {
      CXDR|'S',
-     counterset,
+     Counter::set,
      ECSTR("counter-set")
   },
   {
      CXDR|'F',
-     counterformat,
+     Counter::format,
      ECSTR("counter-format")
   },
   {
@@ -1885,12 +1892,12 @@ Editor::switchshell() {
  */
 
 bool
-separatorp(int c) {
+Editor::separatorp(int c) {
   return (c == ' ') || (c == '\t') || (c == '\n') || (c == '\r');
 }
 
 bool
-charp(int c) {
+Editor::charp(int c) {
   return isalnum(c) || (c == '-') || (c == '_') || (c == '+');
 }
 

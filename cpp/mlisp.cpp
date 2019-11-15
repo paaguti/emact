@@ -462,7 +462,9 @@ Lisp::getword() {
   static EMCHAR workbuf[NPAT];
   int    c;
 
-  while ((c = nextchar()) != 0 && (separatorp(c) || c == '\'') && c != '"') {
+  while (((c = nextchar()) != 0)
+         && (Editor::separatorp(c) || c == '\'')
+         && c != '"') {
     continue;
   }
 
@@ -490,7 +492,7 @@ Lisp::getword() {
 
   (void)ungetc(c, _mfile);
 
-  while (((c = nextchar()) != 0) && charp(c)) {
+  while (((c = nextchar()) != 0) && Editor::charp(c)) {
     *word++ = (EMCHAR)c;
   }
 

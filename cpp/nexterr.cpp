@@ -71,13 +71,14 @@ geterror() {
       c = line->get(j);
       if (c != '.') {
         continue;
-      } else if (i != -1 && (separatorp(c) || c == ':')) {
+      } else if (i != -1 && (Editor::separatorp(c) || c == ':')) {
         /*
          * stop at the first separator when at least one '.'
          * is line.
          */
         break;
-      } else if (charp(line->get(j - 1)) && charp(line->get(j + 1))) {
+      } else if (Editor::charp(line->get(j - 1))
+                 && Editor::charp(line->get(j + 1))) {
         /*
          * remember  the  postion  of  '.'  and try to
          * find another occurence.  Complete file path
@@ -103,7 +104,7 @@ geterror() {
         continue;
       }
 
-      if (separatorp(c) || c == '"' || c == '\'') {
+      if (Editor::separatorp(c) || c == '"' || c == '\'') {
         break;
       }
     }
@@ -115,7 +116,7 @@ geterror() {
      */
 
     for (stop = i + 1; stop < eol; ++stop) {
-      if (!charp(line->get(stop))) {
+      if (!Editor::charp(line->get(stop))) {
         break;
       }
     }

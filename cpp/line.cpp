@@ -182,7 +182,7 @@ Line::leftmargin() const noexcept {
   int  ncol = 0;
   auto max  = this->length();
 
-  for (auto buf(this->text()); max-- > 0 && separatorp(*buf); ++buf) {
+  for (auto buf(this->text()); max-- > 0 && Editor::separatorp(*buf); ++buf) {
     if (*buf == '\t') {
       do {
         ++ncol;

@@ -1022,6 +1022,46 @@ markparagraph() {
 }
 
 /*
+ * Insert only one blank around two words. Bound to M-SPACE
+ */
+
+CMD
+justonespace() {
+  EMCHAR c;
+
+  if (curwp->pos() == curwp->line()->length()) {
+    /*
+     * At the end, back one char.
+     */
+    (void)Editor::backchar();
+    if ((c = curwp->getChar()) != ' ' && c != '\t') {
+      (void)Editor::forwchar();
+      (void)Line::insert(' ');
+      return T;
+    }
+  }
+
+  do {
+    if (Editor::backchar() == NIL) {
+      break;
+    }
+  } while (curwp->pos() >= 0 && ((c = curwp->getChar()) == ' ' || c == '\t'));
+
+  if ((c = curwp->getChar()) != ' ' && c != '\t') {
+    (void)Editor::forwchar();
+  }
+
+  (void)Line::insert(' ');
+
+  while ((curwp->pos() < curwp->line()->length()) &&
+         ((c = curwp->getChar()) == ' ' || c == '\t')) {
+    (void)forwdel();
+  }
+
+  return T;
+}
+
+/*
  * Set  the  justification mode to 'left' and adjust the current
  * paragraph using this mode. Unbound.
  */
@@ -1096,75 +1136,6 @@ justifycomment() {
   opt::fill_prefix[0] = '\0';
 
   return T;
-}
-
-/*
- * Insert  the  current  value  of counter at dot before incrent
- * it. Bound to C-X-$-$
- */
-
-static int     cntval        = 0;
-static EMCHAR  cntfmt[NPAT]  = { '%', 'd', 0 };
-
-CMD
-counterinsert() {
-  EMCHAR buf[NPAT];
-
-  (void)emsprintf(buf, &cntfmt[0], cntval);
-
-  for (auto s = &buf[0]; *s; ++s) {
-    (void)Line::insert(*s);
-  }
-
-  return T;
-}
-
-/*
- * Increment counter. Bound to C-X-$-'+'
- */
-
-CMD
-counterincr() {
-  cntval += Editor::_repeat;
-
-  return T;
-}
-
-/*
- * Decrement counter. Bound to C-X-$-'-'
- */
-
-CMD
-counterdecr() {
-  cntval -= Editor::_repeat;
-
-  return T;
-}
-
-/*
- * Set the value of counter. Bound to C-X-$-S
- */
-
-CMD
-counterset() {
-  cntval = Editor::_repeat;
-
-  return T;
-}
-
-/*
- * Change the format of counter from default (%d). Bound to C-X-$-F
- */
-
-CMD
-counterformat() {
-  CMD s;
-
-  if ((s = WDGedit(ECSTR("Counter format: "), cntfmt, NPAT)) != T) {
-    return s;
-  } else {
-    return T;
-  }
 }
 
 /*

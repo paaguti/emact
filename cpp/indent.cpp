@@ -199,7 +199,7 @@ unindent(int c, bool f) {
   }
 
   while (curwp->pos() > 0) {
-    if (!separatorp(curwp->line()->get(curwp->pos() - 1))) {
+    if (!Editor::separatorp(curwp->line()->get(curwp->pos() - 1))) {
       if (!Line::newline()) {
         return false;
       } else {
@@ -353,7 +353,7 @@ cindent() {
     break;
   case ')' :
   case ':' :
-    if (separatorp(clp->get(0))) {
+    if (Editor::separatorp(clp->get(0))) {
       nindent++;
     }
     break;
@@ -423,7 +423,7 @@ lastlisp(Line* line) {
         if (i++ >= n-1) {
            return j;
         }
-      } while (separatorp(buf[i]));
+      } while (Editor::separatorp(buf[i]));
 
       if ((dblq % 2) == 0 && buf[i] == ';') {
         /*
@@ -562,7 +562,7 @@ lispindent() {
         break;
       }
 
-      if (!separatorp(c)) {
+      if (!Editor::separatorp(c)) {
         if (i == indento - 1 &&
             (indentp->get(i) == '\'' ||
              indentp->get(i) == ','  ||
@@ -602,7 +602,7 @@ lispindent() {
         indento = i + 1;
         break;
       }
-      if (!separatorp(c)) {
+      if (!Editor::separatorp(c)) {
         /*
          * case:  "      xxx yy"
          * indent here ->_
@@ -840,7 +840,7 @@ backtoindent() {
   (void)Editor::gotobol();
   const auto len(curwp->line()->length());
   for (int i{0}; i < len; ++i) {
-    if (separatorp(curwp->getChar())) {
+    if (Editor::separatorp(curwp->getChar())) {
       (void)Editor::forwchar();
     } else {
       break;
@@ -914,44 +914,4 @@ elispexpr() {
   default:
     return NIL;
   }
-}
-
-/*
- * Insert only one blank around two words. Bound to M-SPACE
- */
-
-CMD
-justonespace() {
-  EMCHAR c;
-
-  if (curwp->pos() == curwp->line()->length()) {
-    /*
-     * At the end, back one char.
-     */
-    (void)Editor::backchar();
-    if ((c = curwp->getChar()) != ' ' && c != '\t') {
-      (void)Editor::forwchar();
-      (void)Line::insert(' ');
-      return T;
-    }
-  }
-
-  do {
-    if (Editor::backchar() == NIL) {
-      break;
-    }
-  } while (curwp->pos() >= 0 && ((c = curwp->getChar()) == ' ' || c == '\t'));
-
-  if ((c = curwp->getChar()) != ' ' && c != '\t') {
-    (void)Editor::forwchar();
-  }
-
-  (void)Line::insert(' ');
-
-  while ((curwp->pos() < curwp->line()->length()) &&
-         ((c = curwp->getChar()) == ' ' || c == '\t')) {
-    (void)forwdel();
-  }
-
-  return T;
 }

@@ -33,14 +33,6 @@ size_t  emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count);
 int     emmbclen(int c);
 
 /*
- *      emacs.cpp
- */
-
-int     getkey();
-bool    separatorp(int c);
-bool    charp(int c);
-
-/*
  *      file.cpp
  */
 
@@ -121,7 +113,6 @@ CMD     newlineindent();
 CMD     backtoindent();
 CMD     blispexpr();
 CMD     elispexpr();
-CMD     justonespace();
 
 /*
  *      killbuf.cpp
@@ -217,15 +208,11 @@ CMD     forwparagraph();
 CMD     markparagraph();
 CMD     fillparagraph();
 CMD     splitlinetofill();
+CMD     justonespace();
 CMD     justifycurline();
 CMD     setjustifyleft();
 CMD     setjustifyfull();
 CMD     justifycomment();
-CMD     counterinsert();
-CMD     counterincr();
-CMD     counterdecr();
-CMD     counterset();
-CMD     counterformat();
 CMD     undo();
 CMD     enterdebug();
 
