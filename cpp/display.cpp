@@ -31,11 +31,11 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 
 Terminal* term{nullptr};
 
-bool          Display::_mouse{false};  // Mouse flag
-int           Display::_currow{0};
-int           Display::_curcol{0};
-EMCHAR        Display::_curchar;
-Display::Sync Display::_sgarbf{Display::Sync::GARBAGE};
+bool            Redisplay::_mouse{false};  // Mouse flag
+int             Redisplay::_currow{0};
+int             Redisplay::_curcol{0};
+EMCHAR          Redisplay::_curchar;
+Redisplay::Sync Redisplay::_sgarbf{Redisplay::Sync::GARBAGE};
 
 extern const EMCHAR* version;           /* Current version              */
 
@@ -88,7 +88,7 @@ class VIDEO {
       } while ((VIDEO::col % opt::tab_display)
                && (VIDEO::col < term->getNbCols()));
     } else if (!self_insert(c)) {
-      if (opt::set_show_graphic || (Display::_mouse && (c == 24 || c == 25))) {
+      if (opt::set_show_graphic || (Redisplay::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
       } else {
         VIDEO::vtputc('^');
@@ -150,7 +150,7 @@ VIDEO** VIDEO::pscreen{nullptr};
  * "update".
  */
 
-Display::Display() {
+Redisplay::Redisplay() {
   VIDEO::vscreen = new VIDEO*[term->getNbRows() + 1];
   VIDEO::pscreen = new VIDEO*[term->getNbRows() + 1];
 
@@ -164,7 +164,7 @@ Display::Display() {
   mlerase();
 }
 
-Display::~Display() {
+Redisplay::~Redisplay() {
   if (VIDEO::vscreen == nullptr || VIDEO::pscreen == nullptr) {
     return;
   }
@@ -185,7 +185,7 @@ Display::~Display() {
  */
 
 const EMCHAR*
-Display::text(int y) const noexcept {
+Redisplay::text(int y) const noexcept {
   return VIDEO::vscreen[y]->text;
 }
 
@@ -194,7 +194,7 @@ Display::text(int y) const noexcept {
  */
 
 bool
-Display::running() const noexcept {
+Redisplay::running() const noexcept {
   return VIDEO::ok;
 }
 
@@ -206,7 +206,7 @@ Display::running() const noexcept {
  */
 
 void
-Display::tidy() const noexcept {
+Redisplay::tidy() const noexcept {
   term->move(0, 0);
   term->eeop();
   term->flush();
@@ -214,7 +214,7 @@ Display::tidy() const noexcept {
 }
 
 void
-Display::statputc(int n, int c) const noexcept {
+Redisplay::statputc(int n, int c) const noexcept {
   if (n < term->getNbCols()) {
     VIDEO::vscreen[term->getNbRows()]->putc(n, (EMCHAR)c);
     VIDEO::vscreen[term->getNbRows()]->changed = true;
@@ -222,7 +222,7 @@ Display::statputc(int n, int c) const noexcept {
 }
 
 void
-Display::computecursor() {
+Redisplay::computecursor() {
   const auto* lp = curwp->topline();
   _currow = curwp->toprow();
 
@@ -268,7 +268,7 @@ Display::computecursor() {
  */
 
 void
-Display::refresh(EditWindow* wp) {
+Redisplay::refresh(EditWindow* wp) {
   Line* lp;
   bool    out = false;
   int     i;
@@ -362,11 +362,11 @@ Display::refresh(EditWindow* wp) {
 }
 
 void
-Display::update(Display::Mode mode) {
+Redisplay::update(Redisplay::Mode mode) {
   static Buffer* oldbp{nullptr};
 
   if (mode == Mode::REFRESH) {
-    Display::garbaged();
+    Redisplay::garbaged();
   }
 
   if (!VIDEO::ok) {
@@ -456,7 +456,7 @@ Display::update(Display::Mode mode) {
  */
 
 void
-Display::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
+Redisplay::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 #if defined(UNICODE)
   int stflag;
 #if defined(_POSIX_C_SOURCE)
@@ -589,7 +589,7 @@ Display::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 }
 
 void
-Display::modeline(const EditWindow* wp) noexcept {
+Redisplay::modeline(const EditWindow* wp) noexcept {
   EMCHAR  buf[8];
   int     i;
 

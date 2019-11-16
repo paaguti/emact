@@ -101,7 +101,7 @@ class X11Terminal final : public Terminal {
   void
   cursor(bool flag) {
 #if defined(UNICODE)
-    EMCHAR code{Display::_curchar};
+    EMCHAR code{Redisplay::_curchar};
 
     XwcDrawImageString(_dpy,
                        _win,
@@ -112,7 +112,7 @@ class X11Terminal final : public Terminal {
                        &code,
                        1);
 #else
-    char code{(char)Display::_curchar};
+    char code{(char)Redisplay::_curchar};
 
     XDrawImageString(_dpy,
                      _win,
@@ -576,7 +576,7 @@ X11Terminal::X11Terminal() {
   this->setInitialized();
   term = this;
 
-  Display::_mouse = true;
+  Redisplay::_mouse = true;
 
   widget.w_clipcopy  = X11clipcopy;
   widget.w_clippaste = X11clippaste;
@@ -678,7 +678,7 @@ X11Terminal::getEvent() {
       } while (XCheckTypedEvent(_dpy, Expose, &event));
 
       XSetRegion(_dpy, _gcstd, region);
-      Display::exposed();
+      Redisplay::exposed();
       display->update();
       XDestroyRegion(region);
     }
@@ -709,7 +709,7 @@ X11Terminal::getEvent() {
     this->setNbCols(_width / _wfnt);
 
     if (X11expose) {
-      display = new Display;
+      display = new Redisplay;
       (void)EditWindow::resize();
     }
 
@@ -952,6 +952,7 @@ X11Terminal::insert(int c) {
                        &code,
                        1);
 #else
+    (void)_fntset;
     XDrawImageString(_dpy,
                      _win,
                      _gcstd,

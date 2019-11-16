@@ -531,7 +531,7 @@ XpTerminal::XpTerminal() {
     xpprinterror(_T("Can't update window"), TRUE);
   }
 
-  Display::_mouse = true;
+  Redisplay::_mouse = true;
   _openp = true;
 }
 
@@ -865,7 +865,7 @@ XpTerminal::cshow(bool nFlag) {
 
   SetBkColor(_dc, nFlag ? _fgcolor : _bgcolor);
   SetTextColor(_dc, nFlag ? _bgcolor : _fgcolor);
-  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &Display::_curchar, 1, nullptr);
+  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &Redisplay::_curchar, 1, nullptr);
   SetBkColor(_dc, _bgcolor);
   SetTextColor(_dc, _fgcolor);
 #endif
@@ -1072,7 +1072,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         XpTerminal::_fgcolor = XpTerminal::_colortable[opt::foreground_color];
       }
 
-      display->update(Display::Mode::REFRESH);
+      display->update(Redisplay::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, (LPRECT)nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
@@ -1085,7 +1085,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       XpTerminal::xpsettextattrib();
       display = new Display;
       (void)EditWindow::resize();
-      display->update(Display::Mode::REFRESH);
+      display->update(Redisplay::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
@@ -1103,8 +1103,8 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     term->cshow(FALSE);
     BeginPaint(hWnd, &ps);
     if (XpTerminal::_openp) {
-      if (Display::_sgarbf != Display::Sync::GARBAGE) {
-        Display::exposed();
+      if (Redisplay::_sgarbf != Redisplay::Sync::GARBAGE) {
+        Redisplay::exposed();
       }
       display->update();
     }

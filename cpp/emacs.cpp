@@ -47,7 +47,7 @@ extern const EMCHAR* version;   /* Current version              */
 
 static bool initflag = false;   /* Init flag                    */
 
-Display*    display{nullptr};
+Redisplay*  display{nullptr};
 Buffer*     curbp{nullptr};     /* Current buffer               */
 EditWindow* curwp{nullptr};     /* Current window               */
 MEvent      mevent;             /* Mouse event (if any)         */
@@ -1149,11 +1149,11 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     new EditWindow{bp};  // Allocated Window is managed by an internal list.
 
     kbdm.reset();
-    display = new Display;
+    display = new Redisplay;
 
     if (_argc > curarg) {
       i++;
-      display->update(Display::Mode::REFRESH);
+      display->update(Redisplay::Mode::REFRESH);
       (void)newfile(_argv[curarg++]);
     }
 
@@ -1195,7 +1195,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     opt::foreground_color &= 0x07;
 
     term = Terminal::getInstance();
-    display->update(Display::Mode::REFRESH);
+    display->update(Redisplay::Mode::REFRESH);
     if (_argc > curarg) {
       (void)newfile(_argv[curarg]);
     }
@@ -1984,6 +1984,6 @@ latexinsert(int n, int c) {
 
 CMD
 Editor::redrawscreen() {
-  Display::garbaged();
+  Redisplay::garbaged();
   return T;
 }

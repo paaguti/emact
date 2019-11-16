@@ -97,7 +97,7 @@ showcpos() {
   if (cac < 32) {
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
-      nbl, col, Display::_currow, cac, cac,
+      nbl, col, Redisplay::_currow, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc) / nch));
   } else {
     EMCHAR buf[2];
@@ -105,7 +105,7 @@ showcpos() {
     buf[1] = '\000';
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
-      nbl, col, Display::_currow, buf, cac, cac,
+      nbl, col, Redisplay::_currow, buf, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc)/ nch));
   }
 
@@ -773,7 +773,7 @@ fillparagraph() {
    * Reset the _curcol to the current position (any better solution ?)
    */
 
-  Display::_curcol = Editor::_curgoal = getccol();
+  Redisplay::_curcol = Editor::_curgoal = getccol();
 
   curbp->setEditMode(oldmode);
 

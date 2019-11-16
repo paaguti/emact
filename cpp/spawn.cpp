@@ -239,7 +239,7 @@ syscompile(const EMCHAR* cmd, int flag) {
         (void)dup2(out, fileno(stdout));
         (void)dup2(err, fileno(stderr));
         term->rawmode(); /* close the duplicate out */
-        display->update(Display::Mode::REFRESH);
+        display->update(Redisplay::Mode::REFRESH);
       }
 
       if (tmp1 != -1) {

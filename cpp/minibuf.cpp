@@ -182,7 +182,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   mlwrite(ECSTR("%s%s"), prompt, buf);
 
   for (;;) {
-    display->update(Display::Mode::MINIBUF);
+    display->update(Redisplay::Mode::MINIBUF);
 
     term->cshow(true);
     c = term->get();
@@ -440,7 +440,7 @@ mlwrite(const EMCHAR* fmt, ...) {
     display->statputc(i, ' ');
   }
 
-  display->update(Display::Mode::MINIBUF);
+  display->update(Redisplay::Mode::MINIBUF);
   mpresf = true;
 
   va_end(var);

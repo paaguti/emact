@@ -639,7 +639,7 @@ saveindent(Line *clp, int cbo) {
 bool
 automatch(int c, bool f) {
   const auto& dot(curwp->getDot());
-  auto crow(Display::_currow - (int)curwp->toprow());
+  auto crow(Redisplay::_currow - (int)curwp->toprow());
   auto res(false);
   Line* mlp{nullptr};
   int     mbo{0};

@@ -1429,7 +1429,7 @@ class Completion {
 /**
  * Class that handles display.
  */
-class Display {
+class Redisplay {
  public:
   enum class Mode {
     DELTA   = 0,
@@ -1441,12 +1441,12 @@ class Display {
     SYNCHRONIZED = 1,
     EXPOSE       = 2
   };
-  Display();
-  ~Display();
+  Redisplay();
+  ~Redisplay();
   bool running() const noexcept;
   void tidy() const noexcept;
   const EMCHAR* text(int y) const noexcept;
-  void update(Display::Mode mode = Mode::DELTA);
+  void update(Mode mode = Mode::DELTA);
   void statputc(int n, int c) const noexcept;
   void modeline(const EditWindow* wp) noexcept;
   static void garbaged() { _sgarbf = Sync::GARBAGE; }
