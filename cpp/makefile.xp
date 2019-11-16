@@ -81,7 +81,6 @@ KERNEL		= basic.obj	\
 		  buffer.obj	\
 		  charutil.obj	\
 		  dirent.obj	\
-		  display.obj	\
 		  emacs.obj	\
 		  file.obj	\
 		  filecomp.obj	\
@@ -95,6 +94,7 @@ KERNEL		= basic.obj	\
 		  options.obj	\
 		  random.obj	\
 		  region.obj	\
+		  redisplay.obj	\
 		  search.obj	\
 		  spawn.obj	\
 		  terminal.obj	\

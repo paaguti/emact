@@ -347,7 +347,7 @@ XpTerminal::xpchangefont(int font) {
     delete display;
     xpsetfontsize(font);
     xpsettextattrib();
-    display = new Display;
+    display = new Redisplay;
     (void)EditWindow::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
   } else {
@@ -1083,7 +1083,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         && !IsIconic(XpTerminal::_wnd)) {
       delete display;
       XpTerminal::xpsettextattrib();
-      display = new Display;
+      display = new Redisplay;
       (void)EditWindow::resize();
       display->update(Redisplay::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);

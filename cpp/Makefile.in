@@ -42,7 +42,6 @@ OBJECTS         = basic.$(O)     \
                   buffer.$(O)    \
                   charutil.$(O)  \
                   curses.$(O)    \
-                  display.$(O)   \
                   emacs.$(O)     \
                   file.$(O)      \
                   filecomp.$(O)  \
@@ -56,6 +55,7 @@ OBJECTS         = basic.$(O)     \
                   nexterr.$(O)   \
                   options.$(O)   \
                   random.$(O)    \
+                  redisplay.$(O) \
                   region.$(O)    \
                   search.$(O)    \
                   spawn.$(O)     \
