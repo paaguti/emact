@@ -40,7 +40,7 @@ Redisplay::Sync Redisplay::_sgarbf{Redisplay::Sync::GARBAGE};
 extern const EMCHAR* version;           /* Current version              */
 
 /**
- * VIDEO structure used by redisplay.
+ * VIDEO class used internally by redisplay.
  */
 class VIDEO {
  public:
@@ -88,7 +88,8 @@ class VIDEO {
       } while ((VIDEO::col % opt::tab_display)
                && (VIDEO::col < term->getNbCols()));
     } else if (!self_insert(c)) {
-      if (opt::set_show_graphic || (Redisplay::_mouse && (c == 24 || c == 25))) {
+      if (opt::set_show_graphic
+          || (Redisplay::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
       } else {
         VIDEO::vtputc('^');
@@ -501,15 +502,13 @@ Redisplay::updateline(int row, EMCHAR* nline, EMCHAR* pline) {
 
   if (cp1 == (nline + term->getNbCols())) {
     /*
-     * Easy  an update is made outside the visible bounds
-     * of screen.  This can still happen,  even though we
-     * only  call  this routine on changed lines.  A hard
-     * update  is  always  done  when  a  line splits,  a
-     * massive  change is done,  or a buffer is displayed
-     * twice.  This  optimizes  out  most  of  the excess
-     * updating.  A  lot of computes are used,  but these
-     * tend  to  be  hard  operations  that  do  a lot of
-     * update. Nothing to do.
+     * Easy an update is made outside the visible bounds of screen.
+     * This can still happen, even though we only call this routine on
+     * changed lines.  A hard update is always done when a line
+     * splits, a massive change is done, or a buffer is displayed
+     * twice.  This optimizes out most of the excess updating.  A lot
+     * of computes are used, but these tend to be hard operations that
+     * do a lot of update. Nothing to do.
      */
     return;
   }
