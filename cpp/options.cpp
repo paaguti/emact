@@ -329,7 +329,7 @@ Options::setvar() {
   complete = varmatch;
   index_type = INDEX_UNKNOWN;
 
-  if (mlreply(ECSTR(": eval-function "), buf, NPAT) != T) {
+  if (MiniBuf::reply(ECSTR(": eval-function "), buf, NPAT) != T) {
     return NIL;
   }
 
@@ -360,7 +360,7 @@ Options::setvar() {
           EMCHAR newval[NPAT];
           auto p = var.intp();
           (void)emsprintf(buf, ECSTR("%s (%d) > "), var.name(), *p);
-          (void)mlreply(buf, newval, 16);
+          (void)MiniBuf::reply(buf, newval, 16);
           *p = emstrtoi(newval);
         }
         break;
@@ -370,7 +370,7 @@ Options::setvar() {
         (void)emstrcat(buf, ECSTR(" \""));
         (void)emstrcat(buf, var.string());
         (void)emstrcat(buf, ECSTR("\" > "));
-        (void)mlreply(buf, var.string(), static_cast<int>(var.size()));
+        (void)MiniBuf::reply(buf, var.string(), static_cast<int>(var.size()));
         break;
       }
     }

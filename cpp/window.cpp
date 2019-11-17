@@ -651,7 +651,7 @@ EditWindow::find() {
         }
 
         if (resizep == NIL) {
-          waitmatch(1);
+          Search::wait(1);
         }
 
         return T;

@@ -30,18 +30,17 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 #include <thread>
 
 static EMCHAR* NOMATCH = ECSTR("No match.");
-static int upline = 0;
+static int upline{0};
 
-extern int     indento;
+extern int   indento;
 extern Line* indentp;
-extern int     commento;
+extern int   commento;
 
 static bool replace(bool prompt);
 static bool quotep(const Line* l, int i);
 static bool instringp(const Line* clp, int cbo);
 static void mlmatch(const Line* clp, int cbo);
 static CMD  readpattern(const EMCHAR* prompt);
-static bool bfindstring();
 static void saveindent(Line *clp, int cbo);
 
 /*
@@ -62,13 +61,13 @@ cmpchars(int bc, int pc) {
 }
 
 /*
- * Internal search forward. The string to be search is in 'pat'.  This
- * function, set global variable found to the the position of next
- * match.
+ * Internal search forward. The string to be search is in
+ * Editor::searchBuffer'.  This function, set global variable found to
+ * the the position of next match.
  */
 
 bool
-ffindstring() {
+Search::next() {
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
@@ -115,13 +114,13 @@ ffindstring() {
 }
 
 /*
- * Internal search backward. The string to be search is in 'pat'.
- * This function, set global variable found to the the position of
- * next match.
+ * Internal search backward. The string to be search is in
+ * 'Editor::searchBuffer' This function, set global variable found to
+ * the the position of next match.
  */
 
-static bool
-bfindstring() {
+bool
+Search::prev() {
   EMCHAR  c;
   EMCHAR* epp;
   EMCHAR* pp;
@@ -182,9 +181,9 @@ bfindstring() {
 }
 
 /*
- * Auxiliary function for 'global' and 'query'.
+ * Auxiliary function for 'Search::globalReplace' and
+ * 'Search::queryReplace'.
  */
-
 static bool
 replace(bool prompt) {
   static EMCHAR opat[NPAT]{};
@@ -197,7 +196,7 @@ replace(bool prompt) {
 
   /*
    * compute the line number of curwp->dotp. Since this pointer
-   * may change in a substitution we can't save it as the usual
+   * may change in a Search::substituteitution we can't save it as the usual
    * way.
    */
 
@@ -222,19 +221,19 @@ replace(bool prompt) {
     if (WDGchange(msg, (EMCHAR*)opat, (EMCHAR*)npat, NPAT) != T) {
       return false;
     } else {
-      (void)emstrcpy(Editor::searchBuffer(), opat);
+      Editor::setSearchBuffer(opat);
     }
   }
 
   auto patl = emstrlen(opat);
 
   int replaced;
-  for (replaced = 0; ffindstring() && c != 'q' && c != '.';) {
+  for (replaced = 0; Search::next() && c != 'q' && c != '.';) {
     curwp->setDot(Editor::_found);
     curwp->setFlags(EditWindow::WFHARD);
 
     if (!prompt) {
-      subst(patl, (EMCHAR*)npat);
+      Search::substitute(patl, (EMCHAR*)npat);
       replaced++;
     } else {
       WDGmessage(ECSTR("Query-Replace mode "));
@@ -242,13 +241,13 @@ replace(bool prompt) {
       for (c = '?'; c == '?';) {
         switch (c = term->get()) {
         case '!' :
-          subst(patl, (EMCHAR*)npat);
+          Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
           display->update();
           prompt = false;
           break;
         case ',' :
-          subst(patl, (EMCHAR*)npat);
+          Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
           display->update();
           prompt = false;
@@ -257,7 +256,7 @@ replace(bool prompt) {
         case 'y' :
         case ' ' :
         case '.' :
-          subst(patl, (EMCHAR*)npat);
+          Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
           display->update();
           break;
@@ -305,7 +304,7 @@ replace(bool prompt) {
  */
 
 void
-subst(int length, const EMCHAR* newstr) {
+Search::substitute(int length, const EMCHAR* newstr) {
   auto obmode(curbp->editMode());
 
   curbp->setEditMode(EDITMODE::FUNDAMENTAL);
@@ -433,14 +432,14 @@ mlmatch(const Line* clp, int cbo) {
 
   WDGwrite(ECSTR("%s"), mlline);
 
-  if (widget.w_write == mlwrite) {
+  if (widget.w_write == MiniBuf::write) {
     term->move(term->getNbRows(), pos);
     term->flush();
   }
 }
 
 bool
-rmatchc(int patc, bool printflag) {
+Search::matchForward(int patc, bool printflag) {
   int     nbmatch = 0;
   const auto lisp = (curbp->editMode() == EDITMODE::LISPMODE);
   EMCHAR  matchpat;
@@ -506,7 +505,7 @@ rmatchc(int patc, bool printflag) {
 }
 
 bool
-lmatchc(int patc, bool printflag) {
+Search::matchBackward(int patc, bool printflag) {
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
   auto cbo(dot.pos());
@@ -629,29 +628,29 @@ saveindent(Line *clp, int cbo) {
 }
 
 /*
- * The function automatch search  backward in the  file to find
- * a special caracter (in general '(', '[' or '{') depending on
- * the mode set. The redisplay screen at cursor wait 1/3 second
- * and go  back to the  previous  position to the corresponding
- * ('}', ']' or ')').
+ * The function Search::autoMatch search backward in the file to find a
+ * special character (in general '(', '[', '{' or '<') depending on
+ * the mode set. The redisplay screen at cursor wait 1/3 second and go
+ * back to the previous position to the corresponding ('}', ']', ')',
+ * '>').
  */
 
 bool
-automatch(int c, bool f) {
+Search::autoMatch(int c, bool f) {
   const auto& dot(curwp->getDot());
-  auto crow(Redisplay::_currow - (int)curwp->toprow());
-  auto res(false);
+  auto  crow(Redisplay::_currow - (int)curwp->toprow());
+  auto  res(false);
   Line* mlp{nullptr};
-  int     mbo{0};
+  int   mbo{0};
 
   upline = 0;
 
-  if (Editor::backchar() == T && lmatchc(c, f) && f) {
-    res = true;;
+  if (Editor::backchar() == T && Search::matchBackward(c, f) && f) {
+    res = true;
     if (upline <= crow) {
       display->update();
       term->cshow(true);
-      waitmatch(1);
+      Search::wait(1);
       term->cshow(false);
     } else {
       /*
@@ -667,7 +666,7 @@ automatch(int c, bool f) {
 
   if (mlp != nullptr) {
     mlmatch(mlp, mbo);
-    waitmatch(1);
+    Search::wait(1);
   }
 
   return res;
@@ -678,7 +677,7 @@ automatch(int c, bool f) {
  */
 
 void
-waitmatch(int n) {
+Search::wait(int n) {
   static constexpr auto TEMPO(333);
   const std::chrono::milliseconds wait{n * TEMPO};
   const auto end = std::chrono::high_resolution_clock::now() + wait;
@@ -696,7 +695,7 @@ waitmatch(int n) {
  */
 
 CMD
-forwsearch() {
+Search::forward() {
   Editor::_thisflag |= CFFSRC;
 
   if (!(Editor::_lastflag & (CFFSRC | CFBSRC))) {
@@ -713,10 +712,10 @@ forwsearch() {
   if (Editor::_lastflag & CFFAIL) {
     Editor::_lastflag &= ~CFFAIL;
     (void)Editor::gotobob();
-    return forwsearch();
+    return Search::forward();
   }
 
-  if (ffindstring()) {
+  if (Search::next()) {
     curwp->setDot(Editor::_found);
     curwp->setFlags(EditWindow::WFMOVE);
     return T;
@@ -737,7 +736,7 @@ forwsearch() {
  */
 
 CMD
-backsearch() {
+Search::backward() {
   Editor::_thisflag |= CFBSRC;
 
   if (!(Editor::_lastflag & (CFFSRC | CFBSRC))) {
@@ -754,10 +753,10 @@ backsearch() {
   if (Editor::_lastflag & CFFAIL) {
     Editor::_lastflag &= ~CFFAIL;
     (void)Editor::gotoeob();
-    return backsearch();
+    return Search::backward();
   }
 
-  if (bfindstring()) {
+  if (Search::prev()) {
     curwp->setDot(Editor::_found);
     curwp->setFlags(EditWindow::WFMOVE);
     return T;
@@ -776,7 +775,7 @@ backsearch() {
  */
 
 CMD
-global() {
+Search::globalReplace() {
   return replace(false) ? T : NIL;
 }
 
@@ -788,7 +787,7 @@ global() {
  */
 
 CMD
-query() {
+Search::queryReplace() {
   return replace(true) ? T : NIL;
 }
 
@@ -800,7 +799,7 @@ query() {
  */
 
 CMD
-getdefinition() {
+Search::definition() {
   EMCHAR  save[NPAT];
 
   if (curbp->editMode() == EDITMODE::FUNDAMENTAL) {
@@ -823,7 +822,7 @@ getdefinition() {
 
   curwp->setDot(curbp->firstline(), 0);
 
-  while (ffindstring()) {
+  while (Search::next()) {
     curwp->setDot(Editor::_found);
     switch (curbp->editMode()) {
     case EDITMODE::ASMODE:
@@ -838,7 +837,7 @@ getdefinition() {
     case EDITMODE::SHELLMODE:
       if (Editor::_found.pos() == len) {
         curwp->setFlags(EditWindow::WFMOVE);
-        (void)emstrcpy(Editor::searchBuffer(), save);
+        Editor::setSearchBuffer(save);
         (void)Editor::backline();
         (void)EditWindow::reposition();
         return T;
@@ -852,7 +851,7 @@ getdefinition() {
         curwp->setDot(Editor::_found);
       } else {
         curwp->setFlags(EditWindow::WFMOVE);
-        (void)emstrcpy(Editor::searchBuffer(), save);
+        Editor::setSearchBuffer(save);
         (void)Editor::backline();
         (void)EditWindow::reposition();
         return T;
@@ -864,7 +863,7 @@ getdefinition() {
   }
 
   curwp->setDot(clp, cbo);
-  (void)emstrcpy(Editor::searchBuffer(), save);
+  Editor::setSearchBuffer(save);
 
   WDGmessage(ECSTR("Not found"));
   return NIL;
@@ -887,11 +886,11 @@ static  struct  {
 } reject[REJECT_HISTORY];
 
 CMD
-completeword() {
+Search::complete() {
   static int    rejectnb = 0;
   static int    lasto    = 0;
   static int    indx     = 0;
-  static DIRFNP find     = bfindstring;
+  static DIRFNP find     = Search::prev;
 
   EMCHAR  buf[NPAT];
   EMCHAR  save[NPAT];
@@ -932,7 +931,7 @@ completeword() {
      *      indx and start with a backward search.
      */
 
-    find     = bfindstring;
+    find     = Search::prev;
     rejectnb = 0;
     indx     = 0;
   }
@@ -956,7 +955,7 @@ completeword() {
   buf[slen] = 0;
 
   (void)emstrcpy(save, Editor::searchBuffer());
-  (void)emstrcpy(Editor::searchBuffer(), buf);
+  Editor::setSearchBuffer(buf);
 
 loop:
   if (Editor::_lastflag & CFCPLT) {
@@ -970,7 +969,7 @@ loop:
      * at the start of a new word.
      */
 
-    if (find == ffindstring) {
+    if (find == Search::next) {
       /*
        * For  forward  search,  make the match
        * point  on  the left most character of
@@ -983,7 +982,7 @@ loop:
       curwp->setDot(Editor::_found.line(), Editor::_found.pos() - 1);
       if (Word::inword()) {
         /* match the middle of a word */
-        if (find == ffindstring) {
+        if (find == Search::next) {
           Editor::_found.setPos(Editor::_found.pos() + slen);
           curwp->setDotPos(Editor::_found.pos());
         }
@@ -1021,7 +1020,7 @@ loop:
 
     for (k = 0; k < rejectnb; ++k)
       if ((i == reject[k].size) && emstrcmp(buf, reject[k].startw) == 0) {
-        if (find == ffindstring) {
+        if (find == Search::next) {
           Editor::_found.setPos(Editor::_found.pos() + slen);
           curwp->setDotPos(Editor::_found.pos());
         } else {
@@ -1045,14 +1044,14 @@ loop:
   } else {
     curwp->setDot(clp, cbo);
 
-    if (find == bfindstring) {
+    if (find == Search::prev) {
       /*
        * Start forward search from dot.
        */
 
       Editor::_found.set(clp, cbo);
 
-      find = ffindstring;
+      find = Search::next;
       goto loop;
     } else {
       EMCHAR tagbuf[NLINE];
@@ -1083,7 +1082,7 @@ loop:
           }
         }
 
-        (void)emstrcpy(Editor::searchBuffer(), save);
+        Editor::setSearchBuffer(save);
         return T;
       }
 
@@ -1098,16 +1097,18 @@ loop:
     }
   }
 
-  (void)emstrcpy(Editor::searchBuffer(), save);
+  Editor::setSearchBuffer(save);
   return s;
 }
 
 CMD
-diffwindows() {
+Search::diffWindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(EditWindow::list().begin(), EditWindow::list().end(), curwp);
+  auto it = std::find(EditWindow::list().begin(),
+                      EditWindow::list().end(),
+                      curwp);
 
   if (++it != EditWindow::list().end()) {
     wp2 = *it;
@@ -1126,7 +1127,7 @@ diffwindows() {
   wp2->setDot(wp2->buffer()->firstline(), 0);
   wp2->setFlags(EditWindow::WFHARD);
 
-  return comparewindows();
+  return Search::compareWindows();
 }
 
 /*
@@ -1137,7 +1138,7 @@ diffwindows() {
  */
 
 CMD
-comparewindows() {
+Search::compareWindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
@@ -1247,31 +1248,31 @@ comparewindows() {
  */
 
 CMD
-matchrpar() {
-  return rmatchc('(') ? T : NIL;
+Search::rightParent() {
+  return Search::matchForward('(') ? T : NIL;
 }
 
 CMD
-matchrcur() {
-  return rmatchc('{') ? T : NIL;
+Search::rightCurly() {
+  return Search::matchForward('{') ? T : NIL;
 }
 
 CMD
-matchrbra() {
-  return rmatchc('[') ? T : NIL;
+Search::rightBracket() {
+  return Search::matchForward('[') ? T : NIL;
 }
 
 CMD
-matchlpar() {
-  return lmatchc(')') ? T : NIL;
+Search::leftParent() {
+  return Search::matchBackward(')') ? T : NIL;
 }
 
 CMD
-matchlcur() {
-  return lmatchc('}') ? T : NIL;
+Search::leftCurly() {
+  return Search::matchBackward('}') ? T : NIL;
 }
 
 CMD
-matchlbra() {
-  return lmatchc(']') ? T : NIL;
+Search::leftBracket() {
+  return Search::matchBackward(']') ? T : NIL;
 }

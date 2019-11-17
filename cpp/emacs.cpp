@@ -160,12 +160,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'R',
-     backsearch,
+     Search::backward,
      ECSTR("backward-search")
   },
   {
      Ctrl|'S',
-     forwsearch,
+     Search::forward,
      ECSTR("forward-search")
   },
   {
@@ -195,7 +195,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|']',
-     completeword,
+     Search::complete,
      ECSTR("dabbrev-expand")
   },
   {
@@ -375,7 +375,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'`',
-     nexterror,
+     Error::next,
      ECSTR("next-error")
   },
   {
@@ -470,7 +470,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|METACH,
-     evalexpression,
+     MLisp::evalExpression,
      ECSTR("eval-expression")
   },
   {
@@ -495,7 +495,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'D',
-     diffwindows,
+     Search::diffWindows,
      ECSTR("diff-windows")
   },
   {
@@ -505,7 +505,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'F',
-     getdefinition,
+     Search::definition,
      ECSTR("get-definition")
   },
   {
@@ -525,7 +525,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'M',
-     getmacfile,
+     MLisp::readFile,
      ECSTR("prompt-for-macro-file")
   },
   {
@@ -580,27 +580,27 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'$',
-     comparewindows,
+     Search::compareWindows,
      ECSTR("compare-windows")
   },
   {
      META|'%',
-     query,
+     Search::queryReplace,
      ECSTR("query-replace")
   },
   {
      META|'&',
-     global,
+     Search::globalReplace,
      ECSTR("replace-string")
   },
   {
      META|'(',
-     matchlpar,
+     Search::leftParent,
      ECSTR("match-left-parenthesis")
   },
   {
      META|')',
-     matchrpar,
+     Search::rightParent,
      ECSTR("match-right-parenthesis")
   },
   {
@@ -630,7 +630,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'/',
-     completeword,
+     Search::complete,
      ECSTR("dabbrev-expand")
   },
   {
@@ -655,7 +655,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'E',
-     nexterror,
+     Error::next,
      ECSTR("next-error")
   },
   {
@@ -700,12 +700,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'R',
-     backsearch,
+     Search::backward,
      ECSTR("backward-search")
   },
   {
      META|'S',
-     forwsearch,
+     Search::forward,
      ECSTR("forward-search")
   },
   {
@@ -735,12 +735,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'[',
-     matchlbra,
+     Search::leftBracket,
      ECSTR("match-left-bracket")
   },
   {
      META|']',
-     matchrbra,
+     Search::rightBracket,
      ECSTR("match-right-bracket")
   },
   {
@@ -800,7 +800,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
 
   /*
-   *      unbound functions (called with M-x)
+   * unbound functions (called with M-x)
    */
 
   {
@@ -815,7 +815,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     comparewindows,
+     Search::compareWindows,
      ECSTR("compare-windows")
   },
   {
@@ -880,12 +880,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     matchlcur,
+     Search::leftCurly,
      ECSTR("match-left-curly-bracket")
   },
   {
      UNBOUND,
-     matchrcur,
+     Search::rightCurly,
      ECSTR("match-right-curly-bracket")
   },
   {
@@ -1078,23 +1078,23 @@ std::vector<Variable> Variable::vartab = {
  */
 
 Widget widget = {
-  mlyn,
-  mlyesno,
-  mlconfirm,
-  mlerror,
-  mltitle,
-  mlreply,
-  mledit,
-  mlchange,
-  mlplay,
-  mlwait,
-  mlmessage,
-  mlwrite,
-  mladjust,
-  mlupdate,
-  mlclipcopy,
-  mlclippaste,
-  mllpprint
+  MiniBuf::yn,
+  MiniBuf::yesno,
+  MiniBuf::confirm,
+  MiniBuf::error,
+  MiniBuf::title,
+  MiniBuf::reply,
+  MiniBuf::edit,
+  MiniBuf::change,
+  MiniBuf::play,
+  MiniBuf::wait,
+  MiniBuf::message,
+  MiniBuf::write,
+  MiniBuf::adjust,
+  MiniBuf::update,
+  MiniBuf::clipCopy,
+  MiniBuf::clipPaste,
+  MiniBuf::lpPrint
 };
 
 static int  clast = 0;      /* last executed command        */
@@ -1132,7 +1132,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
 
     _search[0] = '\000';
 
-    (void)mlcustomize();
+    (void)MLisp::customize();
 
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
@@ -1182,14 +1182,14 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     for (const auto& macro : Editor::getMacros()) {
       /* Look in macro table. */
       if (macro.name() && !emstrcmp(macro.name(), ECSTR("emacs-init"))) {
-        (void)mlinternaleval(macro.index());
+        (void)MLisp::eval(macro.index());
         break;
       }
     }
 
     initflag = true;
   } else {
-    (void)mlcustomize();
+    (void)MLisp::customize();
 
     opt::background_color &= 0x07;
     opt::foreground_color &= 0x07;
@@ -1263,7 +1263,7 @@ Editor::engine() {
     }
 
     if (mpresf) {
-      mlerase();
+      MiniBuf::erase();
       display->update();
     }
 
@@ -1304,7 +1304,7 @@ Editor::execute(int c, int n) {
           WDGwrite(ECSTR("%s"), macro.name());
         }
         Editor::_thisflag = CFUNSET;
-        status = mlinternaleval(macro.index());
+        status = MLisp::eval(macro.index());
         Editor::_lastflag = Editor::_thisflag;
         return status;
       }
@@ -1378,11 +1378,11 @@ Editor::execute(int c, int n) {
     if (!kbdm.isPlaying()) {
       if ((c == ')' || c == '}' || c == ']')
           && emode != EDITMODE::FUNDAMENTAL) {
-        return automatch(c) ? T : NIL;
+        return Search::autoMatch(c) ? T : NIL;
       }
 
       if (c == '>' && emode == EDITMODE::SGMLMODE) {
-        return automatch(c) ? T : NIL;
+        return Search::autoMatch(c) ? T : NIL;
       }
 
       if (opt::auto_fill_mode) {

@@ -401,7 +401,7 @@ Buffer::anycb(ANYCB flag) {
         default  :
           (void)Editor::ctrlg();
           WDGwrite(ANYHLP);
-          waitmatch(5);
+          Search::wait(5);
         }
       }
     } else {

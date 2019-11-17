@@ -564,17 +564,17 @@ XpTerminal::xpfindreplace(bool replacep) {
 
 int
 XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
-  auto dwFlags   = lpfr->Flags;
-  auto replaced  = 0;
-  auto nFindFlag = true;
-  auto szFind    = lpfr->lpstrFindWhat;
-  auto szReplace = lpfr->lpstrReplaceWith;
+  auto dwFlags(lpfr->Flags);
+  auto replaced(0);
+  auto nFindFlag(true);
+  auto szFind(lpfr->lpstrFindWhat);
+  auto szReplace(lpfr->lpstrReplaceWith);
 
   Editor::_lastflag = CFFSRC;
   opt::case_sensitivity = (dwFlags & FR_MATCHCASE) != 0;
 
   term->cshow(false);
-  (void)emstrcpy(Editor::searchBuffer(), szFind);
+  Editor::setSearchBuffer(szFind);
 
   if (dwFlags & FR_DIALOGTERM) {
     xpcurdlg = nullptr;
@@ -583,21 +583,21 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
 
   if ((dwFlags & FR_FINDNEXT) && nFindFlag) {
     if (dwFlags & FR_DOWN) {
-      nFindFlag = (forwsearch() == T);
+      nFindFlag = (Search::forward() == T);
     } else {
-      nFindFlag = (backsearch() == T);
+      nFindFlag = (Search::backward() == T);
     }
   }
 
   if ((dwFlags & FR_REPLACE) && nFindFlag) {
     curwp->setDot(Editor::_found);
     curwp->setFlags(EditWindow::WFHARD);
-    subst((int)emstrlen(szFind), szReplace);
+    Search::substitute((int)emstrlen(szFind), szReplace);
     replaced++;
     if (dwFlags & FR_DOWN) {
-      nFindFlag = (forwsearch() == T);
+      nFindFlag = (Search::forward() == T);
     } else {
-      nFindFlag = (backsearch() == T);
+      nFindFlag = (Search::backward() == T);
     }
   }
 
@@ -607,9 +607,9 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
 
       curwp->setDot(Editor::_found);
       curwp->setFlags(EditWindow::WFHARD);
-      subst(len, szReplace);
+      Search::substitute(len, szReplace);
       replaced++;
-    } while (ffindstring());
+    } while (Search::next());
   }
 
   display->update();
@@ -1246,7 +1246,7 @@ xpcutcopy(WPARAM wParam) {
   UINT    AllocFlags = GMEM_MOVEABLE|GMEM_DDESHARE;
   HANDLE  hClipData;
   LPTSTR  lpClipData;
-  auto    kbuf = kget();
+  auto    kbuf = KillBuf::get();
   size_t  size = (kbuf.second + 1) * sizeof (EMCHAR);
 
   /*
@@ -1259,7 +1259,7 @@ xpcutcopy(WPARAM wParam) {
    * GMEM_MOVEABLE and GMEM_DDESHARE flags.
    */
 
-  if (kget().second == 0) {
+  if (KillBuf::get().second == 0) {
     return;
   }
 
@@ -1372,11 +1372,11 @@ xpclippaste() {
   }
 #endif
 
-  kdelete();
+  KillBuf::clear();
 
   for (auto s = lpClipData; *s; ++s) {
     if (*s != '\r') {
-      (void)kinsert((int)*s);
+      (void)KillBuf::insert((int)*s);
     }
   }
 

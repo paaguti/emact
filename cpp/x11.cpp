@@ -1046,7 +1046,7 @@ X11Terminal::rawmode() {
 static void
 X11clipcopy() {
 #if defined(XlibSpecificationRelease) && (XlibSpecificationRelease > 4)
-  auto kbuf = kget();
+  auto kbuf = KillBuf::get();
   /*
    * Copy kill-buffer to Clipboard.
    */
@@ -1067,10 +1067,10 @@ X11clippaste() {
    * Copy Clipboard to kill-buffer.
    */
 
-  kdelete();
+  KillBuf::clear();
 
   for (int i(0); i < len; ++i) {
-    (void)kinsert((int)buf[i]);
+    (void)KillBuf::insert((int)buf[i]);
   }
 
   XFree(buf);

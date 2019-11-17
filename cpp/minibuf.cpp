@@ -52,12 +52,12 @@ mlclearentry(EMCHAR* buf, int cpos) {
 }
 
 int
-mlcursor() {
+MiniBuf::cursor() {
   return mbcursor;
 }
 
 void
-mlerase() {
+MiniBuf::erase() {
   mbcursor = 0;
 
   while (mbcursor < term->getNbCols()) {
@@ -78,8 +78,8 @@ mlerase() {
  */
 
 CMD
-mlyn(const EMCHAR* prompt) {
-  mlwrite(ECSTR("%s"), prompt);
+MiniBuf::yn(const EMCHAR* prompt) {
+  MiniBuf::write(ECSTR("%s"), prompt);
 
   for (;;) {
     switch (term->get()) {
@@ -110,11 +110,11 @@ mlyn(const EMCHAR* prompt) {
  */
 
 CMD
-mlyesno(const EMCHAR* prompt) {
+MiniBuf::yesno(const EMCHAR* prompt) {
   EMCHAR  buf[NPAT];
 
   for (;;) {
-    if (mlreply(prompt, buf, NPAT) != T) {
+    if (MiniBuf::reply(prompt, buf, NPAT) != T) {
       return ABORT;
     }
     if (emstrcmp(buf, ECSTR("Yes")) == 0 ||
@@ -128,14 +128,14 @@ mlyesno(const EMCHAR* prompt) {
       return NIL;
     }
     (void)Editor::ctrlg();
-    mlwrite(ECSTR("Please answer yes or no"));
-    waitmatch(3);
+    MiniBuf::write(ECSTR("Please answer yes or no"));
+    Search::wait(3);
   }
 }
 
 CMD
-mlconfirm(const EMCHAR* prompt) {
-  return mlyesno(prompt);
+MiniBuf::confirm(const EMCHAR* prompt) {
+  return MiniBuf::yesno(prompt);
 }
 
 /*
@@ -143,7 +143,7 @@ mlconfirm(const EMCHAR* prompt) {
  */
 
 bool
-mlallowcomplete(bool flag) {
+MiniBuf::allowComplete(bool flag) {
   auto prev(allowcomplete);
   allowcomplete = flag;
   return prev;
@@ -158,7 +158,7 @@ mlallowcomplete(bool flag) {
  */
 
 CMD
-mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
+MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   int     i;
   int     c;
   int     cpos;
@@ -179,7 +179,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     cpos = emstrlen(buf);
   }
 
-  mlwrite(ECSTR("%s%s"), prompt, buf);
+  MiniBuf::write(ECSTR("%s%s"), prompt, buf);
 
   for (;;) {
     display->update(Redisplay::Mode::MINIBUF);
@@ -246,7 +246,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
           buf[cpos++] = '/';
           buf[cpos] = '\000';
         }
-        mlwrite(ECSTR("%s%s"), prompt, buf);
+        MiniBuf::write(ECSTR("%s%s"), prompt, buf);
       }
       break;
     case 0x0B:      /* kill ^K              */
@@ -259,7 +259,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 
       i = 0;
       while (cpos < nbuf - 1) {
-        if ((c = kremove(i++)) < 0) {
+        if ((c = KillBuf::remove(i++)) < 0) {
           goto doneyank;
         }
 
@@ -289,7 +289,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         buf[cpos++] = (EMCHAR)c;
         buf[cpos++] = ':';
         buf[cpos]   = '\000';
-        mlwrite(ECSTR("%s%s"), prompt, buf);
+        MiniBuf::write(ECSTR("%s%s"), prompt, buf);
         editflg = T;
         continue;
       }
@@ -312,7 +312,7 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
             cpos          = emstrlen(buf);
             buf[cpos++] = (EMCHAR)c;
             buf[cpos]   = '\000';
-            mlwrite(ECSTR("%s%s"), prompt, buf);
+            MiniBuf::write(ECSTR("%s%s"), prompt, buf);
             editflg = T;
             continue;
           }
@@ -362,11 +362,11 @@ mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 }
 
 /*
- * Same as mledit, except that the previous buffer is empty.
+ * Same as MiniBuf::edit, except that the previous buffer is empty.
  */
 
 CMD
-mlreply(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
+MiniBuf::reply(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   buf[0] = '\000';
 
   return WDGedit(prompt, buf, nbuf);
@@ -377,9 +377,9 @@ mlreply(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
  */
 
 void
-mlerror(const EMCHAR* msg) {
+MiniBuf::error(const EMCHAR* msg) {
   term->beep();
-  mlwrite(ECSTR("%s"), msg);
+  MiniBuf::write(ECSTR("%s"), msg);
 }
 
 /*
@@ -390,7 +390,7 @@ mlerror(const EMCHAR* msg) {
 /*VARARGS1*/
 
 void
-mlwrite(const EMCHAR* fmt, ...) {
+MiniBuf::write(const EMCHAR* fmt, ...) {
   EMCHAR  c;
   EMCHAR  *ap;
   va_list var;
@@ -492,7 +492,7 @@ mlputi(int i, int r) {
  */
 
 EMCHAR*
-mltitle(EMCHAR* s, EMCHAR* f) {
+MiniBuf::title(EMCHAR* s, EMCHAR* f) {
   /*
    * next lines is dummy code to remove warning on args not used.
    */
@@ -509,7 +509,7 @@ mltitle(EMCHAR* s, EMCHAR* f) {
  */
 
 CMD
-mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
+MiniBuf::change(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
   EMCHAR buf[NLINE + 1];
 
   if (*opat && *npat) {
@@ -524,7 +524,7 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
       (void)emstrncat(buf, ECSTR(" "), NLINE);
       (void)emstrncat(buf, opat, NLINE);
       (void)emstrncat(buf, ECSTR(" with: "), NLINE);
-      auto s = mledit(buf, npat, len);
+      auto s = MiniBuf::edit(buf, npat, len);
       switch (s) {
       case T:
         if (changed || emstrcmp(npat, prev) == 0) {
@@ -542,7 +542,7 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
     (void)emstrncpy(buf, msg, NLINE);
     (void)emstrncat(buf, ECSTR(": "), NLINE);
 
-    if (mledit(buf, opat, len) == T) {
+    if (MiniBuf::edit(buf, opat, len) == T) {
       /*
        * First time.
        */
@@ -550,7 +550,7 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
       (void)emstrncat(buf, ECSTR(" "), NLINE);
       (void)emstrncat(buf, opat, NLINE);
       (void)emstrncat(buf, ECSTR(" with: "), NLINE);
-      return (mledit(buf, npat, len) != ABORT) ? T : NIL;
+      return (MiniBuf::edit(buf, npat, len) != ABORT) ? T : NIL;
     } else {
       return NIL;
     }
@@ -558,44 +558,44 @@ mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int len) {
 }
 
 void
-mlplay(int flag) {
+MiniBuf::play(int flag) {
   /*
    * The next two lines is dummy code to remove warning on args not
    * used.
    */
 
   if (flag) {
-    mlwait();
+    MiniBuf::wait();
   }
 }
 
 void
-mlwait() {
+MiniBuf::wait() {
 }
 
 void
-mlmessage(const EMCHAR* msg) {
-  mlwrite(ECSTR("%s"), msg);
+MiniBuf::message(const EMCHAR* msg) {
+  MiniBuf::write(ECSTR("%s"), msg);
 }
 
 void
-mladjust() {
+MiniBuf::adjust() {
 }
 
 void
-mlclipcopy() {
+MiniBuf::clipCopy() {
 }
 
 void
-mlclippaste() {
+MiniBuf::clipPaste() {
 }
 
 void
-mlupdate(const EMCHAR* prompt, EMCHAR* line) {
-  mlwrite(ECSTR("%s%s"), prompt, line);
+MiniBuf::update(const EMCHAR* prompt, EMCHAR* line) {
+  MiniBuf::write(ECSTR("%s%s"), prompt, line);
 }
 
 void
-mllpprint() {
-  mlwrite(ECSTR("Can't print on this system"));
+MiniBuf::lpPrint() {
+  MiniBuf::write(ECSTR("Can't print on this system"));
 }

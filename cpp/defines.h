@@ -115,15 +115,6 @@ CMD     blispexpr();
 CMD     elispexpr();
 
 /*
- *      killbuf.cpp
- */
-
-void    kdelete();
-bool    kinsert(int c);
-int     kremove(int n);
-const std::pair<const EMCHAR*, size_t> kget();
-
-/*
  *      llemacs.cpp
  */
 
@@ -131,57 +122,15 @@ const std::pair<const EMCHAR*, size_t> kget();
 int     llemacs(EMCHAR* file);
 int     llembol(const EMCHAR* buf);
 int     llemeol(const EMCHAR* buf,int n);
-CMD     lispevalbuffer();
+CMD     MLisp::evalBuffer();
 CMD     evalfunction();
 #endif
-
-/*
- *      minibuf.cpp
- */
-
-void    mlerase();
-int     mlcursor();
-CMD     mlyn(const EMCHAR* prompt);
-CMD     mlyesno(const EMCHAR* prompt);
-CMD     mlconfirm(const EMCHAR* prompt);
-CMD     mledit(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
-CMD     mlreply(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
-bool    mlallowcomplete(bool flag);
-void    mlwrite(const EMCHAR* fmt, ...);
-void    mlerror(const EMCHAR* msg);
-EMCHAR* mltitle(EMCHAR* buffer,EMCHAR* fname);
-CMD     mlchange(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int length);
-void    mlplay(int flag);
-void    mlwait();
-void    mlmessage(const EMCHAR* msg);
-void    mladjust();
-void    mlupdate(const EMCHAR* prompt, EMCHAR* buf);
-void    mlclipcopy();
-void    mlclippaste();
-void    mllpprint();
-
-/*
- *      mlisp.cpp
- */
-
-bool    mlcustomize();
-CMD     mlinternaleval(int expr);
-CMD     getmacfile();
-CMD     lispevalbuffer();
-CMD     evalexpression();
 
 /*
  *      mscterm.cpp
  */
 
 CMD     switchscreen();
-
-/*
- *      nexterr.cpp
- */
-
-void    clearerr();
-CMD     nexterror();
 
 /*
  *      random.cpp
@@ -215,31 +164,6 @@ CMD     setjustifyfull();
 CMD     justifycomment();
 CMD     undo();
 CMD     enterdebug();
-
-/*
- *      search.cpp
- */
-
-bool    ffindstring();
-bool    rmatchc(int patc, bool printflag = true);
-bool    lmatchc(int patc, bool printflag = true);
-bool    automatch(int c, bool f = true);
-void    waitmatch(int n);
-CMD     forwsearch();
-CMD     backsearch();
-CMD     global();
-void    subst(int length, const EMCHAR* newstr);
-CMD     query();
-CMD     getdefinition();
-CMD     matchrpar();
-CMD     matchrcur();
-CMD     matchrbra();
-CMD     matchlpar();
-CMD     matchlcur();
-CMD     matchlbra();
-CMD     completeword();
-CMD     diffwindows();
-CMD     comparewindows();
 
 /*
  *      spawn.cpp

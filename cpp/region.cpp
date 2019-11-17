@@ -133,7 +133,7 @@ TextRegion::kill() {
   }
 
   if ((Editor::_lastflag & CFKILL) == 0) {          /* This is a kill type  */
-    kdelete();
+    KillBuf::clear();
   }
 
   Editor::_thisflag |= CFKILL;
@@ -163,7 +163,7 @@ TextRegion::copy() {
 
   if ((Editor::_lastflag & CFKILL) == 0) {
     /* Kill type command. */
-    kdelete();
+    KillBuf::clear();
   }
 
   Editor::_thisflag |= CFKILL;
@@ -172,13 +172,13 @@ TextRegion::copy() {
   auto loffs = region._offset;                /* Current offset.      */
   while (region._size--) {
     if (loffs == linep->length()) {
-      if (!kinsert('\n')) {
+      if (!KillBuf::insert('\n')) {
         return NIL;
       }
       linep = linep->forw();
       loffs = 0;
     } else {                        /* Middle of line.      */
-      if (!kinsert(linep->get(loffs))) {
+      if (!KillBuf::insert(linep->get(loffs))) {
         return NIL;
       }
       ++loffs;
@@ -326,7 +326,7 @@ TextRegion::write() {
 
   EMCHAR fname[NFILEN];
 
-  if (mlreply(ECSTR("Write region to file: "), fname, NFILEN) != T) {
+  if (MiniBuf::reply(ECSTR("Write region to file: "), fname, NFILEN) != T) {
     return NIL;
   }
 

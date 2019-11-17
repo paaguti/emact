@@ -1339,9 +1339,9 @@ class Variable {
   size_t  f_size{0};             // Size of the variable
 };
 
-class Lisp;
+class LispEngine;
 class Macro {
-  friend class Lisp;
+  friend class LispEngine;
  public:
   Macro() = default;
 
@@ -1685,6 +1685,11 @@ class Editor {
     return &_search[0];
   }
 
+  static void
+  setSearchBuffer(const EMCHAR* val) noexcept {
+    (void)emstrcpy(&_search[0], val);
+  }
+
   /*
    * Read in a key. Do the standard keyboard preprocessing.
    */
@@ -1881,5 +1886,100 @@ class Counter {
  private:
   static int    _val;
   static EMCHAR _fmt[NPAT];
+};
+
+/**
+ * This class searches for errors in compilation buffer.
+ */
+class Error {
+ public:
+  static void clear();
+  static CMD  next();
+
+ private:
+  static bool get();
+
+  static bool   _flag;
+  static int    _linenum;
+  static EMCHAR _fname[NFILEN];
+};
+
+class Search {
+ public:
+  static bool next();
+  static void wait(int n);
+  static void substitute(int length, const EMCHAR* newstr);
+  static bool matchBackward(int patc, bool printflag = true);
+  static bool matchForward(int patc, bool printflag = true);
+  static bool autoMatch(int c, bool printflag = true);
+
+  /*
+   * Editor commands bound to key:
+   */
+  static CMD forward();
+  static CMD backward();
+  static CMD globalReplace();
+  static CMD queryReplace();
+  static CMD definition();
+  static CMD rightParent();
+  static CMD leftParent();
+  static CMD rightCurly();
+  static CMD leftCurly();
+  static CMD rightBracket();
+  static CMD leftBracket();
+  static CMD complete();
+  static CMD diffWindows();
+  static CMD compareWindows();
+
+ private:
+  static bool prev();
+};
+
+class MiniBuf {
+ public:
+  static void erase();
+  static int cursor();
+  static CMD yn(const EMCHAR* prompt);
+  static CMD yesno(const EMCHAR* prompt);
+  static CMD confirm(const EMCHAR* prompt);
+  static CMD edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
+  static CMD reply(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
+  static bool allowComplete(bool flag);
+  static void write(const EMCHAR* fmt, ...);
+  static void error(const EMCHAR* msg);
+  static EMCHAR * title(EMCHAR* buffer,EMCHAR* fname);
+  static CMD change(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int length);
+  static void play(int flag);
+  static void wait();
+  static void message(const EMCHAR* msg);
+  static void adjust();
+  static void update(const EMCHAR* prompt, EMCHAR* buf);
+  static void clipCopy();
+  static void clipPaste();
+  static void lpPrint();
+};
+
+/**
+ * Hi level interface to pseudo-lisp extension language.
+ */
+class MLisp {
+ public:
+  static bool customize();
+  static CMD eval(int expr);
+  static CMD evalBuffer();
+  static CMD evalExpression();
+
+  /*
+   * Editor commands bound to key:
+   */
+  static CMD readFile();
+};
+
+class KillBuf {
+ public:
+  static void clear();
+  static bool insert(int c);
+  static int  remove(int n);
+  static const std::pair<const EMCHAR*, size_t> get();
 };
 #endif /* __OBJECTS_H */

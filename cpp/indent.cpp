@@ -82,7 +82,8 @@ nextcindent() {
   const auto& dot(curwp->getDot());
   auto oclp = dot.line();
   auto ocbo = dot.pos() - 1;
-  auto res  = lmatchc('}', false);
+  printf("CJu }\n");
+  auto res  = Search::matchBackward('}', false);
 
   curwp->setDot(oclp, ocbo);
 
@@ -125,7 +126,7 @@ nextcindent() {
        * The last statement is a closing block. unindent.
        */
       curwp->setDotPos(i - 1);
-      if (lmatchc('}', false)) {
+      if (Search::matchBackward('}', false)) {
         if (curwp->line() == indentp) {
           curwp->setDotLine(curwp->line()->back());
         } else {
@@ -188,7 +189,9 @@ unindent(int c, bool f) {
     return Line::insert(c);
   }
 
-  if (Line::insert(c) != true || automatch(c, f) != true || backdel() != T) {
+  if ((Line::insert(c) != true)
+      || (Search::autoMatch(c, f) != true)
+      || (backdel() != T)) {
     return false;
   }
 
@@ -294,7 +297,7 @@ cindent() {
     }
     break;
   case '}' :
-    i = lmatchc('{', false);
+    i = Search::matchBackward('{', false);
     if (i) {
       ncol = indentp->leftmargin();
       return nexttab(ncol);
@@ -474,7 +477,7 @@ lispindent() {
     if (commento >= 0) {
       indento = commento;
     }
-  } else if (indentp->get(max) == ')' && lmatchc(')')) {
+  } else if (indentp->get(max) == ')' && Search::matchBackward(')')) {
     max = lastlisp(indentp);
 
     for (int i = 0; i <= max; ++i) {
@@ -900,13 +903,13 @@ elispexpr() {
   case EDITMODE::PERLMODE:
   case EDITMODE::PYTHONMODE:
   case EDITMODE::JAVAMODE:
-    if (blispexpr() == T && matchrcur() == T) {
+    if (blispexpr() == T && Search::rightCurly() == T) {
       return T;
     } else {
       return NIL;
     }
   case EDITMODE::LISPMODE:
-    if (blispexpr() == T && matchrpar() == T) {
+    if (blispexpr() == T && Search::rightParent() == T) {
       return T;
     } else {
       return NIL;

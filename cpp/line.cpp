@@ -405,7 +405,7 @@ Line::remove(int n, bool kflag) {
     }
     if (chunk == 0) {              /* End of line, merge.  */
       Buffer::change(EditWindow::WFHARD);
-      if (!Line::delnewline() || (kflag && !kinsert('\n'))) {
+      if (!Line::delnewline() || (kflag && !KillBuf::insert('\n'))) {
         return false;
       }
       --n;
@@ -416,7 +416,7 @@ Line::remove(int n, bool kflag) {
     auto cp2 = cp1 + chunk;
     if (kflag) {            /* Kill?                */
       while (cp1 - cp2) {
-        if (!kinsert(*cp1)) {
+        if (!KillBuf::insert(*cp1)) {
           return false;
         }
         ++cp1;

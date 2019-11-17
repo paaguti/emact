@@ -32,7 +32,7 @@ static std::vector<EMCHAR> kvect;
  * return current killbuffer as a pair.
  */
 const std::pair<const EMCHAR*, size_t>
-kget() {
+KillBuf::get() {
   return std::pair<const EMCHAR*, size_t>(kvect.data(), kvect.size());
 }
 
@@ -44,7 +44,7 @@ kget() {
  */
 
 void
-kdelete() {
+KillBuf::clear() {
   kvect.resize(4096);
   kvect.clear();
 }
@@ -58,7 +58,7 @@ kdelete() {
  */
 
 bool
-kinsert(int c) {
+KillBuf::insert(int c) {
   kvect.emplace_back((EMCHAR)c);
   return true;
 }
@@ -70,7 +70,7 @@ kinsert(int c) {
  */
 
 int
-kremove(int n) {
+KillBuf::remove(int n) {
   if (n >= static_cast<int>(kvect.size())) {
     return -1;
   } else {

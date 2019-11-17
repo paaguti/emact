@@ -494,7 +494,7 @@ CMD
 killtext() {
   if ((Editor::_lastflag & CFKILL) == 0) {
     /* Clear kill buffer if */
-    kdelete(); /* last wasn't a kill.  */
+    KillBuf::clear(); /* last wasn't a kill.  */
   }
 
   Editor::_thisflag |= CFKILL;
@@ -537,7 +537,7 @@ yank() {
   while (n--) {
     int c;
 
-    for (auto i = 0; (c = kremove(i)) >= 0; ++i) {
+    for (auto i = 0; (c = KillBuf::remove(i)) >= 0; ++i) {
       if (c == '\n') {
         if (!Line::newline()) {
           return NIL;

@@ -25,14 +25,12 @@ static auto rcsid("$Id: nexterr.cpp,v 1.13 2018/09/02 14:37:58 jullien Exp $");
 
 #include "./emacs.h"
 
-static bool geterror();
+bool   Error::_flag{false};  // Error flag
+int    Error::_linenum{0};
+EMCHAR Error::_fname[NFILEN];
 
-static bool errflag{false};  // Error flag
-static int errlinenum{0};
-static EMCHAR errfname[NFILEN];
-
-static bool
-geterror() {
+bool
+Error::get() {
   int    j;
   int    c;
   int    start;
@@ -40,19 +38,19 @@ geterror() {
   EMCHAR save[NPAT];
 
   (void)emstrcpy(save, Editor::searchBuffer());
-  (void)emstrcpy(Editor::searchBuffer(), ECSTR(":"));
+  Editor::setSearchBuffer(ECSTR(":"));
 
   Line* line{nullptr};
   for (;;) {
-    errlinenum = 0;
+    _linenum = 0;
 
-    if (!ffindstring() || Editor::_found.line() == line) {
-      if (errflag) {
+    if (!Search::next() || Editor::_found.line() == line) {
+      if (_flag) {
         WDGmessage(ECSTR("no more errors"));
       } else {
         WDGmessage(ECSTR("no errors"));
       }
-      (void)emstrcpy(Editor::searchBuffer(), save);
+      Editor::setSearchBuffer(save);
       return false;
     }
 
@@ -122,18 +120,18 @@ geterror() {
     }
 
     /*
-     * get the filename in errfname buffer, ext is the last position of '.'
+     * get the filename in _fname buffer, ext is the last position of '.'
      */
 
-    auto ext = &errfname[0];
+    auto ext = &_fname[0];
     for (j = 0; (start + j) < stop; ++j) {
-      errfname[j] = line->get(start + j);
-      if (errfname[j] == '.') {
-        ext = &errfname[j];
+      _fname[j] = line->get(start + j);
+      if (_fname[j] == '.') {
+        ext = &_fname[j];
       }
     }
 
-    errfname[j] = '\0';
+    _fname[j] = '\0';
 
     /*
      * ignore some extensions
@@ -163,35 +161,35 @@ geterror() {
     } while (!(c >= '0' && c <= '9') && i < eol);
 
     /*
-     * get the line number in errlinenum.
+     * get the line number in _linenum.
      */
 
     while (c >= '0' && c <= '9' && i < eol) {
-      errlinenum = errlinenum * 10 + (c - '0');
+      _linenum = _linenum * 10 + (c - '0');
       c = line->get(++i);
     }
 
     curwp->setDot(line, eol);
 
-    if (errlinenum == 0) {
+    if (_linenum == 0) {
       continue;
     }
 
-    errflag = true;
+    _flag = true;
     break;
   }
 
-  (void)emstrcpy(Editor::searchBuffer(), save);
-  return errlinenum != 0;
+  Editor::setSearchBuffer(save);
+  return _linenum != 0;
 }
 
 void
-clearerr() {
-  errflag = false;
+Error::clear() {
+  _flag = false;
 }
 
 CMD
-nexterror() {
+Error::next() {
   /*
    * find or create buffer if it does not exist.
    */
@@ -205,15 +203,15 @@ nexterror() {
   auto wp(bp->show());
 
   wp->current();
-  auto err(geterror());
+  auto err(get());
   owp->current();
 
   if (err) {
-    if (!newfile(errfname)) {
+    if (!newfile(_fname)) {
       return NIL;
     } else {
       auto save(Editor::_repeat);
-      Editor::_repeat = errlinenum;
+      Editor::_repeat = _linenum;
       (void)Editor::gotoline();
       Editor::_repeat = save;
       WDGwrite(ECSTR("%L"), Editor::_found.line());

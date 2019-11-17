@@ -85,7 +85,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   owp->current();
 
   WDGwrite(ECSTR("Done."));
-  clearerr();
+  Error::clear();
 
   if (flag == SYSCOMP_ERRORS) {
     (void)nexterror();
@@ -276,10 +276,10 @@ syscompile(const EMCHAR* cmd, int flag) {
   owp->current();
 
   WDGwrite(ECSTR("Done."));
-  clearerr();
+  Error::clear();
 
   if (flag == SYSCOMP_ERRORS) {
-    (void)nexterror();
+    (void)Error::next();
   }
 
   return status;
@@ -323,7 +323,7 @@ spawn() {
   CMD s;
   EMCHAR  line[NLINE];
 
-  if ((s = mlreply(ECSTR("System command: "), line, NLINE)) != T) {
+  if ((s = MiniBuf::reply(ECSTR("System command: "), line, NLINE)) != T) {
     return s;
   }
 
@@ -338,7 +338,7 @@ spawn() {
   (void)std::fgetc(stdin);
 
   term = Terminal::getInstance();
-  mlerase();
+  MiniBuf::erase();
   (void)Editor::redrawscreen();
 #endif
   return T;
@@ -721,9 +721,9 @@ compile() {
   }
 
   {
-    auto prev(mlallowcomplete(true));
+    auto prev(MiniBuf::allowComplete(true));
     s = WDGedit(ECSTR("Compile command: "), buf, NFILEN);
-    (void)mlallowcomplete(prev);
+    (void)MiniBuf::allowComplete(prev);
   }
 
   if (s == ABORT) {
@@ -941,7 +941,7 @@ CMD
 evalbuf() {
   switch (curbp->editMode()) {
   case EDITMODE::LISPMODE:
-    return lispevalbuffer();
+    return MLisp::evalBuffer();
   case EDITMODE::JAVAMODE:
     return javaevalbuffer();
   default:
@@ -961,7 +961,7 @@ getcommand() {
   CMD     s;
   EMCHAR  line[NLINE];
 
-  if ((s = mlreply(ECSTR(": get-system-command: "), line, NLINE)) != T) {
+  if ((s = MiniBuf::reply(ECSTR(": get-system-command: "), line, NLINE)) != T) {
     return s;
   } else {
     return syscompile(line, SYSCOMP_NOERROR) ? T : NIL;
@@ -975,10 +975,10 @@ getcommand() {
 
 CMD
 changedir() {
-  CMD     s;
-  EMCHAR  line[NLINE];
+  EMCHAR line[NLINE];
+  auto s(MiniBuf::reply(ECSTR("Change default directory: "), line, NLINE));
 
-  if ((s = mlreply(ECSTR("Change default directory: "), line, NLINE)) != T) {
+  if (s != T) {
     return s;
   } else if (ffchdir(line) == 0) {
     return T;

@@ -140,7 +140,7 @@ Editor::gotoline() {
 
   if (n <= 1) {
     EMCHAR buf[20];
-    if (mlreply(ECSTR("Goto line: "), buf, 20) == ABORT) {
+    if (MiniBuf::reply(ECSTR("Goto line: "), buf, 20) == ABORT) {
       return ABORT;
     }
     n = emstrtoi(buf);

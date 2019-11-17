@@ -162,7 +162,7 @@ Redisplay::Redisplay() {
 
   VIDEO::ok = true;
 
-  mlerase();
+  MiniBuf::erase();
 }
 
 Redisplay::~Redisplay() {
@@ -389,7 +389,7 @@ Redisplay::update(Redisplay::Mode mode) {
    */
 
   if (mode == Mode::MINIBUF) {
-    _curcol = mlcursor();  // minibuf cursor position.
+    _curcol = MiniBuf::cursor();  // minibuf cursor position.
     _currow = term->getNbRows();
     _curchar = ' ';
   } else {
