@@ -88,7 +88,7 @@ syscompile(const EMCHAR* cmd, int flag) {
   Error::clear();
 
   if (flag == SYSCOMP_ERRORS) {
-    (void)nexterror();
+    (void)Error::next();
   }
 
   return true;
