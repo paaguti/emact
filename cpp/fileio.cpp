@@ -204,7 +204,6 @@ ffropen(const EMCHAR* fn, bool* binmode, ENCODING* widep) {
  * Open  a file for writing. Return FIOSUC if all is well, and FIOERR
  * on error (cannot create).
  */
-
 int
 ffwopen(const EMCHAR* fn, int binmode, ENCODING widep) {
   EMCHAR wmode[3];
@@ -219,7 +218,6 @@ ffwopen(const EMCHAR* fn, int binmode, ENCODING widep) {
     WDGerror(ECSTR("Cannot open file for writing"));
     return FIOERR;
   }
-  system("ls -ls foo");
 
   return FIOSUC;
 }
@@ -227,7 +225,6 @@ ffwopen(const EMCHAR* fn, int binmode, ENCODING widep) {
 /*
  * Close a file. Should look at the status in all systems.
  */
-
 int
 ffclose() {
   if (std::fclose(ffp) != 0) {

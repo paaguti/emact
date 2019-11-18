@@ -408,7 +408,9 @@ mlmatch(const Line* clp, int cbo) {
   auto s(clp->text());
   auto maxchar(clp->length());
 
-  while ((c = *s++) != '\000' && (i < term->getNbCols() - 1) && (i < maxchar + j)) {
+  while ((c = *s++) != '\000'
+         && (i < term->getNbCols() - 1)
+         && (i < maxchar + j)) {
     if (count++ == cbo) {
       pos = i;
     }
@@ -1131,23 +1133,26 @@ Search::diffWindows() {
 }
 
 /*
- * Compare the current window and the next one (if any)  starting
- * at current position of the two windows. Display the first line
- * which is different and change the position of the two windows.
- * This command is not bound.
+ * Compare the current window and the next one (if any) starting at
+ * current position of the two windows. Display the first line which
+ * is different and change the position of the two windows.  This
+ * command is not bound.
  */
-
 CMD
 Search::compareWindows() {
   auto wp1 = curwp;
   auto wp2 = wp1;
 
-  auto it = std::find(EditWindow::list().begin(), EditWindow::list().end(), curwp);
+  {
+    auto& wlist(EditWindow::list());
 
-  if (++it != EditWindow::list().end()) {
-    wp2 = *it;
-  } else {
-    wp2 = EditWindow::list().front();
+    auto it(std::find(wlist.begin(), wlist.end(), curwp));
+
+    if (++it != wlist.end()) {
+      wp2 = *it;
+    } else {
+      wp2 = wlist.front();
+    }
   }
 
   if (wp2 == wp1) {
@@ -1205,7 +1210,7 @@ Search::compareWindows() {
       wp1->setDot(lp1, lo1);
       wp1->setFlags(EditWindow::WFMOVE);
 
-      Editor::_thisflag    |= CFCOMP;
+      Editor::_thisflag |= CFCOMP;
       return showcpos();
     }
   }
