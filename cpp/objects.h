@@ -1980,4 +1980,29 @@ class KillBuf {
   static int  remove(int n);
   static const std::pair<const EMCHAR*, size_t> get();
 };
+
+/*
+ *      spawn.cpp
+ */
+
+class Process {
+ public:
+  static bool syscompile(const EMCHAR* cmd, int flag);
+
+  static CMD spawncli();
+  static CMD spawn();
+  static CMD makefile();
+  static CMD man();
+  static CMD grep();
+  static CMD perl();
+  static CMD sed();
+  static CMD compile();
+  static CMD compilecurrent();
+  static CMD ccompile();
+  static CMD javacompile();
+  static CMD assemble();
+  static CMD evalbuf();
+  static CMD getcommand();
+  static CMD changedir();
+};
 #endif /* __OBJECTS_H */

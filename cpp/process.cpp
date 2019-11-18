@@ -53,7 +53,7 @@ static CMD javaevalbuffer();
 
 #if defined(_WIN32)
 bool
-syscompile(const EMCHAR* cmd, int flag) {
+Process::syscompile(const EMCHAR* cmd, int flag) {
   auto owp = curwp;
   Buffer* bp;
 
@@ -96,7 +96,7 @@ syscompile(const EMCHAR* cmd, int flag) {
 
 #else
 bool
-syscompile(const EMCHAR* cmd, int flag) {
+Process::syscompile(const EMCHAR* cmd, int flag) {
   auto    owp(curwp);
   auto    status(false);
   int     out(-1);
@@ -293,7 +293,7 @@ syscompile(const EMCHAR* cmd, int flag) {
  */
 
 CMD
-spawncli() {
+Process::spawncli() {
 #if defined(_WIN32)
   (void)ffsystem(ffgetenv(ECSTR("ComSpec")));
 #else
@@ -319,7 +319,7 @@ spawncli() {
  */
 
 CMD
-spawn() {
+Process::spawn() {
   CMD s;
   EMCHAR  line[NLINE];
 
@@ -349,7 +349,7 @@ spawn() {
  */
 
 CMD
-makefile() {
+Process::makefile() {
   EMCHAR  buf[NFILEN];
   CMD s;
 
@@ -373,7 +373,7 @@ makefile() {
  */
 
 CMD
-man() {
+Process::man() {
 #if defined(_POSIX_C_SOURCE) || defined(_WIN32)
   EMCHAR  buf[NPAT];
   EMCHAR  cmd[NLINE];
@@ -436,7 +436,7 @@ externalcommand(EMCHAR* cmdname, const EMCHAR* cmdline) {
   (void)emstrcat(buf, prompt);
 
   WDGwrite(ECSTR("%s .."), buf);
-  s = syscompile(buf, SYSCOMP_NOERROR) ? T : NIL;
+  s = Process::syscompile(buf, SYSCOMP_NOERROR) ? T : NIL;
   (void)ffchdir(cdir);
 
   return s;
@@ -447,7 +447,7 @@ externalcommand(EMCHAR* cmdname, const EMCHAR* cmdline) {
  */
 
 CMD
-grep() {
+Process::grep() {
   return externalcommand(ECSTR("grep"), GREPPROC);
 }
 
@@ -548,7 +548,7 @@ shellbuffer(EMCHAR* prog, EMCHAR* def) {
  */
 
 CMD
-sed() {
+Process::sed() {
   EMCHAR  buf[1024];
   EMCHAR  prompt[NLINE];
   EMCHAR  cdir[NLINE];
@@ -637,7 +637,7 @@ sed() {
 #define PERLPROG        ECSTR("perl")
 
 CMD
-perl() {
+Process::perl() {
   EMCHAR  buf[1024];
   EMCHAR  prompt[NLINE];
   EMCHAR  cdir[NLINE];
@@ -696,7 +696,7 @@ perl() {
  */
 
 CMD
-compile() {
+Process::compile() {
   static EMCHAR buf[NFILEN] = { '\000' };
 
   EMCHAR  cdir[NLINE];
@@ -734,7 +734,7 @@ compile() {
     return s;
   }
 
-  s = syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
+  s = Process::syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
   (void)ffchdir(cdir);
 
   return s;
@@ -746,13 +746,13 @@ compile() {
  */
 
 CMD
-compilecurrent() {
+Process::compilecurrent() {
   switch (curbp->editMode()) {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
     return ccompile();
   case EDITMODE::JAVAMODE:
-    return javacompile();
+    return Process::javacompile();
   default:
     term->beep();
     WDGwrite(ECSTR("Don't know how to compile %s"), curbp->filename());
@@ -766,7 +766,7 @@ compilecurrent() {
  */
 
 CMD
-ccompile() {
+Process::ccompile() {
   EMCHAR  buf[NFILEN];
 
   (void)emstrcpy(buf, opt::cc_name);
@@ -777,7 +777,7 @@ ccompile() {
     (void)emstrcat(buf, ECSTR(" "));
     (void)emstrcat(buf, curbp->filename());
     WDGwrite(ECSTR("%s"), buf);
-    return syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
+    return Process::syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
   } else {
     return NIL;
   }
@@ -788,7 +788,7 @@ ccompile() {
  */
 
 CMD
-javacompile() {
+Process::javacompile() {
   EMCHAR  buf[NFILEN];
   EMCHAR  cdir[NLINE];
   EMCHAR  gdir[NLINE];
@@ -844,7 +844,7 @@ javacompile() {
  */
 
 CMD
-assemble() {
+Process::assemble() {
   EMCHAR  buf[NFILEN];
 
   if (curbp->editMode() == EDITMODE::ASMODE) {
@@ -921,12 +921,12 @@ javaevalbuffer() {
    * Compile the file first, then execute
    */
 
-  s = javacompile();
+  s = Process::javacompile();
 
   if (s == T) {
     WDGwrite(ECSTR("%s"), buf);
 
-    s = syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
+    s = Process::syscompile(buf, SYSCOMP_ERRORS) ? T : NIL;
     (void)ffchdir(cdir);
   }
 
@@ -938,7 +938,7 @@ javaevalbuffer() {
  */
 
 CMD
-evalbuf() {
+Process::evalbuf() {
   switch (curbp->editMode()) {
   case EDITMODE::LISPMODE:
     return MLisp::evalBuffer();
@@ -957,7 +957,7 @@ evalbuf() {
  */
 
 CMD
-getcommand() {
+Process::getcommand() {
   CMD     s;
   EMCHAR  line[NLINE];
 
@@ -974,7 +974,7 @@ getcommand() {
  */
 
 CMD
-changedir() {
+Process::changedir() {
   EMCHAR line[NLINE];
   auto s(MiniBuf::reply(ECSTR("Change default directory: "), line, NLINE));
 

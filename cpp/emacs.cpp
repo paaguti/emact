@@ -190,7 +190,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'Z',
-     spawncli,
+     Process::spawncli,
      ECSTR("suspend-emacs")
   },
   {
@@ -220,12 +220,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'D',
-     changedir,
+     Process::changedir,
      ECSTR("cd")
   },
   {
      CTLX|Ctrl|'E',
-     evalbuf,
+     Process::evalbuf,
      ECSTR("eval-buffer")
   },
   {
@@ -245,7 +245,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'M',
-     makefile,
+     Process::makefile,
      ECSTR("execute-makefile")
   },
   {
@@ -315,12 +315,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'!',
-     getcommand,
+     Process::getcommand,
      ECSTR("get-command-in-buffer")
   },
   {
      CTLX|'%',
-     spawn,
+     Process::spawn,
      ECSTR("execute-monitor-command")
   },
   {
@@ -380,7 +380,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'A',
-     assemble,
+     Process::assemble,
      ECSTR("assemble-file")
   },
   {
@@ -390,7 +390,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'C',
-     compilecurrent,
+     Process::compilecurrent,
      ECSTR("compile-current-buffer")
   },
   {
@@ -420,7 +420,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'J',
-     javacompile,
+     Process::javacompile,
      ECSTR("java-compile")
   },
   {
@@ -820,7 +820,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     compile,
+     Process::compile,
      ECSTR("compile")
   },
   {
@@ -840,7 +840,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     grep,
+     Process::grep,
      ECSTR("grep")
   },
   {
@@ -875,7 +875,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     man,
+     Process::man,
      ECSTR("man")
   },
   {
@@ -900,7 +900,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     perl,
+     Process::perl,
      ECSTR("perl")
   },
   {
@@ -920,7 +920,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     sed,
+     Process::sed,
      ECSTR("sed")
   },
   {

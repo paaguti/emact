@@ -841,7 +841,7 @@ LispEngine::eval(int expr, size_t depth) {
       }
       string[i] = '\0';
       WDGwrite(ECSTR(": execute '%s'"), string);
-      s = syscompile(string, SYSCOMP_NOERROR) ? T : NIL;
+      s = Process::syscompile(string, SYSCOMP_NOERROR) ? T : NIL;
       break;
     case SpecialForm::INPACKAGE:
       bufcmd++;

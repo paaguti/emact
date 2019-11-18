@@ -92,11 +92,11 @@ KERNEL		= basic.obj	\
 		  main.obj	\
 		  minibuf.obj	\
 		  options.obj	\
+		  process.obj	\
 		  random.obj	\
 		  region.obj	\
 		  redisplay.obj	\
 		  search.obj	\
-		  spawn.obj	\
 		  terminal.obj	\
 		  unicode.obj	\
 		  version.obj	\

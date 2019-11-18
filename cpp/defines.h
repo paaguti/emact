@@ -166,27 +166,6 @@ CMD     undo();
 CMD     enterdebug();
 
 /*
- *      spawn.cpp
- */
-
-bool    syscompile(const EMCHAR* cmd, int flag);
-CMD     spawncli();
-CMD     spawn();
-CMD     makefile();
-CMD     man();
-CMD     grep();
-CMD     perl();
-CMD     sed();
-CMD     compile();
-CMD     compilecurrent();
-CMD     ccompile();
-CMD     javacompile();
-CMD     assemble();
-CMD     evalbuf();
-CMD     getcommand();
-CMD     changedir();
-
-/*
  *      termio.cpp
  */
 

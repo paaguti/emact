@@ -43,7 +43,7 @@ OBJECTS         = basic.$(O)     \
                   charutil.$(O)  \
                   curses.$(O)    \
                   emacs.$(O)     \
-                  error.$(O)    \
+                  error.$(O)     \
                   file.$(O)      \
                   filecomp.$(O)  \
                   fileio.$(O)    \
@@ -54,11 +54,11 @@ OBJECTS         = basic.$(O)     \
                   minibuf.$(O)   \
                   mlisp.$(O)     \
                   options.$(O)   \
+                  process.$(O)   \
                   random.$(O)    \
                   redisplay.$(O) \
                   region.$(O)    \
                   search.$(O)    \
-                  spawn.$(O)     \
                   terminal.$(O)  \
                   unicode.$(O)   \
                   version.$(O)   \
