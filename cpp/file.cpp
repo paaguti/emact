@@ -196,10 +196,22 @@ readin(const EMCHAR* fname) {
   auto binmode = false;
   switch (f = ffropen(fname, &binmode, &widep)) {
   case FIOFNF:   /* File not found.      */
-    curbp->setReadonly(false);
-    curbp->setPermissions(0);
-    curbp->setTime(0);
-    WDGwrite(ECSTR("(New file %s)"), fname);
+    /*
+     * Try to see if the new file can be created, then get its default access
+     * which is set later to the associated buffer.
+     */
+    if (ffwopen(fname, binmode, widep) == FIOSUC) {
+      (void)ffclose();
+      (void)ffsetaccess(fname, curbp);
+      /*
+       * We don't want this file now. It may not be saved.
+       */
+      (void)ffremove(fname);
+      WDGwrite(ECSTR("(New file %s)"), fname);
+    } else {
+      WDGwrite(ECSTR("Can't access file %s"), fname);
+      return false;
+    }
     break;
   default:
     WDGmessage(ECSTR("Reading file ..."));
@@ -577,7 +589,7 @@ writeout(const EMCHAR* fname) {
   curbp->setChanged(false);
 
   /* 
-   *      Update mode lines.
+   * Update mode lines.
    */
 
   Buffer::updatemodes();

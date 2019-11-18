@@ -75,19 +75,18 @@ static Line*
 nextcindent() {
   int     c;
 
-  auto llflag = (curwp->line() == curbp->lastline());
+  auto llflag(curwp->line() == curbp->lastline());
 
   (void)Line::insert('}');
 
   const auto& dot(curwp->getDot());
   auto oclp = dot.line();
   auto ocbo = dot.pos() - 1;
-  printf("CJu }\n");
   auto res  = Search::matchBackward('}', false);
 
   curwp->setDot(oclp, ocbo);
 
-  auto clp = oclp;
+  auto clp(oclp);
 
   (void)forwdel();        /* delete '}' */
 

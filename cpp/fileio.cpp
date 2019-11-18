@@ -29,7 +29,7 @@ static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 
 static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 
-static FILE*    ffp;    /* File poINTer, all functions. */
+static FILE*    ffp;    /* File pointer, all functions. */
 static ENCODING ffunicode = ENCODING::EMASCII; /* UNICODE flag */
 
 #if defined(UNICODE)
@@ -201,7 +201,7 @@ ffropen(const EMCHAR* fn, bool* binmode, ENCODING* widep) {
 }
 
 /*
- * Open  a file for writing. Return T if all is well, and NIL
+ * Open  a file for writing. Return FIOSUC if all is well, and FIOERR
  * on error (cannot create).
  */
 
@@ -219,6 +219,7 @@ ffwopen(const EMCHAR* fn, int binmode, ENCODING widep) {
     WDGerror(ECSTR("Cannot open file for writing"));
     return FIOERR;
   }
+  system("ls -ls foo");
 
   return FIOSUC;
 }
