@@ -97,10 +97,10 @@ syscompile(const EMCHAR* cmd, int flag) {
 #else
 bool
 syscompile(const EMCHAR* cmd, int flag) {
-  auto owp = curwp;
+  auto    owp(curwp);
+  auto    status(false);
+  int     out(-1);
   Buffer* bp;
-  auto    status = false;
-  int     out    = -1;
   int     err;
   int     tmp1;
 
