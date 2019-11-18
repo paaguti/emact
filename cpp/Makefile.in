@@ -110,11 +110,11 @@ valgrind: ed$(EXE)
 	@valgrind \
 		--leak-check=summary \
 		--track-fds=yes \
-		--log-file=testkern.log \
+		--log-file=ed.log \
 		./ed$(EXE)
 
 cpplint:
-	cpplint.py --filter=-build/header_guard,build/c++11 *.h *.cpp
+	./cpplint.py --filter=-build/header_guard,-build/c++11,-readability/casting,-legal/copyright,-runtime/int *.h *.cpp
 
 install-strip:
 	@$(MAKE) $(NOPRINTDIR) STRIP=-s install

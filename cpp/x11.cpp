@@ -162,7 +162,7 @@ class X11Terminal final : public Terminal {
   GC             _gcstd;
   GC             _gcinv;
 
-  std::array<unsigned long, MAXCOLOR> _color; // NOLINT(runtime/int)
+  std::array<unsigned long, MAXCOLOR> _color;  // NOLINT(runtime/int)
   int            _row;
   int            _col;
   int            _x;
