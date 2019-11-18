@@ -178,12 +178,12 @@ class Point final {
 
 class EditWindow {
  public:
-  static constexpr uint32_t WFCLEAR = 0x00; // All flags cleared.
-  static constexpr uint32_t WFFORCE = 0x01; // Window needs forced reframe
-  static constexpr uint32_t WFMOVE  = 0x02; // Movement from line to line
-  static constexpr uint32_t WFEDIT  = 0x04; // Editing within a line
-  static constexpr uint32_t WFHARD  = 0x08; // Better to a full display
-  static constexpr uint32_t WFMODE  = 0x10; // Update mode line.
+  static constexpr uint32_t WFCLEAR = 0x00;  // All flags cleared.
+  static constexpr uint32_t WFFORCE = 0x01;  // Window needs forced reframe
+  static constexpr uint32_t WFMOVE  = 0x02;  // Movement from line to line
+  static constexpr uint32_t WFEDIT  = 0x04;  // Editing within a line
+  static constexpr uint32_t WFHARD  = 0x08;  // Better to a full display
+  static constexpr uint32_t WFMODE  = 0x10;  // Update mode line.
 
   /**
    * Default ctor.
@@ -458,7 +458,7 @@ class Buffer {
     CHECK  = 0x0001
   };
 
-  static constexpr size_t NBUFN{16}; // # of bytes, buffer name
+  static constexpr size_t NBUFN{16};  // # of bytes, buffer name
 
   /**
    * Find a buffer, by name.
@@ -708,32 +708,30 @@ class Buffer {
  private:
   static std::list<Buffer*> _blist;
 
-  mode_t   _mode{0};                      // File permission mode.
-  Point    _dot;                          // "." Line and offset link.
-  Line*    _linep{nullptr};               // Link to the header Line
-  Point    _mark;                         // Mark in this buffer.
-  ENCODING _wide{ENCODING::EMASCII};      // Wide flag
-  EDITMODE _emode{EDITMODE::FUNDAMENTAL}; // Buffer electric mode
-  bool     _flag{false};                  // Flags
-  bool     _binary{false};                // Binary flag
-  bool     _readonly{false};              // when true, buffer is read only
-  EMCHAR   _fname[NFILEN];                // File name
-  EMCHAR   _bname[NBUFN];                 // Buffer name
-  time_t   _time{0};                      // Last modification time
-  int      _count{0};                     // Count of windows on buffer
+  mode_t   _mode{0};                       // File permission mode.
+  Point    _dot;                           // "." Line and offset link.
+  Line*    _linep{nullptr};                // Link to the header Line
+  Point    _mark;                          // Mark in this buffer.
+  ENCODING _wide{ENCODING::EMASCII};       // Wide flag
+  EDITMODE _emode{EDITMODE::FUNDAMENTAL};  // Buffer electric mode
+  bool     _flag{false};                   // Flags
+  bool     _binary{false};                 // Binary flag
+  bool     _readonly{false};               // when true, buffer is read only
+  EMCHAR   _fname[NFILEN];                 // File name
+  EMCHAR   _bname[NBUFN];                  // Buffer name
+  time_t   _time{0};                       // Last modification time
+  int      _count{0};                      // Count of windows on buffer
 };
 
 /*
- * All  text  is  kept  in  circularly  linked  lists  of Line
- * structures.  These  begin  at  the  header line (which is the
- * blank  line  beyond  the  end  of  the buffer).  This line is
- * pointed  to by the "Buffer".  Each line contains a the number
- * of bytes in the line (the "used" size),  the size of the text
- * array,  and  the  text.  The  end  of line is not stored as a
- * byte;  it's  implied.  Future  additions  will include update
- * hints, and a list of marks into the line.
+ * All text is kept in circularly linked lists of Line structures.
+ * These begin at the header line (which is the blank line beyond the
+ * end of the buffer).  This line is pointed to by the "Buffer".  Each
+ * line contains a the number of bytes in the line (the "used" size),
+ * the size of the text array, and the text.  The end of line is not
+ * stored as a byte; it's implied.  Future additions will include
+ * update hints, and a list of marks into the line.
  */
-
 class Line {
  public:
   Line() = delete;
@@ -1010,11 +1008,11 @@ class Line {
    */
   static bool delnewline();
 
-  EMCHAR* l_text; // A bunch of characters.
-  Line*   l_fp;   // Link to the next line
-  Line*   l_bp;   // Link to the previous line
-  int     l_size; // Allocated size
-  int     l_used; // Used size
+  EMCHAR* l_text;  // A bunch of characters.
+  Line*   l_fp;    // Link to the next line
+  Line*   l_bp;    // Link to the previous line
+  int     l_size;  // Allocated size
+  int     l_used;  // Used size
 };
 
 /*
