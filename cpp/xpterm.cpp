@@ -46,7 +46,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 
 #include <windows.h>
 #include <tchar.h>
-#include <utilty>
+#include <utility>
 #include "./emacs.h"
 #include "./xpterm.h"
 
