@@ -1044,7 +1044,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       TextRegion::copy();
       break;
     case IDM_PASTE:
-      yank();
+      Editor::yank();
       display->update();
       break;
     case IDM_FIND:
@@ -1478,7 +1478,7 @@ XpTerminal::xpshowlines(TCHAR* chBuf, int nLen) {
       break;
     case '\n':
       display->update();
-      (void)newline();
+      (void)Editor::newline();
       break;
     default:
       (void)Line::insert(c);

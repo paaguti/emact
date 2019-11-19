@@ -133,42 +133,6 @@ CMD     evalfunction();
 CMD     switchscreen();
 
 /*
- *      random.cpp
- */
-
-//CMD     newline();
-//CMD     showcpos();
-//CMD     twiddle();
-//CMD     quotechar();
-//CMD     tab();
-//CMD     tabexpand();
-//CMD     openline();
-//CMD     endline();
-//CMD     deblank();
-//CMD     forwdel();
-//CMD     backdel();
-//CMD     killtext();
-//CMD     yank();
-
-#if 0
-CMD     Editor::appendNextKill();
-CMD     Editor::setFillColumn();
-CMD     Editor::setFillPrefix();
-CMD     Editor::backParagraph();
-CMD     Editor::forwParagraph();
-CMD     Editor::markParagraph();
-CMD     Editor::fillParagraph();
-CMD     Editor::splitLineToFill();
-CMD     Editor::justOneSpace();
-CMD     Editor::justifyCurLine();
-CMD     Editor::setJustifyLeft();
-CMD     Editor::setJustifyFull();
-CMD     Editor::justifyComment();
-CMD     Editor::Editor::undo();
-CMD     Editor::enterDebug();
-#endif
-
-/*
  *      termio.cpp
  */
 
