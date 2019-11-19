@@ -832,7 +832,7 @@ LispEngine::eval(int expr, size_t depth) {
       }
       break;
     case SpecialForm::UPDATE:
-      display->update();
+      redisplay->update();
       break;
     case SpecialForm::INSERTCOMMAND:
       bufcmd++;

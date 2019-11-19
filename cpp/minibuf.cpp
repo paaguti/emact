@@ -44,9 +44,9 @@ static int mbcursor{0};
 static void
 mlclearentry(EMCHAR* buf, int cpos) {
   while (cpos > 0 && mbcursor > 0) {
-    display->statputc(--mbcursor, ' ');
+    redisplay->statputc(--mbcursor, ' ');
     if (buf[--cpos] < (EMCHAR)0x20) {
-      display->statputc(--mbcursor, ' ');
+      redisplay->statputc(--mbcursor, ' ');
     }
   }
 }
@@ -61,7 +61,7 @@ MiniBuf::erase() {
   mbcursor = 0;
 
   while (mbcursor < term->getNbCols()) {
-    display->statputc(mbcursor++, ' ');
+    redisplay->statputc(mbcursor++, ' ');
   }
 
 #if defined(_WIN32)
@@ -182,7 +182,7 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
   MiniBuf::write(ECSTR("%s%s"), prompt, buf);
 
   for (;;) {
-    display->update(Redisplay::Mode::MINIBUF);
+    redisplay->update(Redisplay::Mode::MINIBUF);
 
     term->cshow(true);
     c = term->get();
@@ -191,9 +191,9 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     switch (c) {
     case 0x03:      /* Ctrl-C */
       while (cpos > 0) {
-        display->statputc(--mbcursor, ' ');
+        redisplay->statputc(--mbcursor, ' ');
         if ((unsigned int)buf[--cpos] < 0x20) {
-          display->statputc(--mbcursor, ' ');
+          redisplay->statputc(--mbcursor, ' ');
         }
       }
       cpos = 0;
@@ -231,9 +231,9 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
     case 0x08:      /* Backspace, erase     */
     case Ctrl|'H':
       if (cpos != 0) {
-        display->statputc(--mbcursor, ' ');
+        redisplay->statputc(--mbcursor, ' ');
         if ((unsigned int)buf[--cpos] < 0x20) {
-          display->statputc(--mbcursor, ' ');
+          redisplay->statputc(--mbcursor, ' ');
         }
       }
       break;
@@ -265,10 +265,10 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
 
         buf[cpos++] = (EMCHAR)c;
         if (c < ' ') {
-          display->statputc(mbcursor++, '^');
+          redisplay->statputc(mbcursor++, '^');
           c ^= 0x40;
         }
-        display->statputc(mbcursor++, c);
+        redisplay->statputc(mbcursor++, c);
       }
 
     doneyank:
@@ -351,10 +351,10 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       if (cpos < (nbuf - 1)) {
         buf[cpos++] = (EMCHAR)c;
         if (c < ' ') {
-          display->statputc(mbcursor++, '^');
+          redisplay->statputc(mbcursor++, '^');
           c ^= 0x40;
         }
-        display->statputc(mbcursor++, c);
+        redisplay->statputc(mbcursor++, c);
       }
     }
     editflg = T;
@@ -401,7 +401,7 @@ MiniBuf::write(const EMCHAR* fmt, ...) {
 
   while ((c = *fmt++) != 0) {
     if (c != '%') {
-      display->statputc(mbcursor++, c);
+      redisplay->statputc(mbcursor++, c);
     } else {
       switch (c = *fmt++) {
       case 'd':
@@ -431,16 +431,16 @@ MiniBuf::write(const EMCHAR* fmt, ...) {
         mlputs(ap, emstrlen(ap));
         break;
       default:
-        display->statputc(mbcursor++, c);
+        redisplay->statputc(mbcursor++, c);
       }
     }
   }
 
   for (auto i(mbcursor); i < term->getNbCols(); ++i) {
-    display->statputc(i, ' ');
+    redisplay->statputc(i, ' ');
   }
 
-  display->update(Redisplay::Mode::MINIBUF);
+  redisplay->update(Redisplay::Mode::MINIBUF);
   mpresf = true;
 
   va_end(var);
@@ -454,10 +454,10 @@ static void
 mlputs(const EMCHAR* s, int size) {
   while (size--) {
     if ((unsigned int)*s < (unsigned int)' ') {
-      display->statputc(mbcursor++, '^');
-      display->statputc(mbcursor++, '@' + *s++);
+      redisplay->statputc(mbcursor++, '^');
+      redisplay->statputc(mbcursor++, '@' + *s++);
     } else {
-      display->statputc(mbcursor++, *s++);
+      redisplay->statputc(mbcursor++, *s++);
     }
   }
 }
@@ -477,14 +477,14 @@ mlputi(int i, int r) {
 
   if (i < 0) {
     i = -i;
-    display->statputc(mbcursor++, '-');
+    redisplay->statputc(mbcursor++, '-');
   }
 
   if ((q = i / r) != 0) {
     mlputi(q, r);
   }
 
-  display->statputc(mbcursor++, hexdigits[i % r]);
+  redisplay->statputc(mbcursor++, hexdigits[i % r]);
 }
 
 /*

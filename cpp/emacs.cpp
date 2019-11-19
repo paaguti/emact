@@ -47,7 +47,7 @@ extern const EMCHAR* version;   /* Current version              */
 
 static bool initflag = false;   /* Init flag                    */
 
-Redisplay*  display{nullptr};
+Redisplay*  redisplay{nullptr}; /* Redisplay global object      */
 Buffer*     curbp{nullptr};     /* Current buffer               */
 EditWindow* curwp{nullptr};     /* Current window               */
 MEvent      mevent;             /* Mouse event (if any)         */
@@ -1149,11 +1149,11 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     new EditWindow{bp};  // Allocated Window is managed by an internal list.
 
     kbdm.reset();
-    display = new Redisplay;
+    redisplay = new Redisplay;
 
     if (_argc > curarg) {
       i++;
-      display->update(Redisplay::Mode::REFRESH);
+      redisplay->update(Redisplay::Mode::REFRESH);
       (void)newfile(_argv[curarg++]);
     }
 
@@ -1195,7 +1195,7 @@ Editor::Editor(int argc, EMCHAR* argv[], bool)
     opt::foreground_color &= 0x07;
 
     term = Terminal::getInstance();
-    display->update(Redisplay::Mode::REFRESH);
+    redisplay->update(Redisplay::Mode::REFRESH);
     if (_argc > curarg) {
       (void)newfile(_argv[curarg]);
     }
@@ -1224,7 +1224,7 @@ Editor::engine() {
   while (editflag) {
     int n;
 
-    display->update();
+    redisplay->update();
 
     auto c = getkey();
 
@@ -1264,7 +1264,7 @@ Editor::engine() {
 
     if (mpresf) {
       MiniBuf::erase();
-      display->update();
+      redisplay->update();
     }
 
     if (c == (CTLX|METACH)) {
@@ -1525,7 +1525,7 @@ getctl() {
 
 CMD
 Editor::killemacs() {
-  display->tidy();
+  redisplay->tidy();
   editflag = false;
   return T;
 }

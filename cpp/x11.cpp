@@ -679,7 +679,7 @@ X11Terminal::getEvent() {
 
       XSetRegion(_dpy, _gcstd, region);
       Redisplay::exposed();
-      display->update();
+      redisplay->update();
       XDestroyRegion(region);
     }
 
@@ -700,7 +700,7 @@ X11Terminal::getEvent() {
     }
 
     if (X11expose) {
-      delete display;
+      delete redisplay;
     }
 
     _width  = (unsigned int)event.xconfigure.width;
@@ -709,7 +709,7 @@ X11Terminal::getEvent() {
     this->setNbCols(_width / _wfnt);
 
     if (X11expose) {
-      display = new Redisplay;
+      redisplay = new Redisplay;
       (void)EditWindow::resize();
     }
 

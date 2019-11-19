@@ -100,7 +100,7 @@ EditWindow::resize() noexcept {
    * Update head and force a complete redraw.
    */
   head->_ntrows = (term->getNbRows() - 1);
-  display->modeline(head);
+  redisplay->modeline(head);
   head->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
 
   (void)WDGtitle(curbp->bufname(), curbp->filename());
@@ -703,7 +703,7 @@ EditWindow::find() {
         /* x-set-point-and-insert-selection */
         WDGclippaste();
         (void)Editor::yank();
-        display->update();
+        redisplay->update();
         break;
       case MEvent::MButton7:
         /* mouse-track insert */

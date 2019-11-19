@@ -358,7 +358,7 @@ Redisplay::refresh(EditWindow* wp) {
     }
   }
 
-  display->modeline(wp);
+  redisplay->modeline(wp);
   wp->setFlags(EditWindow::WFCLEAR);
 }
 

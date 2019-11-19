@@ -770,7 +770,7 @@ Line::instoggle() {
   opt::replace_mode = !opt::replace_mode;
 
   for (auto wp : EditWindow::list()) {
-    display->modeline(wp);
+    redisplay->modeline(wp);
   }
 
   return T;

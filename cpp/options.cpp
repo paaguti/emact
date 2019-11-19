@@ -377,7 +377,7 @@ Options::setvar() {
   }
 
   for (auto wp : EditWindow::list()) {
-    display->modeline(wp);
+    redisplay->modeline(wp);
   }
 
   return T;

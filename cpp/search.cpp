@@ -237,19 +237,19 @@ replace(bool prompt) {
       replaced++;
     } else {
       WDGmessage(ECSTR("Query-Replace mode "));
-      display->update();
+      redisplay->update();
       for (c = '?'; c == '?';) {
         switch (c = term->get()) {
         case '!' :
           Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
-          display->update();
+          redisplay->update();
           prompt = false;
           break;
         case ',' :
           Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
-          display->update();
+          redisplay->update();
           prompt = false;
           break;
         case 'Y' :
@@ -258,7 +258,7 @@ replace(bool prompt) {
         case '.' :
           Search::substitute(patl, (EMCHAR*)npat);
           replaced++;
-          display->update();
+          redisplay->update();
           break;
         case 0x07 :     /* ABORT */
           WDGwrite(ECSTR("Quit"));
@@ -650,7 +650,7 @@ Search::autoMatch(int c, bool f) {
   if (Editor::backchar() == T && Search::matchBackward(c, f) && f) {
     res = true;
     if (upline <= crow) {
-      display->update();
+      redisplay->update();
       term->cshow(true);
       Search::wait(1);
       term->cshow(false);

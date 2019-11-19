@@ -344,11 +344,11 @@ XpTerminal::xpsettextattrib() {
 
 void
 XpTerminal::xpchangefont(int font) {
-  if (_openp && display->running()) {
-    delete display;
+  if (_openp && redisplay->running()) {
+    delete redisplay;
     xpsetfontsize(font);
     xpsettextattrib();
-    display = new Redisplay;
+    redisplay = new Redisplay;
     (void)EditWindow::resize();
     InvalidateRect(_wnd, nullptr, TRUE);
   } else {
@@ -613,7 +613,7 @@ XpTerminal::xpfindmessage(LPFINDREPLACE lpfr) {
     } while (Search::next());
   }
 
-  display->update();
+  redisplay->update();
   if (replaced) {
     WDGwrite(ECSTR("Replaced %d occurence(s)"), replaced);
   }
@@ -664,7 +664,7 @@ XpTerminal::insert(int aChar) {
 static int
 xpposfrompoint(int x, int y) {
 #if defined(UNICODE)
-  auto lpString = display->text(y);
+  auto lpString = redisplay->text(y);
   auto xpterm = static_cast<XpTerminal*>(term);
 
   for (int i = 0; i < xpterm->getNbCols(); ++i) {
@@ -682,7 +682,7 @@ xpposfrompoint(int x, int y) {
 void
 XpTerminal::move(int row, int col) {
 #if defined(UNICODE)
-  auto lpString(display->text(row));
+  auto lpString(redisplay->text(row));
   SIZE size;
 
   GetTextExtentPoint32(_dc, lpString, col, &size);
@@ -1004,7 +1004,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       xpofn.lpstrInitialDir = nullptr;
       if (GetOpenFileName((LPOPENFILENAME)&xpofn) != 0) {
         (void)newfile(xpofn.lpstrFile);
-        display->update();
+        redisplay->update();
       }
       break;
     case IDM_PRINT:
@@ -1020,15 +1020,15 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       break;
     case IDM_UTF8ENCODING:
       Editor::utf8encoding();
-      display->update();
+      redisplay->update();
       break;
     case IDM_UTF16ENCODING:
       Editor::utf16encoding();
-      display->update();
+      redisplay->update();
       break;
     case IDM_DEFAULTENCODING:
       Editor::systemencoding();
-      display->update();
+      redisplay->update();
       break;
     case IDM_HELPEMACS:
       xphelp(XpTerminal::_wnd);
@@ -1038,14 +1038,14 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       break;
     case IDM_CUT:
       TextRegion::kill();
-      display->update();
+      redisplay->update();
       break;
     case IDM_COPY:
       TextRegion::copy();
       break;
     case IDM_PASTE:
       Editor::yank();
-      display->update();
+      redisplay->update();
       break;
     case IDM_FIND:
       XpTerminal::xpfindreplace(false);
@@ -1073,20 +1073,20 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
         XpTerminal::_fgcolor = XpTerminal::_colortable[opt::foreground_color];
       }
 
-      display->update(Redisplay::Mode::REFRESH);
+      redisplay->update(Redisplay::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, (LPRECT)nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
 
     break;
   case WM_SIZE:
-    if (XpTerminal::_openp && display->running()
+    if (XpTerminal::_openp && redisplay->running()
         && !IsIconic(XpTerminal::_wnd)) {
-      delete display;
+      delete redisplay;
       XpTerminal::xpsettextattrib();
-      display = new Redisplay;
+      redisplay = new Redisplay;
       (void)EditWindow::resize();
-      display->update(Redisplay::Mode::REFRESH);
+      redisplay->update(Redisplay::Mode::REFRESH);
       InvalidateRect(XpTerminal::_wnd, nullptr, TRUE);
       UpdateWindow(XpTerminal::_wnd);
     }
@@ -1107,7 +1107,7 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
       if (Redisplay::_sgarbf != Redisplay::Sync::GARBAGE) {
         Redisplay::exposed();
       }
-      display->update();
+      redisplay->update();
     }
     EndPaint(hWnd, &ps);
     break;
@@ -1145,20 +1145,20 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     } else {
       (void)Editor::backpage();
     }
-    display->update();
+    redisplay->update();
     break;
   case WM_DROPFILES: {
     TCHAR szDragFile[NFILEN];
     DragQueryFile((HDROP)wParam, 0, (TCHAR *)&szDragFile[0], NFILEN);
     (void)newfile(szDragFile);
-    display->update();
+    redisplay->update();
     break;
   }
   default:
     if (message == XpTerminal::_loadmsg) {
       if (lParam) {
         (void)newfile((TCHAR *)lParam);
-        display->update();
+        redisplay->update();
       }
       return (LRESULT)0;
     } else if (message == XpTerminal::_findmsg) {
@@ -1474,10 +1474,10 @@ XpTerminal::xpshowlines(TCHAR* chBuf, int nLen) {
     const TCHAR c{*s++};
     switch (c) {
     case '\r' :
-      display->update();
+      redisplay->update();
       break;
     case '\n':
-      display->update();
+      redisplay->update();
       (void)Editor::newline();
       break;
     default:
@@ -1617,7 +1617,7 @@ XpTerminal::xpsystemspawn(const TCHAR* cmd) {
       }
     }
     xpprocess_pending = false;
-    display->update();
+    redisplay->update();
   } else {
 #if defined(_GET_EXIT_CODE)
     lpdwExitCode = STILL_ACTIVE;

@@ -144,11 +144,11 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
         (void)Editor::backdel();
         break;
       case '\r' :
-        display->update();
+        redisplay->update();
         break;
       case '\n':
         (void)Editor::newline();
-        display->update();
+        redisplay->update();
         break;
       default:
         (void)Line::insert(c);
@@ -196,11 +196,11 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
           (void)backdel();
           break;
         case '\r' :
-          display->update();
+          redisplay->update();
           break;
         case '\n':
           (void)Editor::newline();
-          display->update();
+          redisplay->update();
           break;
         default:
           (void)Line::insert(c);
@@ -239,7 +239,7 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
         (void)dup2(out, fileno(stdout));
         (void)dup2(err, fileno(stderr));
         term->rawmode(); /* close the duplicate out */
-        display->update(Redisplay::Mode::REFRESH);
+        redisplay->update(Redisplay::Mode::REFRESH);
       }
 
       if (tmp1 != -1) {
@@ -261,7 +261,7 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
       (void)readin(procname);
       (void)std::remove((char *)procname);
     } else {
-      display->tidy();
+      redisplay->tidy();
       status = (ffsystem(cmd) == 0);
       term = Terminal::getInstance();
       WDGwrite(ECSTR("Strike any key to continue .. "));
@@ -297,7 +297,7 @@ Process::spawncli() {
 #if defined(_WIN32)
   (void)ffsystem(ffgetenv(ECSTR("ComSpec")));
 #else
-  display->tidy();
+  redisplay->tidy();
 
   if (emstrcmp(ffgetenv(ECSTR("TERM")), ECSTR("xterm")) == 0) {
     (void)ffsystem(ECSTR("xterm"));
@@ -330,7 +330,7 @@ Process::spawn() {
 #if defined(_WIN32)
   (void)ffsystem(line);
 #else
-  display->tidy();
+  redisplay->tidy();
 
   (void)ffsystem(line);
 
