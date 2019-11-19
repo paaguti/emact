@@ -77,30 +77,30 @@ LIBS		= $(SETARGV)	\
 		  comdlg32.lib  \
 		  $(LIBEXTRA)
 
-KERNEL		= basic.obj	\
-		  buffer.obj	\
-		  charutil.obj	\
-		  dirent.obj	\
-		  emacs.obj	\
-		  error.obj	\
-		  file.obj	\
-		  filecomp.obj	\
-		  fileio.obj	\
-		  indent.obj	\
-		  killbuf.obj	\
-		  line.obj	\
-		  main.obj	\
-		  minibuf.obj	\
-		  options.obj	\
-		  process.obj	\
-		  random.obj	\
-		  region.obj	\
-		  redisplay.obj	\
-		  search.obj	\
-		  terminal.obj	\
-		  unicode.obj	\
-		  version.obj	\
-		  window.obj	\
+KERNEL		= basic.obj	 \
+		  buffer.obj	 \
+		  charutil.obj	 \
+		  completion.obj \
+		  dirent.obj	 \
+		  emacs.obj	 \
+		  error.obj	 \
+		  file.obj	 \
+		  fileio.obj	 \
+		  indent.obj	 \
+		  killbuf.obj	 \
+		  line.obj	 \
+		  main.obj	 \
+		  minibuf.obj	 \
+		  options.obj	 \
+		  process.obj	 \
+		  random.obj	 \
+		  region.obj	 \
+		  redisplay.obj	 \
+		  search.obj	 \
+		  terminal.obj	 \
+		  unicode.obj	 \
+		  version.obj	 \
+		  window.obj	 \
 		  word.obj
 
 LISPOBJECTS	= mlisp.obj

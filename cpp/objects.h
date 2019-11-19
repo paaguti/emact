@@ -1419,6 +1419,13 @@ class Completion {
     _status = newStatus;
   }
 
+  static CMD     diredCommand(int c);
+  static EMCHAR* fileMatch(const EMCHAR* prompt, EMCHAR* file);
+  static EMCHAR* fileAccept(const EMCHAR* prompt, EMCHAR* file);
+  static bool    diredBuffer(const EMCHAR* fmatch);
+
+  static CMD dired();
+
  private:
   Status _status;
   Callback _fn;

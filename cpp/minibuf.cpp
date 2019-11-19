@@ -238,7 +238,7 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       }
       break;
     case METACH:
-      if (complete == filematch) {
+      if (complete == Completion::fileMatch) {
         buf[cpos] = '\000';
         (void)updir(buf, SLASH);
         cpos = emstrlen(buf);
@@ -278,7 +278,7 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
         c = term->get();
       }
 
-      if ((complete == filematch) && (cpos > 0) && (c == ':')) {
+      if ((complete == Completion::fileMatch) && (cpos > 0) && (c == ':')) {
         /*
          * Check for device change
          */
@@ -299,7 +299,7 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
       }
 
       if (editflg == NIL) {
-        if (complete == filematch && c != ' ' && c != '\t') {
+        if (complete == Completion::fileMatch && c != ' ' && c != '\t') {
           if (cpos > 0 && buf[cpos - 1] == '/') {
             if (c == '/' || c == '\\') {
               mlclearentry(buf, cpos);
@@ -316,7 +316,7 @@ MiniBuf::edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf) {
             editflg = T;
             continue;
           }
-        } else if (complete != filematch) {
+        } else if (complete != Completion::fileMatch) {
           mlclearentry(buf, cpos);
           cpos = 0;
         }

@@ -136,7 +136,7 @@ newfile(const EMCHAR* filename) {
   }
 
   if (ffdiredp(fname)) {
-    return diredbuffer(fname);
+    return Completion::diredBuffer(fname);
   }
 
   EMCHAR bname[Buffer::NBUFN];
@@ -176,7 +176,7 @@ readin(const EMCHAR* fname) {
   EMCHAR line[MAXLINE];
 
   if (ffdiredp(fname)) {
-    return diredbuffer(fname);
+    return Completion::diredBuffer(fname);
   }
 
   if (!ffsetaccess(fname, curbp)) {
@@ -920,7 +920,7 @@ findfile() {
   auto ofname = getbufdir();
   CMD s;
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   if ((s = WDGedit(ECSTR("Find file: "), ofname, NFILEN)) != T && s != NIL) {
     return s;
@@ -941,7 +941,7 @@ fileread() {
   auto ofname = getbufdir();
   CMD  s;
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   s = WDGedit(ECSTR("Find file read-only: "), ofname, NFILEN);
 
@@ -970,7 +970,7 @@ filealternate() {
   EMCHAR bname[Buffer::NBUFN];
   CMD s;
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   if ((s = WDGedit(ECSTR("Find alternate file: "), ofname, NFILEN)) != T) {
     return s;
@@ -1017,7 +1017,7 @@ fileinsert() {
     return NIL;
   }
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   auto ofname = getbufdir();
 
@@ -1137,10 +1137,10 @@ filewrite() {
     /*
      * Must have a name.
      */
-    complete = filematch;
+    complete = Completion::fileMatch;
     s = WDGedit(ECSTR("File to save in: "), ofname, NFILEN);
   } else {
-    complete = fileaccept;
+   complete = Completion::fileAccept;
     (void)emstrcpy(ofname, curbp->filename());
     if ((s = WDGedit(ECSTR("Write file: "), ofname, NFILEN)) == NIL) {
       (void)filesave();
@@ -1261,7 +1261,7 @@ unlinkfile() {
   auto ofname = getbufdir();
   CMD s;
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   if ((s = WDGedit(ECSTR("Delete file: "), ofname, NFILEN)) != T) {
     return s;

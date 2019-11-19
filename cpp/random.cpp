@@ -437,7 +437,7 @@ Editor::backdel() {
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {
-      return diredcmd(0x08);
+     return Completion::diredCommand(0x08);
     }
   }
 

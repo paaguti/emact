@@ -38,32 +38,32 @@ KRNSHARED	= lib$(KERN).$(SOEXT).$(VERSION)
 NOPRINTDIR	= --no-print-directory
 STRIP		=
 
-OBJECTS         = basic.$(O)     \
-                  buffer.$(O)    \
-                  charutil.$(O)  \
-                  curses.$(O)    \
-                  emacs.$(O)     \
-                  error.$(O)     \
-                  file.$(O)      \
-                  filecomp.$(O)  \
-                  fileio.$(O)    \
-                  indent.$(O)    \
-                  line.$(O)      \
-                  killbuf.$(O)   \
-                  main.$(O)      \
-                  minibuf.$(O)   \
-                  mlisp.$(O)     \
-                  options.$(O)   \
-                  process.$(O)   \
-                  random.$(O)    \
-                  redisplay.$(O) \
-                  region.$(O)    \
-                  search.$(O)    \
-                  terminal.$(O)  \
-                  unicode.$(O)   \
-                  version.$(O)   \
-                  window.$(O)    \
-                  word.$(O)      \
+OBJECTS         = basic.$(O)      \
+                  buffer.$(O)     \
+                  charutil.$(O)   \
+                  completion.$(O) \
+                  curses.$(O)     \
+                  emacs.$(O)      \
+                  error.$(O)      \
+                  file.$(O)       \
+                  fileio.$(O)     \
+                  indent.$(O)     \
+                  line.$(O)       \
+                  killbuf.$(O)    \
+                  main.$(O)       \
+                  minibuf.$(O)    \
+                  mlisp.$(O)      \
+                  options.$(O)    \
+                  process.$(O)    \
+                  random.$(O)     \
+                  redisplay.$(O)  \
+                  region.$(O)     \
+                  search.$(O)     \
+                  terminal.$(O)   \
+                  unicode.$(O)    \
+                  version.$(O)    \
+                  window.$(O)     \
+                  word.$(O)       \
                   x11.$(O)
 
 BINARIES	= ed$(EXE)

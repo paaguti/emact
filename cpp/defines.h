@@ -63,16 +63,6 @@ bool     removefile(const EMCHAR* fname, bool flag);
 CMD      printbuffer();
 
 /*
- *      filecomp.cpp
- */
-
-EMCHAR* filematch(const EMCHAR* prompt, EMCHAR* file);
-EMCHAR* fileaccept(const EMCHAR* prompt, EMCHAR* file);
-CMD     dired();
-bool    diredbuffer(const EMCHAR* fmatch);
-CMD     diredcmd(int c);
-
-/*
  *      fileio.cpp
  */
 

@@ -20,8 +20,8 @@ static auto rcsid("$Id: filecomp.cpp,v 1.19 2018/09/09 07:21:10 jullien Exp $");
  */
 
 /*
- * Search  for  a  matching file in the current directory.  If a
- * given pattern match a file then the file is returned.
+ * Search for a matching file in the current directory.  If a given
+ * pattern match a file then the file is returned.
  */
 
 #include "./emacs.h"
@@ -30,8 +30,8 @@ static void    getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch);
 static EMCHAR* caseconvert(EMCHAR* s);
 
 EMCHAR*
-fileaccept(const EMCHAR* prompt, EMCHAR* file) {
-  return filematch(prompt, file);
+Completion::fileAccept(const EMCHAR* prompt, EMCHAR* file) {
+  return Completion::fileMatch(prompt, file);
 }
 
 #if     defined(_WIN32)
@@ -41,19 +41,19 @@ fileaccept(const EMCHAR* prompt, EMCHAR* file) {
 #endif
 
 /*
- * Try  to convert filename on systems that inherit from DOS FAT
- * names  (mainly WINxx and OS/2).  When the name use a mixing
- * case  or  has no extension we leave it unchanged.  Otherwise,
- * we convert it into lower case letter only.
+ * Try to convert filename on systems that inherit from DOS FAT names
+ * (mainly WINxx and OS/2).  When the name use a mixing case or has no
+ * extension we leave it unchanged.  Otherwise, we convert it into
+ * lower case letter only.
  */
 
 static EMCHAR*
 caseconvert(EMCHAR* s) {
 #if defined(_WIN32)
-  auto p = s;
-  auto lowercase{false};
-  auto uppercase{false};
-  auto nodot{true};
+  auto p(s);
+  auto lowercase(false);
+  auto uppercase(false);
+  auto nodot(true);
 
   for (auto c = *p; *p != 0; ++p) {
     if (std::isalpha(c)) {
@@ -78,9 +78,9 @@ caseconvert(EMCHAR* s) {
 }
 
 EMCHAR*
-filematch(const EMCHAR* prompt, EMCHAR* file) {
+Completion::fileMatch(const EMCHAR* prompt, EMCHAR* file) {
   static  EMCHAR newchar[] = { '?', 0 };
-  static  EMCHAR pmatch[NFILEN]; /* pmatch is returned form filematch */
+  static  EMCHAR pmatch[NFILEN]; /* pmatch is returned form fileMatch */
 
   DIR*    dirp;
   ENTRY*  dp;
@@ -144,6 +144,7 @@ loop:
           !emstrcmp(s, ECSTR(".exe")) ||
           !emstrcmp(s, ECSTR(".dll")) ||
           !emstrcmp(s, ECSTR(".lap")) ||
+          !emstrcmp(s, ECSTR(".lib")) ||
           !emstrcmp(s, ECSTR(".a")) ||
           !emstrcmp(s, ECSTR(".old")) ||
           !emstrcmp(s, ECSTR(".BAK")) ||
@@ -260,10 +261,10 @@ getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch) {
  */
 
 CMD
-dired() {
+Completion::dired() {
   EMCHAR fname[NFILEN];
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   (void)emstrcpy(fname, curbp->filename());
   (void)ffullname(fname, ECSTR("file"));
@@ -279,7 +280,7 @@ dired() {
 }
 
 bool
-diredbuffer(const EMCHAR* fname) {
+Completion::diredBuffer(const EMCHAR* fname) {
   EMCHAR  buf[NFILEN];
   EMCHAR  bname[Buffer::NBUFN];
 
@@ -350,7 +351,7 @@ diredbuffer(const EMCHAR* fname) {
  */
 
 CMD
-diredcmd(int c) {
+Completion::diredCommand(int c) {
   EMCHAR  buf[NFILEN];
   EMCHAR  newname[NFILEN];
   EMCHAR* pfname = &buf[DIREDMARK];
@@ -470,7 +471,7 @@ diredcmd(int c) {
         *++p = '\000';
       }
 
-      complete = filematch;
+      complete = Completion::fileMatch;
 
       if (WDGedit(prompt, newname, NFILEN) != T) {
         return NIL;
@@ -490,7 +491,7 @@ diredcmd(int c) {
                     (size_t)curwp->line()->length());
     buf[curwp->line()->length()] = '\000';
 
-    return diredbuffer(pfname) ? T : NIL;
+    return Completion::diredBuffer(pfname) ? T : NIL;
   case 0x08 : /* ^H */
     if (Editor::backline() == T
         && Editor::gotobol() == T

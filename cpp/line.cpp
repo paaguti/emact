@@ -216,7 +216,7 @@ Line::insert(int c, int n) {
     }
 
     if (curbp->editMode() == EDITMODE::DIRED) {
-      return diredcmd(c) == T;
+     return Completion::diredCommand(c) == T;
     }
   }
 

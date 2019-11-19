@@ -395,7 +395,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'D',
-     dired,
+     Completion::dired,
      ECSTR("dired")
   },
   {

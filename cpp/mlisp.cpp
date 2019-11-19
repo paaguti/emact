@@ -989,7 +989,7 @@ MLisp::readFile() {
   CMD    s;
   EMCHAR fname[NFILEN];
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   s = MiniBuf::reply(ECSTR(": macro-file "), fname, NFILEN);
 

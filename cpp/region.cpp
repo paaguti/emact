@@ -322,7 +322,7 @@ TextRegion::write() {
     return NIL;
   }
 
-  complete = filematch;
+  complete = Completion::fileMatch;
 
   EMCHAR fname[NFILEN];
 

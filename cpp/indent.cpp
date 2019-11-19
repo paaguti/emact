@@ -26,15 +26,15 @@ static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
 #include "./emacs.h"
 
 static Line* nextcindent();
-static bool    nexttab(int col);
-static CMD     indent();
-static bool    lispindent();
-static bool    sgmlindent();
-static bool    cindent();
+static bool  nexttab(int col);
+static CMD   indent();
+static bool  lispindent();
+static bool  sgmlindent();
+static bool  cindent();
 
-int     indento{0};
+int   indento{0};
 Line* indentp{nullptr};
-int     commento{0};
+int   commento{0};
 
 /*
  * Insert spaces/tabulation up to a given position

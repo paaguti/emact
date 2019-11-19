@@ -690,7 +690,7 @@ EditWindow::find() {
       if (wp->buffer()->editMode() == EDITMODE::BufferMODE) {
         return Buffer::buffercmd('f');
       } else if (wp->buffer()->editMode() == EDITMODE::DIRED) {
-        return diredcmd('f');
+        return Completion::diredCommand('f');
       }
 
       switch (mevent.button) {
