@@ -702,7 +702,7 @@ EditWindow::find() {
       case MEvent::MButton3:
         /* x-set-point-and-insert-selection */
         WDGclippaste();
-        (void)yank();
+        (void)Editor::yank();
         display->update();
         break;
       case MEvent::MButton7:

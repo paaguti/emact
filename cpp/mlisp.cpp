@@ -677,10 +677,10 @@ LispEngine::eval(int expr, size_t depth) {
           for (auto str = arg; (*str && s == T); ++str) {
             switch (*str) {
             case '\t':
-              s = tabexpand();
+              s = Editor::tabexpand();
               break;
             case '\n':
-              s = endline();
+              s = Editor::endline();
               break;
             default:
               s = Line::insert(*str) ? T : NIL;
@@ -695,17 +695,17 @@ LispEngine::eval(int expr, size_t depth) {
           while (*bufcmd && s == T) {
             switch (*bufcmd) {
             case '\t':
-              s = tabexpand();
+              s = Editor::tabexpand();
               break;
             case '\n':
-              s = endline();
+              s = Editor::endline();
               break;
             case '\\':
               if (*(bufcmd + 1) != 'n') {
                 s = Line::insert(*bufcmd) ? T : NIL;
               } else {
                 ++bufcmd;
-                s = endline();
+                s = Editor::endline();
               }
               break;
             default:

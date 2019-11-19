@@ -141,13 +141,13 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
       }
       switch (c) {
       case '\b' :
-        (void)backdel();
+        (void)Editor::backdel();
         break;
       case '\r' :
         display->update();
         break;
       case '\n':
-        (void)newline();
+        (void)Editor::newline();
         display->update();
         break;
       default:
@@ -199,7 +199,7 @@ Process::syscompile(const EMCHAR* cmd, int flag) {
           display->update();
           break;
         case '\n':
-          (void)newline();
+          (void)Editor::newline();
           display->update();
           break;
         default:

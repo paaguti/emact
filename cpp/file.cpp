@@ -1077,7 +1077,7 @@ fileinsert() {
        */
 
       if (curbp->lastline() != curwp->line()->forw()) {
-        (void)openline();
+        (void)Editor::openline();
       }
 
       lp2 = curwp->line();

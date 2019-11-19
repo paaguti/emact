@@ -310,7 +310,7 @@ Search::substitute(int length, const EMCHAR* newstr) {
   curbp->setEditMode(EDITMODE::FUNDAMENTAL);
 
   for (int i = 0; i < length; ++i) {
-    (void)backdel();
+    (void)Editor::backdel();
   }
 
   for (; *newstr; ++newstr) {
@@ -925,7 +925,7 @@ Search::complete() {
       /*
        * Undo previous completion.
        */
-      backdel();
+     (void)Editor::backdel();
     }
   } else {
     /*
@@ -1211,7 +1211,7 @@ Search::compareWindows() {
       wp1->setFlags(EditWindow::WFMOVE);
 
       Editor::_thisflag |= CFCOMP;
-      return showcpos();
+      return Editor::showcpos();
     }
   }
 

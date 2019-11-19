@@ -294,12 +294,12 @@ Word::delForward() {
   Editor::_repeat = 1;
   while (n--) {
     while (!inword()) {
-      if (forwdel() == NIL) {
+      if (Editor::forwdel() == NIL) {
         return NIL;
       }
     }
     while (inword()) {
-      if (forwdel() == NIL) {
+      if (Editor::forwdel() == NIL) {
         return NIL;
       }
     }
@@ -322,11 +322,11 @@ Word::delBackward() {
   Editor::_repeat = 1;
   while (n--) {
     while (Editor::backchar() == T && !inword()) {
-      if (forwdel() == NIL) {
+      if (Editor::forwdel() == NIL) {
         return NIL;
       }
     }
-    while (forwdel() == T && Editor::backchar() == T) {
+    while (Editor::forwdel() == T && Editor::backchar() == T) {
       if (!inword()) {
         break;
       }
@@ -371,7 +371,7 @@ Word::twiddle() {
 
   for (i = 0; inword() && i < NPAT - 1; ++i) {
     word1[i] = curwp->getChar();
-    (void)forwdel();
+    (void)Editor::forwdel();
   }
   word1[i] = '\0';
   doto += i;
@@ -391,7 +391,7 @@ Word::twiddle() {
 
   for (i = 0; inword() && i < NPAT - 1; ++i) {
     word2[i] = curwp->getChar();
-    (void)forwdel();
+    (void)Editor::forwdel();
   }
 
   word2[i] = '\0';

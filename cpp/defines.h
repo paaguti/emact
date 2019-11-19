@@ -122,7 +122,7 @@ CMD     elispexpr();
 int     llemacs(EMCHAR* file);
 int     llembol(const EMCHAR* buf);
 int     llemeol(const EMCHAR* buf,int n);
-CMD     MLisp::evalBuffer();
+CMD     evalbuffer();
 CMD     evalfunction();
 #endif
 
@@ -136,34 +136,37 @@ CMD     switchscreen();
  *      random.cpp
  */
 
-CMD     newline();
-CMD     showcpos();
-CMD     twiddle();
-CMD     quotechar();
-CMD     tab();
-CMD     tabexpand();
-CMD     openline();
-CMD     endline();
-CMD     deblank();
-CMD     forwdel();
-CMD     backdel();
-CMD     killtext();
-CMD     yank();
-CMD     appendnextkill();
-CMD     setfillcolumn();
-CMD     setfillprefix();
-CMD     backparagraph();
-CMD     forwparagraph();
-CMD     markparagraph();
-CMD     fillparagraph();
-CMD     splitlinetofill();
-CMD     justonespace();
-CMD     justifycurline();
-CMD     setjustifyleft();
-CMD     setjustifyfull();
-CMD     justifycomment();
-CMD     undo();
-CMD     enterdebug();
+//CMD     newline();
+//CMD     showcpos();
+//CMD     twiddle();
+//CMD     quotechar();
+//CMD     tab();
+//CMD     tabexpand();
+//CMD     openline();
+//CMD     endline();
+//CMD     deblank();
+//CMD     forwdel();
+//CMD     backdel();
+//CMD     killtext();
+//CMD     yank();
+
+#if 0
+CMD     Editor::appendNextKill();
+CMD     Editor::setFillColumn();
+CMD     Editor::setFillPrefix();
+CMD     Editor::backParagraph();
+CMD     Editor::forwParagraph();
+CMD     Editor::markParagraph();
+CMD     Editor::fillParagraph();
+CMD     Editor::splitLineToFill();
+CMD     Editor::justOneSpace();
+CMD     Editor::justifyCurLine();
+CMD     Editor::setJustifyLeft();
+CMD     Editor::setJustifyFull();
+CMD     Editor::justifyComment();
+CMD     Editor::Editor::undo();
+CMD     Editor::enterDebug();
+#endif
 
 /*
  *      termio.cpp

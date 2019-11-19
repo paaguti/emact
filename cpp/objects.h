@@ -1603,6 +1603,38 @@ class Editor {
   static CMD swapmark();
 
   /*
+   * random.cpp
+   */
+  static CMD newline();
+  static CMD tab();
+  static CMD showcpos();
+  static CMD twiddle();
+  static CMD quotechar();
+  static CMD tabexpand();
+  static CMD openline();
+  static CMD endline();
+  static CMD delblank();
+  static CMD forwdel();
+  static CMD backdel();
+  static CMD killtext();
+  static CMD yank();
+  static CMD appendNextKill();
+  static CMD setFillColumn();
+  static CMD setFillPrefix();
+  static CMD backParagraph();
+  static CMD forwParagraph();
+  static CMD markParagraph();
+  static CMD fillParagraph();
+  static CMD splitLineToFill();
+  static CMD justOneSpace();
+  static CMD justifyCurLine();
+  static CMD setJustifyLeft();
+  static CMD setJustifyFull();
+  static CMD justifyComment();
+  static CMD undo();
+  static CMD enterDebug();
+
+  /*
    *  emacs.cpp
    */
 

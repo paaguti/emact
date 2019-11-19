@@ -99,7 +99,7 @@ llemeol(const EMCHAR *buf, int n) {
  */
 
 CMD
-MLisp::evalBuffer() {
+evalbuffer() {
   evalflag = EVALBuffer;
   curline  = curbp->firstline();
   tidy();

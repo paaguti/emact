@@ -88,7 +88,7 @@ nextcindent() {
 
   auto clp(oclp);
 
-  (void)forwdel();        /* delete '}' */
+  (void)Editor::forwdel();        /* delete '}' */
 
   if (res != true) {
     return clp;
@@ -169,7 +169,7 @@ nextcindent() {
     /*
      * Special at the end, delete the newline added by '}'
      */
-    (void)forwdel();
+    (void)Editor::forwdel();
   }
 
   return clp;
@@ -190,7 +190,7 @@ unindent(int c, bool f) {
 
   if ((Line::insert(c) != true)
       || (Search::autoMatch(c, f) != true)
-      || (backdel() != T)) {
+      || (Editor::backdel() != T)) {
     return false;
   }
 
@@ -208,7 +208,7 @@ unindent(int c, bool f) {
         break;
       }
     } else {
-      if (backdel() == NIL) {
+      if (Editor::backdel() == NIL) {
         return false;
       }
     }
@@ -765,14 +765,14 @@ indent() {
 
 CMD
 tabindent() {
-  (void)openline();
+  (void)Editor::openline();
   (void)indent();
-  (void)forwdel();
+  (void)Editor::forwdel();
 
   const auto& dot(curwp->getDot());
 
   if (dot.pos() != dot.line()->length() && curwp->getChar() == '}') {
-    (void)forwdel();
+    (void)Editor::forwdel();
     (void)unindent('}', false);
     (void)Editor::backchar();
   }
@@ -822,9 +822,9 @@ indentline() {
 
 CMD
 newlineindent() {
-  (void)justonespace();
+  (void)Editor::justOneSpace();
   (void)Editor::backchar();
-  (void)openline();
+  (void)Editor::openline();
   (void)Editor::forwline();
   (void)Editor::gotobol();
   (void)tabindent();

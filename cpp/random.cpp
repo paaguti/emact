@@ -57,7 +57,7 @@ Counter::format() {
  */
 
 CMD
-showcpos() {
+Editor::showcpos() {
   int nch = 0;
   int cbo = 0;
   int cac = MAX_EMCHAR;
@@ -150,7 +150,7 @@ getccol() {
  */
 
 CMD
-twiddle() {
+Editor::twiddle() {
   if (freadonly()) {
     return NIL;
   }
@@ -200,7 +200,7 @@ twiddle() {
  */
 
 CMD
-quotechar() {
+Editor::quotechar() {
   auto n = Editor::_repeat;
   int  c;
 
@@ -223,7 +223,7 @@ quotechar() {
  */
 
 CMD
-tab() {
+Editor::tab() {
   if (Editor::_repeat == 0) {
     opt::tab_size = 8;   /* restore to default */
     return T;
@@ -239,7 +239,7 @@ tab() {
      * Last indent fails, force a tab.
      */
     Editor::_thisflag &= ~CFTAB;
-    return tabexpand();
+    return Editor::tabexpand();
   }
 
   if ((curbp->editMode() != EDITMODE::FUNDAMENTAL)
@@ -254,11 +254,11 @@ tab() {
     return s;
   }
 
-  return tabexpand();
+  return Editor::tabexpand();
 }
 
 CMD
-tabexpand() {
+Editor::tabexpand() {
   bool res;
   if (opt::tab_size == 8 &&
       curbp->editMode() != EDITMODE::JAVAMODE &&
@@ -282,7 +282,7 @@ tabexpand() {
  */
 
 CMD
-openline() {
+Editor::openline() {
   for (auto i = 0; i < Editor::_repeat; ++i) {
     if (curwp->pos() == 0 && opt::fill_prefix[0]) {
       for (auto j = 0; opt::fill_prefix[j]; ++j) {
@@ -311,7 +311,7 @@ openline() {
  */
 
 CMD
-endline() {
+Editor::endline() {
   switch (curbp->editMode()) {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
@@ -341,7 +341,7 @@ endline() {
   default:
     break;
   }
-  return newline();
+  return Editor::newline();
 }
 
 /*
@@ -354,7 +354,7 @@ endline() {
  */
 
 CMD
-newline() {
+Editor::newline() {
   auto n = Editor::_repeat;
 
   while (n--) {
@@ -386,7 +386,7 @@ newline() {
  */
 
 CMD
-deblank() {
+Editor::delblank() {
   auto lp1 = curwp->line();
 
   Line* lp2;
@@ -417,7 +417,7 @@ deblank() {
  */
 
 CMD
-forwdel() {
+Editor::forwdel() {
   return Line::remove(Editor::_repeat) ? T : NIL;
 }
 
@@ -430,7 +430,7 @@ forwdel() {
  */
 
 CMD
-backdel() {
+Editor::backdel() {
   if (curbp->readonly()) {
     if (curbp->editMode() == EDITMODE::BufferMODE) {
       return Buffer::buffercmd(0x08);
@@ -491,7 +491,7 @@ backdel() {
  */
 
 CMD
-killtext() {
+Editor::killtext() {
   if ((Editor::_lastflag & CFKILL) == 0) {
     /* Clear kill buffer if */
     KillBuf::clear(); /* last wasn't a kill.  */
@@ -524,7 +524,7 @@ killtext() {
  */
 
 CMD
-yank() {
+Editor::yank() {
   auto n          = Editor::_repeat;
   auto save       = Editor::_repeat;
   auto lastlflag  = (curwp->line() == curbp->lastline());
@@ -556,7 +556,7 @@ yank() {
      * last char
      */
 
-    (void)forwdel();
+    (void)Editor::forwdel();
 
     if (firstlflag) {
       /*
@@ -582,7 +582,7 @@ yank() {
  */
 
 CMD
-appendnextkill() {
+Editor::appendNextKill() {
   WDGmessage(ECSTR("If the next command is a kill, it will append"));
   Editor::_thisflag |= CFKILL;
   return T;
@@ -611,7 +611,7 @@ prefixlinep(const Line *line, int len) {
  */
 
 CMD
-setfillcolumn() {
+Editor::setFillColumn() {
   auto newfill = ((Editor::_repeat == 1) ? curwp->pos() : Editor::_repeat);
 
   if (newfill < 3) {
@@ -634,7 +634,7 @@ setfillcolumn() {
  */
 
 CMD
-setfillprefix() {
+Editor::setFillPrefix() {
   if (curwp->pos() == 0) {
     if (!kbdm.isPlaying()) {
       WDGwrite(ECSTR("fill-prefix cancelled."));
@@ -700,7 +700,7 @@ addprefix() {
  */
 
 CMD
-fillparagraph() {
+Editor::fillParagraph() {
   if (freadonly()) {
     return NIL;
   }
@@ -710,7 +710,7 @@ fillparagraph() {
 
   curbp->setEditMode(EDITMODE::FUNDAMENTAL);
 
-  (void)backparagraph();
+  (void)Editor::backParagraph();
 
   curwp->setDotPos(0);
   if (prefixlinep(curwp->line(), len)) {
@@ -762,7 +762,7 @@ fillparagraph() {
 
   curwp->setDotPos(0);
   while (curwp->line()->position() >= opt::fill_column) {
-    if (splitlinetofill() != T) {
+    if (Editor::splitLineToFill() != T) {
       break;
     }
   }
@@ -788,7 +788,7 @@ fillparagraph() {
  */
 
 CMD
-splitlinetofill() {
+Editor::splitLineToFill() {
   int  bpos = 0;                        /* break position      */
   int  dpos = 0;                        /* display position    */
   int  fpos = 0;                        /* forced break        */
@@ -845,16 +845,16 @@ splitlinetofill() {
       curwp->setDotPos(bpos);
     }
 
-    (void)endline();
+    (void)Editor::endline();
     if (justmode != JUSTLEFT) {
       /*
        * assumes full-justify
        */
       (void)Editor::backline();
       if (curbp->editMode() == EDITMODE::SGMLMODE) {
-        (void)justifycomment();
+        (void)Editor::justifyComment();
       } else {
-        (void)justifycurline();
+        (void)Editor::justifyCurLine();
       }
       (void)Editor::forwline();
     }
@@ -871,7 +871,7 @@ splitlinetofill() {
  */
 
 CMD
-justifycurline() {
+Editor::justifyCurLine() {
   bool justifyed;
   int maxspace;
 
@@ -970,7 +970,7 @@ justifycurline() {
  */
 
 CMD
-backparagraph() {
+Editor::backParagraph() {
   auto len = emstrlen(opt::fill_prefix);
 
   while (curwp->line()->back() != curbp->lastline() &&
@@ -999,7 +999,7 @@ backparagraph() {
  */
 
 CMD
-forwparagraph() {
+Editor::forwParagraph() {
   auto len = emstrlen(opt::fill_prefix);
 
   while (curwp->line() != curbp->firstline() &&
@@ -1024,10 +1024,10 @@ forwparagraph() {
  */
 
 CMD
-markparagraph() {
-  (void)backparagraph();
+Editor::markParagraph() {
+  (void)Editor::backParagraph();
   (void)Editor::setmark();
-  (void)forwparagraph();
+  (void)Editor::forwParagraph();
 
   return T;
 }
@@ -1037,7 +1037,7 @@ markparagraph() {
  */
 
 CMD
-justonespace() {
+Editor::justOneSpace() {
   EMCHAR c;
 
   if (curwp->pos() == curwp->line()->length()) {
@@ -1066,7 +1066,7 @@ justonespace() {
 
   while ((curwp->pos() < curwp->line()->length()) &&
          ((c = curwp->getChar()) == ' ' || c == '\t')) {
-    (void)forwdel();
+    (void)Editor::forwdel();
   }
 
   return T;
@@ -1078,10 +1078,10 @@ justonespace() {
  */
 
 CMD
-setjustifyleft() {
+Editor::setJustifyLeft() {
   justmode = JUSTLEFT;
 
-  return fillparagraph();
+  return Editor::fillParagraph();
 }
 
 /*
@@ -1090,10 +1090,10 @@ setjustifyleft() {
  */
 
 CMD
-setjustifyfull() {
+Editor::setJustifyFull() {
   justmode = JUSTFULL;
 
-  return fillparagraph();
+  return Editor::fillParagraph();
 }
 
 /*
@@ -1104,7 +1104,7 @@ setjustifyfull() {
  */
 
 CMD
-justifycomment() {
+Editor::justifyComment() {
   static constexpr EMCHAR skip[] = { ' ', '\t', '#', '*', '/', '-', ';', 0 };
 
   curwp->setDotPos(0);
@@ -1143,20 +1143,20 @@ justifycomment() {
   }
 
   opt::fill_prefix[doto] = '\0';
-  (void)fillparagraph();
+  (void)Editor::fillParagraph();
   opt::fill_prefix[0] = '\0';
 
   return T;
 }
 
 /*
- * No undo yet !
+ * No Editor::Editor::undo yet !
  */
 
 CMD
-undo() {
+Editor::Editor::undo() {
   term->beep();
-  WDGwrite(ECSTR("'undo' not yet implemented ! Sorry."));
+  WDGwrite(ECSTR("'Editor::Editor::undo' not yet implemented ! Sorry."));
   return NIL;
 }
 
@@ -1165,7 +1165,7 @@ undo() {
  */
 
 CMD
-enterdebug() {
+Editor::enterDebug() {
   int* p;
   int* bug = nullptr;
 

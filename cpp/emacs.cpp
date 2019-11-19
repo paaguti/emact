@@ -115,7 +115,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'I',
-     tab,
+     Editor::tab,
      ECSTR("indent-for-tab-command")
   },
   {
@@ -155,7 +155,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'Q',
-     quotechar,
+     Editor::quotechar,
      ECSTR("quoted-insert")
   },
   {
@@ -170,7 +170,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'T',
-     twiddle,
+     Editor::twiddle,
      ECSTR("transpose-chars")
   },
   {
@@ -200,8 +200,8 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'_',
-     undo,
-     ECSTR("undo")
+     Editor::Editor::undo,
+     ECSTR("Editor::Editor::undo")
   },
   {
      CTLX|METACH,
@@ -255,7 +255,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'O',
-     deblank,
+     Editor::delblank,
      ECSTR("delete-blank-lines")
   },
   {
@@ -325,7 +325,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'=',
-     showcpos,
+     Editor::showcpos,
      ECSTR("what-cursor-position")
   },
   {
@@ -340,7 +340,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'.',
-     setfillprefix,
+     Editor::setFillPrefix,
      ECSTR("set-fill-prefix")
   },
   {
@@ -405,7 +405,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'F',
-     setfillcolumn,
+     Editor::setFillColumn,
      ECSTR("set-fill-column")
   },
   {
@@ -455,8 +455,8 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'U',
-     undo,
-     ECSTR("undo")
+     Editor::Editor::undo,
+     ECSTR("Editor::Editor::undo")
   },
   {
      CTLX|'W',
@@ -560,12 +560,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'W',
-     appendnextkill,
+     Editor::appendNextKill,
      ECSTR("append-next-kill")
   },
   {
      META|' ',
-     justonespace,
+     Editor::justOneSpace,
      ECSTR("just-one-space")
   },
   {
@@ -635,7 +635,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|';',
-     justifycomment,
+     Editor::justifyComment,
      ECSTR("justify-comment")
   },
   {
@@ -675,7 +675,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'H',
-     markparagraph,
+     Editor::markParagraph,
      ECSTR("mark-paragrah")
   },
   {
@@ -695,7 +695,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'Q',
-     fillparagraph,
+     Editor::fillParagraph,
      ECSTR("fill-paragraph")
   },
   {
@@ -745,12 +745,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'{',
-     backparagraph,
+     Editor::backParagraph,
      ECSTR("backward-paragraph")
   },
   {
      META|'}',
-     forwparagraph,
+     Editor::forwParagraph,
      ECSTR("forward-paragraph")
   },
   {
@@ -855,7 +855,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     justifycurline,
+     Editor::justifyCurLine,
      ECSTR("justify-current-line")
   },
   {
@@ -925,12 +925,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     setjustifyleft,
+     Editor::setJustifyLeft,
      ECSTR("set-justification-left")
   },
   {
      UNBOUND,
-     setjustifyfull,
+     Editor::setJustifyFull,
      ECSTR("set-justification-full")
   },
   {
@@ -960,7 +960,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     enterdebug,
+     Editor::enterDebug,
      ECSTR("enter-debug")                 }
 };
 
@@ -1388,7 +1388,7 @@ Editor::execute(int c, int n) {
       if (opt::auto_fill_mode) {
         if (c == ' ' && curwp->line()->position() > opt::fill_column) {
           (void)setmark();
-          (void)splitlinetofill();
+          (void)Editor::splitLineToFill();
           (void)swapmark();
           (void)gotoeol();
         }
