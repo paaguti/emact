@@ -230,7 +230,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'F',
-     findfile,
+     Editor::findFile,
      ECSTR("find-file")
   },
   {
@@ -265,17 +265,17 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'Q',
-     toggleread,
+     Editor::toggleRead,
      ECSTR("toggle-read-only")
   },
   {
      CTLX|Ctrl|'R',
-     fileread,
+     Editor::fileRead,
      ECSTR("find-file-read-only")
   },
   {
      CTLX|Ctrl|'S',
-     filesave,
+     Editor::fileSave,
      ECSTR("save-buffer")
   },
   {
@@ -290,12 +290,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'V',
-     filealternate,
+     Editor::fileAlternate,
      ECSTR("find-alternate-file")
   },
   {
      CTLX|Ctrl|'W',
-     filewrite,
+     Editor::fileWrite,
      ECSTR("write-file")
   },
   {
@@ -415,7 +415,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'I',
-     fileinsert,
+     Editor::fileInsert,
      ECSTR("insert-file")
   },
   {
@@ -450,7 +450,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|'S',
-     savesomebuffers,
+     Editor::saveSomeBuffers,
      ECSTR("save-some-buffers")
   },
   {
@@ -545,7 +545,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'R',
-     revertbuffer,
+     Editor::revertBuffer,
      ECSTR("revert-buffer")
   },
   {
@@ -805,7 +805,7 @@ std::vector<EditorCommand> Editor::_keytab = {
 
   {
      UNBOUND,
-     ansitooem,
+     Editor::ansiToOem,
      ECSTR("ansi-to-oem")
   },
   {
@@ -865,12 +865,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     mactoansi,
+     Editor::macToAnsi,
      ECSTR("mac-to-ansi")
   },
   {
      UNBOUND,
-     mactooem,
+     Editor::macToOem,
      ECSTR("mac-to-oem")
   },
   {
@@ -890,12 +890,12 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     oemtoansi,
+     Editor::oemToAnsi,
      ECSTR("oem-to-ansi")
   },
   {
      UNBOUND,
-     printbuffer,
+     Editor::printBuffer,
      ECSTR("print-buffer")
   },
   {
@@ -940,7 +940,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      UNBOUND,
-     unlinkfile,
+     Editor::unlinkFile,
      ECSTR("unlink-file")
   },
   {

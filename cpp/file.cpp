@@ -127,7 +127,7 @@ newfile(const EMCHAR* filename) {
 
       if (bp->isChanged() && (WDGyn(buf) == T)) {
         bp->setChanged(false);   /* Don't complain! */
-        return revertbuffer() == T;
+        return Editor::revertBuffer() == T;
       }
       curwp->setFlags(EditWindow::WFMODE|EditWindow::WFHARD);
       WDGmessage(ECSTR("Old buffer"));
@@ -602,7 +602,7 @@ extern  CMD NTansitooem(Line* lp);
 extern  CMD NToemtoansi(Line* lp);
 
 CMD
-ansitooem() {
+Editor::ansiToOem() {
   if (freadonly()) {
     return NIL;
   }
@@ -619,7 +619,7 @@ ansitooem() {
 }
 
 CMD
-oemtoansi() {
+Editor::oemToAnsi() {
   if (freadonly()) {
     return NIL;
   }
@@ -671,7 +671,7 @@ static unsigned char MacToISOLatin1[] = {
 };
 
 CMD
-mactoansi() {
+Editor::macToAnsi() {
   if (freadonly()) {
     return NIL;
   }
@@ -693,9 +693,9 @@ mactoansi() {
 }
 
 CMD
-mactooem() {
-  if (mactoansi() == T) {
-    return ansitooem();
+Editor::macToOem() {
+  if (Editor::macToAnsi() == T) {
+    return Editor::ansiToOem();
   } else {
     return NIL;
   }
@@ -703,22 +703,22 @@ mactooem() {
 
 #else
 CMD
-ansitooem() {
+Editor::ansiToOem() {
   return T;
 }
 
 CMD
-oemtoansi() {
+Editor::oemToAnsi() {
   return T;
 }
 
 CMD
-mactoansi() {
+Editor::macToAnsi() {
   return T;
 }
 
 CMD
-mactooem() {
+Editor::macToOem() {
   return T;
 }
 #endif
@@ -894,7 +894,7 @@ savetime() {
  */
 
 CMD
-toggleread() {
+Editor::toggleRead() {
   if (curbp->readonly()) {
     curbp->setReadonly(false);
     WDGmessage(ECSTR("Access right set to read/write"));
@@ -916,7 +916,7 @@ toggleread() {
  */
 
 CMD
-findfile() {
+Editor::findFile() {
   auto ofname = getbufdir();
   CMD s;
 
@@ -937,7 +937,7 @@ findfile() {
  */
 
 CMD
-fileread() {
+Editor::fileRead() {
   auto ofname = getbufdir();
   CMD  s;
 
@@ -965,7 +965,7 @@ fileread() {
  */
 
 CMD
-filealternate() {
+Editor::fileAlternate() {
   auto   ofname = getbufdir();
   EMCHAR bname[Buffer::NBUFN];
   CMD s;
@@ -1005,7 +1005,7 @@ filealternate() {
  */
 
 CMD
-fileinsert() {
+Editor::fileInsert() {
   Line* lp2;
   int     nline;
   int     nbytes;
@@ -1129,7 +1129,7 @@ fileinsert() {
  */
 
 CMD
-filewrite() {
+Editor::fileWrite() {
   auto ofname = getbufdir();
   CMD s;
 
@@ -1143,7 +1143,7 @@ filewrite() {
    complete = Completion::fileAccept;
     (void)emstrcpy(ofname, curbp->filename());
     if ((s = WDGedit(ECSTR("Write file: "), ofname, NFILEN)) == NIL) {
-      (void)filesave();
+      (void)Editor::fileSave();
     }
   }
 
@@ -1177,14 +1177,14 @@ filewrite() {
  */
 
 CMD
-filesave() {
+Editor::fileSave() {
   if (!curbp->isChanged()) {   /* Return, no changes.  */
     WDGmessage(ECSTR("(No changes need to be saved)"));
     return T;
   }
 
   if (curbp->unbound()) {
-    return filewrite();
+    return Editor::fileWrite();
   }
 
   return writeout(curbp->filename()) ? T : NIL;
@@ -1195,7 +1195,7 @@ filesave() {
  */
 
 CMD
-savesomebuffers() {
+Editor::saveSomeBuffers() {
   return Buffer::anycb(Buffer::ANYCB::PROMPT) ? T : NIL;
 }
 
@@ -1206,7 +1206,7 @@ savesomebuffers() {
  */
 
 CMD
-revertbuffer() {
+Editor::revertBuffer() {
   if (curbp->unbound()) {
     WDGwrite(ECSTR("Buffer does not seem to be associated with any file"));
     return NIL;
@@ -1257,7 +1257,7 @@ revertbuffer() {
  */
 
 CMD
-unlinkfile() {
+Editor::unlinkFile() {
   auto ofname = getbufdir();
   CMD s;
 
@@ -1302,7 +1302,7 @@ removefile(const EMCHAR* fname, bool flag) {
  */
 
 CMD
-printbuffer() {
+Editor::printBuffer() {
   WDGprint();
   return T;
 }

@@ -43,24 +43,9 @@ bool     newfile(const EMCHAR* fname);
 bool     readin(const EMCHAR* fname);
 void     makename(EMCHAR* bname, const EMCHAR* fname);
 bool     writeout(const EMCHAR* fn);
-CMD      ansitooem();
-CMD      oemtoansi();
-CMD      mactoansi();
-CMD      mactooem();
 EMCHAR*  normalize(EMCHAR* fname, int flag);
 EMCHAR*  updir(EMCHAR* fname, int slashflag);
-CMD      toggleread();
-CMD      fileread();
-CMD      filealternate();
-CMD      fileinsert();
-CMD      filewrite();
-CMD      filesave();
-CMD      findfile();
-CMD      revertbuffer();
-CMD      savesomebuffers();
-CMD      unlinkfile();
 bool     removefile(const EMCHAR* fname, bool flag);
-CMD      printbuffer();
 
 /*
  *      fileio.cpp
@@ -115,12 +100,6 @@ int     llemeol(const EMCHAR* buf,int n);
 CMD     evalbuffer();
 CMD     evalfunction();
 #endif
-
-/*
- *      mscterm.cpp
- */
-
-CMD     switchscreen();
 
 /*
  *      termio.cpp

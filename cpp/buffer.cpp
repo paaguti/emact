@@ -573,7 +573,7 @@ savebname(const EMCHAR* bname) {
   }
 
   curbp = newbp;
-  if (filesave() != T) {
+  if (Editor::fileSave() != T) {
     res = false;
   }
 
@@ -828,7 +828,7 @@ Buffer::buffercmd(int cmd) {
       if (curwp->line()->get(1) == 'S') {
         Buffer* oldbp = curbp;
         curbp = bp;
-        if (filesave() == T) {
+        if (Editor::fileSave() == T) {
           curwp->line()->put(1, ' ');
           Buffer::change(EditWindow::WFEDIT);
         }

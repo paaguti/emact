@@ -360,7 +360,7 @@ Process::makefile() {
     (void)emstrcat(buf, opt::make_arg);
   }
 
-  if ((s = savesomebuffers()) == ABORT) {
+  if ((s = Editor::saveSomeBuffers()) == ABORT) {
     return s;
   }
 
@@ -730,7 +730,7 @@ Process::compile() {
     return NIL;
   }
 
-  if ((s = savesomebuffers()) == ABORT) {
+  if ((s = Editor::saveSomeBuffers()) == ABORT) {
     return s;
   }
 
@@ -827,7 +827,7 @@ Process::javacompile() {
 
   (void)emstrcat(buf, base);
 
-  if ((s = savesomebuffers()) == ABORT) {
+  if ((s = Editor::saveSomeBuffers()) == ABORT) {
     return s;
   }
 
