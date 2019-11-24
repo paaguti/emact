@@ -1985,6 +1985,6 @@ latexinsert(int n, int c) {
 
 CMD
 Editor::redrawscreen() {
-  Redisplay::garbaged();
+  redisplay->garbaged();
   return T;
 }

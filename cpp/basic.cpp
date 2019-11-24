@@ -176,7 +176,7 @@ Editor::forwline() {
 
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P or C-N */
-    Editor::_curgoal = Redisplay::_curcol;
+    Editor::_curgoal = redisplay->_curcol;
   }
   Editor::_thisflag |= CFCPCN;
   if ((dlp = curwp->line()) == curbp->lastline()) {
@@ -204,7 +204,7 @@ CMD
 Editor::backline() {
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
-    Editor::_curgoal = Redisplay::_curcol;
+    Editor::_curgoal = redisplay->_curcol;
   }
 
   Editor::_thisflag |= CFCPCN;

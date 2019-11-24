@@ -532,7 +532,7 @@ XpTerminal::XpTerminal() {
     xpprinterror(_T("Can't update window"), TRUE);
   }
 
-  Redisplay::_mouse = true;
+  redisplay->_mouse = true;
   _openp = true;
 }
 
@@ -866,7 +866,7 @@ XpTerminal::cshow(bool nFlag) {
 
   SetBkColor(_dc, nFlag ? _fgcolor : _bgcolor);
   SetTextColor(_dc, nFlag ? _bgcolor : _fgcolor);
-  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &Redisplay::_curchar, 1, nullptr);
+  ExtTextOut(_dc, x, y, ETO_CLIPPED, nullptr, &redisplay->_curchar, 1, nullptr);
   SetBkColor(_dc, _bgcolor);
   SetTextColor(_dc, _fgcolor);
 #endif
@@ -1104,8 +1104,8 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     term->cshow(FALSE);
     BeginPaint(hWnd, &ps);
     if (XpTerminal::_openp) {
-      if (Redisplay::_sgarbf != Redisplay::Sync::GARBAGE) {
-        Redisplay::exposed();
+      if (!redisplay->isGarbaged()) {
+        redisplay->exposed();
       }
       redisplay->update();
     }

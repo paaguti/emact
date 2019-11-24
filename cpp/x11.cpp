@@ -101,7 +101,7 @@ class X11Terminal final : public Terminal {
   void
   cursor(bool flag) {
 #if defined(UNICODE)
-    EMCHAR code{Redisplay::_curchar};
+    EMCHAR code{redisplay->_curchar};
 
     XwcDrawImageString(_dpy,
                        _win,
@@ -112,7 +112,7 @@ class X11Terminal final : public Terminal {
                        &code,
                        1);
 #else
-    char code{(char)Redisplay::_curchar};
+    char code{(char)redisplay->_curchar};
 
     XDrawImageString(_dpy,
                      _win,
@@ -576,7 +576,7 @@ X11Terminal::X11Terminal() {
   this->setInitialized();
   term = this;
 
-  Redisplay::_mouse = true;
+  redisplay->_mouse = true;
 
   widget.w_clipcopy  = X11clipcopy;
   widget.w_clippaste = X11clippaste;

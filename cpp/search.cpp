@@ -640,7 +640,7 @@ saveindent(Line *clp, int cbo) {
 bool
 Search::autoMatch(int c, bool f) {
   const auto& dot(curwp->getDot());
-  auto  crow(Redisplay::_currow - (int)curwp->toprow());
+  auto  crow(redisplay->_currow - (int)curwp->toprow());
   auto  res(false);
   Line* mlp{nullptr};
   int   mbo{0};
