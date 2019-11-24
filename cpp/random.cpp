@@ -20,9 +20,8 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
  */
 
 /*
- * This  file  contains  the  command  processing functions for a
- * number  of  random  commands.  There is no functional grouping
- * here, for sure.
+ * This file contains the command processing functions for a number of
+ * random commands.  There is no functional grouping here, for sure.
  */
 
 #include "./emacs.h"
@@ -97,7 +96,7 @@ Editor::showcpos() {
   if (cac < 32) {
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d code=(%d, %x) (%d%%)"),
-      nbl, col, redisplay->_currow, cac, cac,
+      nbl, col, Redisplay::_currow, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc) / nch));
   } else {
     EMCHAR buf[2];
@@ -105,7 +104,7 @@ Editor::showcpos() {
     buf[1] = '\000';
     WDGwrite(
       ECSTR("at line %d: col=%d row=%d char='%s' code=(%d, 0x%x) (%d%%)"),
-      nbl, col, redisplay->_currow, buf, cac, cac,
+      nbl, col, Redisplay::_currow, buf, cac, cac,
       (nch == 0) ? 0 : (int)((100 * nbc)/ nch));
   }
 
@@ -773,7 +772,7 @@ Editor::fillParagraph() {
    * Reset the _curcol to the current position (any better solution ?)
    */
 
-  redisplay->_curcol = Editor::_curgoal = getccol();
+  Redisplay::_curcol = Editor::_curgoal = getccol();
 
   curbp->setEditMode(oldmode);
 

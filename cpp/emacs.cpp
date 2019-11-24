@@ -1982,9 +1982,8 @@ latexinsert(int n, int c) {
 /*
  * Refresh the entire screen. Not bound.
  */
-
 CMD
 Editor::redrawscreen() {
-  redisplay->garbaged();
+  Redisplay::garbaged();
   return T;
 }

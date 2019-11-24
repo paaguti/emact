@@ -30,8 +30,14 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 #include "./emacs.h"
 #include "./Redisplay.h"
 
-extern const EMCHAR* version;           /* Current version              */
+bool            Redisplay::_mouse{false};  // Mouse flag
+int             Redisplay::_currow{0};
+int             Redisplay::_curcol{0};
+EMCHAR          Redisplay::_curchar;
+Redisplay::Sync Redisplay::_sgarbf{Redisplay::Sync::GARBAGE};
+
 extern Terminal* term;
+extern const EMCHAR* version;           /* Current version              */
 
 /**
  * VIDEO class used internally by redisplay.
@@ -83,7 +89,7 @@ class VIDEO {
                && (VIDEO::col < term->getNbCols()));
     } else if (!self_insert(c)) {
       if (opt::set_show_graphic
-          || (redisplay->_mouse && (c == 24 || c == 25))) {
+          || (Redisplay::_mouse && (c == 24 || c == 25))) {
         vp->putc(VIDEO::col++, (EMCHAR)c);
       } else {
         VIDEO::vtputc('^');

@@ -44,8 +44,8 @@ static CMD  readpattern(const EMCHAR* prompt);
 static void saveindent(Line *clp, int cbo);
 
 /*
- * Compare two characters.  The "bc" comes from the  buffer. It
- * has it's case folded out. The "pc" is from the pattern.
+ * Compare two characters.  The "bc" comes from the buffer. It has
+ * it's case folded out. The "pc" is from the pattern.
  */
 
 static inline bool
@@ -640,7 +640,7 @@ saveindent(Line *clp, int cbo) {
 bool
 Search::autoMatch(int c, bool f) {
   const auto& dot(curwp->getDot());
-  auto  crow(redisplay->_currow - (int)curwp->toprow());
+  auto  crow(Redisplay::_currow - (int)curwp->toprow());
   auto  res(false);
   Line* mlp{nullptr};
   int   mbo{0};

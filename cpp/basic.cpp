@@ -40,9 +40,9 @@ Editor::gotobol() {
 }
 
 /*
- * Move  the cursor backwards by  "n" characters.   Compute  the
- * new cursor location.  Error  if  you try and  move out of the
- * buffer. Set the flag if the line pointer for dot changes.
+ * Move the cursor backwards by "n" characters.  Compute the new
+ * cursor location.  Error if you try and move out of the buffer. Set
+ * the flag if the line pointer for dot changes.
  */
 
 CMD
@@ -176,7 +176,7 @@ Editor::forwline() {
 
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P or C-N */
-    Editor::_curgoal = redisplay->_curcol;
+    Editor::_curgoal = Redisplay::_curcol;
   }
   Editor::_thisflag |= CFCPCN;
   if ((dlp = curwp->line()) == curbp->lastline()) {
@@ -204,7 +204,7 @@ CMD
 Editor::backline() {
   if ((Editor::_lastflag & CFCPCN) == 0) {
     /* Reset goal if the last isn't C-P, C-N  */
-    Editor::_curgoal = redisplay->_curcol;
+    Editor::_curgoal = Redisplay::_curcol;
   }
 
   Editor::_thisflag |= CFCPCN;

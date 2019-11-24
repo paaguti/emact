@@ -101,7 +101,7 @@ class X11Terminal final : public Terminal {
   void
   cursor(bool flag) {
 #if defined(UNICODE)
-    EMCHAR code{redisplay->_curchar};
+    EMCHAR code{Redisplay::_curchar};
 
     XwcDrawImageString(_dpy,
                        _win,
@@ -112,7 +112,7 @@ class X11Terminal final : public Terminal {
                        &code,
                        1);
 #else
-    char code{(char)redisplay->_curchar};
+    char code{(char)Redisplay::_curchar};
 
     XDrawImageString(_dpy,
                      _win,
@@ -225,10 +225,9 @@ const char* X11Terminal::X11rgbcolors[COLOR_TABLE_SIZE] = {
 
 /*
  * A replacement for XAllocColor.  This function should never fail to
- * allocate  a color.  When XAllocColor fails,  we return the nearest
- * matching  color.  If we have to allocate many colors this function
- * isn't  a  great  solution;  the  XQueryColors() could be done just
- * once.
+ * allocate a color.  When XAllocColor fails, we return the nearest
+ * matching color.  If we have to allocate many colors this function
+ * isn't a great solution; the XQueryColors() could be done just once.
  */
 
 bool
@@ -576,7 +575,7 @@ X11Terminal::X11Terminal() {
   this->setInitialized();
   term = this;
 
-  redisplay->_mouse = true;
+  Redisplay::_mouse = true;
 
   widget.w_clipcopy  = X11clipcopy;
   widget.w_clippaste = X11clippaste;
