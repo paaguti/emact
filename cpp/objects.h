@@ -30,6 +30,8 @@
 #include <limits>
 #include <memory>
 
+#include "./Redisplay.h"
+
 /*
  * This  file  is  the  general header file for all components of the
  * EMACS   display  editor.  It  contains  C++ classes definitions  used  by
@@ -1429,44 +1431,6 @@ class Completion {
  private:
   Status _status;
   Callback _fn;
-};
-
-/**
- * Class that handles display.
- */
-class Redisplay {
- public:
-  enum class Mode {
-    DELTA   = 0,
-    MINIBUF = 0x0200,  // Minibuffer
-    REFRESH = 0x0400   // Full refresh
-  };
-  enum class Sync {
-    GARBAGE      = 0,
-    SYNCHRONIZED = 1,
-    EXPOSE       = 2
-  };
-  Redisplay();
-  ~Redisplay();
-  bool running() const noexcept;
-  void tidy() const noexcept;
-  const EMCHAR* text(int y) const noexcept;
-  void update(Mode mode = Mode::DELTA);
-  void statputc(int n, int c) const noexcept;
-  void modeline(const EditWindow* wp) noexcept;
-  static void garbaged() { _sgarbf = Sync::GARBAGE; }
-  static void synchronized() { _sgarbf = Sync::SYNCHRONIZED; }
-  static void exposed() { _sgarbf = Sync::EXPOSE; }
-  static int    _currow;   // Cursor row
-  static int    _curcol;   // Cursor column
-  static EMCHAR _curchar;  // Char at cursor
-  static Sync   _sgarbf;   // screen is garbage
-  static bool   _mouse;    // mouse flags
-
- private:
-  void refresh(EditWindow* wp);
-  static void computecursor();
-  static void updateline(int row, EMCHAR* vline, EMCHAR* pline);
 };
 
 /**

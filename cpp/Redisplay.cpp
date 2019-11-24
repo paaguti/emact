@@ -28,8 +28,7 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
  */
 
 #include "./emacs.h"
-
-Terminal* term{nullptr};
+#include "./Redisplay.h"
 
 bool            Redisplay::_mouse{false};  // Mouse flag
 int             Redisplay::_currow{0};
@@ -38,6 +37,7 @@ EMCHAR          Redisplay::_curchar;
 Redisplay::Sync Redisplay::_sgarbf{Redisplay::Sync::GARBAGE};
 
 extern const EMCHAR* version;           /* Current version              */
+extern Terminal* term;
 
 /**
  * VIDEO class used internally by redisplay.

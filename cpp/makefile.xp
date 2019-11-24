@@ -95,7 +95,7 @@ KERNEL		= basic.obj	 \
 		  process.obj	 \
 		  random.obj	 \
 		  region.obj	 \
-		  redisplay.obj	 \
+		  Redisplay.obj	 \
 		  search.obj	 \
 		  terminal.obj	 \
 		  unicode.obj	 \

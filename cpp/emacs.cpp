@@ -47,6 +47,7 @@ extern const EMCHAR* version;   /* Current version              */
 
 static bool initflag = false;   /* Init flag                    */
 
+Terminal*   term{nullptr};
 Redisplay*  redisplay{nullptr}; /* Redisplay global object      */
 Buffer*     curbp{nullptr};     /* Current buffer               */
 EditWindow* curwp{nullptr};     /* Current window               */

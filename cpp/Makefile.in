@@ -56,7 +56,7 @@ OBJECTS         = basic.$(O)      \
                   options.$(O)    \
                   process.$(O)    \
                   random.$(O)     \
-                  redisplay.$(O)  \
+                  Redisplay.$(O)  \
                   region.$(O)     \
                   search.$(O)     \
                   terminal.$(O)   \
