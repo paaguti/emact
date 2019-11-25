@@ -93,7 +93,7 @@ KERNEL		= basic.obj	 \
 		  main.obj	 \
 		  MiniBuf.obj	 \
 		  Options.obj	 \
-		  process.obj	 \
+		  Process.obj	 \
 		  random.obj	 \
 		  Redisplay.obj	 \
 		  Search.obj	 \

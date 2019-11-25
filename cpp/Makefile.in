@@ -55,7 +55,7 @@ OBJECTS         = basic.$(O)      \
                   MiniBuf.$(O)    \
                   mlisp.$(O)      \
                   Options.$(O)    \
-                  process.$(O)    \
+                  Process.$(O)    \
                   random.$(O)     \
                   Redisplay.$(O)  \
                   Search.$(O)     \
