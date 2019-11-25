@@ -34,6 +34,7 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #define _CRT_SECURE_NO_WARNINGS
 #include "./emacs.h"
 #include "./build.h"
+#include "./Line.h"
 #include "./TextRegion.h"
 #include "./Redisplay.h"
 #include "./Word.h"
@@ -70,6 +71,19 @@ Point  Editor::_found;                // Position of last search
  */
 int    Counter::_val{0};
 EMCHAR Counter::_fmt[NPAT] = { '%', 'd', 0 };
+
+CMD
+Counter::insert() {
+  EMCHAR buf[NPAT];
+
+  (void)emsprintf(buf, &_fmt[0], _val);
+
+  for (auto s = &buf[0]; *s; ++s) {
+    (void)Line::insert(*s);
+  }
+
+  return T;
+}
 
 /*
  * Command table.  This table is *roughly* in ASCII order, left

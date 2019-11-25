@@ -48,7 +48,7 @@ OBJECTS         = basic.$(O)      \
                   file.$(O)       \
                   fileio.$(O)     \
                   indent.$(O)     \
-                  line.$(O)       \
+                  Line.$(O)       \
                   killbuf.$(O)    \
                   main.$(O)       \
                   minibuf.$(O)    \

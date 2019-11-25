@@ -88,7 +88,7 @@ KERNEL		= basic.obj	 \
 		  fileio.obj	 \
 		  indent.obj	 \
 		  killbuf.obj	 \
-		  line.obj	 \
+		  Line.obj	 \
 		  main.obj	 \
 		  minibuf.obj	 \
 		  options.obj	 \

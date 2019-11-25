@@ -30,6 +30,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 #include <chrono>
 #include <thread>
 #include "./emacs.h"
+#include "./Line.h"
 #include "./Redisplay.h"
 #include "./Word.h"
 
