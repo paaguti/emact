@@ -25,6 +25,7 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
 #include "./Line.h"

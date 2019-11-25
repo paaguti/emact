@@ -39,7 +39,7 @@ NOPRINTDIR	= --no-print-directory
 STRIP		=
 
 OBJECTS         = basic.$(O)      \
-                  buffer.$(O)     \
+                  Buffer.$(O)     \
                   charutil.$(O)   \
                   Completion.$(O) \
                   curses.$(O)     \

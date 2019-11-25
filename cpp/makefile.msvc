@@ -78,7 +78,7 @@ LIBS		= $(SETARGV)	\
 		  $(LIBEXTRA)
 
 KERNEL		= basic.obj	 \
-		  buffer.obj	 \
+		  Buffer.obj	 \
 		  charutil.obj	 \
 		  Completion.obj \
 		  dirent.obj	 \

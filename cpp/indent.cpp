@@ -24,6 +24,7 @@ static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Buffer.h"
 #include "./EditWindow.h"
 #include "./Line.h"
 #include "./Search.h"

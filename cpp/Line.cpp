@@ -36,6 +36,7 @@ static auto rcsid("$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
 #include "./Line.h"
