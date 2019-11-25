@@ -94,10 +94,10 @@ KERNEL		= basic.obj	 \
 		  options.obj	 \
 		  process.obj	 \
 		  random.obj	 \
-		  region.obj	 \
 		  Redisplay.obj	 \
 		  search.obj	 \
 		  terminal.obj	 \
+		  TextRegion.obj \
 		  unicode.obj	 \
 		  version.obj	 \
 		  window.obj	 \

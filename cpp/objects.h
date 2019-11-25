@@ -30,8 +30,6 @@
 #include <limits>
 #include <memory>
 
-#include "./Redisplay.h"
-
 /*
  * This  file  is  the  general header file for all components of the
  * EMACS   display  editor.  It  contains  C++ classes definitions  used  by
@@ -56,6 +54,9 @@ enum class CMD {
 static constexpr auto NIL(CMD::CST_NIL);
 static constexpr auto T(CMD::CST_T);
 static constexpr auto ABORT(CMD::CST_ABORT);
+
+#include "./Redisplay.h"
+#include "./TextRegion.h"
 
 /*
  * Emacs pseudo-types.
@@ -1787,38 +1788,6 @@ void
 EditWindow::setChar(int c) {
   _dot.line()->put(_dot.pos(), c);
 }
-
-/*
- * The starting position of a region, and the size of the region
- * in  characters,  is kept in a region structure.   Used by the
- * region commands.
- */
-
-class TextRegion {
- public:
-  /*
-   * Editor commands bound to key:
-   */
-  static CMD kill();
-  static CMD copy();
-  static CMD lower();
-  static CMD upper();
-  static CMD write();
-  static CMD fill();
-  static CMD indent();
-  static CMD shiftright();
-  static CMD shiftleft();
-
-private:
-  TextRegion();
-  Line* _linep{nullptr};  // Origin Line address
-  int   _offset{0};       // Origin Line offset
-  int   _size{0};         // Length in characters
-  int   _lines{0};        // Number of lines
-  bool  _empty{true};     // empty or not set.
-
-  bool empty() { return _empty; }
-};
 
 class Options {
  public:
