@@ -24,8 +24,11 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
  * command interpreter.
  */
 
-#include "./emacs.h"
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <thread>
+#include "./emacs.h"
+#include "./Word.h"
 
 static const EMCHAR* SEDPROG{ECSTR("sed")};
 static const EMCHAR* GREPPROC{ECSTR("grep -n ")};

@@ -19,7 +19,11 @@ static auto rcsid("$Id: word.cpp,v 1.9 2018/09/02 14:06:50 jullien Exp $");
  * 02111-1307, USA.
  */
 
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <cctype>
 #include "./emacs.h"
+#include "./Word.h"
 
 /*
  * Return  T  if  the  character  at  dot is a character that is
@@ -41,7 +45,7 @@ Word::inword() {
    * Check for alphanumeric or '$' or '_'
    */
 
-  if (isalnum(c) || (c == '$') || (c == '_')) {
+  if (std::isalnum(c) || (c == '$') || (c == '_')) {
     return true;
   }
 

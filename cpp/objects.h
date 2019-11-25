@@ -1019,28 +1019,6 @@ class Line {
 };
 
 /*
- * The  routines  in this class implement commands that work word
- * at a time. There are all sorts of word mode commands.
- */
-class Word {
- public:
-  /*
-   * see word.cpp
-   */
-  static CMD backward();
-  static CMD forward();
-  static CMD upper();
-  static CMD lower();
-  static CMD capitalize();
-  static CMD delForward();
-  static CMD delBackward();
-  static CMD twiddle();
-
-  static bool inword();
-  static bool atCursor(EMCHAR* buf, size_t len);
-};
-
-/*
  * The  editor  communicates with the display using a high level
  * interface.  A  "TERM"  structure holds useful variables,  and
  * indirect pointers to routines that do useful operations.  The

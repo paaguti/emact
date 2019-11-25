@@ -25,9 +25,12 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
  * in the search strings.
  */
 
-#include "./emacs.h"
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <chrono>
 #include <thread>
+#include "./emacs.h"
+#include "./Word.h"
 
 static EMCHAR* NOMATCH = ECSTR("No match.");
 static int upline{0};
