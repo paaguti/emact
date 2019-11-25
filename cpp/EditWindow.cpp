@@ -26,8 +26,10 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
 
 #include "./emacs.h"
 #include "./EditWindow.h"
+#include "./Completion.h"
 #include "./Line.h"
 #include "./Redisplay.h"
+#include "./Search.h"
 #include "./TextRegion.h"
 
 std::list<EditWindow*> EditWindow::_wlist;

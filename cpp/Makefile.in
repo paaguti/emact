@@ -41,7 +41,7 @@ STRIP		=
 OBJECTS         = basic.$(O)      \
                   buffer.$(O)     \
                   charutil.$(O)   \
-                  completion.$(O) \
+                  Completion.$(O) \
                   curses.$(O)     \
                   EditWindow.$(O) \
                   emacs.$(O)      \
@@ -52,13 +52,13 @@ OBJECTS         = basic.$(O)      \
                   Line.$(O)       \
                   killbuf.$(O)    \
                   main.$(O)       \
-                  minibuf.$(O)    \
+                  MiniBuf.$(O)    \
                   mlisp.$(O)      \
                   Options.$(O)    \
                   process.$(O)    \
                   random.$(O)     \
                   Redisplay.$(O)  \
-                  search.$(O)     \
+                  Search.$(O)     \
                   Terminal.$(O)   \
                   TextRegion.$(O) \
                   unicode.$(O)    \

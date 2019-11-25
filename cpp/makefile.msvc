@@ -80,7 +80,7 @@ LIBS		= $(SETARGV)	\
 KERNEL		= basic.obj	 \
 		  buffer.obj	 \
 		  charutil.obj	 \
-		  completion.obj \
+		  Completion.obj \
 		  dirent.obj	 \
 		  EditWindow.obj \
 		  emacs.obj	 \
@@ -91,12 +91,12 @@ KERNEL		= basic.obj	 \
 		  killbuf.obj	 \
 		  Line.obj	 \
 		  main.obj	 \
-		  minibuf.obj	 \
+		  MiniBuf.obj	 \
 		  Options.obj	 \
 		  process.obj	 \
 		  random.obj	 \
 		  Redisplay.obj	 \
-		  search.obj	 \
+		  Search.obj	 \
 		  Terminal.obj	 \
 		  TextRegion.obj \
 		  unicode.obj	 \

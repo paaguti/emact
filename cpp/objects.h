@@ -793,64 +793,6 @@ class Macro {
 };
 
 /**
- * Handle completion.
- */
-class Completion {
- private:
-  using Callback = EMCHAR* (*)(const EMCHAR* prompt, EMCHAR* buf);
-
- public:
-  enum class Status {
-    COMPLETE_ONE,
-    COMPLETE_AGAIN,
-    COMPLETE_ABORT,
-    COMPLETE_FAIL
-  };
-
-  const EMCHAR*
-  operator()(const EMCHAR* prompt, EMCHAR* buf) {
-    return _fn(prompt, buf);
-  }
-
-  Completion&
-  operator=(Callback cb) {
-    _fn = cb;
-    return *this;
-  }
-
-  bool
-  operator==(Callback cb) {
-    return _fn == cb;
-  }
-
-  bool
-  operator!=(Callback cb) {
-    return _fn != cb;
-  }
-
-  Status
-  status() const noexcept {
-    return _status;
-  }
-
-  void
-  setStatus(Status newStatus) noexcept {
-    _status = newStatus;
-  }
-
-  static CMD     diredCommand(int c);
-  static EMCHAR* fileMatch(const EMCHAR* prompt, EMCHAR* file);
-  static EMCHAR* fileAccept(const EMCHAR* prompt, EMCHAR* file);
-  static bool    diredBuffer(const EMCHAR* fmatch);
-
-  static CMD dired();
-
- private:
-  Status _status;
-  Callback _fn;
-};
-
-/**
  * Class for mouse driver (if any).
  */
 class MEvent {
@@ -1252,61 +1194,6 @@ class Counter {
  private:
   static int    _val;
   static EMCHAR _fmt[NPAT];
-};
-
-class Search {
- public:
-  static bool next();
-  static void wait(int n);
-  static void substitute(int length, const EMCHAR* newstr);
-  static bool matchBackward(int patc, bool printflag = true);
-  static bool matchForward(int patc, bool printflag = true);
-  static bool autoMatch(int c, bool printflag = true);
-
-  /*
-   * Editor commands bound to key:
-   */
-  static CMD forward();
-  static CMD backward();
-  static CMD globalReplace();
-  static CMD queryReplace();
-  static CMD definition();
-  static CMD rightParent();
-  static CMD leftParent();
-  static CMD rightCurly();
-  static CMD leftCurly();
-  static CMD rightBracket();
-  static CMD leftBracket();
-  static CMD complete();
-  static CMD diffWindows();
-  static CMD compareWindows();
-
- private:
-  static bool prev();
-};
-
-class MiniBuf {
- public:
-  static void erase();
-  static int cursor();
-  static CMD yn(const EMCHAR* prompt);
-  static CMD yesno(const EMCHAR* prompt);
-  static CMD confirm(const EMCHAR* prompt);
-  static CMD edit(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
-  static CMD reply(const EMCHAR* prompt, EMCHAR* buf, int nbuf);
-  static bool allowComplete(bool flag);
-  static void write(const EMCHAR* fmt, ...);
-  static void error(const EMCHAR* msg);
-  static EMCHAR * title(EMCHAR* buffer,EMCHAR* fname);
-  static CMD change(const EMCHAR* msg, EMCHAR* opat, EMCHAR* npat, int length);
-  static void play(int flag);
-  static void wait();
-  static void message(const EMCHAR* msg);
-  static void adjust();
-  static void update(const EMCHAR* prompt, EMCHAR* buf);
-  static void clipCopy();
-  static void clipPaste();
-  static void lpPrint();
 };
 
 /**

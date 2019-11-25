@@ -29,6 +29,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
 
 #include "./emacs.h"
 #include "./EditWindow.h"
+#include "./MiniBuf.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 

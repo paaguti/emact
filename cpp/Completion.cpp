@@ -25,6 +25,7 @@ static auto rcsid("$Id: filecomp.cpp,v 1.19 2018/09/09 07:21:10 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Completion.h"
 #include "./EditWindow.h"
 #include "./Line.h"
 
