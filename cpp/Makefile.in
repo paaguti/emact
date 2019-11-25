@@ -63,7 +63,7 @@ OBJECTS         = basic.$(O)      \
                   unicode.$(O)    \
                   version.$(O)    \
                   window.$(O)     \
-                  word.$(O)       \
+                  Word.$(O)       \
                   x11.$(O)
 
 BINARIES	= ed$(EXE)
