@@ -30,6 +30,8 @@
 #include <limits>
 #include <memory>
 
+#include "./Point.h"
+
 /*
  * This  file  is  the  general header file for all components of the
  * EMACS   display  editor.  It  contains  C++ classes definitions  used  by
@@ -104,70 +106,12 @@ enum class EDITMODE {
 };
 
 class Buffer;
-class Line;
-class Point;
-class EditWindow;
-class Terminal;
-class EditorCommand;
 class Completion;
-class Editor;
+class EditWindow;
 class Kbdm;
+class Line;
 class Redisplay;
-
-/**
- * A Point is a position of a character in an Line.
- */
-class Point final {
- public:
-  explicit Point(Line* pointLine = nullptr, int pointPos = 0)
-    : _line{pointLine},
-      _pos{pointPos} {
-  }
-
-  ~Point() = default;
-  Point(const Point& p) = default;
-  Point& operator=(const Point& p) = default;
-
-  friend bool
-  operator==(const Point& lhs, const Point& rhs) {
-    return lhs._line == rhs._line && lhs._pos == rhs._pos;
-  }
-
-  friend bool
-  operator!=(const Point& lhs, const Point& rhs) {
-    return !(lhs == rhs);
-  }
-
-  void
-  set(Line* newLine, int newPos) {
-    _line = newLine;
-    _pos  = newPos;
-  }
-
-  void
-  setLine(Line* newLine) {
-    _line = newLine;
-  }
-
-  void
-  setPos(int newPos) {
-    _pos  = newPos;
-  }
-
-  Line*
-  line() const noexcept {
-    return _line;
-  }
-
-  int
-  pos() const noexcept {
-    return _pos;
-  }
-
- private:
-  Line* _line{nullptr};
-  int   _pos{0};
-};
+class Terminal;
 
 /*
  * The editor communicates with the display using a high level
