@@ -82,8 +82,9 @@ KERNEL		= basic.obj	 \
 		  charutil.obj	 \
 		  completion.obj \
 		  dirent.obj	 \
+		  EditWindow.obj \
 		  emacs.obj	 \
-		  error.obj	 \
+		  Error.obj	 \
 		  file.obj	 \
 		  fileio.obj	 \
 		  indent.obj	 \
@@ -91,7 +92,7 @@ KERNEL		= basic.obj	 \
 		  Line.obj	 \
 		  main.obj	 \
 		  minibuf.obj	 \
-		  options.obj	 \
+		  Options.obj	 \
 		  process.obj	 \
 		  random.obj	 \
 		  Redisplay.obj	 \
@@ -100,7 +101,6 @@ KERNEL		= basic.obj	 \
 		  TextRegion.obj \
 		  unicode.obj	 \
 		  version.obj	 \
-		  window.obj	 \
 		  Word.obj
 
 LISPOBJECTS	= mlisp.obj

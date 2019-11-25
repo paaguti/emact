@@ -25,6 +25,7 @@ static auto rcsid("$Id: file.cpp,v 1.37 2018/09/09 07:21:09 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./EditWindow.h"
 #include "./Line.h"
 
 static bool    frdflag{false};  // flag for freadonly

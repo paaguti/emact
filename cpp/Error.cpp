@@ -24,6 +24,8 @@ static auto rcsid("$Id: nexterr.cpp,v 1.13 2018/09/02 14:37:58 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./EditWindow.h"
+#include "./Error.h"
 #include "./Line.h"
 
 bool   Error::_flag{false};  // Error flag

@@ -43,8 +43,9 @@ OBJECTS         = basic.$(O)      \
                   charutil.$(O)   \
                   completion.$(O) \
                   curses.$(O)     \
+                  EditWindow.$(O) \
                   emacs.$(O)      \
-                  error.$(O)      \
+                  Error.$(O)      \
                   file.$(O)       \
                   fileio.$(O)     \
                   indent.$(O)     \
@@ -53,7 +54,7 @@ OBJECTS         = basic.$(O)      \
                   main.$(O)       \
                   minibuf.$(O)    \
                   mlisp.$(O)      \
-                  options.$(O)    \
+                  Options.$(O)    \
                   process.$(O)    \
                   random.$(O)     \
                   Redisplay.$(O)  \
@@ -62,7 +63,6 @@ OBJECTS         = basic.$(O)      \
                   TextRegion.$(O) \
                   unicode.$(O)    \
                   version.$(O)    \
-                  window.$(O)     \
                   Word.$(O)       \
                   x11.$(O)
 

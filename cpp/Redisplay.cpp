@@ -28,6 +28,7 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./EditWindow.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 

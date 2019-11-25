@@ -26,6 +26,7 @@ static auto rcsid("$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./EditWindow.h"
 #include "./Line.h"
 
 static EMCHAR* bufmatch(const EMCHAR* prompt, EMCHAR* buffer);

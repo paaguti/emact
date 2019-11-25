@@ -24,7 +24,9 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./EditWindow.h"
 #include "./Line.h"
+#include "./Options.h"
 #include "./Redisplay.h"
 #include "./Word.h"
 
