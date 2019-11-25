@@ -30,6 +30,7 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
 #include "./EditWindow.h"
 #include "./Line.h"
 #include "./Redisplay.h"
+#include "./Terminal.h"
 
 static int  getccol();
 static CMD  addprefix();

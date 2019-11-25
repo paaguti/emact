@@ -33,6 +33,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
 #include "./MiniBuf.h"
 #include "./Line.h"
 #include "./Redisplay.h"
+#include "./Terminal.h"
 
 /*
  * Move the cursor to the beginning of the current line.

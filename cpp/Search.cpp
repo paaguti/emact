@@ -38,6 +38,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 #include "./Options.h"
 #include "./Search.h"
 #include "./Redisplay.h"
+#include "./Terminal.h"
 #include "./Word.h"
 
 static EMCHAR* NOMATCH = ECSTR("No match.");

@@ -31,6 +31,7 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 #include "./MiniBuf.h"
 #include "./Options.h"
 #include "./Redisplay.h"
+#include "./Terminal.h"
 #include "./Word.h"
 
 static void    getkeyname(int key, EMCHAR *buf);

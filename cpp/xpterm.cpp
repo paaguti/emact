@@ -54,6 +54,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include "./Redisplay.h"
 #include "./Search.h"
 #include "./TextRegion.h"
+#include "./Terminal.h"
 #include "./xpterm.h"
 
 #if defined(UNICODE)

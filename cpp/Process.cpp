@@ -35,6 +35,7 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #include "./MiniBuf.h"
 #include "./Process.h"
 #include "./Redisplay.h"
+#include "./Terminal.h"
 #include "./Word.h"
 
 static const EMCHAR* SEDPROG{ECSTR("sed")};
