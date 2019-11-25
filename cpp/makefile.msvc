@@ -96,12 +96,12 @@ KERNEL		= basic.obj	 \
 		  random.obj	 \
 		  Redisplay.obj	 \
 		  search.obj	 \
-		  terminal.obj	 \
+		  Terminal.obj	 \
 		  TextRegion.obj \
 		  unicode.obj	 \
 		  version.obj	 \
 		  window.obj	 \
-		  word.obj
+		  Word.obj
 
 LISPOBJECTS	= mlisp.obj
 

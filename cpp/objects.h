@@ -55,9 +55,6 @@ static constexpr auto NIL(CMD::CST_NIL);
 static constexpr auto T(CMD::CST_T);
 static constexpr auto ABORT(CMD::CST_ABORT);
 
-#include "./Redisplay.h"
-#include "./TextRegion.h"
-
 /*
  * Emacs pseudo-types.
  */
@@ -115,6 +112,7 @@ class EditorCommand;
 class Completion;
 class Editor;
 class Kbdm;
+class Redisplay;
 
 /**
  * A Point is a position of a character in an Line.
@@ -1019,16 +1017,15 @@ class Line {
 };
 
 /*
- * The  editor  communicates with the display using a high level
- * interface.  A  "TERM"  structure holds useful variables,  and
- * indirect pointers to routines that do useful operations.  The
- * low  level  get  and  put routines are here too.  This lets a
- * terminal,  in addition to having non standard commands,  have
- * funny  get  and put character code too.  Some implementations
- * using  a high level interface such as Windowing system define
- * graphic  widget  to select a file,  display error and ask the
- * user.  A  "Widget" structure holds indirect pointers to those
- * functionalities.
+ * The editor communicates with the display using a high level
+ * interface.  A "Terminal" class holds useful variables, and indirect
+ * pointers to routines that do useful operations.  The low level get
+ * and put routines are here too.  This lets a terminal, in addition
+ * to having non standard commands, have funny get and put character
+ * code too.  Some implementations using a high level interface such
+ * as Windowing system define graphic widget to select a file, display
+ * error and ask the user.  A "Widget" structure holds indirect
+ * pointers to those functionalities.
  */
 
 class Terminal {

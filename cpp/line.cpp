@@ -36,6 +36,7 @@ static auto rcsid("$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Redisplay.h"
 
 /*
  * This  routine  allocates  a  block  of memory large enough to

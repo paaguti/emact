@@ -58,7 +58,7 @@ OBJECTS         = basic.$(O)      \
                   random.$(O)     \
                   Redisplay.$(O)  \
                   search.$(O)     \
-                  terminal.$(O)   \
+                  Terminal.$(O)   \
                   TextRegion.$(O) \
                   unicode.$(O)    \
                   version.$(O)    \
