@@ -25,15 +25,19 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./EditWindow.h"
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./Line.h"
+#include "./MouseEvent.h"
 #include "./Redisplay.h"
 #include "./Search.h"
 #include "./Terminal.h"
 #include "./TextRegion.h"
 #include "./Widget.h"
+
+extern MouseEvent mevent;  // Mouse event
 
 std::list<EditWindow*> EditWindow::_wlist;
 
@@ -656,10 +660,10 @@ EditWindow::find() {
           (void)Editor::backpage();
         } else {
           switch (mevent.button) {
-          case MEvent::MButton1 :
+          case MouseEvent::MButton1 :
             resizep = shrink();
             break;
-          case MEvent::MButton2 :
+          case MouseEvent::MButton2 :
             resizep = enlarge();
             break;
           default :
@@ -713,29 +717,29 @@ EditWindow::find() {
       }
 
       switch (mevent.button) {
-      case MEvent::MButton1:
+      case MouseEvent::MButton1:
         /* mouse-track */
         (void)Editor::setmark();
         break;
-      case MEvent::MButton2:
-      case MEvent::MButton3:
+      case MouseEvent::MButton2:
+      case MouseEvent::MButton3:
         /* x-set-point-and-insert-selection */
         WDGclippaste();
         (void)Editor::yank();
         redisplay->update();
         break;
-      case MEvent::MButton7:
+      case MouseEvent::MButton7:
         /* mouse-track insert */
         (void)TextRegion::copy();
         (void)Editor::swapmark();
         WDGclipcopy();
         break;
-      case MEvent::MButton8:
+      case MouseEvent::MButton8:
         /* x-mouse-kill */
         (void)TextRegion::kill();
         WDGclipcopy();
         break;
-      case MEvent::MButton4:
+      case MouseEvent::MButton4:
         /* mouse-track-adjust */
         (void)TextRegion::copy();
         WDGclipcopy();

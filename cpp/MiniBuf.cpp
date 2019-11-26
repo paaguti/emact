@@ -25,6 +25,7 @@ static auto rcsid("$Id: minibuf.cpp,v 1.20 2018/09/09 07:21:10 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./Line.h"
 #include "./Completion.h"
 #include "./Kbdm.h"

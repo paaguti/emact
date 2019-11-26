@@ -23,6 +23,7 @@ static auto rcsid("$Id: word.cpp,v 1.9 2018/09/02 14:06:50 jullien Exp $");
 
 #include <cctype>
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./Buffer.h"
 #include "./EditWindow.h"
 #include "./Line.h"

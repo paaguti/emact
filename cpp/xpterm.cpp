@@ -48,9 +48,11 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include <tchar.h>
 #include <utility>
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./Buffer.h"
 #include "./EditWindow.h"
 #include "./KillBuf.h"
+#include "./MouseEvent.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 #include "./Search.h"
@@ -62,6 +64,8 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #if defined(UNICODE)
 #define system  _wsystem
 #endif
+
+extern MouseEvent mevent;  // Mouse event
 
 /*
  * Constant definitions
@@ -1138,13 +1142,13 @@ xpmainwndproc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     mevent.y      = HIWORD(lParam) / XpTerminal::_charheight;
     mevent.x      = xpposfrompoint(mevent.x, mevent.y);
     mevent.button = (message == WM_LBUTTONDOWN)
-                    ? MEvent::MButton1
-                    : MEvent::MButton2;
+                    ? MouseEvent::MButton1
+                    : MouseEvent::MButton2;
     if (GetKeyState(VK_SHIFT) < 0) {
-      mevent.button |= MEvent::SHIFTBUTTON;
+      mevent.button |= MouseEvent::SHIFTBUTTON;
     }
     if (GetKeyState(VK_CONTROL) < 0) {
-      mevent.button |= MEvent::CTRLBUTTON;
+      mevent.button |= MouseEvent::CTRLBUTTON;
     }
     XpTerminal::_char = MEVT;
     break;

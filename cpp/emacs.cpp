@@ -34,12 +34,14 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #define _CRT_SECURE_NO_WARNINGS
 #include "./emacs.h"
 #include "./build.h"
+#include "./Editor.h"
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./Counter.h"
 #include "./EditWindow.h"
 #include "./EditorCommand.h"
 #include "./EditorVariable.h"
+#include "./MouseEvent.h"
 #include "./Error.h"
 #include "./Kbdm.h"
 #include "./Line.h"
@@ -70,7 +72,7 @@ Terminal*   term{nullptr};
 Redisplay*  redisplay{nullptr}; /* Redisplay global object      */
 Buffer*     curbp{nullptr};     /* Current buffer               */
 EditWindow* curwp{nullptr};     /* Current window               */
-MEvent      mevent;             /* Mouse event (if any)         */
+MouseEvent  mevent;             /* Mouse event (if any)         */
 Kbdm        kbdm;               /* Keyboad Macro                */
 
 int    Editor::_curgoal;              // Goal column

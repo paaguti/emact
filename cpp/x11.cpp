@@ -24,8 +24,10 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./EditWindow.h"
 #include "./Redisplay.h"
+#include "./MouseEvent.h"
 #include "./Terminal.h"
 
 #if defined(_X11) && !defined(X_DISPLAY_MISSING)
@@ -49,6 +51,8 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 #include <string>
 
 #include "./x11.ico"
+
+extern MouseEvent mevent;  // Mouse event
 
 static void    X11clipcopy();
 static void    X11clippaste();
@@ -726,11 +730,11 @@ X11Terminal::getEvent() {
     mevent.button = event.xbutton.button;
 
     if (_shift) {
-      mevent.button |= MEvent::SHIFTBUTTON;
+      mevent.button |= MouseEvent::SHIFTBUTTON;
     }
 
     if (_ctrl) {
-      mevent.button |= MEvent::CTRLBUTTON;
+      mevent.button |= MouseEvent::CTRLBUTTON;
     }
 
     return _char = MEVT;

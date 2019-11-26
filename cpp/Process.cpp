@@ -28,6 +28,7 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 
 #include <thread>
 #include "./emacs.h"
+#include "./Editor.h"
 #include "./Buffer.h"
 #include "./EditWindow.h"
 #include "./Error.h"
