@@ -27,6 +27,7 @@ static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 
 #include "./emacs.h"
 #include "./Buffer.h"
+#include "./Widget.h"
 
 static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 

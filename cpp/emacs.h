@@ -299,23 +299,23 @@ static constexpr auto BFCHG(0x01);         // Changed since last write
 
 #include "./objects.h"
 
-#define WDGyn(s)              (*widget.w_yn)(s)
-#define WDGyesno(s)           (*widget.w_yesno)(s)
-#define WDGconfirm(s)         (*widget.w_confirm)(s)
-#define WDGerror(s)           (*widget.w_error)(s)
-#define WDGtitle(b, f)        (*widget.w_title)(b, f)
-#define WDGasker(p, b, n)     (*widget.w_asker)(p, b, n)
-#define WDGedit( p, b, n)     (*widget.w_edit)( p, b, n)
-#define WDGchange(m,s,r,l)    (*widget.w_change)(m, s, r, l)
-#define WDGplay(f)            (*widget.w_play)(f)
-#define WDGwait()             (*widget.w_wait)()
-#define WDGmessage(s)         (*widget.w_message)(s)
-#define WDGwrite              (*widget.w_write)
-#define WDGadjust             (*widget.w_adjust)
-#define WDGupdate(p, b)       (*widget.w_update)(p, b)
-#define WDGclipcopy()         (*widget.w_clipcopy)()
-#define WDGclippaste()        (*widget.w_clippaste)()
-#define WDGprint()            (*widget.w_print)()
+#define WDGyn(s)              (*widget->w_yn)(s)
+#define WDGyesno(s)           (*widget->w_yesno)(s)
+#define WDGconfirm(s)         (*widget->w_confirm)(s)
+#define WDGerror(s)           (*widget->w_error)(s)
+#define WDGtitle(b, f)        (*widget->w_title)(b, f)
+#define WDGasker(p, b, n)     (*widget->w_asker)(p, b, n)
+#define WDGedit( p, b, n)     (*widget->w_edit)( p, b, n)
+#define WDGchange(m,s,r,l)    (*widget->w_change)(m, s, r, l)
+#define WDGplay(f)            (*widget->w_play)(f)
+#define WDGwait()             (*widget->w_wait)()
+#define WDGmessage(s)         (*widget->w_message)(s)
+#define WDGwrite              (*widget->w_write)
+#define WDGadjust             (*widget->w_adjust)
+#define WDGupdate(p, b)       (*widget->w_update)(p, b)
+#define WDGclipcopy()         (*widget->w_clipcopy)()
+#define WDGclippaste()        (*widget->w_clippaste)()
+#define WDGprint()            (*widget->w_print)()
 
 static inline bool
 self_insert(int c) {
@@ -385,7 +385,7 @@ extern Kbdm        kbdm;               // Keyboard macro
 extern MEvent      mevent;             // Mouse event
 extern Redisplay*  redisplay;          // Object which redisplays things.
 extern Terminal*   term;               // Emact terminal
-extern Widget      widget;             // Widgets tools
+extern Widget*     widget;             // Widgets tools
 
 #include "./defines.h"
 #endif

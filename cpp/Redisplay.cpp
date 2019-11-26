@@ -34,6 +34,7 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 #include "./MiniBuf.h"
 #include "./Redisplay.h"
 #include "./Terminal.h"
+#include "./Widget.h"
 
 bool            Redisplay::_mouse{false};  // Mouse flag
 int             Redisplay::_currow{0};

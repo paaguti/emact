@@ -55,6 +55,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include "./Search.h"
 #include "./TextRegion.h"
 #include "./Terminal.h"
+#include "./Widget.h"
 #include "./xpterm.h"
 
 #if defined(UNICODE)
@@ -506,11 +507,11 @@ XpTerminal::XpTerminal() {
    * Set clipborad functions.
    */
 
-  widget.w_clipcopy       = xpclipcopy;
-  widget.w_clippaste      = xpclippaste;
-  widget.w_title          = xptitle;
-  widget.w_wait           = xpwait;
-  widget.w_print          = xpprint;
+  widget->w_clipcopy      = xpclipcopy;
+  widget->w_clippaste     = xpclippaste;
+  widget->w_title         = xptitle;
+  widget->w_wait          = xpwait;
+  widget->w_print         = xpprint;
 
   xpsettextattrib();
 

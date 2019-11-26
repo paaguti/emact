@@ -112,78 +112,7 @@ class Kbdm;
 class Line;
 class Redisplay;
 class Terminal;
-
-class Widget {
- public:
-  /*
-   * Y/N Widget
-   */
-  CMD (*w_yn)(const EMCHAR* s);
-  /*
-   * YES/NO Widget
-   */
-  CMD (*w_yesno)(const EMCHAR* s);
-  /*
-   * CONFIRM Widge
-   */
-  CMD (*w_confirm)(const EMCHAR* s);
-  /*
-   * ERROR Widget
-   */
-  void (*w_error)(const EMCHAR* s);
-  /*
-   * TITLE Widget
-   */
-  EMCHAR* (*w_title)(EMCHAR* b, EMCHAR* f);
-  /*
-   * ASKER Widget
-   */
-  CMD (*w_asker)(const EMCHAR* s, EMCHAR* b, int n);
-  /*
-   * EDITOR Widget
-   */
-  CMD (*w_edit)(const EMCHAR* s, EMCHAR* b, int n);
-  /*
-   * CHANGE Widget
-   */
-  CMD (*w_change)(const EMCHAR* msg, EMCHAR* op, EMCHAR* np, int n);
-  /*
-   * PLAY Widget
-   */
-  void (*w_play)(int flag);
-  /*
-   * WAIT Widget
-   */
-  void (*w_wait)();
-  /*
-   * MSG Widget
-   */
-  void (*w_message)(const EMCHAR* str);
-  /*
-   * WRITE Widget
-   */
-  void (*w_write)(const EMCHAR *fmt, ...);
-  /*
-   * ADJUST Widget
-   */
-  void (*w_adjust)();
-  /*
-   * UPDATE Widget
-   */
-  void (*w_update)(const EMCHAR* p, EMCHAR* b);
-  /*
-   * CBCOPY Widget
-   */
-  void (*w_clipcopy)();
-  /*
-   * CBPAST Widget
-   */
-  void (*w_clippaste)();
-  /*
-   * print buffer
-   */
-  void (*w_print)();
-};
+class Widget;
 
 /*
  * Commands and variables table.
@@ -677,65 +606,6 @@ class Editor {
 
   static const EMCHAR* _name;
   static EMCHAR _search[NPAT];
-};
-
-/**
- * Counter class is used to manage an integer counter that can be incremented,
- * decremented and inserted in current buffer. It is mainly used in a macro.
- */
-class Counter {
- public:
-  /**
-   * Insert the current value of counter at dot before increment
-   * it. Bound to C-X-$-$
-   * @return T
-   */
-  static CMD
-  insert();
-
-  /**
-   * Increment counter. Bound to C-X-$-'+'
-   * @return T
-   */
-  static CMD
-  incr() noexcept {
-    _val += Editor::_repeat;
-
-    return T;
-  }
-
-  /**
-   * Decrement counter. Bound to C-X-$-'-'
-   * @return T
-   */
-  static CMD
-  decr() {
-    _val -= Editor::_repeat;
-
-    return T;
-  }
-
-  /**
-   * Set the value of counter. Bound to C-X-$-S
-   * @return T
-   */
-  static CMD
-  set() {
-    _val = Editor::_repeat;
-
-    return T;
-  }
-
-  /**
-   * Change the format of counter from default (%d). Bound to C-X-$-F
-   * @return CMD
-   */
-  static CMD
-  format();
-
- private:
-  static int    _val;
-  static EMCHAR _fmt[NPAT];
 };
 
 /**

@@ -40,6 +40,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 #include "./Redisplay.h"
 #include "./Terminal.h"
 #include "./Word.h"
+#include "./Widget.h"
 
 static EMCHAR* NOMATCH = ECSTR("No match.");
 static int upline{0};
@@ -446,7 +447,7 @@ mlmatch(const Line* clp, int cbo) {
 
   WDGwrite(ECSTR("%s"), mlline);
 
-  if (widget.w_write == MiniBuf::write) {
+  if (widget->w_write == MiniBuf::write) {
     term->move(term->getNbRows(), pos);
     term->flush();
   }

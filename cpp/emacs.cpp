@@ -36,6 +36,7 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./build.h"
 #include "./Buffer.h"
 #include "./Completion.h"
+#include "./Counter.h"
 #include "./EditWindow.h"
 #include "./Error.h"
 #include "./Line.h"
@@ -47,6 +48,7 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./Search.h"
 #include "./Terminal.h"
 #include "./Word.h"
+#include "./Widget.h"
 
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false};  // Edit flag
@@ -1104,7 +1106,7 @@ std::vector<Variable> Variable::vartab = {
  * Fill widgets with default behavior
  */
 
-Widget widget = {
+Widget* widget = new Widget {
   MiniBuf::yn,
   MiniBuf::yesno,
   MiniBuf::confirm,
