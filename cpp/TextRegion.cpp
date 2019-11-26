@@ -36,6 +36,8 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #include "./TextRegion.h"
 #include "./Widget.h"
 
+extern Completion complete;  // Automatic completion
+
 /*
  * This routine figures out the bounds of the region in the current
  * window, and fills in the fields of the "TextRegion" structure

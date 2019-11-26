@@ -335,7 +335,6 @@ extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 } // namespace opt
 
 extern Buffer*     curbp;              // Current buffer
-extern Completion  complete;           // Automatic completion
 extern EditWindow* curwp;              // Current window
 extern Redisplay*  redisplay;          // Object which redisplays things.
 extern Terminal*   term;               // Emact terminal

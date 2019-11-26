@@ -29,6 +29,8 @@ static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 #include "./Buffer.h"
 #include "./Widget.h"
 
+extern Completion complete;  // Automatic completion
+
 static  void testfilemode(const EMCHAR* fn, bool* binmode, ENCODING* utf8);
 
 static FILE*    ffp;    /* File pointer, all functions. */

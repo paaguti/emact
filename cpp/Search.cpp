@@ -46,6 +46,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 static EMCHAR* NOMATCH = ECSTR("No match.");
 static int upline{0};
 
+extern Completion complete;  // Automatic completion
 extern int   indento;
 extern Line* indentp;
 extern int   commento;

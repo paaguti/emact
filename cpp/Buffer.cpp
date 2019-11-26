@@ -35,6 +35,8 @@ static auto rcsid("$Id: buffer.cpp,v 1.23 2018/09/04 05:13:08 jullien Exp $");
 #include "./Terminal.h"
 #include "./Widget.h"
 
+extern Completion complete;  // Automatic completion
+
 static EMCHAR* bufmatch(const EMCHAR* prompt, EMCHAR* buffer);
 static Buffer* getbpcmd(EMCHAR* buf);
 static void    longtostrtr(EMCHAR* buf, int width, size_t num);

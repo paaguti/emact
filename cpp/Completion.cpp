@@ -33,6 +33,8 @@ static auto rcsid("$Id: filecomp.cpp,v 1.19 2018/09/09 07:21:10 jullien Exp $");
 #include "./Terminal.h"
 #include "./Widget.h"
 
+Completion complete;
+
 static void    getdir(EMCHAR* fname, EMCHAR* dmatch, EMCHAR* fmatch);
 static EMCHAR* caseconvert(EMCHAR* s);
 

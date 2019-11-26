@@ -43,6 +43,7 @@ int             Redisplay::_curcol{0};
 EMCHAR          Redisplay::_curchar;
 Redisplay::Sync Redisplay::_sgarbf{Redisplay::Sync::GARBAGE};
 
+extern Completion complete;  // Automatic completion
 extern Terminal* term;
 extern const EMCHAR* version;           /* Current version              */
 

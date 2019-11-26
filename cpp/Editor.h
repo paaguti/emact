@@ -45,9 +45,6 @@ class Editor {
   void
   engine();
 
-  /*
-   * basic.cpp
-   */
   static CMD gotobol();
   static CMD backchar();
   static CMD gotoeol();
@@ -64,28 +61,6 @@ class Editor {
   static CMD markwholebuffer();
   static CMD swapmark();
 
-  /*
-   * file.cpp
-   */
-  static CMD ansiToOem();
-  static CMD oemToAnsi();
-  static CMD macToAnsi();
-  static CMD macToOem();
-  static CMD toggleRead();
-  static CMD fileRead();
-  static CMD fileAlternate();
-  static CMD fileInsert();
-  static CMD fileWrite();
-  static CMD fileSave();
-  static CMD findFile();
-  static CMD revertBuffer();
-  static CMD saveSomeBuffers();
-  static CMD unlinkFile();
-  static CMD printBuffer();
-
-  /*
-   * random.cpp
-   */
   static CMD newline();
   static CMD tab();
   static CMD showcpos();
@@ -114,6 +89,25 @@ class Editor {
   static CMD justifyComment();
   static CMD undo();
   static CMD enterDebug();
+
+  /*
+   * file.cpp
+   */
+  static CMD ansiToOem();
+  static CMD oemToAnsi();
+  static CMD macToAnsi();
+  static CMD macToOem();
+  static CMD toggleRead();
+  static CMD fileRead();
+  static CMD fileAlternate();
+  static CMD fileInsert();
+  static CMD fileWrite();
+  static CMD fileSave();
+  static CMD findFile();
+  static CMD revertBuffer();
+  static CMD saveSomeBuffers();
+  static CMD unlinkFile();
+  static CMD printBuffer();
 
   /*
    *  emacs.cpp

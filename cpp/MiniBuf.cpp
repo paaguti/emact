@@ -41,10 +41,9 @@ static void mlputi(int i, int r);
 static void mlclearentry(EMCHAR* buf, int cpos);
 
 extern Kbdm kbdm;
+extern Completion complete;  // Automatic completion
 
 bool mpresf{false};  // true if message in last line.
-
-Completion complete;
 
 static bool allowcomplete{false};
 static int mbcursor{0};

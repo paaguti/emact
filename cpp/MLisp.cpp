@@ -42,6 +42,8 @@ static auto rcsid("$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $");
 #include "./MLisp.h"
 #include <array>
 
+extern Completion complete;  // Automatic completion
+
 class LispEngine {
  private:
   enum class SpecialForm {
