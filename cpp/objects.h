@@ -385,28 +385,4 @@ class Editor {
   static const EMCHAR* _name;
   static EMCHAR _search[NPAT];
 };
-
-/**
- * Hi level interface to pseudo-lisp extension language.
- */
-class MLisp {
- public:
-  static bool customize();
-  static CMD eval(int expr);
-  static CMD evalBuffer();
-  static CMD evalExpression();
-
-  /*
-   * Editor commands bound to key:
-   */
-  static CMD readFile();
-};
-
-class KillBuf {
- public:
-  static void clear();
-  static bool insert(int c);
-  static int  remove(int n);
-  static const std::pair<const EMCHAR*, size_t> get();
-};
 #endif /* __OBJECTS_H */

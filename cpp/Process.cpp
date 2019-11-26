@@ -32,12 +32,13 @@ static auto rcsid("$Id: spawn.cpp,v 1.24 2018/09/09 07:21:10 jullien Exp $");
 #include "./EditWindow.h"
 #include "./Error.h"
 #include "./Line.h"
+#include "./MLisp.h"
 #include "./MiniBuf.h"
 #include "./Process.h"
 #include "./Redisplay.h"
 #include "./Terminal.h"
-#include "./Word.h"
 #include "./Widget.h"
+#include "./Word.h"
 
 static const EMCHAR* SEDPROG{ECSTR("sed")};
 static const EMCHAR* GREPPROC{ECSTR("grep -n ")};

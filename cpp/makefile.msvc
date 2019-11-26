@@ -55,7 +55,7 @@ SETARGV		= setargv.obj
 
 OLFLAGS		= -D_MLISP
 OLLIB		=
-EMLISP		= mlisp.obj
+EMLISP		= MLisp.obj
 
 CC		= cl -nologo
 AR		= lib
@@ -88,7 +88,7 @@ KERNEL		= basic.obj	 \
 		  file.obj	 \
 		  fileio.obj	 \
 		  indent.obj	 \
-		  killbuf.obj	 \
+		  KillBuf.obj	 \
 		  Line.obj	 \
 		  main.obj	 \
 		  MiniBuf.obj	 \
@@ -100,10 +100,10 @@ KERNEL		= basic.obj	 \
 		  Terminal.obj	 \
 		  TextRegion.obj \
 		  unicode.obj	 \
-		  version.obj	 \
+		  Version.obj	 \
 		  Word.obj
 
-LISPOBJECTS	= mlisp.obj
+LISPOBJECTS	= MLisp.obj
 
 TERMINAL	= xpterm.obj
 

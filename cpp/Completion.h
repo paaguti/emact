@@ -21,7 +21,7 @@
 
 #if !defined(__COMPLETION_H)
 #define __COMPLETION_H
-#include "./emacs.h"
+#include "./CharType.h"
 /**
  * Handle completion.
  */

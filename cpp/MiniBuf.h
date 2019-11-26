@@ -21,6 +21,7 @@
 
 #if !defined(__MINIBUF_H)
 #define __MINIBUF_H
+#include "./CharType.h"
 #include "./emacs.h"
 
 class MiniBuf {

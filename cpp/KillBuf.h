@@ -19,44 +19,16 @@
  * 02111-1307, USA.
  */
 
-#if !defined(__MACRO_H)
-#define __MACRO_H
+#if !defined(__KILLBUF_H)
+#define __KILLBUF_H
+#include <utility>
 #include "./CharType.h"
 
-class LispEngine;
-
-class Macro {
-  friend class LispEngine;
+class KillBuf {
  public:
-  Macro() = default;
-
-  template<typename T>
-  void
-  set(T keyCode, EMCHAR* cmdName, int indx) {
-    _code  = static_cast<int>(keyCode);
-    _name  = cmdName;
-    _index = indx;
-  }
-
-  const EMCHAR*
-  name() const noexcept {
-    return _name;
-  }
-
-  int
-  index() const noexcept {
-    return _index;
-  }
-
-  int
-  code() const noexcept {
-    return _code;
-  }
-
- private:
-  int*    _exec{nullptr};  // Code
-  EMCHAR* _name{nullptr};  // Macro name
-  int     _code{0};        // Key bind
-  int     _index{0};       // Index in macro key container.
+  static void clear();
+  static bool insert(int c);
+  static int  remove(int n);
+  static const std::pair<const EMCHAR*, size_t> get();
 };
-#endif /* __MACRO_H */
+#endif /* __KILLBUF_H */

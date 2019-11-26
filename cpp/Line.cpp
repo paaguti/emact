@@ -39,6 +39,7 @@ static auto rcsid("$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $");
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
+#include "./KillBuf.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 #include "./Terminal.h"

@@ -29,6 +29,7 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
 #include "./Completion.h"
 #include "./Counter.h"
 #include "./EditWindow.h"
+#include "./KillBuf.h"
 #include "./Kbdm.h"
 #include "./Line.h"
 #include "./Redisplay.h"

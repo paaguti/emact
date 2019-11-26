@@ -50,10 +50,10 @@ OBJECTS         = basic.$(O)      \
                   fileio.$(O)     \
                   indent.$(O)     \
                   Line.$(O)       \
-                  killbuf.$(O)    \
+                  KillBuf.$(O)    \
                   main.$(O)       \
                   MiniBuf.$(O)    \
-                  mlisp.$(O)      \
+                  MLisp.$(O)      \
                   Options.$(O)    \
                   Process.$(O)    \
                   random.$(O)     \
@@ -62,7 +62,7 @@ OBJECTS         = basic.$(O)      \
                   Terminal.$(O)   \
                   TextRegion.$(O) \
                   unicode.$(O)    \
-                  version.$(O)    \
+                  Version.$(O)    \
                   Word.$(O)       \
                   x11.$(O)
 

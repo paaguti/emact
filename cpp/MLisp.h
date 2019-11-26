@@ -1,6 +1,6 @@
-#if !defined(lint)
-static auto rcsid("$Id: version.cpp,v 1.3 2018/08/12 08:07:51 jullien Exp $");
-#endif
+/*
+ * static auto rcsid("$Id: ./emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $");
+ */
 
 /*
  * This  program  is  free  software;  you can redistribute it and/or
@@ -19,16 +19,22 @@ static auto rcsid("$Id: version.cpp,v 1.3 2018/08/12 08:07:51 jullien Exp $");
  * 02111-1307, USA.
  */
 
-/*
- * version.c :
- *
- * Set  the  version  name,  the revision number and the licence
- * name  of  the  Emacs  you  are  using.  Please, never  change
- * those variables yourself.
- */
-
-#include "./version.h"
+#if !defined(__MLISP_H)
+#define __MLISP_H
 #include "./emacs.h"
+/**
+ * High level interface to pseudo-lisp extension language.
+ */
+class MLisp {
+ public:
+  static bool customize();
+  static CMD eval(int expr);
+  static CMD evalBuffer();
+  static CMD evalExpression();
 
-const EMCHAR* licence{ECSTR("Christian Jullien")};
-const EMCHAR* version{VERSION};
+  /*
+   * Editor commands bound to key:
+   */
+  static CMD readFile();
+};
+#endif /* __MLISP_H */

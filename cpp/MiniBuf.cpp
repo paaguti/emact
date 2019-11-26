@@ -28,6 +28,7 @@ static auto rcsid("$Id: minibuf.cpp,v 1.20 2018/09/09 07:21:10 jullien Exp $");
 #include "./Line.h"
 #include "./Completion.h"
 #include "./Kbdm.h"
+#include "./KillBuf.h"
 #include "./MiniBuf.h"
 #include "./Redisplay.h"
 #include "./Search.h"

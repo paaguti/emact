@@ -41,17 +41,18 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./EditorCommand.h"
 #include "./EditorVariable.h"
 #include "./Error.h"
-#include "./Line.h"
 #include "./Kbdm.h"
+#include "./Line.h"
+#include "./MLisp.h"
 #include "./MiniBuf.h"
 #include "./Options.h"
 #include "./Process.h"
-#include "./TextRegion.h"
 #include "./Redisplay.h"
 #include "./Search.h"
 #include "./Terminal.h"
-#include "./Word.h"
+#include "./TextRegion.h"
 #include "./Widget.h"
+#include "./Word.h"
 
 static constexpr auto BACKDEL(0x7F);
 static bool    editflag{false};  // Edit flag

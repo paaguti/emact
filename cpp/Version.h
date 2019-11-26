@@ -23,7 +23,7 @@
 #define __VERSION_H
 
 /*
- * version.h :
+ * Version.h :
  *
  * Set  the  revision  number  of  the  current  EmACT  version.
  * Please, never change this variable yourself.
@@ -33,12 +33,12 @@
 #define EMACS_MINOR        "00"
 #define EMACS_RELEASE      "0"
 #define EMACS_VERSION      "3.00.0"
-#define EMACS_COPYRIGHT    "Copyright (c) 1985 - 2018 Eligis"
+#define EMACS_COPYRIGHT    "Copyright (c) 1985 - 2019 Eligis"
 #define EMACS_FULLVERSION  "Version 3.00.0"
 
 #define EMFILEVERSION      "3, 00, 0, 0\0"
 #define EMPRODUCTVERSION   "3.00.0\0"
-#define EMCOPYRIGHT        "Copyright (c) 1985 - 2018 Eligis\0"
+#define EMCOPYRIGHT        "Copyright (c) 1985 - 2019 Eligis\0"
 #define EMVERSIONINFO      3,00,0,0
 
 #define VERSION ECSTR("EmACT: v3.00.0")

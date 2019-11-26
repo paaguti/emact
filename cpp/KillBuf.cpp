@@ -24,7 +24,10 @@ static auto rcsid("$Id: killbuf.cpp,v 1.3 2018/08/28 12:03:54 jullien Exp $");
  * They are the only routines that touch or return the kill buffer.
  */
 
-#include "./emacs.h"
+#include <utility>
+#include <vector>
+#include "./CharType.h"
+#include "./KillBuf.h"
 
 static std::vector<EMCHAR> kvect;
 

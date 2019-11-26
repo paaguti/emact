@@ -50,6 +50,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #include "./emacs.h"
 #include "./Buffer.h"
 #include "./EditWindow.h"
+#include "./KillBuf.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 #include "./Search.h"
