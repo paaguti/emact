@@ -108,6 +108,7 @@ enum class EDITMODE {
 class Buffer;
 class Completion;
 class EditWindow;
+class EditorCommand;
 class Kbdm;
 class Line;
 class Redisplay;
