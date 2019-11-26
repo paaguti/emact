@@ -49,7 +49,7 @@ OBJECTS         = \
                   Error.$(O)      \
                   file.$(O)       \
                   fileio.$(O)     \
-                  indent.$(O)     \
+                  Indent.$(O)     \
                   Line.$(O)       \
                   KillBuf.$(O)    \
                   main.$(O)       \

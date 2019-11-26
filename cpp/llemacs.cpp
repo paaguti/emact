@@ -109,7 +109,7 @@ CMD
 evalfunction() {
   const auto& dot(curwp->getDot());
 
-  (void)blispexpr();
+  (void)Indent::beginLispExpr();
 
   evalflag = EVALBuffer;
   curline  = curwp->line();

@@ -76,20 +76,6 @@ bool    ffdiredp(const EMCHAR* fname);
 void    ffputbom(ENCODING widep);
 
 /*
- *      indent.cpp
- */
-
-bool    unindent(int c, bool f = true);
-int     lastc(Line* line);
-int     lastlisp(Line* line);
-CMD     tabindent();
-CMD     indentline();
-CMD     newlineindent();
-CMD     backtoindent();
-CMD     blispexpr();
-CMD     elispexpr();
-
-/*
  *      llemacs.cpp
  */
 

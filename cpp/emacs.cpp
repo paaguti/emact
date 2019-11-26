@@ -44,6 +44,7 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./MouseEvent.h"
 #include "./Error.h"
 #include "./Kbdm.h"
+#include "./Indent.h"
 #include "./Line.h"
 #include "./MLisp.h"
 #include "./MiniBuf.h"
@@ -167,7 +168,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      Ctrl|'J',
-     newlineindent,
+     Indent::newlineIndent,
      ECSTR("newline-and-indent")
   },
   {
@@ -282,7 +283,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      CTLX|Ctrl|'I',
-     indentline,
+     Indent::indentLine,
      ECSTR("indent-rigidily")
   },
   {
@@ -532,7 +533,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'B',
-     blispexpr,
+     Indent::beginLispExpr,
      ECSTR("beginning-of-expression")
   },
   {
@@ -547,7 +548,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|Ctrl|'E',
-     elispexpr,
+     Indent::endLispExpr,
      ECSTR("end-of-expression")
   },
   {
@@ -732,7 +733,7 @@ std::vector<EditorCommand> Editor::_keytab = {
   },
   {
      META|'M',
-     backtoindent,
+     Indent::backToIndent,
      ECSTR("back-to-indent")
   },
   {
@@ -1407,7 +1408,7 @@ Editor::execute(int c, int n) {
          emode == EDITMODE::PYTHONMODE ||
          emode == EDITMODE::PERLMODE   ||
          emode == EDITMODE::JAVAMODE)) {
-      status = (unindent(c) ? T : NIL);
+      status = (Indent::unindent(c) ? T : NIL);
       Editor::_lastflag = Editor::_thisflag;
       return status;
     }

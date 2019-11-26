@@ -29,6 +29,7 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #include "./Editor.h"
 #include "./Buffer.h"
 #include "./Completion.h"
+#include "./Indent.h"
 #include "./KillBuf.h"
 #include "./Line.h"
 #include "./EditWindow.h"
@@ -390,7 +391,7 @@ TextRegion::indent() {
   curwp->setDot(region._linep, 0);
 
   do {
-    s = indentline();
+    s = Indent::indentLine();
   } while (s == T && --region._lines > 0);
 
   return T;

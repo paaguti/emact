@@ -34,6 +34,7 @@ static auto rcsid("$Id: search.cpp,v 1.25 2018/09/04 05:13:09 jullien Exp $");
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
+#include "./Indent.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
 #include "./Options.h"
@@ -479,7 +480,7 @@ Search::matchForward(int patc, bool printflag) {
   auto cbo(dot.pos());
 
   if (lisp) {
-    max = lastlisp(clp) + 1;
+    max = Indent::lastLispPos(clp) + 1;
   } else {
     max = clp->length();
   }
@@ -490,7 +491,7 @@ Search::matchForward(int patc, bool printflag) {
       clp = clp->forw();
       cbo = 0;
       if (lisp) {
-        max = lastlisp(clp) + 1;
+        max = Indent::lastLispPos(clp) + 1;
       } else {
         max = clp->length();
       }
@@ -551,7 +552,7 @@ Search::matchBackward(int patc, bool printflag) {
     (void)Editor::backchar();
   }
 
-  if (mode == EDITMODE::LISPMODE && (cbo > lastlisp(clp) + 1)) {
+  if (mode == EDITMODE::LISPMODE && (cbo > Indent::lastLispPos(clp) + 1)) {
     return false;
   }
 
@@ -582,10 +583,10 @@ Search::matchBackward(int patc, bool printflag) {
       case EDITMODE::PROLOGMODE:
       case EDITMODE::PYTHONMODE:
       case EDITMODE::SHELLMODE:
-        cbo = lastc(clp);
+        cbo = Indent::lastCPos(clp);
         break;
       case EDITMODE::LISPMODE:
-        cbo = lastlisp(clp);
+        cbo = Indent::lastLispPos(clp);
         break;
       default:
         cbo = clp->length();

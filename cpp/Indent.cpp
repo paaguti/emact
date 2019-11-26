@@ -27,6 +27,7 @@ static auto rcsid("$Id: indent.cpp,v 1.20 2018/09/04 05:13:08 jullien Exp $");
 #include "./Editor.h"
 #include "./Buffer.h"
 #include "./EditWindow.h"
+#include "./Indent.h"
 #include "./Line.h"
 #include "./Search.h"
 #include "./Terminal.h"
@@ -108,7 +109,7 @@ nextcindent() {
   auto llp = indentp;
 
   while (curwp->line() != llp) {
-    auto i = lastc(curwp->line());
+    auto i = Indent::lastCPos(curwp->line());
 
     if (i > 0 && !commento) {
       c = curwp->line()->get(i - 1);
@@ -131,7 +132,7 @@ nextcindent() {
 
     if (c == '}') {
       /*
-       * The last statement is a closing block. unindent.
+       * The last statement is a closing block. Indent::unindent.
        */
       curwp->setDotPos(i - 1);
       if (Search::matchBackward('}', false)) {
@@ -160,7 +161,7 @@ nextcindent() {
         curwp->setDot(oclp, ocbo);
         return clp;
       }
-      i = lastc(curwp->line());
+      i = Indent::lastCPos(curwp->line());
     } while (i == 0);
 
     c = curwp->line()->get(i - 1);
@@ -190,7 +191,7 @@ nextcindent() {
  */
 
 bool
-unindent(int c, bool f) {
+Indent::unindent(int c, bool f) {
   auto max(curwp->pos());
 
   if (max > 1 && curwp->line()->get(max - 1) == '\'') {
@@ -235,7 +236,7 @@ unindent(int c, bool f) {
  */
 
 int
-lastc(Line* line) {
+Indent::lastCPos(Line* line) {
   auto buf = line->text();
 
   for (auto n(line->length() - 1); n >= 0; --n) {
@@ -275,7 +276,7 @@ static bool
 cindent() {
   const auto& dot(curwp->getDot());
   auto clp(dot.line());
-  auto i(lastc(clp));
+  auto i(Indent::lastCPos(clp));
   int nindent = 0;
   int ncol;
   int n;
@@ -285,7 +286,7 @@ cindent() {
    */
 
   while (clp != curbp->lastline()) {
-    if ((i = lastc(clp)) > 0) {
+    if ((i = Indent::lastCPos(clp)) > 0) {
       break;
     } else {
       clp = clp->back();
@@ -393,7 +394,7 @@ cindent() {
  */
 
 int
-lastlisp(Line* line) {
+Indent::lastLispPos(Line* line) {
   auto buf = line->text();
   auto  n  = line->length();
   int     dblq = 0;
@@ -472,21 +473,21 @@ lispindent() {
 
   indentp = dot.line();
   while (indentp != curbp->lastline()) {
-    if (lastlisp(indentp) > 0) {
+    if (Indent::lastLispPos(indentp) > 0) {
       break;
     } else {
       indentp = indentp->back();
     }
   }
 
-  max = lastlisp(indentp);
+  max = Indent::lastLispPos(indentp);
 
   if (max < 0) {
     if (commento >= 0) {
       indento = commento;
     }
   } else if (indentp->get(max) == ')' && Search::matchBackward(')')) {
-    max = lastlisp(indentp);
+    max = Indent::lastLispPos(indentp);
 
     for (int i = 0; i <= max; ++i) {
       if ((c = indentp->get(i)) == '(') {
@@ -656,7 +657,7 @@ sgmlindent() {
    */
 
   while (clp != curbp->lastline()) {
-    if (lastc(clp) > 0) {
+    if (Indent::lastCPos(clp) > 0) {
       break;
     } else {
       clp = clp->back();
@@ -734,7 +735,7 @@ indent() {
      */
 
     while (clp != curbp->lastline()) {
-      if ((i = lastc(clp)) > 0) {
+      if ((i = Indent::lastCPos(clp)) > 0) {
         break;
       } else {
         clp = clp->back();
@@ -773,7 +774,7 @@ indent() {
  */
 
 CMD
-tabindent() {
+Indent::tabIndent() {
   (void)Editor::openline();
   (void)indent();
   (void)Editor::forwdel();
@@ -782,7 +783,7 @@ tabindent() {
 
   if (dot.pos() != dot.line()->length() && curwp->getChar() == '}') {
     (void)Editor::forwdel();
-    (void)unindent('}', false);
+    (void)Indent::unindent('}', false);
     (void)Editor::backchar();
   }
 
@@ -797,7 +798,7 @@ tabindent() {
  */
 
 CMD
-indentline() {
+Indent::indentLine() {
   auto n    = Editor::_repeat;
   auto save = Editor::_repeat;
 
@@ -813,7 +814,7 @@ indentline() {
 
   while (n--
          && (Editor::gotobol() == T)
-         && (tabindent() == T)
+         && (Indent::tabIndent() == T)
          && (Editor::forwline() == T)) {
     continue;
   }
@@ -830,13 +831,13 @@ indentline() {
  */
 
 CMD
-newlineindent() {
+Indent::newlineIndent() {
   (void)Editor::justOneSpace();
   (void)Editor::backchar();
   (void)Editor::openline();
   (void)Editor::forwline();
   (void)Editor::gotobol();
-  (void)tabindent();
+  (void)Indent::tabIndent();
 
   return T;
 }
@@ -847,7 +848,7 @@ newlineindent() {
  */
 
 CMD
-backtoindent() {
+Indent::backToIndent() {
   (void)Editor::gotobol();
   const auto len(curwp->line()->length());
   for (int i{0}; i < len; ++i) {
@@ -867,7 +868,7 @@ backtoindent() {
  */
 
 CMD
-blispexpr() {
+Indent::beginLispExpr() {
   EMCHAR c;
 
   switch (curbp->editMode()) {
@@ -903,7 +904,7 @@ blispexpr() {
  */
 
 CMD
-elispexpr() {
+Indent::endLispExpr() {
   switch (curbp->editMode()) {
   case EDITMODE::CMODE:
   case EDITMODE::CPPMODE:
@@ -911,13 +912,13 @@ elispexpr() {
   case EDITMODE::PERLMODE:
   case EDITMODE::PYTHONMODE:
   case EDITMODE::JAVAMODE:
-    if (blispexpr() == T && Search::rightCurly() == T) {
+    if (Indent::beginLispExpr() == T && Search::rightCurly() == T) {
       return T;
     } else {
       return NIL;
     }
   case EDITMODE::LISPMODE:
-    if (blispexpr() == T && Search::rightParent() == T) {
+    if (Indent::beginLispExpr() == T && Search::rightParent() == T) {
       return T;
     } else {
       return NIL;

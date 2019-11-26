@@ -35,6 +35,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
 #include "./EditWindow.h"
 #include "./Editor.h"
 #include "./Kbdm.h"
+#include "./Indent.h"
 #include "./KillBuf.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
@@ -583,7 +584,7 @@ Editor::tab() {
 
   if ((curbp->editMode() != EDITMODE::FUNDAMENTAL)
       && (curwp->pos() == 0)) {
-    auto s = tabindent();
+    auto s = Indent::tabIndent();
     if (curwp->pos() == 0) {
       /*
        * Intdentation is still at 0 after trying to indent
@@ -664,7 +665,7 @@ Editor::endline() {
   case EDITMODE::PYTHONMODE:
   case EDITMODE::SGMLMODE:
   case EDITMODE::SHELLMODE:
-    return newlineindent();
+    return Indent::newlineIndent();
   case EDITMODE::DIRED: {
     const auto dotp(curwp->line());
 
