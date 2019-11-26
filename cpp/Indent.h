@@ -34,5 +34,7 @@ class Indent {
   static CMD backToIndent();
   static CMD beginLispExpr();
   static CMD endLispExpr();
+
+  static void save(Line* line, int pos);
 };
 #endif /* __INDENT_H */

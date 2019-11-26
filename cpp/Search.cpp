@@ -49,8 +49,6 @@ static int upline{0};
 
 extern Completion complete;  // Automatic completion
 extern Widget* widget;       // Widgets tools
-extern int   indento;
-extern Line* indentp;
 extern int   commento;
 
 static bool replace(bool prompt);
@@ -58,7 +56,6 @@ static bool quotep(const Line* l, int i);
 static bool instringp(const Line* clp, int cbo);
 static void mlmatch(const Line* clp, int cbo);
 static CMD  readpattern(const EMCHAR* prompt);
-static void saveindent(Line *clp, int cbo);
 
 /*
  * Compare two characters.  The "bc" comes from the buffer. It has
@@ -557,16 +554,16 @@ Search::matchBackward(int patc, bool printflag) {
   }
 
   for (;;) {
-    while (cbo < 0 ||
-           ((mode == EDITMODE::CMODE      ||
-             mode == EDITMODE::CPPMODE    ||
-             mode == EDITMODE::CSHARPMODE ||
-             mode == EDITMODE::PERLMODE   ||
-             mode == EDITMODE::PYTHONMODE ||
-             mode == EDITMODE::JAVAMODE) &&
-            commento != 0)) {
+    while ((cbo < 0)
+           || ((mode == EDITMODE::CMODE      ||
+                mode == EDITMODE::CPPMODE    ||
+                mode == EDITMODE::CSHARPMODE ||
+                mode == EDITMODE::PERLMODE   ||
+                mode == EDITMODE::PYTHONMODE ||
+                mode == EDITMODE::JAVAMODE)
+               && (commento != 0))) {
       clp = clp->back();
-      upline++;
+      ++upline;
       if (clp == curbp->lastline()) {
         if (printflag) {
           WDGmessage(NOMATCH);
@@ -610,39 +607,11 @@ Search::matchBackward(int patc, bool printflag) {
     }
 
     if (c == matchpat && --nbmatch == 0) {
-      saveindent(clp, ++cbo);
+      Indent::save(clp, ++cbo);
       curwp->setDot(clp, cbo);
       curwp->setFlags(EditWindow::WFMOVE);
       return true;
     }
-  }
-}
-
-/*
- * Save the current indentation point in (indentp, indento).
- */
-
-static void
-saveindent(Line *clp, int cbo) {
-  indentp = clp;
-
-  switch (curbp->editMode()) {
-  case EDITMODE::LISPMODE:
-    indento = cbo;
-    break;
-  case EDITMODE::CMODE:
-  case EDITMODE::CPPMODE:
-  case EDITMODE::CSHARPMODE:
-  case EDITMODE::FORTRANMODE:
-  case EDITMODE::JAVAMODE:
-  case EDITMODE::PERLMODE:
-  case EDITMODE::PROLOGMODE:
-  case EDITMODE::PYTHONMODE:
-  case EDITMODE::SHELLMODE:
-    indento = clp->leftmargin();
-    break;
-  default:
-    indento = 0;
   }
 }
 

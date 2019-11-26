@@ -42,9 +42,10 @@ static bool  cindent();
 
 extern Widget* widget;       // Widgets tools
 
-int   indento{0};
-Line* indentp{nullptr};
-int   commento{0};
+static int   indento{0};
+static Line* indentp{nullptr};
+
+int commento{0};
 
 /*
  * Insert spaces/tabulation up to a given position
@@ -183,6 +184,35 @@ nextcindent() {
   }
 
   return clp;
+}
+
+
+/*
+ * Save the current indentation point in (indentp, indento).
+ */
+
+void
+Indent::save(Line *clp, int cbo) {
+  indentp = clp;
+
+  switch (curbp->editMode()) {
+  case EDITMODE::LISPMODE:
+    indento = cbo;
+    break;
+  case EDITMODE::CMODE:
+  case EDITMODE::CPPMODE:
+  case EDITMODE::CSHARPMODE:
+  case EDITMODE::FORTRANMODE:
+  case EDITMODE::JAVAMODE:
+  case EDITMODE::PERLMODE:
+  case EDITMODE::PROLOGMODE:
+  case EDITMODE::PYTHONMODE:
+  case EDITMODE::SHELLMODE:
+    indento = clp->leftmargin();
+    break;
+  default:
+    indento = 0;
+  }
 }
 
 /*
