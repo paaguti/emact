@@ -46,6 +46,8 @@ static auto rcsid("$Id: line.cpp,v 1.25 2018/09/07 17:57:09 jullien Exp $");
 #include "./Terminal.h"
 #include "./Widget.h"
 
+extern Widget* widget;       // Widgets tools
+
 /*
  * This  routine  allocates  a  block  of memory large enough to
  * hold  a  LINE  containing  "used"  characters.  The  block is

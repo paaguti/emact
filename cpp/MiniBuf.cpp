@@ -42,6 +42,7 @@ static void mlclearentry(EMCHAR* buf, int cpos);
 
 extern Kbdm kbdm;
 extern Completion complete;  // Automatic completion
+extern Widget* widget;       // Widgets tools
 
 bool mpresf{false};  // true if message in last line.
 

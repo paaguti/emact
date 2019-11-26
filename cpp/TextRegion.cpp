@@ -37,6 +37,7 @@ static auto rcsid("$Id: region.cpp,v 1.18 2018/09/04 05:13:09 jullien Exp $");
 #include "./Widget.h"
 
 extern Completion complete;  // Automatic completion
+extern Widget* widget;       // Widgets tools
 
 /*
  * This routine figures out the bounds of the region in the current

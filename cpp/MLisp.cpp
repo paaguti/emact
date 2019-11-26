@@ -43,6 +43,7 @@ static auto rcsid("$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $");
 #include <array>
 
 extern Completion complete;  // Automatic completion
+extern Widget* widget;       // Widgets tools
 
 class LispEngine {
  private:

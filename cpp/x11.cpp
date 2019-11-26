@@ -53,6 +53,7 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 #include "./x11.ico"
 
 extern MouseEvent mevent;  // Mouse event
+extern Widget* widget;       // Widgets tools
 
 static void    X11clipcopy();
 static void    X11clippaste();

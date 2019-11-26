@@ -66,6 +66,7 @@ static auto rcsid("$Id: xpterm.cpp,v 1.41 2018/09/09 07:25:14 jullien Exp $");
 #endif
 
 extern MouseEvent mevent;  // Mouse event
+extern Widget* widget;       // Widgets tools
 
 /*
  * Constant definitions

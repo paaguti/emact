@@ -32,6 +32,8 @@ static auto rcsid("$Id: nexterr.cpp,v 1.13 2018/09/02 14:37:58 jullien Exp $");
 #include "./Search.h"
 #include "./Widget.h"
 
+extern Widget* widget;       // Widgets tools
+
 bool   Error::_flag{false};  // Error flag
 int    Error::_linenum{0};
 EMCHAR Error::_fname[NFILEN];

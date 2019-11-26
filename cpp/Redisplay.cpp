@@ -38,6 +38,8 @@ static auto rcsid("$Id: display.cpp,v 1.33 2018/09/04 16:02:31 jullien Exp $");
 #include "./Terminal.h"
 #include "./Widget.h"
 
+extern Widget* widget;       // Widgets tools
+
 bool            Redisplay::_mouse{false};  // Mouse flag
 int             Redisplay::_currow{0};
 int             Redisplay::_curcol{0};

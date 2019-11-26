@@ -37,6 +37,7 @@ static auto rcsid("$Id: window.cpp,v 1.19 2018/09/04 05:13:09 jullien Exp $");
 #include "./TextRegion.h"
 #include "./Widget.h"
 
+extern Widget* widget;     // Widgets tools
 extern MouseEvent mevent;  // Mouse event
 
 std::list<EditWindow*> EditWindow::_wlist;

@@ -381,12 +381,10 @@ extern bool   mouse_avoidance_mode;   // Auto mouse move flag
 extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 } // namespace opt
 
-
 class Buffer;
 class EditWindow;
 class Redisplay;
 class Terminal;
-class Widget;
 
 class Line;
 
@@ -394,7 +392,6 @@ extern Buffer*     curbp;              // Current buffer
 extern EditWindow* curwp;              // Current window
 extern Redisplay*  redisplay;          // Object which redisplays things.
 extern Terminal*   term;               // Emact terminal
-extern Widget*     widget;             // Widgets tools
 
 #include "./defines.h"
 #endif

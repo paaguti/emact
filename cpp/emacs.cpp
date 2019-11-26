@@ -65,6 +65,7 @@ static bool    latexinsert(int n, int c);
 static CMD     again();
 
 extern const EMCHAR* version;   /* Current version              */
+extern Widget* widget;          /* Widgets tools                */
 
 static bool initflag = false;   /* Init flag                    */
 

@@ -47,6 +47,7 @@ static EMCHAR* NOMATCH = ECSTR("No match.");
 static int upline{0};
 
 extern Completion complete;  // Automatic completion
+extern Widget* widget;       // Widgets tools
 extern int   indento;
 extern Line* indentp;
 extern int   commento;

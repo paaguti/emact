@@ -39,6 +39,8 @@ static bool  lispindent();
 static bool  sgmlindent();
 static bool  cindent();
 
+extern Widget* widget;       // Widgets tools
+
 int   indento{0};
 Line* indentp{nullptr};
 int   commento{0};
