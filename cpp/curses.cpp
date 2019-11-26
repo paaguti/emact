@@ -24,6 +24,7 @@ static auto rcsid("$Id: curses.cpp,v 1.22 2018/09/07 17:57:09 jullien Exp $");
  */
 
 #include "./emacs.h"
+#include "./Terminal.h"
 
 #if defined(_CURSES)
 
