@@ -115,55 +115,8 @@ class Terminal;
 class Widget;
 
 /*
- * Commands and variables table.
+ * Variables table.
  */
-
-class EditorCommand final {
- private:
-  using CB = CMD (*)();
-
- public:
-  constexpr EditorCommand(int keyCode, CB fp, const EMCHAR* keyName)
-    : k_code{keyCode},
-      k_fp{fp},
-      k_name{keyName} {
-  }
-
-  bool
-  operator==(const EditorCommand& rhs) const noexcept {
-    return k_code == rhs.k_code;
-  }
-
-  const EMCHAR*
-  name() const noexcept {
-    return k_name;
-  }
-
-  int
-  code() const noexcept {
-    return k_code;
-  }
-
-  void
-  unset() noexcept {
-    k_code = UNBOUND;
-  }
-
-  CMD
-  operator()() const noexcept {
-    return k_fp();
-  }
-
-  CB
-  callback() const noexcept {
-    return k_fp;
-  }
-
- private:
-  int           k_code;          // Key code
-  CB            k_fp;            // Routine to handle it
-  const EMCHAR* k_name;          // Name of the command
-};
 
 enum EMVAR {
   BOOLVAL = 0x0000,          // Boolean type
@@ -363,6 +316,8 @@ class Kbdm {
   int* _kbdmip{nullptr};                // Input pointer for above
   int* _kbdmop{nullptr};                // Output pointer for above
 };
+
+#include "./EditorCommand.h"
 
 class Editor {
  public:
