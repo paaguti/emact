@@ -90,6 +90,17 @@ int    Counter::_val{0};
 EMCHAR Counter::_fmt[NPAT] = { '%', 'd', 0 };
 
 CMD
+Counter::format() {
+  CMD s;
+
+  if ((s = WDGedit(ECSTR("Counter format: "), _fmt, NPAT)) != T) {
+    return s;
+  } else {
+    return T;
+  }
+}
+
+CMD
 Counter::insert() {
   EMCHAR buf[NPAT];
 

@@ -38,11 +38,12 @@ KRNSHARED	= lib$(KERN).$(SOEXT).$(VERSION)
 NOPRINTDIR	= --no-print-directory
 STRIP		=
 
-OBJECTS         = basic.$(O)      \
+OBJECTS         = \
                   Buffer.$(O)     \
                   charutil.$(O)   \
                   Completion.$(O) \
                   curses.$(O)     \
+                  Editor.$(O)     \
                   EditWindow.$(O) \
                   emacs.$(O)      \
                   Error.$(O)      \
@@ -56,7 +57,6 @@ OBJECTS         = basic.$(O)      \
                   MLisp.$(O)      \
                   Options.$(O)    \
                   Process.$(O)    \
-                  random.$(O)     \
                   Redisplay.$(O)  \
                   Search.$(O)     \
                   Terminal.$(O)   \

@@ -22,6 +22,7 @@
 #if !defined(__COUNTER_H)
 #define __COUNTER_H
 #include "./emacs.h"
+#include "./Editor.h"
 
 /**
  * Counter class is used to manage an integer counter that can be incremented,

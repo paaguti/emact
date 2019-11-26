@@ -77,11 +77,12 @@ LIBS		= $(SETARGV)	\
 		  comdlg32.lib  \
 		  $(LIBEXTRA)
 
-KERNEL		= basic.obj	 \
+KERNEL		= \
 		  Buffer.obj	 \
 		  charutil.obj	 \
 		  Completion.obj \
 		  dirent.obj	 \
+                  Editor.obj	 \
 		  EditWindow.obj \
 		  emacs.obj	 \
 		  Error.obj	 \
@@ -94,7 +95,6 @@ KERNEL		= basic.obj	 \
 		  MiniBuf.obj	 \
 		  Options.obj	 \
 		  Process.obj	 \
-		  random.obj	 \
 		  Redisplay.obj	 \
 		  Search.obj	 \
 		  Terminal.obj	 \
