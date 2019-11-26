@@ -114,108 +114,6 @@ class Redisplay;
 class Terminal;
 class Widget;
 
-/*
- * Variables table.
- */
-
-enum EMVAR {
-  BOOLVAL = 0x0000,          // Boolean type
-  FIXVAL  = 0x0001,          // Integer type
-  STRING  = 0x0002           // String type
-};
-
-class Variable {
- public:
-  template<typename T>
-  constexpr Variable(T& val, EMCHAR* varName, EMVAR varType)
-  : f_val{&val},
-    f_name{varName},
-    f_type{varType} {
-  }
-
-  template<typename T>
-  constexpr Variable(T& val, EMCHAR* varName, int strSize)
-  : f_val{&val},
-    f_name{varName},
-    f_type{STRING},
-    f_size{static_cast<size_t>(strSize)} {
-  }
-
-  EMCHAR*
-  name() const noexcept {
-    return f_name;
-  }
-
-  int*
-  intp() const noexcept {
-    return reinterpret_cast<int*>(f_val);
-  }
-
-  bool*
-  boolp() const noexcept {
-    return reinterpret_cast<bool*>(f_val);
-  }
-
-  EMCHAR*
-  string() const noexcept {
-    return reinterpret_cast<EMCHAR*>(f_val);
-  }
-
-  EMVAR
-  type() const noexcept {
-    return f_type;
-  }
-
-  size_t
-  size() const noexcept {
-    return f_size;
-  }
-
-  static std::vector<Variable> vartab;
-
- private:
-  void*   f_val;                 // Flag address
-  EMCHAR* f_name;                // Flag name
-  EMVAR   f_type;                // Type of the variable
-  size_t  f_size{0};             // Size of the variable
-};
-
-class LispEngine;
-class Macro {
-  friend class LispEngine;
- public:
-  Macro() = default;
-
-  template<typename T>
-  void
-  set(T keyCode, EMCHAR* cmdName, int indx) {
-    m_code  = static_cast<int>(keyCode);
-    m_name  = cmdName;
-    m_index = indx;
-  }
-
-  const EMCHAR*
-  name() const noexcept {
-    return m_name;
-  }
-
-  int
-  index() const noexcept {
-    return m_index;
-  }
-
-  int
-  code() const noexcept {
-    return m_code;
-  }
-
- private:
-  int*    m_exec{nullptr};  // Code
-  EMCHAR* m_name{nullptr};  // Macro name
-  int     m_code{0};        // Key bind
-  int     m_index{0};       // Index in macro key container.
-};
-
 /**
  * Class for mouse driver (if any).
  */
@@ -242,6 +140,7 @@ class MEvent {
 };
 
 #include "./EditorCommand.h"
+#include "./Macro.h"
 
 class Editor {
  public:

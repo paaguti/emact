@@ -39,6 +39,7 @@ static auto rcsid("$Id: emacs.cpp,v 1.52 2018/09/09 07:21:09 jullien Exp $");
 #include "./Counter.h"
 #include "./EditWindow.h"
 #include "./EditorCommand.h"
+#include "./EditorVariable.h"
 #include "./Error.h"
 #include "./Line.h"
 #include "./Kbdm.h"
@@ -1052,7 +1053,7 @@ EMCHAR  helpfile3[NPAT];              // help file 3 (Alt-F11)
 EMCHAR  helpfile4[NPAT];              // help file 4 (Alt-F12)
 }  // namespace opt
 
-std::vector<Variable> Variable::vartab = {
+std::vector<EditorVariable> EditorVariable::vartab = {
   { opt::append_process_buffer,  ECSTR("append-process-buffer"),     BOOLVAL },
   { opt::as_arg,                 ECSTR("assembler-arguments"),       NPAT    },
   { opt::as_name,                ECSTR("assembler-name"),            NCMDN   },

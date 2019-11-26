@@ -30,6 +30,7 @@ static auto rcsid("$Id: mlisp.cpp,v 1.30 2018/09/09 07:21:10 jullien Exp $");
 #include "./emacs.h"
 #include "./Buffer.h"
 #include "./Completion.h"
+#include "./EditorVariable.h"
 #include "./EditWindow.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
@@ -220,7 +221,7 @@ LispEngine::getfun() {
          * Found an existing slot (redefinition)
          */
         delete[] macro.name();
-        delete[] macro.m_exec;
+        delete[] macro._exec;
         break;
       }
       ++indx;
@@ -236,7 +237,7 @@ LispEngine::getfun() {
         /*
          * Delete previous definition
          */
-        delete[] macro.m_exec;
+        delete[] macro._exec;
         break;
       }
       ++indx;
@@ -331,13 +332,13 @@ LispEngine::getfun() {
     }
     buf[c] = 0;
 
-    macro.m_exec = buf;
+    macro._exec = buf;
   }
 
   if (pmain) {
     (void)MLisp::eval(static_cast<int>(indx));
-    macro.m_code = static_cast<int>(SpecialForm::FREE);
-    delete[] macro.m_exec;
+    macro._code = static_cast<int>(SpecialForm::FREE);
+    delete[] macro._exec;
   }
 
   return true;
@@ -372,18 +373,18 @@ LispEngine::fillcommand(SpecialForm key) {
   case SpecialForm::SETQ:
     {
       i = 0;
-      for (const auto& var : Variable::vartab) {
+      for (const auto& var : EditorVariable::vartab) {
         if (var.name() && !emstrcmp(var.name(), word)) {
           break;
         }
         ++i;
       }
 
-      if (i >= (int)Variable::vartab.size()) {
+      if (i >= (int)EditorVariable::vartab.size()) {
         readerror(ECSTR("Unknown variable. "), word);
       }
 
-      auto& var(Variable::vartab[i]);
+      auto& var(EditorVariable::vartab[i]);
 
       fillmacro(i);
       word = getword();
@@ -625,7 +626,7 @@ LispEngine::eval(int expr, size_t depth) {
     return false;
   }
 
-  auto bufcmd = Editor::_macros[expr].m_exec;
+  auto bufcmd = Editor::_macros[expr]._exec;
   auto s = T;
   auto n = 1;
 
@@ -769,7 +770,7 @@ LispEngine::eval(int expr, size_t depth) {
       {
         bufcmd++;
         c = *bufcmd++;
-        auto& var(Variable::vartab[c]);
+        auto& var(EditorVariable::vartab[c]);
 
         switch (var.type()) {
         case BOOLVAL:
@@ -814,11 +815,11 @@ LispEngine::eval(int expr, size_t depth) {
           break;
         }
       }
-      Editor::_macros[c].m_code = code;
+      Editor::_macros[c]._code = code;
       break;
     case SpecialForm::FUNCTION:
       if (*++bufcmd == expr) {
-        bufcmd = Editor::_macros[expr].m_exec;
+        bufcmd = Editor::_macros[expr]._exec;
         continue;
       } else {
         while (n-- && s == T) {

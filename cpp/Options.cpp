@@ -27,6 +27,7 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
+#include "./EditorVariable.h"
 #include "./Kbdm.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
@@ -200,7 +201,7 @@ Options::help() {
 
   Line::append(bp, ECSTR("===== Customer variable value ====="));
 
-  for (const auto& vtp : Variable::vartab) {
+  for (const auto& vtp : EditorVariable::vartab) {
     (void)emstrcpy(line, vtp.name());
     for (i = emstrlen(line); i < COLUMN_VALUE; ++i) {
       line[i] = ' ';
@@ -256,7 +257,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
 
   index_found = 0;
   index_type  = INDEX_VARIABLE;
-  for (const auto& var : Variable::vartab) {
+  for (const auto& var : EditorVariable::vartab) {
     if (emstrcmp(var.name(), buf) == 0) {
       return var.name();
     }
@@ -278,7 +279,7 @@ varmatch(const EMCHAR* prompt, EMCHAR* buf) {
 
   index_found = 0;
   index_type  = INDEX_VARIABLE;
-  for (const auto& var : Variable::vartab) {
+  for (const auto& var : EditorVariable::vartab) {
     if (len == 0 || emstrncmp(var.name(), buf, len) == 0) {
       if (len != emstrlen(var.name())) {
         WDGupdate(prompt, var.name());
@@ -356,7 +357,7 @@ Options::setvar() {
     return status;
   case INDEX_VARIABLE:
     {
-      auto& var(Variable::vartab[index_found]);
+      auto& var(EditorVariable::vartab[index_found]);
 
       switch (var.type()) {
       case BOOLVAL :
