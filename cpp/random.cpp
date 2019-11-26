@@ -29,10 +29,13 @@ static auto rcsid("$Id: random.cpp,v 1.26 2018/09/08 14:12:50 jullien Exp $");
 #include "./Completion.h"
 #include "./Counter.h"
 #include "./EditWindow.h"
+#include "./Kbdm.h"
 #include "./Line.h"
 #include "./Redisplay.h"
 #include "./Terminal.h"
 #include "./Widget.h"
+
+extern Kbdm kbdm;
 
 static int  getccol();
 static CMD  addprefix();

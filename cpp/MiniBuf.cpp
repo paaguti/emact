@@ -27,15 +27,18 @@ static auto rcsid("$Id: minibuf.cpp,v 1.20 2018/09/09 07:21:10 jullien Exp $");
 #include "./emacs.h"
 #include "./Line.h"
 #include "./Completion.h"
+#include "./Kbdm.h"
 #include "./MiniBuf.h"
 #include "./Redisplay.h"
 #include "./Search.h"
 #include "./Terminal.h"
 #include "./Widget.h"
 
-static  void    mlputs(const EMCHAR* s, int size);
-static  void    mlputi(int i, int r);
-static  void    mlclearentry(EMCHAR* buf, int cpos);
+static void mlputs(const EMCHAR* s, int size);
+static void mlputi(int i, int r);
+static void mlclearentry(EMCHAR* buf, int cpos);
+
+extern Kbdm kbdm;
 
 bool mpresf{false};  // true if message in last line.
 

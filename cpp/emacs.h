@@ -381,7 +381,6 @@ extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 extern Buffer*     curbp;              // Current buffer
 extern Completion  complete;           // Automatic completion
 extern EditWindow* curwp;              // Current window
-extern Kbdm        kbdm;               // Keyboard macro
 extern MEvent      mevent;             // Mouse event
 extern Redisplay*  redisplay;          // Object which redisplays things.
 extern Terminal*   term;               // Emact terminal

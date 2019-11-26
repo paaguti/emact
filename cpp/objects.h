@@ -109,7 +109,6 @@ class Buffer;
 class Completion;
 class EditWindow;
 class EditorCommand;
-class Kbdm;
 class Line;
 class Redisplay;
 class Terminal;
@@ -240,82 +239,6 @@ class MEvent {
   unsigned int button;
   int x;
   int y;
-};
-
-class Kbdm {
- public:
-  class BufferFullException {};
-  Kbdm() {
-    reset();
-  }
-
-  /*
-   * Playing methods
-   */
-  void
-  startPlaying() noexcept {
-    _kbdmop = &_kbdm[0];
-  }
-
-  void
-  stopPlaying() noexcept {
-    _kbdmop = nullptr;
-  }
-
-  bool
-  isPlaying() noexcept {
-    return _kbdmop != nullptr;
-  }
-
-  int
-  play() noexcept {
-    return *_kbdmop++;
-  }
-
-  /*
-   * Recording methods
-   */
-  void
-  startRecording() noexcept {
-    _kbdmip = &_kbdm[0];
-  }
-
-  void
-  stopRecording() noexcept {
-    _kbdmip = nullptr;
-  }
-
-  bool
-  isRecording() const noexcept {
-    return _kbdmip != nullptr;
-  }
-
-  void
-  record(int c) {
-    if (_kbdmip >= &_kbdm[NKBDM]) {
-      reset();
-      throw BufferFullException{};
-    } else {
-      *_kbdmip++ = c;
-    }
-  }
-
-  void
-  reset() noexcept {
-    _kbdmip = nullptr;
-    _kbdm[0] = -1;
-  }
-
-  bool
-  exist() const noexcept {
-    return _kbdm[0] != -1;
-  }
-
- private:
-  static constexpr size_t NKBDM = 512;  // # of strokes, keyboard macro
-  int  _kbdm[NKBDM];                    // Holds keyboard macro data
-  int* _kbdmip{nullptr};                // Input pointer for above
-  int* _kbdmop{nullptr};                // Output pointer for above
 };
 
 #include "./EditorCommand.h"

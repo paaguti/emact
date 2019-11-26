@@ -27,6 +27,7 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 #include "./Buffer.h"
 #include "./Completion.h"
 #include "./EditWindow.h"
+#include "./Kbdm.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
 #include "./Options.h"
@@ -34,6 +35,8 @@ static auto rcsid("$Id: options.cpp,v 1.16 2018/09/09 07:21:10 jullien Exp $");
 #include "./Terminal.h"
 #include "./Word.h"
 #include "./Widget.h"
+
+extern Kbdm kbdm;
 
 static void    getkeyname(int key, EMCHAR *buf);
 static EMCHAR* varmatch(const EMCHAR* prompt, EMCHAR* buf);
