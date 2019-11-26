@@ -25,7 +25,7 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  * It implements low level character functions.
  */
 
-#include "./emacs.h"
+#include "./CharType.h"
 
 /*
  * Convert a wide character to the corresponding multibyte character.
@@ -37,11 +37,11 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  *         A wide character.
  *
  * Return Value 
- *  If  wctomb  converts  the wide character to a multibyte character,
- *  it  returns  the  number  of  bytes  (which  is never greater than
+ *  If wctomb converts the wide character to a multibyte character, it
+ *  returns the number of bytes (which is never greater than
  *  MB_LEN_MAX) in the wide character.  If wchar is the wide-character
- *  null  character (L'\0'),  wctomb returns 1.  If the target pointer
- *  mbchar  is  nullptr,  wctomb  returns  0.  If  the  conversion is not
+ *  null character (L'\0'), wctomb returns 1.  If the target pointer
+ *  mbchar is nullptr, wctomb returns 0.  If the conversion is not
  *  possible wctomb returns -1.
  */
 
@@ -120,13 +120,13 @@ emwctomb(char* mbchar, EMCHAR wchar) {
  *         Number of bytes to check.
  *
  * Return Value 
- *  If  mbchar  is  not  nullptr  and if the object that mbchar points to
- *  forms  a  valid multibyte character,  mbtowc returns the length in
- *  bytes of the multibyte character.  If mbchar is nullptr or the object
- *  that it points to is a wide-character null character (L'\0'),  the
- *  function  returns 0.  If the object that mbchar points to does not
- *  form   a   valid   multibyte  character  within  the  first  count
- *  characters, it returns -1.
+ *  If mbchar is not nullptr and if the object that mbchar points to
+ *  forms a valid multibyte character, mbtowc returns the length in
+ *  bytes of the multibyte character.  If mbchar is nullptr or the
+ *  object that it points to is a wide-character null character
+ *  (L'\0'), the function returns 0.  If the object that mbchar points
+ *  to does not form a valid multibyte character within the first
+ *  count characters, it returns -1.
  */
 
 int
@@ -173,7 +173,7 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
                           + ((*(mbc + 2) - 0x80) * 0x40)
                           + (*(mbc + 3) - 0x80));
     ulen = 4;
-#if     (EMMB_LEN_MAX > 4)
+#if (EMMB_LEN_MAX > 4)
   } else if ((*mbc & 0xFC) == 0xF8) {
     /* In the 5 byte utf-8 range */
     if (count < 5) {
@@ -223,12 +223,12 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
  *         The maximum number of multibyte characters to convert.
  *
  * Return Value
- *  If   emmbstowcs  successfully  converts  the  source  string,  it
- *  returns  the  number  of  converted multibyte characters.  If the
- *  wcstr  argument  is nullptr,  the function returns the required size
- *  of  the  destination string.  If emmbstowcs encounters an invalid
- *  multibyte  character,  it  returns -1.  If  the  return value is
- *  count, the wide-character string is not null-terminated.
+ *  If emmbstowcs successfully converts the source string, it returns
+ *  the number of converted multibyte characters.  If the wcstr
+ *  argument is nullptr, the function returns the required size of the
+ *  destination string.  If emmbstowcs encounters an invalid multibyte
+ *  character, it returns -1.  If the return value is count, the
+ *  wide-character string is not null-terminated.
  */
 
 int
@@ -359,7 +359,7 @@ static const unsigned char embytesForUTF8[256] = {
   /* (c & 0xF0) == 0xE0      -> 1110xxxx */
   3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /* E0 */
   /* (c & 0xF8) == 0xF0      -> 11110xxx */
-#if     (EMMB_LEN_MAX == 4)
+#if (EMMB_LEN_MAX == 4)
   4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0  /* F0 */
 #else
   4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 0, 0  /* F0 */
