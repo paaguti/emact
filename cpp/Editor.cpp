@@ -38,6 +38,7 @@ static auto rcsid("$Id: basic.cpp,v 1.14 2018/09/08 14:12:50 jullien Exp $");
 #include "./KillBuf.h"
 #include "./Line.h"
 #include "./MiniBuf.h"
+#include "./Point.h"
 #include "./Redisplay.h"
 #include "./Terminal.h"
 #include "./Widget.h"

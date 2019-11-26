@@ -21,6 +21,8 @@
 
 #if !defined(__BUFFER_H)
 #define __BUFFER_H
+#include "./emacs.h"
+#include "./Point.h"
 /*
  * Text is kept in buffers.  A buffer class, described below, exists
  * for every buffer in the system.  The buffers are kept in a big

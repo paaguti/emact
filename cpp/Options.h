@@ -21,15 +21,12 @@
 
 #if !defined(__OPTIONS_H)
 #define __OPTIONS_H
+#include "./CharType.h"
 /**
  * This class manages EmACT options.
  */
 class Options {
  public:
-  /*
-   * options.cpp
-   */
-
   static CMD describekey();
   static CMD help();
   static CMD setvar();

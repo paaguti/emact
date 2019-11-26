@@ -27,6 +27,7 @@ static auto rcsid("$Id: fileio.cpp,v 1.23 2018/09/09 07:21:10 jullien Exp $");
 
 #include "./emacs.h"
 #include "./Buffer.h"
+#include "./Completion.h"
 #include "./Widget.h"
 
 extern Completion complete;  // Automatic completion

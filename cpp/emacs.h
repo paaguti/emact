@@ -253,25 +253,72 @@ static constexpr auto BUF_SCRATCH(ECSTR("*scratch*"));
 
 static constexpr auto BFCHG(0x01);         // Changed since last write
 
-#include "./objects.h"
+enum class CMD {
+  /*
+   * False, no, bad, etc.
+   */
+  CST_NIL   = 0x00,
+  /*
+   * True, yes, good, etc.
+   */
+  CST_T     = 0x10,
+  /*
+   * Death, ^G, abort, etc.
+   */
+  CST_ABORT = 0x30
+};
 
-#define WDGyn(s)              (*widget->w_yn)(s)
-#define WDGyesno(s)           (*widget->w_yesno)(s)
-#define WDGconfirm(s)         (*widget->w_confirm)(s)
-#define WDGerror(s)           (*widget->w_error)(s)
-#define WDGtitle(b, f)        (*widget->w_title)(b, f)
-#define WDGasker(p, b, n)     (*widget->w_asker)(p, b, n)
-#define WDGedit( p, b, n)     (*widget->w_edit)( p, b, n)
-#define WDGchange(m,s,r,l)    (*widget->w_change)(m, s, r, l)
-#define WDGplay(f)            (*widget->w_play)(f)
-#define WDGwait()             (*widget->w_wait)()
-#define WDGmessage(s)         (*widget->w_message)(s)
-#define WDGwrite              (*widget->w_write)
-#define WDGadjust             (*widget->w_adjust)
-#define WDGupdate(p, b)       (*widget->w_update)(p, b)
-#define WDGclipcopy()         (*widget->w_clipcopy)()
-#define WDGclippaste()        (*widget->w_clippaste)()
-#define WDGprint()            (*widget->w_print)()
+static constexpr auto NIL(CMD::CST_NIL);
+static constexpr auto T(CMD::CST_T);
+static constexpr auto ABORT(CMD::CST_ABORT);
+
+/*
+ * Emacs pseudo-types.
+ */
+
+enum class ENCODING {
+  EMASCII = 0,
+  EMUTF8  = 1,
+  EMUTF16 = 2
+};
+
+/**
+ * Supported edit modes
+ */
+enum class EDITMODE {
+  /** Fundamental mode */
+  FUNDAMENTAL,
+  /** Electric C mode */
+  CMODE,
+  /** Lisp mode */
+  LISPMODE,
+  /** Prolog mode */
+  PROLOGMODE,
+  /** Assembler mode */
+  ASMODE,
+  /** Directory mode */
+  DIRED,
+  /** Pascal mode */
+  PASCALMODE,
+  /** Electric C++ mode */
+  CPPMODE,
+  /** Java mode */
+  JAVAMODE,
+  /** Fortran mode */
+  FORTRANMODE,
+  /** Buffer mode */
+  BufferMODE,
+  /** SGML mode */
+  SGMLMODE,
+  /** Perl mode */
+  PERLMODE,
+  /** C# mode */
+  CSHARPMODE,
+  /** Python mode */
+  PYTHONMODE,
+  /** shell mode */
+  SHELLMODE
+};
 
 static inline bool
 self_insert(int c) {
@@ -333,6 +380,15 @@ extern bool   system_colors;          // Display system colors
 extern bool   mouse_avoidance_mode;   // Auto mouse move flag
 extern int    mouse_avoidance_nudge;  // Auto mouse move nudge
 } // namespace opt
+
+
+class Buffer;
+class EditWindow;
+class Redisplay;
+class Terminal;
+class Widget;
+
+class Line;
 
 extern Buffer*     curbp;              // Current buffer
 extern EditWindow* curwp;              // Current window
