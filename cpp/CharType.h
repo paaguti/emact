@@ -1,5 +1,5 @@
 /*
- * static auto rcsid("$Id: ./emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $");
+ * $Id: ./emacs.h,v 1.66 2018/09/09 07:25:14 jullien Exp $
  */
 
 /*
@@ -22,10 +22,12 @@
 #if !defined(__CHAR_TYPE_H)
 #define __CHAR_TYPE_H
 
+#include <cstddef>
+#include <cstring>
+
 #if defined(UNICODE)
 #include <cwchar>
 #include <cwctype>
-#include <cstring>
 
 using EMCHAR = wchar_t;
 
