@@ -120,9 +120,4 @@ DIR*    emopendir(const EMCHAR* path);
 EMCHAR* emgetdirentry(ENTRY *entryp);
 EMCHAR* ematou(const char *in, EMCHAR* out, int max);
 char*   emutoa(const EMCHAR* in, char *out, int max);
-
-#if     defined( _X11 )
-int     X11emacs(int argc, char* argv[]);
-#endif
-
 #endif

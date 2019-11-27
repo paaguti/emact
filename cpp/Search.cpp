@@ -49,7 +49,6 @@ static int upline{0};
 
 extern Completion complete;  // Automatic completion
 extern Widget* widget;       // Widgets tools
-extern int   commento;
 
 static bool replace(bool prompt);
 static bool quotep(const Line* l, int i);
@@ -530,7 +529,7 @@ Search::matchBackward(int patc, bool printflag) {
   auto strp(false);
   auto indx((cbo >= clp->length()) ? cbo - 1 : cbo);
 
-  commento = 0;
+  Indent::reset();
 
   if (quotep(clp, indx) || instringp(clp, indx)) {
     return false;
@@ -561,7 +560,7 @@ Search::matchBackward(int patc, bool printflag) {
                 mode == EDITMODE::PERLMODE   ||
                 mode == EDITMODE::PYTHONMODE ||
                 mode == EDITMODE::JAVAMODE)
-               && (commento != 0))) {
+               && Indent::isComment())) {
       clp = clp->back();
       ++upline;
       if (clp == curbp->lastline()) {

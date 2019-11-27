@@ -175,6 +175,10 @@ insert(const EMCHAR* str) {
 }
 #endif
 
+#if defined( _X11 )
+int X11emacs(int argc, char* argv[]);
+#endif
+
 int
 main(int argc, char *argv[]) {
   int     res = 0;

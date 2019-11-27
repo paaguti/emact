@@ -42,7 +42,7 @@ OBJECTS         = \
                   Buffer.$(O)     \
                   charutil.$(O)   \
                   Completion.$(O) \
-                  curses.$(O)     \
+                  Curses.$(O)     \
                   Editor.$(O)     \
                   EditWindow.$(O) \
                   emacs.$(O)      \

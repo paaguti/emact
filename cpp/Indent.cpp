@@ -44,8 +44,7 @@ extern Widget* widget;       // Widgets tools
 
 static int   indento{0};
 static Line* indentp{nullptr};
-
-int commento{0};
+static int   commento{0};
 
 /*
  * Insert spaces/tabulation up to a given position
@@ -186,6 +185,15 @@ nextcindent() {
   return clp;
 }
 
+void
+Indent::reset() {
+  commento = 0;
+}
+
+bool
+Indent::isComment() {
+  return commento != 0;
+}
 
 /*
  * Save the current indentation point in (indentp, indento).
