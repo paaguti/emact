@@ -262,7 +262,7 @@ ffputline(const EMCHAR* buf, int nbuf) {
     while (nbuf-- > 0) {
       c = *buf++;
       if ((conv = emwctomb(wbuf, (EMCHAR)c)) > 0) {
-        (void)fwrite(wbuf, conv, 1, ffp);
+        (void)std::fwrite(wbuf, conv, 1, ffp);
       } else {
         (void)std::fputc('?', ffp);
       }
@@ -317,7 +317,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
     while ((c = std::fgetc(ffp)) != EOF && c != '\n') {
       EMCHAR wc = 0;
       char   tmp[EMMB_LEN_MAX];
-      int    nb;
+      size_t nb;
 
       if (i >= nbuf) {
         WDGwrite(ECSTR("File has line longer than %d chars."), i);
@@ -336,7 +336,7 @@ ffgetline(EMCHAR* buf, int nbuf, int* len) {
 
       tmp[0] = (char)c;
 
-      for (int j = 1; j < nb; ++j) {
+      for (size_t j = 1; j < nb; ++j) {
         c = std::fgetc(ffp);
         if (c == EOF) {
           break;

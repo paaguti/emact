@@ -25,7 +25,9 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  * It implements low level character functions.
  */
 
-#include "./CharType.h"
+#include <cstdlib>
+#include <climits>
+#include <cstddef>
 
 /*
  * Convert a wide character to the corresponding multibyte character.
@@ -46,7 +48,7 @@ static auto rcsid("$Id: charutil.cpp,v 1.7 2018/09/07 17:57:09 jullien Exp $");
  */
 
 int
-emwctomb(char* mbchar, EMCHAR wchar) {
+emwctomb(char* mbchar, wchar_t wchar) {
   int ulen = 0;        /* return value for UTF8 size */
   size_t uChar = static_cast<size_t>(wchar);
 
@@ -80,7 +82,7 @@ emwctomb(char* mbchar, EMCHAR wchar) {
     *mbchar++ = (char)(0x80 + ((uChar / 0x40) % 0x40));
     *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 4;
-#if (EMMB_LEN_MAX > 4)
+#if (MB_LEN_MAX > 4)
   } else if (uChar <= 0x03FFFFFF) {
     /* In the 5 byte utf-8 range */
     *mbchar++ = (char)(0xF8 + (uChar / 0x01000000));
@@ -90,7 +92,7 @@ emwctomb(char* mbchar, EMCHAR wchar) {
     *mbchar   = (char)(0x80 + (uChar % 0x40));
     ulen      = 5;
 #endif
-#if (EMMB_LEN_MAX > 5)
+#if (MB_LEN_MAX > 5)
   } else if (uChar <= 0x7FFFFFFF) {
     /* In the 6 byte utf-8 range */
     *mbchar++ = (char)(0xF8 + (uChar / 0x40000000));
@@ -113,7 +115,7 @@ emwctomb(char* mbchar, EMCHAR wchar) {
  *
  * Parameters
  *  wchar 
- *         Address of a wide character (type EMCHAR).
+ *         Address of a wide character (type wchar_t).
  *  mbchar
  *         Address of a sequence of bytes (a multibyte character).
  *  count 
@@ -130,7 +132,7 @@ emwctomb(char* mbchar, EMCHAR wchar) {
  */
 
 int
-emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
+emmbtowc(wchar_t* wchar, const char* mbchar, size_t count) {
   int ulen = 0;
   unsigned int code;
   unsigned char* mbc = (unsigned char*)mbchar;
@@ -173,7 +175,7 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
                           + ((*(mbc + 2) - 0x80) * 0x40)
                           + (*(mbc + 3) - 0x80));
     ulen = 4;
-#if (EMMB_LEN_MAX > 4)
+#if (MB_LEN_MAX > 4)
   } else if ((*mbc & 0xFC) == 0xF8) {
     /* In the 5 byte utf-8 range */
     if (count < 5) {
@@ -186,7 +188,7 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
                           + (*(mbc + 4) - 0x80));
     ulen = 5;
 #endif
-#if (EMMB_LEN_MAX > 5)
+#if (MB_LEN_MAX > 5)
   } else if ((*mbc & 0xFE) == 0xFC) {
     /* In the 6 byte utf-8 range */
     if (count < 6) {
@@ -205,7 +207,7 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
     ulen = -1;
   }
 
-  *wchar = (EMCHAR)code;
+  *wchar = (wchar_t)code;
 
   return ulen;
 }
@@ -232,14 +234,14 @@ emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count) {
  */
 
 int
-emmbstowcs(EMCHAR* wcstr, const char* mbstr, size_t count) {
+emmbstowcs(wchar_t* wcstr, const char* mbstr, size_t count) {
   size_t i;
 
   for (i = 0; i < count; ++i) {
-    EMCHAR c = (EMCHAR)'?';
+    wchar_t c = (wchar_t)'?';
 
     if (*mbstr == '\000') {
-      wcstr[i] = (EMCHAR)'\000';
+      wcstr[i] = (wchar_t)'\000';
       break;
     }
 
@@ -284,11 +286,11 @@ emmbstowcs(EMCHAR* wcstr, const char* mbstr, size_t count) {
  */
 
 size_t
-emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count) {
+emwcstombs(char* mbstr, wchar_t* wcstr, size_t count) {
   size_t len = 0;
 
   for (auto i(0); wcstr[i]; ++i) {
-    char wbuf[EMMB_LEN_MAX + 1];
+    char wbuf[MB_LEN_MAX + 1];
     int  conv;
 
     if ((conv = emwctomb(wbuf, wcstr[i])) > 0) {
@@ -334,39 +336,44 @@ emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count) {
 #define SURROGATE_LOW_END       0xDFFF
 #endif
 
-/*
+/**
  * Retuns the number of multiple bytes needed to store MB character c.
+ * @param [in] c first byte of multiple bytes sequence.
+ * @return the number of bytes needed to store MB character c.
  */
-
-static const unsigned char embytesForUTF8[256] = {
-  /* ASCII 7bit char         -> 0xxxxxxx */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 00 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 10 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 20 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 30 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 40 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 50 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 60 */
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 70 */
-  /* invalid UTF-8 char      -> 10xxxxxx */
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 80 */
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 90 */
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* A0 */
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* B0 */
-  /* (c & 0xE0) == 0xC0      -> 110xxxxx */
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* C0 */
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* D0 */
-  /* (c & 0xF0) == 0xE0      -> 1110xxxx */
-  3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /* E0 */
-  /* (c & 0xF8) == 0xF0      -> 11110xxx */
-#if (EMMB_LEN_MAX == 4)
-  4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0  /* F0 */
-#else
-  4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 0, 0  /* F0 */
-#endif
-};
-
-int
+size_t
 emmbclen(int c) {
-  return (int)embytesForUTF8[c & 0xFF];
+  static const unsigned char embytesForUTF8[256] = {
+    /* ASCII 7bit char         -> 0xxxxxxx */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 00 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 10 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 20 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 30 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 40 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 50 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 60 */
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 70 */
+    /* invalid UTF-8 char      -> 10xxxxxx */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 80 */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 90 */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* A0 */
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* B0 */
+    /* (c & 0xE0) == 0xC0      -> 110xxxxx */
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* C0 */
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* D0 */
+    /* (c & 0xF0) == 0xE0      -> 1110xxxx */
+    3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /* E0 */
+    /* (c & 0xF8) == 0xF0      -> 11110xxx */
+#if (MB_LEN_MAX == 4)
+    4, 4, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0  /* F0 */
+#else
+    4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 0, 0  /* F0 */
+#endif
+  };
+
+  if (c < 0) {
+    return 0;
+  } else {
+    return (size_t)embytesForUTF8[c & 0xFF];
+  }
 }

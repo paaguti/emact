@@ -1,32 +1,112 @@
-/*
- static auto rcsid("$Id: config.h.in,v 1.7 2018/09/07 17:57:09 jullien Exp $");
- */
+/* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define if you have not a working X11.  */
-#undef X_DISPLAY_MISSING
+/* Define to 1 if a SysV or X/Open compatible Curses library is present */
+#undef HAVE_CURSES
 
-#undef HAVE_NCURSESW_CURSES_H
-#undef HAVE_NCURSESW_H
-#undef HAVE_NCURSES_CURSES_H
-#undef HAVE_NCURSES_H
+/* Define to 1 if library supports color (enhanced functions) */
+#undef HAVE_CURSES_COLOR
+
+/* Define to 1 if library supports X/Open Enhanced functions */
+#undef HAVE_CURSES_ENHANCED
+
+/* Define to 1 if <curses.h> is present */
 #undef HAVE_CURSES_H
 
-/*
-POSIX.1-1988  _POSIX_VERSION = 198808L  
-POSIX.1-1990  _POSIX_VERSION = 199009L    ISO/IEC 9945-1:1990 
-POSIX.2       _POSIX2_C_VERSION = 199209L ISO/IEC 9945-2:1993 
-POSIX.1b-1993 _POSIX_VERSION = 199309L    IEEE 1003.1b-1993 
-POSIX.1-1996  _POSIX_VERSION = 199506L    IEEE 1003.1-1996 
-POSIX.1-2001  _POSIX_VERSION = 200112L    IEEE 1003.1-2001 
-POSIX.1-2008  _POSIX_VERSION = 200809L    IEEE 1003.1-2008 
-*/
+/* Define to 1 if library supports certain obsolete features */
+#undef HAVE_CURSES_OBSOLETE
 
-// #define PATH    ECSTR(## @libdir@/@NAME@)
+/* define if the compiler supports basic C++11 syntax */
+#undef HAVE_CXX11
 
-#if !defined(_POSIX_C_SOURCE)
-// #define _POSIX_C_SOURCE 199506L
-// #define _POSIX_C_SOURCE 199808L
-// #define _POSIX_C_SOURCE 200809L
-#define _POSIX_C_SOURCE 200112L
-// #define _POSIX_C_SOURCE 200809L
-#endif
+/* define if the compiler supports basic C++14 syntax */
+#undef HAVE_CXX14
+
+/* define if the compiler supports basic C++17 syntax */
+#undef HAVE_CXX17
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if the Ncurses library is present */
+#undef HAVE_NCURSES
+
+/* Define to 1 if the NcursesW library is present */
+#undef HAVE_NCURSESW
+
+/* Define to 1 if <ncursesw/curses.h> is present */
+#undef HAVE_NCURSESW_CURSES_H
+
+/* Define to 1 if <ncursesw.h> is present */
+#undef HAVE_NCURSESW_H
+
+/* Define to 1 if <ncurses/curses.h> is present */
+#undef HAVE_NCURSES_CURSES_H
+
+/* Define to 1 if <ncurses.h> is present */
+#undef HAVE_NCURSES_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define the machine type */
+#undef MACHINE_TYPE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* The size of `int', as computed by sizeof. */
+#undef SIZEOF_INT
+
+/* The size of `long', as computed by sizeof. */
+#undef SIZEOF_LONG
+
+/* The size of `size_t', as computed by sizeof. */
+#undef SIZEOF_SIZE_T
+
+/* The size of `void *', as computed by sizeof. */
+#undef SIZEOF_VOID_P
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
+
+/* Define the system type */
+#undef SYSTEM_TYPE
+
+/* Define to 1 if the X Window System is missing or not being used. */
+#undef X_DISPLAY_MISSING

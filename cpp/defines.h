@@ -30,7 +30,7 @@ int     emwctomb(char* mbchar, EMCHAR wchar);
 int     emmbtowc(EMCHAR* wchar, const char* mbchar, size_t count);
 int     emmbstowcs(EMCHAR* wchar, const char* mbchar, size_t count);
 size_t  emwcstombs(char* mbstr, EMCHAR* wcstr, size_t count);
-int     emmbclen(int c);
+size_t  emmbclen(int c);
 
 /*
  *      file.cpp

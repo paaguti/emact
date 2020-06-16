@@ -64,7 +64,7 @@ OBJECTS         = \
                   unicode.$(O)    \
                   Version.$(O)    \
                   Word.$(O)       \
-                  x11.$(O)
+                  X11.$(O)
 
 BINARIES	= ed$(EXE)
 DEFS		= -Dlint -D_CURSES -D_MLISP -DNDEBUG
