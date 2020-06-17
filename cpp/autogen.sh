@@ -10,4 +10,4 @@ fail() {
 aclocal -I m4 --force || fail "aclocal"
 autoconf -f || fail "autoconf"
 autoheader || fail "autoheader"
-sed -i -e 's/.*AX_REQUIRE_DEFINED.*//g' configure
+# sed -i -e 's/.*AX_REQUIRE_DEFINED.*//g' configure

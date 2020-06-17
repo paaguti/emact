@@ -164,8 +164,6 @@ PKG_PROG_PKG_CONFIG
 
 m4_pattern_allow([PKG_CHECK_EXISTS]) 
 
-HAVE_CURSES=0
-
 AX_WITH_CURSES
 
 dnl There should be a better way to find if a curses.h exists.
@@ -176,8 +174,7 @@ AS_IF([test "x$ax_cv_header_ncursesw_curses_h"       = "xyes" \
          -o "x$ax_cv_header_ncurses_h"               = "xyes" \
          -o "x$ax_cv_header_curses_h"                = "xyes"],
       [AS_IF([test "x$ax_cv_curses" = "xyes"],
-             [AS_VAR_APPEND([LIBS], [" -l$ax_cv_curses_which"])
-	      HAVE_CURSES=1])])
+             [AS_VAR_APPEND([LIBS], [" -l$ax_cv_curses_which"])])])
 
 dnl get type size
 
@@ -228,7 +225,6 @@ AC_SUBST(SHARED)
 AC_SUBST(SOEXT)
 AC_SUBST(SONAME)
 AC_SUBST(VERSION)
-AC_SUBST(HAVE_CURSES)
 
 dnl Save result in src/Makefile (using src/Makefile.in template).
 
