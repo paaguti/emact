@@ -70,10 +70,8 @@ dnl Get the exact CC compiler used (in case of alias)
 AC_MSG_CHECKING(for the exact C compiler version)
 CLANG=
 GNUCC=
-TCC=
 AS_IF([`$CC -v 2>&1 | grep gcc   > /dev/null`], [GNUCC=$CC],
-      [`$CC -v 2>&1 | grep clang > /dev/null`], [CLANG=$CC],
-      [`$CC -v 2>&1 | grep tcc   > /dev/null`], [TCC=$CC])
+      [`$CC -v 2>&1 | grep clang > /dev/null`], [CLANG=$CC])
 
 AS_IF([test -n "$CLANG" -a -z "`echo $CC | grep clang`"],
       [GCC_IS_AN_ALIAS="$CC is an alias for clang"
@@ -127,7 +125,6 @@ AX_CHECK_COMPILE_FLAG([-Werror -finline-limit=4096],
 
 AX_CHECK_COMPILE_FLAG([-Werror -Wconversion],
                       [AS_VAR_APPEND([WLIBFLAGS], [" -Wconversion"])])
-
 
 AC_CHECK_PROGS([AR], gcc-ar ar gar, no)
 AS_IF([test "$AR" != "no"],

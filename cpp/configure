@@ -3521,13 +3521,10 @@ _ACEOF
 $as_echo_n "checking for the exact C compiler version... " >&6; }
 CLANG=
 GNUCC=
-TCC=
 if `$CC -v 2>&1 | grep gcc   > /dev/null`; then :
   GNUCC=$CC
 elif `$CC -v 2>&1 | grep clang > /dev/null`; then :
   CLANG=$CC
-elif `$CC -v 2>&1 | grep tcc   > /dev/null`; then :
-  TCC=$CC
 fi
 
 if test -n "$CLANG" -a -z "`echo $CC | grep clang`"; then :
@@ -5875,7 +5872,6 @@ if test "x$ax_cv_check_cxxflags___Werror__Wconversion" = xyes; then :
 else
   :
 fi
-
 
 
 for ac_prog in gcc-ar ar gar
