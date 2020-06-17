@@ -7303,20 +7303,17 @@ fi
 
 #dnl There should be a better way to find if a curses.h exists.
 if test "x$ax_cv_header_ncursesw_curses_h"       = "xyes" \
-     -o "x$ax_cv_header_ncursesw_h"              = "xyes" \
-     -o "x$ax_cv_header_ncurses_h_with_ncursesw" = "xyes" \
-     -o "x$ax_cv_header_ncurses_curses_h"        = "xyes" \
-     -o "x$ax_cv_header_ncurses_h"               = "xyes" \
-     -o "x$ax_cv_header_curses_h"                = "xyes"
-then
-  if test "x$ax_cv_curses" != "xno" -o "x$ax_cv_ncurses" != "xno"
-  then
-    LIBS="-l$ax_cv_curses_which $LIBS"
-    HAVE_CURSES=1
-  fi
+         -o "x$ax_cv_header_ncursesw_h"              = "xyes" \
+         -o "x$ax_cv_header_ncurses_h_with_ncursesw" = "xyes" \
+         -o "x$ax_cv_header_ncurses_curses_h"        = "xyes" \
+         -o "x$ax_cv_header_ncurses_h"               = "xyes" \
+         -o "x$ax_cv_header_curses_h"                = "xyes"; then :
+  if test "x$ax_cv_curses" = "xyes"; then :
+  as_fn_append LIBS " -l$ax_cv_curses_which"
+	      HAVE_CURSES=1
+fi
 fi
 
-# get type size
 
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -7843,8 +7840,6 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-
-# Save cache
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure

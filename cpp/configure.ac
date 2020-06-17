@@ -22,7 +22,7 @@ dnl   x86_64-pc-linux-gnu
 dnl   x86_64-unknown-cygwin
 dnl   x86_64-unknown-freebsd11.0
 
-# Process this file with autoconf to produce a configure script
+dnl Process this file with autoconf to produce a configure script
 
 AC_PREREQ([2.69])
 AC_INIT([emacs],
@@ -55,7 +55,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
-# User options
+dnl User options
 
 AC_CANONICAL_TARGET
 
@@ -129,11 +129,6 @@ AX_CHECK_COMPILE_FLAG([-Werror -Wconversion],
                       [AS_VAR_APPEND([WLIBFLAGS], [" -Wconversion"])])
 
 
-dnl AS_IF([test "$enable_cxx" = "yes"],
-dnl       [AC_PROG_CXX])
-
-# AC_CHECK_TARGET_TOOLS([AR], gcc-ar ar gar, no)
-
 AC_CHECK_PROGS([AR], gcc-ar ar gar, no)
 AS_IF([test "$AR" != "no"],
       [AC_SUBST(AR)],
@@ -176,29 +171,23 @@ HAVE_CURSES=0
 
 AX_WITH_CURSES
 
-#dnl There should be a better way to find if a curses.h exists.
-if test "x$ax_cv_header_ncursesw_curses_h"       = "xyes" \
-     -o "x$ax_cv_header_ncursesw_h"              = "xyes" \
-     -o "x$ax_cv_header_ncurses_h_with_ncursesw" = "xyes" \
-     -o "x$ax_cv_header_ncurses_curses_h"        = "xyes" \
-     -o "x$ax_cv_header_ncurses_h"               = "xyes" \
-     -o "x$ax_cv_header_curses_h"                = "xyes"
-then
-  if test "x$ax_cv_curses" != "xno" -o "x$ax_cv_ncurses" != "xno"
-  then
-    LIBS="-l$ax_cv_curses_which $LIBS"
-    HAVE_CURSES=1
-  fi
-fi
+dnl There should be a better way to find if a curses.h exists.
+AS_IF([test "x$ax_cv_header_ncursesw_curses_h"       = "xyes" \
+         -o "x$ax_cv_header_ncursesw_h"              = "xyes" \
+         -o "x$ax_cv_header_ncurses_h_with_ncursesw" = "xyes" \
+         -o "x$ax_cv_header_ncurses_curses_h"        = "xyes" \
+         -o "x$ax_cv_header_ncurses_h"               = "xyes" \
+         -o "x$ax_cv_header_curses_h"                = "xyes"],
+      [AS_IF([test "x$ax_cv_curses" = "xyes"],
+             [AS_VAR_APPEND([LIBS], [" -l$ax_cv_curses_which"])
+	      HAVE_CURSES=1])])
 
-# get type size
+dnl get type size
 
 AC_CHECK_SIZEOF(void *, 4)
 AC_CHECK_SIZEOF(int,    4)
 AC_CHECK_SIZEOF(long,   4)
 AC_CHECK_SIZEOF(size_t, 4)
-
-# Save cache
 
 AC_CACHE_SAVE
 
@@ -210,7 +199,7 @@ AS_IF([test "x$with_x" = "xyes"],
        AS_VAR_APPEND([CXXFLAGS], [" $X_CFLAGS"])
        AS_VAR_APPEND([LIBS], [" $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"])])
 
-# Local options
+dnl Local options
 
 AEXT="a"
 AROPTS="-c -r"
