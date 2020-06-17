@@ -3390,7 +3390,6 @@ else
 fi
 
 
-# User options
 
 # Make sure we can run config.sub.
 $SHELL "$ac_aux_dir/config.sub" sun4 >/dev/null 2>&1 ||
@@ -5879,9 +5878,6 @@ fi
 
 
 
-
-# AC_CHECK_TARGET_TOOLS([AR], gcc-ar ar gar, no)
-
 for ac_prog in gcc-ar ar gar
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
@@ -7301,7 +7297,6 @@ fi
     unset ax_saved_CPPFLAGS
 
 
-#dnl There should be a better way to find if a curses.h exists.
 if test "x$ax_cv_header_ncursesw_curses_h"       = "xyes" \
          -o "x$ax_cv_header_ncursesw_h"              = "xyes" \
          -o "x$ax_cv_header_ncurses_h_with_ncursesw" = "xyes" \
@@ -8619,7 +8614,6 @@ $as_echo "#define HAVE_X11 1" >>confdefs.h
        as_fn_append LIBS " $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 fi
 
-# Local options
 
 AEXT="a"
 AROPTS="-c -r"
