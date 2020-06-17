@@ -69,6 +69,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define if X11 is wanted. */
+#undef HAVE_X11
+
 /* Define the machine type */
 #undef MACHINE_TYPE
 

@@ -87,8 +87,6 @@ AS_IF([test -n "$GCC_IS_AN_ALIAS"],
 
 dnl Checks for C++
 
-CXX=$CC
-
 AC_MSG_CHECKING(for C++)
 AC_ARG_ENABLE([cxx],
   [AS_HELP_STRING([--enable-cxx],
@@ -105,6 +103,8 @@ AS_IF([test "$enable_cxx" = "yes"],
    AS_IF([`$CXX --version 2>&1 | grep clang > /dev/null`],
          [CLANGXX=$CXX],
          [CLANGXX=])])
+
+AC_LANG([C++])
 
 AX_CHECK_COMPILE_FLAG([-Werror -m64],
                       [AS_VAR_APPEND([CXXFLAGS], [" -m64"])])
@@ -165,15 +165,6 @@ AS_IF([test -x /usr/bin/find],
       [FIND=find])
 AC_SUBST(FIND)
 
-# Checks for C++ (Must be called after AC_AIX)
-
-enable_cxx=yes
-AC_PROG_CXX
-AC_LANG([C++])
-AX_CXX_COMPILE_STDCXX(11, noext, mandatory)
-#AX_CHECK_COMPILE_FLAG([-Wsuggest-override],
-#                      [CXXWARN="$CXXWARN -Wsuggest-override"])
-
 STATIC_BUILD=std
 AC_SUBST(STATIC_BUILD)
 
@@ -211,56 +202,13 @@ AC_CHECK_SIZEOF(size_t, 4)
 
 AC_CACHE_SAVE
 
-# OS specifics, sets {EXE,OBJ}EXT
-
-AC_EXEEXT
-AC_OBJEXT
-
 dnl Optimization and Warnings options
 
-AX_CHECK_COMPILE_FLAG([-m64],
-                      [MODEL="-m64"])
-AX_CHECK_COMPILE_FLAG([-Wall],
-                      [CXXFLAGS="$CXXFLAGS -Wall"])
-AX_CHECK_COMPILE_FLAG([-Wextra],
-                      [CXXFLAGS="$CXXFLAGS -Wextra"])
-AX_CHECK_COMPILE_FLAG([-Wshadow],
-                      [CXXFLAGS="$CXXFLAGS -Wshadow"])
-AX_CHECK_COMPILE_FLAG([-Wunused],
-                      [CXXFLAGS="$CXXFLAGS -Wunused"])
-AX_CHECK_COMPILE_FLAG([-Wunused-value],
-                      [CXXFLAGS="$CXXFLAGS -Wunused-value"])
-AX_CHECK_COMPILE_FLAG([-Wunused-variable],
-                      [CXXFLAGS="$CXXFLAGS -Wunused-variable"])
-AX_CHECK_COMPILE_FLAG([-Wunused-parameter],
-                      [CXXFLAGS="$CXXFLAGS -Wunused-parameter"])
-AX_CHECK_COMPILE_FLAG([-Wunused-label],
-                      [CXXFLAGS="$CXXFLAGS -Wunused-label"])
-AX_CHECK_COMPILE_FLAG([-Wunused-function],
-                      [CXXFLAGS="$CXXFLAGS -Wunused-function"])
-AX_CHECK_COMPILE_FLAG([-fomit-frame-pointer],
-                      [CXXFLAGS="$CXXFLAGS -fomit-frame-pointer"])
-
-if test `uname` != Darwin
-then
-  AX_CHECK_COMPILE_FLAG([-finline-functions],
-                        [CXXFLAGS="$CXXFLAGS -finline-functions"])
-  AX_CHECK_COMPILE_FLAG([-finline-limit=4096],
-                        [CXXFLAGS="$CXXFLAGS -finline-limit=4096"])
-fi
-
 AC_PATH_XTRA
-
-#echo "X_LIBS=$X_LIBS X_PRE_LIBS=$X_PRE_LIBS -lX11 X_EXTRA_LIBS=$X_EXTRA_LIBS"
-
-if test "x$have_x" = "xyes"
-then
-  CXXFLAGS="$CXXFLAGS $X_CFLAGS"
-  for i in $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS
-  do
-    LIBS="$LIBS $i"
-  done
-fi
+AS_IF([test "x$with_x" = "xyes"],
+      [AC_DEFINE([HAVE_X11], [1], [Define if X11 is wanted.])
+       AS_VAR_APPEND([CXXFLAGS], [" $X_CFLAGS"])
+       AS_VAR_APPEND([LIBS], [" $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"])])
 
 # Local options
 
@@ -270,12 +218,15 @@ PIC=""
 SHARED=#"shared-std"
 SOEXT="so"
 
-if test `uname` != Darwin
-then
-  SONAME=soname
-else
-  SONAME=install_name
-fi
+SONAME=soname
+AS_CASE([${target_cpu}-${target_os}],
+  [*darwin*], [
+    dnl libol.dylib:
+    dnl $(CC) $(CFLAGS) -dynamiclib -install_name "libol.1.dylib"
+    dnl                 -current_version 1.0.6
+    dnl                 -compatibility_version 1.0 -o libol.1.dylib $(OBJS)
+    SONAMEFLAG="install_name"
+    ])
 
 AC_SUBST(NAME)
 AC_SUBST(MODEL)
@@ -293,23 +244,23 @@ AC_SUBST(SONAME)
 AC_SUBST(VERSION)
 AC_SUBST(HAVE_CURSES)
 
-# Save result in Makefile (using Makefile.in template).
+dnl Save result in src/Makefile (using src/Makefile.in template).
 
-AC_OUTPUT(Makefile ${NAME}.spec ${NAME}.pc)
+AC_CONFIG_FILES([Makefile ${NAME}.spec ${NAME}.pc])
+AC_OUTPUT
 
-echo \
-"------------------------------------------------------------------------
-Configuration:
-
- Name:		${NAME}
- Version:	${VERSION}
- Source:        ${srcdir}
- Compiler:	${CXX}
- C++ Flags:     ${CXXFLAGS}
- Build:         ${build}
- Host:          ${host}
- Target:        ${target}
- Install:       ${prefix}
-
-See ./config.h for further configuration information.
-------------------------------------------------------------------------"
+AS_ECHO("--------------------------------------------------------------------")
+AS_ECHO("Configuration:")
+AS_ECHO("")
+AS_ECHO(" Name:          ${NAME}")
+AS_ECHO(" Version:       ${VERSION}")
+AS_ECHO(" Source:        ${srcdir}")
+AS_ECHO(" Compiler:      ${CXX} ${CCVERSION}")
+AS_ECHO(" Flags:         ${CXXFLAGS}")
+AS_ECHO(" Build:         ${build}")
+AS_ECHO(" Host:          ${host}")
+AS_ECHO(" Target:        ${target}")
+AS_ECHO(" Install:       ${prefix}")
+AS_ECHO("")
+AS_ECHO("See src/config.h for further configuration information.")
+AS_ECHO("--------------------------------------------------------------------")
