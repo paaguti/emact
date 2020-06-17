@@ -29,6 +29,8 @@ static auto rcsid("$Id: x11.cpp,v 1.27 2018/09/09 07:21:10 jullien Exp $");
 #include "./Redisplay.h"
 #include "./MouseEvent.h"
 #include "./Terminal.h"
+#include "./KillBuf.h"
+#include "./Widget.h"
 
 #if defined(_X11) && !defined(X_DISPLAY_MISSING)
 
@@ -585,9 +587,9 @@ X11Terminal::X11Terminal() {
 
   Redisplay::_mouse = true;
 
-  widget.w_clipcopy  = X11clipcopy;
-  widget.w_clippaste = X11clippaste;
-  widget.w_title     = X11title;
+  widget->w_clipcopy  = X11clipcopy;
+  widget->w_clippaste = X11clippaste;
+  widget->w_title     = X11title;
 
   XMapWindow(_dpy, _win);
 
