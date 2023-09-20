@@ -39,7 +39,7 @@
 #		pm-bor		;; Borland C/C++ 1.5 for OS/2 PM
 #		pm-iva		;; IBM Visual Age for OS/2 PM
 
-SYSTEM=invalid-system	# display error
+SYSTEM=auto # autoconf
 DEL=			# if equal 'no', (MSDOS) don't erase old object files
 ISO=			# if equal _ISO compile using ISO/IEC 9845:1990 C
 CMD=cmd /c
