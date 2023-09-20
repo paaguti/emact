@@ -1,5 +1,5 @@
 #if	!defined( lint )
-static	char rcsid[] = "$Id: curses.c,v 1.6 2012/10/21 19:07:18 jullien Exp $";
+static	char rcsid[] = "$Id: curses.c,v 1.6 2023/09/20 19:07:18 jullien Exp $";
 #endif
 
 /*
@@ -7,12 +7,12 @@ static	char rcsid[] = "$Id: curses.c,v 1.6 2012/10/21 19:07:18 jullien Exp $";
  * modify  it  under  the  terms of the GNU General Public License as
  * published  by  the  Free  Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
- * 
+ *
  * This  program  is  distributed in the hope that it will be useful,
  * but  WITHOUT ANY WARRANTY;  without  even the implied  warranty of
  * MERCHANTABILITY  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You  should have received a copy of the GNU General Public License
  * along  with  this  program;  if  not,  write  to the Free Software
  * Foundation,  Inc.,  59  Temple  Place  -  Suite  330,  Boston,  MA
@@ -268,54 +268,76 @@ static	int cursesctrl[] = {
 static	int
 cursesgetc( void )
 {
-	int	c = getch();
+#if defined (KEY_RESIZE)
+	/* paag: 20-09-2023
+	   if we have KEY_RESIZE, this will come from a SIGWINCH and we have to handle it here */
+	for (;;) {
+#endif
+		int	c = getch();
 
 #if	defined( __MVS__ )
-	if ( c < 0x40 ) {
-		printf( "code %x -> %d\r\n", c, cursesctrl[c] );
-		c = cursesctrl[c];
-	};
+		if ( c < 0x40 ) {
+			printf( "code %x -> %d\r\n", c, cursesctrl[c] );
+			c = cursesctrl[c];
+		};
 #endif
 
-	switch( c ) {
+		switch( c ) {
 #if	defined( KEY_HOME )
-	case KEY_DOWN	   :	return( Ctrl|'N' );
-	case KEY_UP	   :	return( Ctrl|'P' );
-	case KEY_LEFT	   :	return( Ctrl|'B' );
-	case KEY_RIGHT	   :	return( Ctrl|'F' );
-	case KEY_HOME	   :	return( META|'<' );
-	case KEY_BACKSPACE :	return( Ctrl|'H' );
+		case KEY_DOWN	   :	return( Ctrl|'N' );
+		case KEY_UP	   :	return( Ctrl|'P' );
+		case KEY_LEFT	   :	return( Ctrl|'B' );
+		case KEY_RIGHT	   :	return( Ctrl|'F' );
+		case KEY_HOME	   :	return( META|'<' );
+		case KEY_BACKSPACE :	return( Ctrl|'H' );
 #if	defined( __FreeBSD__ )
-	case KEY_DC	   :	return( Ctrl|'H' );
+		case KEY_DC	   :	return( Ctrl|'H' );
 #else
-	case KEY_DC	   :	return( Ctrl|'D' );
+		case KEY_DC	   :	return( Ctrl|'D' );
 #endif
-	case KEY_IC	   :	return( META|'I' );
-	case KEY_NPAGE	   :	return( Ctrl|'V' );
-	case KEY_PPAGE	   :	return( META|'V' );
-	case KEY_F(1)	   :	return( META|'?' );
-	case KEY_F(2)	   :	return( Ctrl|'S' );
-	case KEY_F(3)	   :	return( META|Ctrl|'F' );
-	case KEY_F(4)	   :	return( CTLX|Ctrl|'I' );
-	case KEY_F(6)	   :	return( SPCL|'@' );
-	case KEY_F(7)	   :	return( CTLZCH   );
-	case KEY_F(8)	   :	return( CTLX|Ctrl|'S' );
-	case KEY_F(9)	   :	return( CTLX|'E' );
-	case KEY_F(11)	   :	return( META|'M' );
-	case KEY_ENTER	   :	return( 0x0D     );
-	case KEY_LL	   :	return( META|'<' );
+		case KEY_IC	   :	return( META|'I' );
+		case KEY_NPAGE	   :	return( Ctrl|'V' );
+		case KEY_PPAGE	   :	return( META|'V' );
+		case KEY_F(1)	   :	return( META|'?' );
+		case KEY_F(2)	   :	return( Ctrl|'S' );
+		case KEY_F(3)	   :	return( META|Ctrl|'F' );
+		case KEY_F(4)	   :	return( CTLX|Ctrl|'I' );
+		case KEY_F(6)	   :	return( SPCL|'@' );
+		case KEY_F(7)	   :	return( CTLZCH   );
+		case KEY_F(8)	   :	return( CTLX|Ctrl|'S' );
+		case KEY_F(9)	   :	return( CTLX|'E' );
+		case KEY_F(11)	   :	return( META|'M' );
+		case KEY_ENTER	   :	return( 0x0D     );
+		case KEY_LL	   :	return( META|'<' );
 #if	defined( KEY_A1 )
-	case KEY_A1	   :	return( META|'>' );
-	case KEY_A3	   :	return( META|'V' );
-	case KEY_C1	   :	return( META|'<' );
-	case KEY_C3	   :	return( Ctrl|'V' );
+		case KEY_A1	   :	return( META|'>' );
+		case KEY_A3	   :	return( META|'V' );
+		case KEY_C1	   :	return( META|'<' );
+		case KEY_C3	   :	return( Ctrl|'V' );
+#endif
+#if defined (KEY_RESIZE)
+		case KEY_RESIZE: {
+			int col, row;
+			getmaxyx(stdscr,row,col);
+			TTYncol = col;
+			TTYnrow = row-1;
+			vtinit();
+			resize();
+			refresh();
+			redrawscreen();
+			update (T);
+			continue;
+		}
 #endif
 #if	defined( KEY_END )
-	case KEY_END	   :	return( META|'>' );
+		case KEY_END	   :	return( META|'>' );
 #endif
 #endif
-	default		   :	return( c );
+		default		   :	return( c );
+		}
+#if defined (KEY_RESIZE)
 	}
+#endif
 }
 
 static	void
