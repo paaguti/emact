@@ -29,7 +29,7 @@ XLIBS	= @X_EXTRA_LIBS@ @X_PRE_LIBS@ @X11LIB@
 NAME	= -DSYSTEMNAME=ECSTR\(\"$(SYSTEM)\"\)
 EMPATH	= -DPATH=ECSTR\(\"$(LIBPATH)\"\)
 OPTIONS	= -D_DIRECTORY -D_MLISP -D$(CHARSET) -D_UNIX $(EMPATH) $(NAME) @DEFS@ @LOCAL_DEFS@
-MACHINE	= @LOCAL_CFLAGS@ 
+MACHINE	= @LOCAL_CFLAGS@
 WFLAGS	= -W                       \
 	  -Wall			   \
 	  -Waggregate-return       \
@@ -254,18 +254,18 @@ lint:
 	@lint -p -D_POSIX_SOURCE -D_ISO $(SOURCES)
 
 install:
-	@echo installing binaries and libs in $(DISTRIB)
-	-@if [ ! -d $(DISTRIB) ];     then mkdir -p $(DISTRIB); fi
-	-@if [ ! -d $(LIBPATH) ];     then mkdir -p $(LIBPATH); fi
-	-@if [ ! -d $(INSTALL)/bin ]; then mkdir -p $(INSTALL)/bin; fi
-	-@cp lib/*    $(LIBPATH)
-	-@cp emact    $(INSTALL)/bin/emact
-	-@chmod a+x+r $(DISTRIB)
-	-@chmod a+x+r $(LIBPATH)
-	-@chmod a+r   $(LIBPATH)/*
-	-@chmod a+x+r $(INSTALL)/bin/emact
-	-@if [ -f $(LIBPATH)/emact.lsp ]; then rm $(LIBPATH)/emact.lsp; fi
-	-@ln -s emacs.lsp $(LIBPATH)/emact.lsp
+	@echo installing binaries and libs in $(DESTDIR)$(DISTRIB)
+	-if [ ! -d $(DESTDIR)$(DISTRIB) ];     then mkdir -p $(DESTDIR)$(DISTRIB); fi
+	-if [ ! -d $(DESTDIR)$(LIBPATH) ];     then mkdir -p $(DESTDIR)$(LIBPATH); fi
+	-if [ ! -d $(DESTDIR)$(INSTALL)/bin ]; then mkdir -p $(DESTDIR)$(INSTALL)/bin; fi
+	-chmod a+x+r $(DESTDIR)$(DISTRIB)
+	-cp emact    $(DESTDIR)$(INSTALL)/bin/emact
+	-chmod a+x+r $(DESTDIR)$(INSTALL)/bin/emact
+	-cp lib/*    $(DESTDIR)$(LIBPATH)
+	-chmod a+x+r $(DESTDIR)$(LIBPATH)
+	-chmod a+r   $(DESTDIR)$(LIBPATH)/*
+	#-@if [ -f $(LIBPATH)/emact.lsp ]; then rm $(LIBPATH)/emact.lsp; fi
+	#-@ln -s emacs.lsp $(LIBPATH)/emact.lsp
 	@echo Done.
 
 uninstall:
