@@ -1,0 +1,19 @@
+Source: emact
+Section: unknown
+Priority: optional
+Maintainer: Pedro A. Aranda Gutiérrez <paag@unknown>
+Build-Depends: debhelper-compat (= 13), autotools-dev
+Standards-Version: 4.6.0
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/emact
+#Vcs-Git: https://salsa.debian.org/debian/emact.git
+Rules-Requires-Root: no
+
+Package: emact
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Terminal-based emacs-like editor from the 1980's 
+  EmACT is a GNU GPL implementation initially adapted to the 
+  writing of the programs of the Le-Lisp system from INRIA on 
+  PC. It has the advantage of being not very greedy for memory 
+  capacity and to be easily portable to various machines.

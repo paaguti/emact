@@ -1,0 +1,5 @@
+emact (0.1-1) UNRELEASED; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Pedro A. Aranda Gutiérrez <paag@unknown>  Thu, 21 Sep 2023 09:59:28 +0200
